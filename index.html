@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'">
+  <title>Vital Clues — The Body Detective</title>
+  <meta name="description" content="A body-science detective game that scores how you reason, not just what you guess. Fictional cases for ages 11–15. Nothing is collected.">
+  <meta name="theme-color" content="#16213E">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="art/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="art/icon-180.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ======== inline SVG sprite: original flat line art, no photos, no licensed characters ======== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- runner: Maya -->
+    <symbol id="icon-runner" viewBox="0 0 64 64">
+      <circle cx="40" cy="12" r="6" fill="#fff"/>
+      <path d="M38 20 L30 30 L18 26" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M38 20 L46 32 L40 44 L28 50" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M46 32 L56 38" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M30 30 L26 40 L16 48" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M6 56 L22 56 M8 50 L18 50" stroke="#fff" stroke-width="2.5" opacity=".7" stroke-linecap="round"/>
+    </symbol>
+    <!-- hiker: Priya -->
+    <symbol id="icon-hiker" viewBox="0 0 64 64">
+      <circle cx="30" cy="12" r="6" fill="#fff"/>
+      <path d="M30 20 L30 38 L22 54 M30 38 L38 52" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30 22 L18 30 L20 40" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M30 22 L42 28 L46 20" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M46 20 L48 56" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+      <path d="M4 58 L22 44 L34 50 L60 34" stroke="#fff" stroke-width="2.5" fill="none" opacity=".7"/>
+    </symbol>
+    <!-- swimmer: Jonah -->
+    <symbol id="icon-swimmer" viewBox="0 0 64 64">
+      <circle cx="44" cy="22" r="6" fill="#fff"/>
+      <path d="M38 28 L26 30 L14 24" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M26 30 L36 40" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M4 48 q6 -6 12 0 t12 0 t12 0 t12 0 t8 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M4 56 q6 -6 12 0 t12 0 t12 0 t12 0 t8 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>
+    </symbol>
+    <!-- goalkeeper: Sam -->
+    <symbol id="icon-goalkeeper" viewBox="0 0 64 64">
+      <circle cx="32" cy="14" r="6" fill="#fff"/>
+      <path d="M32 22 L32 40 L22 56 M32 40 L42 56" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M32 24 L14 10 M32 24 L50 10" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <circle cx="54" cy="30" r="5" fill="none" stroke="#fff" stroke-width="3"/>
+      <path d="M4 8 L4 60 M60 8 L60 60 M4 8 L60 8" stroke="#fff" stroke-width="2" opacity=".5"/>
+    </symbol>
+    <!-- stairs: Leo (transfer) -->
+    <symbol id="icon-stairs" viewBox="0 0 64 64">
+      <path d="M4 58 L4 46 L18 46 L18 34 L32 34 L32 22 L46 22 L46 10 L60 10 L60 58 Z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="24" cy="12" r="5" fill="#fff"/>
+      <path d="M24 18 L24 28 L16 40 M24 28 L30 36" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="26" y="14" width="12" height="10" rx="2" fill="#fff" opacity=".85"/>
+    </symbol>
+    <!-- clue icons -->
+    <symbol id="icon-lungs" viewBox="0 0 64 64">
+      <path d="M32 8 L32 30" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+      <path d="M30 30 C22 28 10 36 10 48 C10 56 16 58 22 56 C28 54 30 48 30 42 Z" fill="#fff"/>
+      <path d="M34 30 C42 28 54 36 54 48 C54 56 48 58 42 56 C36 54 34 48 34 42 Z" fill="#fff"/>
+    </symbol>
+    <symbol id="icon-heart" viewBox="0 0 64 64">
+      <path d="M32 54 C14 40 8 32 8 22 C8 14 14 10 20 10 C26 10 30 14 32 18 C34 14 38 10 44 10 C50 10 56 14 56 22 C56 32 50 40 32 54 Z" fill="#fff"/>
+    </symbol>
+    <symbol id="icon-muscles" viewBox="0 0 64 64">
+      <path d="M10 44 C10 30 18 20 30 20 L34 20 C40 20 44 16 48 10 L54 14 C50 22 46 26 40 28 C48 32 54 40 54 50 L10 50 Z" fill="#fff"/>
+    </symbol>
+    <symbol id="icon-clock" viewBox="0 0 64 64">
+      <circle cx="32" cy="34" r="22" fill="none" stroke="#fff" stroke-width="5"/>
+      <path d="M32 20 L32 34 L42 40" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M24 6 L40 6" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-kidneys" viewBox="0 0 64 64">
+      <path d="M22 12 C10 12 8 26 12 40 C14 48 20 54 26 50 C30 46 28 40 24 36 C20 32 22 24 26 22 C30 20 30 12 22 12 Z" fill="#fff"/>
+      <path d="M42 12 C54 12 56 26 52 40 C50 48 44 54 38 50 C34 46 36 40 40 36 C44 32 42 24 38 22 C34 20 34 12 42 12 Z" fill="#fff"/>
+    </symbol>
+    <symbol id="icon-body" viewBox="0 0 64 64">
+      <circle cx="32" cy="10" r="7" fill="#fff"/>
+      <path d="M22 20 L42 20 L46 40 L38 40 L40 60 L24 60 L26 40 L18 40 Z" fill="#fff" opacity=".9"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ======== chrome ======== -->
+<header class="topbar">
+  <div class="brand">Vital Clues<small>The Body Detective</small></div>
+  <div class="progress" id="progress" role="img" aria-label="Progress" hidden>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <button class="drawer-btn" id="drawer-btn" type="button" aria-label="Open clue drawer" hidden>Clues <span id="drawer-count">0/4</span></button>
+</header>
+<div class="strip strip-offline" id="strip-offline" role="status" hidden>You're offline — that's fine. Everything works without a connection.</div>
+<div class="strip strip-install" id="strip-install" hidden>
+  <span id="strip-install-text"></span>
+  <span><button type="button" id="strip-install-btn" hidden>Install</button> <button type="button" id="strip-install-x" aria-label="Dismiss">✕</button></span>
+</div>
+
+<main>
+
+<!-- S0 splash -->
+<section id="S0" class="splash" hidden>
+  <div class="art" data-colour="teal"><svg viewBox="0 0 64 64" aria-hidden="true" style="background:var(--navy);border-radius:28px;padding:18px"><use href="#icon-body"/></svg></div>
+  <h1>Vital Clues</h1>
+  <p class="muted">The Body Detective. Solve a body mystery by reasoning like a scientist.</p>
+  <p class="small muted">Fictional cases for ages 11–15 · nothing about you is collected · not medical advice</p>
+  <div class="actions">
+    <button class="btn btn-primary" type="button" id="splash-start">Get started</button>
+    <button class="btn btn-ghost" type="button" id="splash-how">How it works</button>
+  </div>
+</section>
+
+<!-- S0a how it works -->
+<section id="S0a" hidden>
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><div><b>Read the clues and pin them.</b> Each clue goes on the evidence board under a hypothesis — does it support it, or not fit?</div></li>
+    <li><div><b>Draw your prediction.</b> Before the model runs, you sketch what you think will happen.</div></li>
+    <li><div><b>Run the body lab.</b> Slide the effort up and watch the body respond. Your sketch sits on top of the model.</div></li>
+    <li><div><b>Explain it, then transfer it.</b> Write the mechanism in your own words, apply it to a new situation, and see exactly how your reasoning scored.</div></li>
+  </ol>
+  <button class="btn btn-primary btn-block" type="button" id="how-go">Let's go</button>
+</section>
+
+<!-- S1 library -->
+<section id="S1" hidden>
+  <h2>Pick a case</h2>
+  <p class="muted">Four body systems, one way of reasoning. About 8 minutes each.</p>
+  <div class="case-grid" id="case-grid"></div>
+  <div class="actions">
+    <button class="btn btn-secondary" type="button" id="surprise">Surprise me</button>
+    <button class="btn btn-ghost" type="button" id="lib-how">How it works</button>
+  </div>
+  <p class="small muted" style="text-align:center;margin-top:1.5rem">Every case is fictional. Vital Clues never asks for your name, age or anything about your health.</p>
+</section>
+
+<!-- S2 case file -->
+<section id="S2" hidden>
+  <div class="hero">
+    <div class="art" id="case-art"></div>
+    <div><h2 id="case-title"></h2><span id="case-reviewed" class="badge"></span></div>
+  </div>
+  <p id="case-briefing"></p>
+  <p class="question" id="case-question"></p>
+  <div class="chips" id="case-chips"></div>
+  <div class="card card-safety">
+    <h3>Before you open the case</h3>
+    <p class="small">Every character in Vital Clues is made up and the numbers are illustrative. This is a science puzzle, not medical advice, and it never diagnoses anyone. If you ever feel unwell, talk to an adult.</p>
+    <label class="checkrow" id="ack-row"><input type="checkbox" id="ack"> <span>I understand this is a fictional case and not medical advice.</span></label>
+  </div>
+</section>
+
+<!-- S3 evidence board -->
+<section id="S3" hidden>
+  <h2>Evidence board</h2>
+  <div class="counts" id="counts"></div>
+  <div class="clue-row" id="clue-row" role="group" aria-label="Clues"></div>
+  <p class="board-hint">Tap a clue to read it. Then tap a read clue, then a hypothesis, to pin it.</p>
+  <div class="hyp-grid" id="hyp-grid" role="group" aria-label="Hypotheses"></div>
+</section>
+
+<!-- S4 board check + lead -->
+<section id="S4" hidden>
+  <h2>Choose your lead hypothesis</h2>
+  <div id="board-check" class="card"></div>
+  <div class="radio-rows" id="lead-rows" role="radiogroup" aria-label="Lead hypothesis"></div>
+  <h3 style="margin-top:1rem">Which clue best supports your lead?</h3>
+  <div class="pills" id="best-pills"></div>
+</section>
+
+<!-- S5 prediction sketch -->
+<section id="S5" hidden>
+  <h2>Draw your prediction</h2>
+  <p id="sketch-prompt"></p>
+  <div class="chart-wrap">
+    <div class="axis-labels"><span id="sketch-ylabel"></span><span id="sketch-xlabel"></span></div>
+    <canvas id="sketch-canvas" width="640" height="320" tabindex="0" aria-label="Prediction sketch. Five dots. Use left and right arrows to pick a dot, up and down arrows to move it."></canvas>
+  </div>
+  <p class="small muted">Drag the dots. Keyboard: Tab to the chart, ← → pick a dot, ↑ ↓ move it.</p>
+  <div class="card">
+    <h3 id="second-q"></h3>
+    <div class="pills" id="second-opts" role="radiogroup"></div>
+  </div>
+  <div class="actions">
+    <button class="btn btn-ghost" type="button" id="sketch-reset">Reset dots</button>
+    <button class="btn btn-link" type="button" id="sketch-presets">Can't drag? Pick a shape</button>
+  </div>
+</section>
+
+<!-- S5a presets -->
+<section id="S5a" hidden>
+  <h2>Pick the shape you expect</h2>
+  <div class="preset-grid" id="preset-grid" role="radiogroup" aria-label="Prediction shape"></div>
+  <div class="card">
+    <h3 id="second-q-2"></h3>
+    <div class="pills" id="second-opts-2" role="radiogroup"></div>
+  </div>
+  <button class="btn btn-link" type="button" id="preset-draw">Try drawing instead</button>
+</section>
+
+<!-- S6 body lab -->
+<section id="S6" hidden>
+  <h2>Body lab</h2>
+  <div class="slider-block card">
+    <label for="lab-primary"><span id="lab-primary-label">Exercise intensity</span><span id="lab-primary-value"></span></label>
+    <input type="range" id="lab-primary" min="0" max="10" step="1" value="7">
+    <div class="ticks" id="lab-ticks"></div>
+  </div>
+  <div class="lab-grid">
+    <div class="overlay-wrap" data-colour="teal">
+      <!-- torso overlay: lungs (teal, inflate at B), heart (coral, pulse at H), legs (amber, brighter with I) -->
+      <svg viewBox="0 0 120 220" role="img" aria-label="Body overlay: lungs, heart and leg muscles">
+        <circle cx="60" cy="18" r="14" fill="#EEF4FB" stroke="#8FA3C7" stroke-width="2"/>
+        <path d="M34 36 L86 36 L96 110 L80 110 L84 210 L36 210 L40 110 L24 110 Z" fill="#F7F9FD" stroke="#8FA3C7" stroke-width="2" stroke-linejoin="round"/>
+        <g id="ov-lungs" style="transform-origin:60px 70px; transform-box: fill-box; transform-origin: center">
+          <path d="M57 46 C48 44 36 52 36 70 C36 82 44 88 50 86 C56 84 58 76 58 68 Z" fill="#1B998B"/>
+          <path d="M63 46 C72 44 84 52 84 70 C84 82 76 88 70 86 C64 84 62 76 62 68 Z" fill="#1B998B"/>
+          <path d="M60 36 L60 50" stroke="#0F6E64" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <g id="ov-heart" style="transform-box: fill-box; transform-origin: center">
+          <path d="M66 92 C56 84 52 80 52 74 C52 70 55 68 58 68 C61 68 63 70 64 72 C65 70 67 68 70 68 C73 68 76 70 76 74 C76 80 72 84 66 92 Z" fill="#E4572E"/>
+        </g>
+        <g id="ov-legs" style="opacity:.5">
+          <rect x="40" y="116" width="16" height="88" rx="8" fill="#F4A300"/>
+          <rect x="64" y="116" width="16" height="88" rx="8" fill="#F4A300"/>
+        </g>
+        <path d="M60 90 L60 108 M60 108 L48 114 M60 108 L72 114" stroke="#4A5876" stroke-width="2" stroke-dasharray="3 3" fill="none"/>
+        <text x="60" y="216" font-size="8" fill="#4A5876" text-anchor="middle" font-family="Nunito, sans-serif">lungs → heart → legs</text>
+      </svg>
+    </div>
+    <div>
+      <div class="numbers" id="lab-numbers"></div>
+      <div class="chart-wrap">
+        <div class="legend"><span class="model-key"><i></i>Model</span><span class="sketch-key"><i></i>Your prediction</span></div>
+        <canvas id="lab-chart" width="640" height="300" role="img" aria-label="Model chart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>What the model shows</h3>
+    <p><span id="lab-sketch-note"></span> The solid line is the model.</p>
+    <p><b>Prediction score: <span id="lab-pred-score"></span></b><br><span class="small muted" id="lab-pred-rule"></span></p>
+    <p class="illustrative">In this simplified model, numbers are illustrative, not measurements of a real person. <button class="btn-link" type="button" id="limits-link">Model limits</button></p>
+  </div>
+</section>
+
+<!-- S7 explain it back -->
+<section id="S7" hidden>
+  <h2>Explain it back</h2>
+  <p class="question" id="explain-prompt"></p>
+  <textarea id="explain-text" maxlength="400" placeholder="In your own words: what is happening in the body, and why?"></textarea>
+  <div class="counter" id="explain-counter">0/400</div>
+  <p class="small muted">Your text is checked on this device only. It is never sent anywhere and is forgotten when you finish.</p>
+  <div class="concept-chips" id="explain-chips" aria-label="Ideas to include"></div>
+  <p class="small muted" id="explain-reminder"></p>
+</section>
+
+<!-- S7a concept feedback -->
+<section id="S7a" hidden>
+  <h2 id="fb-heading"></h2>
+  <div class="student-text" id="fb-text" aria-label="Your explanation with highlights"></div>
+  <div class="concept-chips" id="fb-chips"></div>
+  <div class="card card-tip" id="fb-hint" hidden></div>
+  <div id="fb-revise">
+    <h3>Revise it once (optional)</h3>
+    <textarea id="fb-revision" maxlength="400"></textarea>
+    <button class="btn btn-ghost" type="button" id="fb-keep" style="margin-top:.5rem">Keep it and continue</button>
+  </div>
+</section>
+
+<!-- S8 transfer -->
+<section id="S8" hidden>
+  <h2>Transfer: a new situation</h2>
+  <div class="card">
+    <div class="hero" data-colour="purple"><div class="art" id="transfer-art"></div><p id="transfer-context"></p></div>
+  </div>
+  <div id="transfer-options" role="radiogroup" aria-label="Answer"></div>
+</section>
+
+<!-- S8a second try -->
+<section id="S8a" hidden>
+  <h2 id="retry-heading"></h2>
+  <div class="card card-tip"><p id="retry-hint"></p><button class="btn btn-ghost" type="button" id="retry-open-clue"></button></div>
+  <div class="card">
+    <div class="hero" data-colour="purple"><div class="art" id="retry-art"></div><p id="retry-context"></p></div>
+  </div>
+  <div id="retry-options" role="radiogroup" aria-label="Answer"></div>
+</section>
+
+<!-- S9 case closed -->
+<section id="S9" hidden>
+  <div class="score-ring" id="score-ring" role="img"><div></div></div>
+  <h2 style="text-align:center">Case closed: you reasoned from evidence.</h2>
+  <div class="card"><div class="bars" id="score-bars"></div></div>
+  <div class="card card-tip"><h3>Key takeaway</h3><p id="takeaway"></p></div>
+  <div class="card">
+    <h3>Your prediction vs the model</h3>
+    <div class="thumb"><canvas id="closed-chart" width="640" height="260" role="img" aria-label="Your sketch overlaid on the model curve"></canvas></div>
+    <p class="illustrative">In this simplified model, numbers are illustrative, not measurements of a real person. <button class="btn-link" type="button" id="limits-link-2">Model limits</button></p>
+  </div>
+  <div class="card"><h3>The transfer question</h3><div id="closed-transfer"></div></div>
+  <div class="actions">
+    <button class="btn btn-ghost" type="button" id="closed-replay">Replay</button>
+    <button class="btn btn-primary" type="button" id="closed-next">Finish</button>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer" id="footer" hidden>
+  <div class="inner">
+    <button class="btn btn-ghost" type="button" id="footer-back">Back</button>
+    <div class="status" id="footer-status" role="status" aria-live="polite"></div>
+    <button class="btn btn-primary" type="button" id="footer-primary" aria-disabled="true">Next</button>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- S3a clue modal -->
+<dialog id="clue-modal" aria-labelledby="clue-modal-title">
+  <div class="modal-head" data-colour="teal">
+    <div id="clue-modal-icon"></div>
+    <h2 id="clue-modal-title"></h2>
+    <form method="dialog"><button class="close-x" aria-label="Close">✕</button></form>
+  </div>
+  <div class="modal-body">
+    <p id="clue-modal-text"></p>
+    <div id="clue-modal-visual"></div>
+    <p class="small muted">Illustrative numbers for a fictional character.</p>
+  </div>
+  <div class="modal-actions">
+    <button class="btn btn-ghost" type="button" id="clue-modal-next">Next clue</button>
+    <button class="btn btn-primary" type="button" id="clue-modal-pin">Pin this clue</button>
+  </div>
+</dialog>
+
+<!-- S3b pin chooser -->
+<dialog id="pin-modal" aria-labelledby="pin-modal-title">
+  <div class="modal-body card-dark" style="border-radius:18px 18px 0 0">
+    <h2 id="pin-modal-title" style="color:#fff"></h2>
+    <p id="pin-modal-q" class="muted"></p>
+  </div>
+  <div class="modal-actions" style="padding-top:1rem">
+    <button class="btn btn-ghost" type="button" id="pin-cancel">Cancel</button>
+    <button class="btn btn-secondary" type="button" id="pin-doesnt">✗ Doesn't fit</button>
+    <button class="btn btn-primary" type="button" id="pin-supports">✓ Supports</button>
+  </div>
+</dialog>
+
+<!-- S6a model limits side sheet -->
+<dialog id="limits-sheet" class="side" aria-labelledby="limits-title">
+  <div class="modal-head" style="background:var(--navy)">
+    <div></div>
+    <h2 id="limits-title"></h2>
+    <form method="dialog"><button class="close-x" aria-label="Close">✕</button></form>
+  </div>
+  <div class="modal-body">
+    <table class="limits"><thead><tr><th>This model does</th><th>It doesn't</th></tr></thead>
+      <tbody><tr><td><ul id="limits-does" style="padding-left:1rem;margin:0"></ul></td><td><ul id="limits-doesnt" style="padding-left:1rem;margin:0"></ul></td></tr></tbody></table>
+    <h3 style="margin-top:1rem">The formulas</h3>
+    <ul id="limits-formulas" style="padding-left:1rem"></ul>
+    <p id="limits-text" class="small"></p>
+    <p id="limits-wellbeing" class="small"><b></b></p>
+    <p id="limits-reviewer" class="small muted"></p>
+    <h3>Sources</h3>
+    <ul id="limits-sources" class="small" style="padding-left:1rem"></ul>
+  </div>
+</dialog>
+
+<!-- S9a replay / finish -->
+<dialog id="replay-dialog" aria-labelledby="replay-title">
+  <div class="modal-body">
+    <h2 id="replay-title"></h2>
+    <p class="muted">Nothing from this run is kept — not your sketch, not your explanation. Replaying starts fresh.</p>
+  </div>
+  <div class="modal-actions">
+    <button class="btn btn-ghost" type="button" id="replay-cancel">Cancel</button>
+    <button class="btn btn-primary" type="button" id="replay-go">Replay from the start</button>
+  </div>
+</dialog>
+
+<!-- S11 clue drawer -->
+<dialog id="drawer" class="sheet" aria-labelledby="drawer-title">
+  <div class="modal-head" style="background:var(--navy)">
+    <div></div>
+    <h2 id="drawer-title">Your clues</h2>
+    <form method="dialog"><button class="close-x" aria-label="Close">✕</button></form>
+  </div>
+  <div class="modal-body">
+    <p class="small muted" id="drawer-lead"></p>
+    <div id="drawer-list"></div>
+    <p class="small muted" id="drawer-hyps"></p>
+  </div>
+</dialog>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

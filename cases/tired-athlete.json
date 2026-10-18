@@ -1,0 +1,109 @@
+{
+  "id": "tired-athlete",
+  "version": 1,
+  "title": "A Case of the Tired Athlete",
+  "system": "Lungs & heart",
+  "model": "lungs-heart",
+  "colour": "teal",
+  "minutes": 8,
+  "reviewed": null,
+  "character": { "name": "Maya", "age": 13 },
+  "briefing": "Maya, 13, just finished a 400 m sprint at track practice. She is breathing fast, her heart is pounding, and her legs feel heavy.",
+  "question": "Why does her body do this — and is it working the way it should?",
+  "illustration": "runner",
+  "clues": [
+    {
+      "id": 1, "title": "Breathing fast", "icon": "lungs", "colour": "teal",
+      "text": "She is taking about 45 breaths a minute instead of her usual 14. She can only speak a few words at a time.",
+      "visual": { "type": "bars", "from": 14, "to": 45, "unit": "breaths/min" },
+      "pointsTo": "lungs"
+    },
+    {
+      "id": 2, "title": "Pounding heart", "icon": "heart", "colour": "coral",
+      "text": "Her pulse is about 170 beats a minute, compared with about 70 when she is resting. She can feel it in her chest.",
+      "visual": { "type": "bars", "from": 70, "to": 170, "unit": "beats/min" },
+      "pointsTo": "heart"
+    },
+    {
+      "id": 3, "title": "Warm, tired legs", "icon": "muscles", "colour": "amber",
+      "text": "Her legs feel hot and heavy after 60 seconds of all-out sprinting. They did most of the work.",
+      "visual": null,
+      "pointsTo": "muscles"
+    },
+    {
+      "id": 4, "title": "Recovery", "icon": "clock", "colour": "purple",
+      "text": "Two minutes after stopping, her breathing and pulse are nearly back to normal. She can talk in full sentences again.",
+      "visual": { "type": "bars", "from": 45, "to": 16, "unit": "breaths/min, 2 min later" },
+      "pointsTo": "stops"
+    }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "Her lungs are too small for running." },
+    { "id": "B", "text": "Her working muscles need more oxygen and energy, so her lungs and heart speed up to deliver it.", "best": true },
+    { "id": "C", "text": "She is nervous about the race." },
+    { "id": "D", "text": "Sprinting is dangerous for the body." }
+  ],
+  "evidence": {
+    "A": { "supports": [],           "doesntFit": [4] },
+    "B": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "C": { "supports": [],           "doesntFit": [3, 4] },
+    "D": { "supports": [],           "doesntFit": [4] }
+  },
+  "mismatchHints": [
+    { "clue": 1, "hyp": "A", "label": "supports", "hint": "Fast breathing shows her lungs are working hard — it says nothing about their size. Small lungs would not explain why it settles two minutes later." },
+    { "clue": 2, "hyp": "A", "label": "supports", "hint": "A fast heart says nothing about lung size — it says blood is moving faster." },
+    { "clue": 3, "hyp": "A", "label": "supports", "hint": "Tired legs tell you where the work happened, not how big her lungs are." },
+    { "clue": 4, "hyp": "A", "label": "supports", "hint": "If her lungs were too small, resting for two minutes would not fix that. Clue 4 pushes against A." },
+    { "clue": 1, "hyp": "C", "label": "supports", "hint": "Nerves can speed breathing a little, but 45 a minute after a sprint matches effort, not worry — and clue 4 says it settled as soon as she rested." },
+    { "clue": 2, "hyp": "C", "label": "supports", "hint": "A nervous heart might race a bit, but 170 right after a 400 m sprint lines up with the effort, not the mood." },
+    { "clue": 3, "hyp": "C", "label": "supports", "hint": "Being nervous does not make your legs hot and heavy. Hard work does." },
+    { "clue": 4, "hyp": "C", "label": "supports", "hint": "Worry does not switch off the moment you stop running. Recovery in two minutes points to the body, not the mind." },
+    { "clue": 1, "hyp": "D", "label": "supports", "hint": "Breathing fast during hard exercise is the body doing its job, not a sign of danger." },
+    { "clue": 2, "hyp": "D", "label": "supports", "hint": "A fast pulse during a sprint is expected. It would be more worrying if it did not rise." },
+    { "clue": 3, "hyp": "D", "label": "supports", "hint": "Tired muscles after hard work are normal — that is what training feels like." },
+    { "clue": 4, "hyp": "D", "label": "supports", "hint": "A body that returns to normal in two minutes is a body that is working well. Clue 4 argues against D." },
+    { "clue": 1, "hyp": "B", "label": "doesntFit", "hint": "Breathing faster is exactly how the lungs deliver more oxygen when muscles ask for it. Clue 1 supports B." },
+    { "clue": 2, "hyp": "B", "label": "doesntFit", "hint": "A faster heart moves oxygen-rich blood to the legs sooner. Clue 2 supports B." },
+    { "clue": 3, "hyp": "B", "label": "doesntFit", "hint": "Hot, heavy legs are the muscles that did the work and needed the extra oxygen. Clue 3 supports B." },
+    { "clue": 4, "hyp": "B", "label": "doesntFit", "hint": "When the muscles stop asking for oxygen, the lungs and heart slow down. That is the delivery team standing down — clue 4 supports B." }
+  ],
+  "prediction": {
+    "output": "B",
+    "prompt": "As Maya runs harder, what happens to her breathing rate?",
+    "expectedShape": "rises",
+    "second": { "question": "And what about her heart rate?", "options": ["up", "same", "down"], "answer": "up" }
+  },
+  "labDefaults": { "primary": 7, "secondary": 0 },
+  "concepts": [
+    { "id": "muscles", "label": "the muscles", "colour": "amber",
+      "synonyms": ["muscle", "muscles", "legs", "leg"],
+      "hint": "Which part of her body was doing the work?" },
+    { "id": "oxygen", "label": "oxygen or energy", "colour": "teal",
+      "synonyms": ["oxygen", "o2", "air", "energy", "fuel"],
+      "hint": "What do working muscles need more of?" },
+    { "id": "lungs", "label": "lungs / breathing", "colour": "teal",
+      "synonyms": ["lung", "lungs", "breathe", "breathes", "breathed", "breathing", "breaths", "breath"],
+      "hint": "Which organ brings that in from outside?" },
+    { "id": "heart", "label": "heart / blood", "colour": "coral",
+      "synonyms": ["heart", "pump", "pumped", "pumping", "heartbeat", "pulse", "blood"],
+      "hint": "What carries it from the lungs to the legs?" },
+    { "id": "stops", "label": "slows when she stops", "colour": "purple",
+      "synonyms": ["stop", "stopped", "stops", "stopping", "rest", "rests", "rested", "resting", "recover", "recovered", "recovers", "recovery", "slow down", "slows down", "slowed", "calm down", "calms down", "back to normal"],
+      "hint": "What happens once the work is over?" }
+  ],
+  "transfer": {
+    "context": "Leo carries heavy boxes up three flights of stairs and notices he is breathing harder with each floor.",
+    "illustration": "stairs",
+    "options": [
+      "His lungs are shrinking from the effort.",
+      "His arm and leg muscles need more oxygen, so his breathing and heart rate rise.",
+      "Stairs make people nervous.",
+      "The boxes are pressing on his lungs and blocking them."
+    ],
+    "answer": 1,
+    "retryHint": "Leo is working hard while carrying weight — which of Maya's clues looked like that?",
+    "retryClue": 3,
+    "explanation": "Leo's muscles are doing hard work, just like Maya's legs. Working muscles need more oxygen, so his lungs breathe faster and his heart pumps faster to deliver it. Same delivery team, different job."
+  },
+  "takeaway": "Breathing and circulation are a delivery team. When muscles work harder they need more oxygen, so the lungs and heart speed up together — and slow down together when the work stops."
+}

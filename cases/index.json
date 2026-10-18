@@ -1,0 +1,8 @@
+{
+  "cases": [
+    { "id": "tired-athlete", "title": "A Case of the Tired Athlete", "system": "Lungs & heart", "colour": "teal", "minutes": 8, "illustration": "runner", "available": true },
+    { "id": "thirsty-hiker", "title": "The Thirsty Hiker", "system": "Kidneys & water", "colour": "blue", "minutes": 8, "illustration": "hiker", "available": false },
+    { "id": "shivering-swimmer", "title": "The Shivering Swimmer", "system": "Skin & temperature", "colour": "coral", "minutes": 8, "illustration": "swimmer", "available": false },
+    { "id": "jumpy-goalkeeper", "title": "The Jumpy Goalkeeper", "system": "Brain & nerves", "colour": "purple", "minutes": 9, "illustration": "goalkeeper", "available": false }
+  ]
+}
