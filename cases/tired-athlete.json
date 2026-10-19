@@ -6,6 +6,7 @@
   "model": "lungs-heart",
   "colour": "teal",
   "minutes": 8,
+  "level": "easy",
   "reviewed": null,
   "character": {
     "name": "Maya",

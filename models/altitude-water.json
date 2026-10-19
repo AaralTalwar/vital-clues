@@ -1,0 +1,52 @@
+{
+  "id": "altitude-water",
+  "name": "Altitude + water",
+  "colour": "blue",
+  "inputs": {
+    "primary":   { "key": "K", "label": "Altitude", "min": 0, "max": 12, "step": 1, "unit": "× 1,000 ft", "ticks": ["sea level", "6,000 ft", "12,000 ft"] },
+    "secondary": { "key": "W", "label": "Water drunk", "min": 0, "max": 3, "step": 0.5, "default": 0.5, "unit": "cups/hour", "ticks": ["none", "1.5 cups/h", "3 cups/h"] }
+  },
+  "constants": { "t": 4 },
+  "outputs": [
+    { "key": "O", "label": "Oxygen in each breath", "unit": "% of sea level", "colour": "blue", "decimals": 0 },
+    { "key": "B", "label": "Breathing at rest", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
+    { "key": "S", "label": "Water lost (sweat + breath)", "unit": "cups/hour", "colour": "coral", "decimals": 1 },
+    { "key": "L", "label": "Body water after 4 h", "unit": "% of normal", "colour": "blue", "decimals": 0 },
+    { "key": "P", "label": "Pee", "colour": "amber", "bands": [{ "upTo": 89.9, "text": "very little, dark" }, { "upTo": 96.9, "text": "less" }, { "text": "normal" }] },
+    { "key": "T", "label": "Thirst signal", "colour": "amber", "bands": [{ "upTo": 94.9, "text": "ON" }, { "text": "off" }] }
+  ],
+  "rules": {
+    "O": "100 - 3.3 * K",
+    "B": "12 + 1.0 * K",
+    "S": "0.6 + 0.08 * K",
+    "L": "clamp(100 - 7 * (0.6 + 0.08 * K - W) * t, 70, 100)",
+    "P": "clamp(100 - 7 * (0.6 + 0.08 * K - W) * t, 70, 100)",
+    "T": "clamp(100 - 7 * (0.6 + 0.08 * K - W) * t, 70, 100)"
+  },
+  "chart": { "x": "K", "y": "L", "xLabel": "altitude (thousands of feet)", "yLabel": "body water after 4 h (% of normal)", "yMin": 60, "yMax": 105 },
+  "overlay": {
+    "base": "torso",
+    "caption": "thin air → breathe harder · dry air + sweat → water out faster than it comes in",
+    "parts": [
+      { "shape": "mountain", "colour": "#2E86DE" },
+      { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "B" } },
+      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0.4, "max": 1.6 } },
+      { "shape": "thirst", "colour": "#E4572E", "anim": { "type": "light", "output": "L", "below": 94.9 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows less oxygen in each breath higher up, and faster breathing to make up for it",
+      "Shows more water lost at altitude, from sweating and from breathing hard in dry air",
+      "Shows that drinking more fixes the water problem but not the oxygen problem"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include the days-long adjustment to altitude, food, or temperature",
+      "Model altitude sickness or anything dangerous"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "A headache, feeling sick or being very short of breath on a mountain is a reason to rest, drink water and tell an adult."
+  },
+  "sources": ["CK-12 Life Science: respiratory system and homeostasis", "NOAA / NASA: how air pressure changes with altitude (student pages)"]
+}

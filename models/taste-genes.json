@@ -1,0 +1,43 @@
+{
+  "id": "taste-genes",
+  "name": "Tongue & bitter taste",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "c", "label": "How bitter the food is", "min": 0, "max": 10, "step": 1, "ticks": ["cucumber", "broccoli", "raw Brussels sprouts"] },
+    "secondary": { "key": "g", "label": "Inherited bitter sensitivity", "min": 0, "max": 2, "step": 1, "default": 2, "ticks": ["low", "medium", "high"] }
+  },
+  "outputs": [
+    { "key": "B", "label": "Bitterness she tastes", "unit": "0–10", "colour": "purple", "decimals": 1 },
+    { "key": "T", "label": "Bitter receptors firing", "unit": "%", "colour": "coral", "decimals": 0 },
+    { "key": "W", "label": "Wants another bite", "colour": "teal", "bands": [{ "upTo": 3.9, "text": "yes" }, { "upTo": 6.9, "text": "maybe" }, { "text": "no thanks" }] }
+  ],
+  "rules": {
+    "B": "clamp(c * (0.3 + 0.45 * g), 0, 10)",
+    "T": "clamp(10 * c * (0.3 + 0.45 * g), 0, 100)",
+    "W": "clamp(c * (0.3 + 0.45 * g), 0, 10)"
+  },
+  "chart": { "x": "c", "y": "B", "xLabel": "how bitter the food is", "yLabel": "bitterness tasted (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "head",
+    "caption": "bitter chemical → tongue receptors → stronger signal if you inherited more of them",
+    "parts": [
+      { "shape": "tongue", "colour": "#E4572E" },
+      { "shape": "tasteBuds", "colour": "#6C4AB6", "anim": { "type": "count", "output": "T", "min": 0, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the same bitter chemical tasting stronger to someone with more sensitive bitter receptors",
+      "Shows bitterness tasted rising with how bitter the food is",
+      "Shows sensitivity as something inherited, set by genes"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include smell, cooking, habits or how taste changes with age",
+      "Say anything about what anyone should eat"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If a food suddenly tastes very strange or you lose your sense of taste, tell an adult."
+  },
+  "sources": ["NIH News in Health: how taste works (student overview)", "CK-12 Life Science: senses, taste and inherited traits"]
+}

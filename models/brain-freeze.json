@@ -1,0 +1,43 @@
+{
+  "id": "brain-freeze",
+  "name": "Nerves & cold",
+  "colour": "blue",
+  "inputs": {
+    "primary":   { "key": "G", "label": "How fast he gulps", "min": 0, "max": 10, "step": 1, "ticks": ["slow sips", "normal", "huge gulps"] },
+    "secondary": { "key": "S", "label": "Seconds after the gulp", "min": 0, "max": 60, "step": 5, "default": 0, "unit": "s", "ticks": ["right away", "30 s", "1 min"] }
+  },
+  "outputs": [
+    { "key": "T", "label": "Roof of the mouth cooled by", "unit": "°F", "colour": "blue", "decimals": 0 },
+    { "key": "P", "label": "Forehead ache", "unit": "0–10", "colour": "coral", "decimals": 1 },
+    { "key": "V", "label": "Blood vessels in the roof of the mouth", "colour": "purple", "bands": [{ "upTo": 0.4, "text": "normal" }, { "upTo": 3.9, "text": "squeezing" }, { "text": "squeezed, then rushing open" }] }
+  ],
+  "rules": {
+    "T": "2 * G * pow(0.5, S / 10)",
+    "P": "clamp(1.2 * (G - 2), 0, 10) * pow(0.5, S / 10)",
+    "V": "clamp(1.2 * (G - 2), 0, 10) * pow(0.5, S / 10)"
+  },
+  "chart": { "x": "G", "y": "P", "xLabel": "how fast he gulps", "yLabel": "forehead ache (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "head",
+    "caption": "cold on the roof of the mouth → vessels squeeze then rush open → nerves send pain felt in the forehead",
+    "parts": [
+      { "shape": "snow", "colour": "#2E86DE", "anim": { "type": "count", "output": "T", "min": 0, "max": 20 } },
+      { "shape": "brain", "colour": "#E4572E", "anim": { "type": "glow", "output": "P", "min": 0, "max": 10 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the ache growing with how much cold hits the roof of the mouth, and how fast",
+      "Shows the ache fading within half a minute",
+      "Shows slow sips causing little or no ache"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Show the exact timing of the blood vessels; scientists are still studying how it works",
+      "Say anything about other kinds of headaches"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Headaches that come without anything cold, or don't go away, are a reason to tell an adult."
+  },
+  "sources": ["NIH News in Health: how the body senses cold and pain (student overview)", "CK-12 Life Science: nervous system"]
+}

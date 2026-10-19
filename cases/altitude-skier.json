@@ -6,6 +6,8 @@
   "model": "altitude",
   "colour": "blue",
   "minutes": 8,
+  "level": "difficult",
+  "twist": "In the Thirsty Hiker case 'the air is thin' was wrong. Here it is the right answer — and the body's fix takes days, not minutes, without any extra fitness.",
   "reviewed": null,
   "character": {
     "name": "Noor",
@@ -85,7 +87,9 @@
   ],
   "evidence": {
     "A": {
-      "supports": [],
+      "supports": [
+        1
+      ],
       "doesntFit": [
         3,
         4

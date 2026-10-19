@@ -6,6 +6,7 @@
   "model": "temperature",
   "colour": "coral",
   "minutes": 8,
+  "level": "easy",
   "reviewed": null,
   "character": {
     "name": "Jonah",

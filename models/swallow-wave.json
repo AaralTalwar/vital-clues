@@ -1,0 +1,45 @@
+{
+  "id": "swallow-wave",
+  "name": "Throat & swallowing",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "a", "label": "Body angle", "min": 0, "max": 180, "step": 15, "unit": "°", "ticks": ["standing", "lying flat", "handstand"] },
+    "secondary": { "key": "v", "label": "Size of each sip", "min": 1, "max": 3, "step": 1, "default": 1, "ticks": ["small sip", "mouthful", "big gulp"] }
+  },
+  "outputs": [
+    { "key": "S", "label": "Each sip reaching the stomach", "unit": "%", "colour": "coral", "decimals": 0 },
+    { "key": "T", "label": "Time to reach the stomach", "unit": "s", "colour": "purple", "decimals": 1 },
+    { "key": "Q", "label": "Muscle squeeze waves", "unit": "per minute", "colour": "amber", "decimals": 0 },
+    { "key": "G", "label": "Gravity", "colour": "blue", "bands": [{ "upTo": -20, "text": "pulling the wrong way" }, { "upTo": 20, "text": "no help" }, { "text": "helping a little" }] }
+  ],
+  "rules": {
+    "S": "clamp(100 - 4 * (v - 1) * a / 180, 80, 100)",
+    "T": "2 + 5 * a / 180",
+    "Q": "12",
+    "G": "100 - a * 200 / 180"
+  },
+  "chart": { "x": "a", "y": "S", "xLabel": "body angle (standing → upside down)", "yLabel": "% of each sip reaching the stomach", "yMin": 0, "yMax": 110 },
+  "overlay": {
+    "base": "torso",
+    "caption": "rings of muscle squeeze in a wave → food moves the right way, whichever way up you are",
+    "parts": [
+      { "shape": "stomach", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 100 } },
+      { "shape": "throat", "colour": "#E4572E", "anim": { "type": "beat", "output": "Q" } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows swallowing working at any body angle because muscles do the pushing",
+      "Shows gravity helping a little when upright, so liquid arrives a bit sooner",
+      "Shows bigger gulps being slightly harder to manage upside down"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include choking, breathing, or how the airway is protected",
+      "Suggest anyone should practise drinking upside down"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Eat and drink sitting up in everyday life; if swallowing ever hurts or feels stuck, tell an adult."
+  },
+  "sources": ["CK-12 Life Science: digestive system, the esophagus", "NASA: how astronauts eat and drink in space (student page)"]
+}

@@ -1,0 +1,82 @@
+{
+  "id": "feverish-friend",
+  "version": 1,
+  "title": "The Feverish Friend",
+  "system": "Immune system & fever",
+  "model": "fever-setpoint",
+  "colour": "coral",
+  "minutes": 9,
+  "level": "difficult",
+  "twist": "A hot person shivering seems backwards. His body isn't too cold at all — his brain's thermostat has been turned up, so a normal temperature suddenly feels cold.",
+  "reviewed": null,
+  "character": { "name": "Tomás", "age": 13 },
+  "briefing": "Tomás, 13, starts sneezing at a sleepover. By 10 p.m. he's under two blankets with his teeth chattering, saying he's freezing — but when his friend's mom feels his forehead, it's hot. Around 2 a.m. he kicks the blankets off, sweating.",
+  "question": "How can someone be hot and shivering at the same time?",
+  "illustration": "thermometer",
+  "clues": [
+    { "id": 1, "title": "Hot forehead", "icon": "thermometer", "colour": "coral",
+      "text": "The thermometer reads 101 °F. His normal is about 98.6 °F.",
+      "shows": "his body already above its normal temperature", "visual": { "type": "bars", "from": 98.6, "to": 101, "unit": "°F, normal → tonight" }, "pointsTo": "thermostat" },
+    { "id": 2, "title": "Freezing under blankets", "icon": "snowflake", "colour": "blue",
+      "text": "He's shivering hard and says he feels cold, even under two blankets in a warm room.",
+      "shows": "his body acting as if it were too cold", "visual": null, "pointsTo": "shiver" },
+    { "id": 3, "title": "A cold since the afternoon", "icon": "germ", "colour": "teal",
+      "text": "He's had a runny nose and scratchy throat since lunch. His friends think he caught a cold at school.",
+      "shows": "his immune system busy fighting germs", "visual": null, "pointsTo": "immune" },
+    { "id": 4, "title": "Sweating at 2 a.m.", "icon": "drop", "colour": "purple",
+      "text": "In the night the shivering stops. He throws off the blankets and sweats as his temperature drifts back toward normal.",
+      "shows": "the body switching from heating up to cooling down", "visual": null, "pointsTo": "sweat" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "The room is cold, so he's shivering.", "flaw": "His forehead is hot at 101 °F and everyone else in the room is comfortable — a cold room would make his skin cool, not hot." },
+    { "id": "B", "text": "Being sick makes the body lose control of its temperature at random.", "flaw": "The pattern isn't random: first he shivers to heat up, later he sweats to cool down. That's a controlled system aiming for a target." },
+    { "id": "C", "text": "His immune system is fighting germs and has turned up the brain's thermostat, so at his normal temperature he feels too cold and shivers to heat up; when the fight eases, the thermostat drops and he sweats to cool off.", "best": true },
+    { "id": "D", "text": "The blankets are making him overheat.", "flaw": "Overheating makes you sweat and want to cool down — not shiver and pull blankets closer." }
+  ],
+  "evidence": {
+    "A": { "supports": [2], "doesntFit": [1] },
+    "B": { "supports": [], "doesntFit": [4] },
+    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "D": { "supports": [], "doesntFit": [2] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "T",
+    "prompt": "An hour after the fight starts, how does Tomás's body temperature depend on how hard his immune system is fighting — from no germs up to a big fight?",
+    "expectedShape": "rises",
+    "second": { "question": "Right at the start of the fight, before his temperature catches up, does he feel hot or cold?", "options": ["hot", "normal", "cold"], "answer": "cold" }
+  },
+  "labDefaults": { "primary": 7, "secondary": 1 },
+  "concepts": [
+    { "id": "germs", "label": "germs to fight", "colour": "teal",
+      "synonyms": ["germs", "germ", "virus", "viruses", "bacteria", "infection", "sick"],
+      "hint": "What started all this?" },
+    { "id": "immune", "label": "the immune system", "colour": "teal",
+      "synonyms": ["immune", "immune system", "white blood cells", "fighting", "fights", "defence", "defense"],
+      "hint": "Which body system responds to germs?" },
+    { "id": "thermostat", "label": "the thermostat is turned up", "colour": "purple",
+      "synonyms": ["thermostat", "set point", "setpoint", "brain", "turned up", "higher target", "aims higher"],
+      "hint": "What in the brain decides what temperature counts as 'normal'?" },
+    { "id": "shiver", "label": "shivering to heat up", "colour": "amber",
+      "synonyms": ["shiver", "shivering", "shivers", "shaking", "heat up", "make heat", "makes heat", "warm up"],
+      "hint": "Why shiver if you're already hot?" },
+    { "id": "sweat", "label": "sweating to cool down", "colour": "blue",
+      "synonyms": ["sweat", "sweating", "sweats", "cool down", "cools down", "cooling", "goes back down"],
+      "hint": "What happened at 2 a.m., and why?" }
+  ],
+  "transfer": {
+    "context": "Nia, 14, has a cold. On a warm afternoon she suddenly gets goosebumps, wants a sweater, and her temperature reads 100.5 °F.",
+    "illustration": "thermometer",
+    "options": [
+      "The air conditioning in her house is too strong.",
+      "Her immune system turned up her brain's thermostat, so her normal temperature now feels too cold and she tries to warm up.",
+      "Colds always make people feel hot, so she must be imagining it.",
+      "She's cold because she skipped lunch."
+    ],
+    "answer": 1,
+    "retryHint": "Hot by the thermometer but feeling cold — which of Tomás's clues was exactly that?",
+    "retryClue": 2,
+    "explanation": "Nia's body is doing what Tomás's did. While her immune system fights the cold, her brain's target temperature goes up. Until her body reaches it, she feels cold — goosebumps and wanting a sweater are her body trying to heat up to the new target."
+  },
+  "takeaway": "A fever isn't the body losing control — it's the immune system turning the brain's thermostat up while it fights germs. Shivering heats you to the new target; sweating cools you down when the target drops again."
+}

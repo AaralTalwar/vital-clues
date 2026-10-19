@@ -1,0 +1,82 @@
+{
+  "id": "heatwave-final",
+  "version": 1,
+  "title": "The Heatwave Final",
+  "system": "Heat + muscle fuel",
+  "model": "heat-fuel",
+  "colour": "amber",
+  "minutes": 10,
+  "level": "complex",
+  "systems": ["Kidneys & water", "Digestion & fuel"],
+  "reviewed": null,
+  "character": { "name": "Ama", "age": 16 },
+  "briefing": "Ama, 16, plays in a soccer final at 2 p.m. during a 95 °F heatwave. She was too nervous to eat lunch, so her last food was cereal at 7 a.m. In the second half her legs feel like lead, she can't sprint, and she's thirsty with a headache.",
+  "question": "What ran out in the second half — and was it only one thing?",
+  "illustration": "soccer",
+  "clues": [
+    { "id": 1, "title": "Shirt soaked by half-time", "icon": "drop", "colour": "blue",
+      "text": "By half-time her shirt was dripping with sweat in the 95 °F heat. She only managed a few sips of water during the break.",
+      "shows": "a lot of water lost as sweat and very little drunk", "visual": null, "pointsTo": "water" },
+    { "id": 2, "title": "Skipped lunch", "icon": "plate", "colour": "amber",
+      "text": "She was too nervous to eat at lunch. Her last food was a bowl of cereal at 7 a.m., seven hours before kick-off.",
+      "shows": "a long gap since her last meal", "visual": { "type": "bars", "from": 2, "to": 7, "unit": "hours since eating, usual game day → today" }, "pointsTo": "fuel" },
+    { "id": 3, "title": "Legs like lead", "icon": "leg", "colour": "coral",
+      "text": "In the last twenty minutes she couldn't sprint at all. Teammates who had eaten lunch were still sprinting in the same heat.",
+      "shows": "her muscles running low on fuel late in the game", "visual": null, "pointsTo": "muscles" },
+    { "id": 4, "title": "Two fixes, two speeds", "icon": "glass", "colour": "teal",
+      "text": "Afterwards, a big drink cleared her thirst and headache within twenty minutes. Her legs only felt springy again an hour later, after she ate a sandwich.",
+      "shows": "the water problem and the fuel problem being fixed separately", "visual": null, "pointsTo": "both" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "She is low on water from sweating in the heat.", "flaw": "Low water explains the thirst and headache, but teammates in the same heat who had eaten lunch could still sprint — and her legs only recovered after food." },
+    { "id": "B", "text": "Her muscles ran out of fuel because she skipped lunch.", "flaw": "Low fuel explains the heavy legs, but not the soaked shirt, thirst and headache that a drink fixed in twenty minutes." },
+    { "id": "C", "text": "Both: in the heat she sweated out far more water than she drank, AND seven hours without food left her muscles short of fuel — together they drained her in the second half.", "best": true },
+    { "id": "D", "text": "She was too nervous to play well.", "flaw": "Nerves usually fade once a game starts, and they aren't fixed by a drink and a sandwich." }
+  ],
+  "evidence": {
+    "A": { "supports": [1, 4], "doesntFit": [3] },
+    "B": { "supports": [2, 3], "doesntFit": [1] },
+    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "D": { "supports": [], "doesntFit": [4] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "P",
+    "prompt": "In the 95 °F heat, seven hours after her last meal, what happens to Ama's sprint power over the 90 minutes of the final?",
+    "expectedShape": "falls",
+    "second": { "question": "If she had eaten lunch two hours before kick-off, would the fuel in her muscles at full time be higher or lower?", "options": ["higher", "same", "lower"], "answer": "higher" }
+  },
+  "labDefaults": { "primary": 9, "secondary": 7 },
+  "concepts": [
+    { "id": "water", "label": "water lost as sweat", "colour": "blue",
+      "synonyms": ["water", "sweat", "sweating", "sweated", "dehydrated", "thirsty", "drink"],
+      "hint": "What was pouring out of her in the heat?" },
+    { "id": "fuel", "label": "fuel from food ran low", "colour": "amber",
+      "synonyms": ["fuel", "energy", "food", "sugar", "glucose", "ate", "eat", "lunch"],
+      "hint": "What do muscles burn to sprint, and where does it come from?" },
+    { "id": "heat", "label": "the heat", "colour": "coral",
+      "synonyms": ["heat", "hot", "heatwave", "sun", "temperature"],
+      "hint": "Why was she sweating so much?" },
+    { "id": "muscles", "label": "muscles need both", "colour": "coral",
+      "synonyms": ["muscles", "muscle", "legs", "leg", "sprint", "sprinting"],
+      "hint": "Which part of her body gave out?" },
+    { "id": "both", "label": "both at once", "colour": "purple",
+      "synonyms": ["both", "together", "combined", "two problems", "as well as", "plus"],
+      "hint": "Why did it take two different fixes?" }
+  ],
+  "transfer": {
+    "context": "Leo hikes all day in desert heat. He keeps refilling his water bottle at every spring but brought no snacks. By evening he isn't thirsty at all, yet his legs are shaky and weak.",
+    "illustration": "hiker",
+    "options": [
+      "He's low on water.",
+      "He's low on fuel — he drank enough but ate nothing, so only the fuel problem is left.",
+      "He's low on both water and fuel.",
+      "The heat damaged his muscles."
+    ],
+    "answer": 1,
+    "retryHint": "For Ama, which problem did the drink fix, and which one needed food?",
+    "retryClue": 4,
+    "explanation": "Leo kept up with his water, so the thirst problem never happened — that's why he isn't thirsty. But a whole day of walking with no food drained the fuel in his muscles. He has only one of Ama's two problems, and it needs food, not water."
+  },
+  "takeaway": "Heat drains water; time without food drains fuel. In a long hot game both run down at once, and each needs its own fix — a drink for water, food for fuel."
+}

@@ -1,0 +1,43 @@
+{
+  "id": "blink-rate",
+  "name": "Eyes & tears",
+  "colour": "blue",
+  "inputs": {
+    "primary":   { "key": "F", "label": "Minutes of focused screen time", "min": 0, "max": 60, "step": 5, "unit": "min", "ticks": ["start", "30 min", "1 h"] },
+    "secondary": { "key": "B", "label": "Look-away breaks per hour", "min": 0, "max": 3, "step": 1, "default": 0, "ticks": ["none", "1 an hour", "every 20 min"] }
+  },
+  "outputs": [
+    { "key": "K", "label": "Blinks per minute", "unit": "per min", "colour": "blue", "decimals": 0 },
+    { "key": "D", "label": "Eye dryness", "unit": "0–10", "colour": "coral", "decimals": 1 },
+    { "key": "E", "label": "Eyes feel", "colour": "teal", "bands": [{ "upTo": 3, "text": "comfortable" }, { "upTo": 6, "text": "a bit dry" }, { "text": "stinging" }] }
+  ],
+  "rules": {
+    "K": "15 - 9 * (1 - pow(0.5, F / 4))",
+    "D": "clamp(9 * (1 - pow(0.5, F / 4)) * F / 54 * (1 - 0.25 * B), 0, 10)",
+    "E": "clamp(9 * (1 - pow(0.5, F / 4)) * F / 54 * (1 - 0.25 * B), 0, 10)"
+  },
+  "chart": { "x": "F", "y": "K", "xLabel": "minutes of focused screen time", "yLabel": "blinks per minute", "yMin": 0, "yMax": 18 },
+  "overlay": {
+    "base": "head",
+    "caption": "focus → fewer blinks → tear film dries → eyes sting",
+    "parts": [
+      { "shape": "iris", "colour": "#2E86DE" },
+      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "K", "min": 0, "max": 15 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows blinking dropping sharply in the first minutes of concentrating",
+      "Shows the thin film of tears on the eye drying out the longer blinks stay rare",
+      "Shows short look-away breaks letting the tear film recover"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include screen brightness, room air or how close the screen is",
+      "Say anything about eyesight or glasses"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Eyes that stay red, sore or blurry after resting are a reason to tell an adult."
+  },
+  "sources": ["NIH National Eye Institute: tips for eye health and screen use (student overview)", "CK-12 Life Science: the eye"]
+}

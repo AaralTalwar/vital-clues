@@ -1,0 +1,82 @@
+{
+  "id": "recorded-voice",
+  "version": 1,
+  "title": "The Recorded Voice",
+  "system": "Ears & your own voice",
+  "model": "bone-conduction",
+  "colour": "purple",
+  "minutes": 8,
+  "level": "difficult",
+  "twist": "The voice you hear in your head isn't the one other people hear. The 'weird' recording is the accurate one — the voice in your head has extra deep sound carried through bone.",
+  "reviewed": null,
+  "character": { "name": "Malik", "age": 14 },
+  "briefing": "Malik, 14, records a podcast episode for his English class. When he plays it back his voice sounds higher and thinner — 'that's not me!' His friends listen and say it sounds exactly like him.",
+  "question": "Which voice is the real Malik — the one in his head or the one on the recording?",
+  "illustration": "microphone",
+  "clues": [
+    { "id": 1, "title": "Thin on playback", "icon": "soundwave", "colour": "amber",
+      "text": "On the recording his voice sounds higher and thinner than it does when he speaks. He thinks the deep part of his voice is missing.",
+      "shows": "his recorded voice missing the deep sound he usually hears", "visual": { "type": "bars", "from": 8, "to": 4, "unit": "how deep it sounds to him, speaking → playback" }, "pointsTo": "deeper" },
+    { "id": 2, "title": "Friends say it's spot on", "icon": "body", "colour": "blue",
+      "text": "Three friends listen and all agree the recording sounds exactly like Malik. Nothing seems odd to them.",
+      "shows": "the recording matching what other people hear", "visual": null, "pointsTo": "others" },
+    { "id": 3, "title": "Fingers in his ears", "icon": "ear", "colour": "purple",
+      "text": "He talks with his fingers in his ears and his voice sounds louder and boomier, even though less sound can get in through the air.",
+      "shows": "sound reaching his ears from inside his head, not through the air", "visual": null, "pointsTo": "bone" },
+    { "id": 4, "title": "Everyone hates their own", "icon": "book", "colour": "teal",
+      "text": "The whole class says their own recording sounds strange to them. But their friends' recordings sound completely normal on the same phone.",
+      "shows": "it happening to everyone, but only for their own voice", "visual": null, "pointsTo": "routes" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "The phone's microphone is cheap and changes his voice.", "flaw": "His friends say the recording sounds exactly like him, and everyone else's recordings sound normal on the same phone." },
+    { "id": "B", "text": "He has a cold, so his voice was different that day.", "flaw": "Everyone in class felt the same about their own recording, and he doesn't sound different to his friends." },
+    { "id": "C", "text": "Malik hears his own voice two ways — through the air and through the bones of his skull, which carry the deep sounds best. The recording only catches the air route, which is what everyone else hears.", "best": true },
+    { "id": "D", "text": "Hearing yourself played back makes you nervous, so you imagine it sounds wrong.", "flaw": "Nerves can't explain why plugging his ears makes his voice boomier — that is a real change in the sound reaching his ears." }
+  ],
+  "evidence": {
+    "A": { "supports": [1], "doesntFit": [2, 4] },
+    "B": { "supports": [], "doesntFit": [2, 4] },
+    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "D": { "supports": [], "doesntFit": [3] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "B",
+    "prompt": "Across the pitches in Malik's voice, from low to high, how much extra loudness does the 'through the bone' route add?",
+    "expectedShape": "falls",
+    "second": { "question": "If Malik plugs his ears while talking, does his voice sound deeper or less deep to him?", "options": ["deeper", "same", "less deep"], "answer": "deeper" }
+  },
+  "labDefaults": { "primary": 300, "secondary": 0 },
+  "concepts": [
+    { "id": "bone", "label": "through the bones of the head", "colour": "purple",
+      "synonyms": ["bone", "bones", "skull", "jaw", "head", "inside his head"],
+      "hint": "What else, besides air, carries his voice to his ears?" },
+    { "id": "air", "label": "through the air", "colour": "teal",
+      "synonyms": ["air", "through the air", "sound waves", "microphone", "recording"],
+      "hint": "Which route does the recording catch?" },
+    { "id": "deeper", "label": "the bone route adds deep sound", "colour": "amber",
+      "synonyms": ["deeper", "deep", "lower", "low", "bass", "boomier", "boomy"],
+      "hint": "What part of his voice seems missing on the recording?" },
+    { "id": "others", "label": "how others hear him", "colour": "blue",
+      "synonyms": ["others", "other people", "friends", "everyone else", "people hear"],
+      "hint": "Which version matches what his friends hear?" },
+    { "id": "routes", "label": "two routes at once", "colour": "coral",
+      "synonyms": ["routes", "route", "two ways", "both ways", "paths", "path"],
+      "hint": "How many ways does his own voice reach his ears?" }
+  ],
+  "transfer": {
+    "context": "When Inés eats crunchy chips, the crunching sounds really loud to her — but her friend across the table can barely hear it.",
+    "illustration": "plate",
+    "options": [
+      "Inés's chips are crunchier than her friend's.",
+      "Her friend isn't paying attention.",
+      "The room is echoing.",
+      "The crunch travels through the bones of Inés's jaw and skull straight to her ears, a route her friend's ears don't get."
+    ],
+    "answer": 3,
+    "retryHint": "What happened to Malik's voice when sound could only reach his ears from inside his head?",
+    "retryClue": 3,
+    "explanation": "Just like Malik's voice, the crunch reaches Inés's ears through the bones of her own head as well as through the air. Her friend only gets the quiet air route — the same reason a recording of your voice sounds 'thin' to you."
+  },
+  "takeaway": "You hear your own voice through the air and through the bones of your head, which add deep tones. A recording catches only the air — so the strange-sounding playback is how everyone else hears you."
+}

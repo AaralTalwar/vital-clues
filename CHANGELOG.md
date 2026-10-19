@@ -2,6 +2,15 @@
 
 One line per day. The "hardest bug" short answer and the video segment come from here, so write down what actually broke.
 
+## 2026-10-19
+- **48 cases across four levels** (Easy, Moderate, Difficult, Complex; 12 each), on 47 body models. New areas: eyes, clotting, smell and taste, balance, dark vision, brain freeze, nerves, memory, teeth, bone remodelling, vitamin D, motion sickness, blinking, fever, ear pressure, taste genes, swallowing, blood pooling, afterimages, bone conduction, morning light, plus twelve two-system cases.
+- Levels are defined by evidence structure and enforced by the validator (a clue that also fits a wrong idea; a written twist; two systems with a combined answer and two sliders).
+- Library groups and filters by level; Surprise Me respects the filter.
+- Science review changed to model-level: `tools/review_pack.py` builds the reviewer's pack, `review.json` holds the sign-off, and the badge reads "Science reviewed" only after it.
+- `tools/build_index.py` now generates the case index and the offline file list, and names the cache after a hash of the files, so phones always pick up a new version.
+- Offline: added a "Ready to play offline" badge. Finding: the link must end in `/vital-clues/` — without the slash the address is outside the offline cache's scope.
+- Bug: slider readouts showed the nearest tick label even when it was a different number ("12 · 10 sips"). Now only word labels are shown.
+
 ## 2026-10-18
 - Eleven more cases: the three from the spec (Thirsty Hiker, Shivering Swimmer, Jumpy Goalkeeper) and eight new ones for grades 7–10 (Sleepy Gamer, Skipped Breakfast, Sore Weightlifter, Sunburned Lifeguard, Stage-Fright Singer, Altitude Skier, Sneezing Gardener, Ringing Ears). Twelve total.
 - Engine made fully data-driven: formulas gained `pow / round / clamp / abs`, a second slider, text-band outputs ("normal / less / very little"), a chart that can sweep a variable other than the slider (hours on the trail), and an animated overlay built from JSON parts.

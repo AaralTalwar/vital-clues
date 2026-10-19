@@ -1,0 +1,44 @@
+{
+  "id": "smell-adapt",
+  "name": "Nose & smell",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "m", "label": "Minutes in the room", "min": 0, "max": 20, "step": 1, "unit": "min", "ticks": ["walk in", "10 min", "20 min"] },
+    "secondary": { "key": "S", "label": "How strong the smell is", "min": 1, "max": 10, "step": 1, "default": 7, "ticks": ["faint", "strong", "very strong"] }
+  },
+  "outputs": [
+    { "key": "A", "label": "Smell actually in the air", "unit": "% of max", "colour": "amber", "decimals": 0 },
+    { "key": "N", "label": "How strongly it's noticed", "unit": "% of max", "colour": "coral", "decimals": 0 },
+    { "key": "R", "label": "Smell receptors are", "colour": "purple", "bands": [{ "upTo": 0.35, "text": "quiet (adapted)" }, { "upTo": 0.7, "text": "settling down" }, { "text": "firing hard" }] }
+  ],
+  "rules": {
+    "A": "S * 10",
+    "N": "S * 10 * (0.15 + 0.85 * pow(0.5, m / 3))",
+    "R": "0.15 + 0.85 * pow(0.5, m / 3)"
+  },
+  "chart": { "x": "m", "y": "N", "xLabel": "minutes in the room", "yLabel": "how strongly the smell is noticed (%)", "yMin": 0, "yMax": 100 },
+  "overlay": {
+    "base": "head",
+    "caption": "smell stays in the air · receptors quiet down · the brain stops getting the alarm",
+    "parts": [
+      { "shape": "pollen", "colour": "#F4A300", "anim": { "type": "count", "output": "A", "min": 0, "max": 100 } },
+      { "shape": "brainGlow", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "N", "min": 0, "max": 100 } },
+      { "shape": "nose", "colour": "#E4572E", "anim": { "type": "glow", "output": "N", "min": 0, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the smell staying in the air while the sense of it fades",
+      "Shows smell receptors quieting down when a smell doesn't change (halving every 3 minutes)",
+      "Shows that a stronger smell takes longer to fade from notice"
+    ],
+    "doesnt": [
+      "Measure any real person or any real smell — the numbers are illustrative teaching values",
+      "Include the brain's own habit of ignoring familiar things, which adds to the effect",
+      "Say anything about whether a smell is harmful"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you smell gas or smoke, don't wait to get used to it — leave and tell an adult right away."
+  },
+  "sources": ["CK-12 Life Science: the senses — smell", "NIH NIDCD: Smell disorders and how smell works (student overview)"]
+}

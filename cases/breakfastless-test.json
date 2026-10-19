@@ -1,0 +1,235 @@
+{
+  "id": "breakfastless-test",
+  "version": 1,
+  "title": "The Breakfastless Test",
+  "system": "Adrenaline & fuel",
+  "model": "adrenaline-fuel",
+  "colour": "coral",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Adrenaline & the alarm system",
+    "Digestion & fuel"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Jamal",
+    "age": 14
+  },
+  "briefing": "Jamal, 14, sleeps through his alarm on the day of the math final and runs to school without breakfast. In the hallway his heart races and his palms sweat. During the test his hands shake so much his writing is hard to read. Thirty minutes after lunch he's completely steady.",
+  "question": "Two things can make hands shake — which were at work today?",
+  "illustration": "book",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Racing heart, sweaty palms",
+      "icon": "heart",
+      "colour": "coral",
+      "text": "Standing in the hallway his pulse is about 115. His palms are damp and his mouth is dry.",
+      "shows": "his alarm system switched on by a big moment",
+      "visual": {
+        "type": "bars",
+        "from": 70,
+        "to": 115,
+        "unit": "beats/min, normal → hallway"
+      },
+      "pointsTo": "adrenaline"
+    },
+    {
+      "id": 2,
+      "title": "Worst when the test is handed out",
+      "icon": "book",
+      "colour": "purple",
+      "text": "The shaking was strongest the moment the papers landed on his desk, and eased a little once he got going.",
+      "shows": "the shaking rising and falling with how big the moment felt",
+      "visual": null,
+      "pointsTo": "heart"
+    },
+    {
+      "id": 3,
+      "title": "Nothing since dinner",
+      "icon": "plate",
+      "colour": "amber",
+      "text": "Dinner was at 7 p.m. the night before. By the 9 a.m. test that's fourteen hours without food.",
+      "shows": "very little fuel left in his blood",
+      "visual": null,
+      "pointsTo": "fuel"
+    },
+    {
+      "id": 4,
+      "title": "Lunch fixed it — and last month",
+      "icon": "clock",
+      "colour": "teal",
+      "text": "Thirty minutes after a sandwich at lunch his hands were steady. At last month's final he was just as nervous, but had eaten breakfast, and his hands never shook.",
+      "shows": "food made the difference even when the nerves were the same",
+      "visual": null,
+      "pointsTo": "breakfast"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "He's nervous, and nerves make hands shake.",
+      "flaw": "Last month he was just as nervous, with just as racing a heart, but his hands stayed steady — nerves alone don't explain today."
+    },
+    {
+      "id": "B",
+      "text": "Both: the test switched on his alarm system (adrenaline — racing heart, sweaty palms, some shaking), and fourteen hours without food left his blood low on fuel, which adds its own shakiness. Together, his hands shook far more than either would cause alone.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "The classroom was cold.",
+      "flaw": "A cold room wouldn't make his heart race in the hallway or settle after a sandwich."
+    },
+    {
+      "id": "D",
+      "text": "He's just hungry.",
+      "flaw": "Hunger is steady all morning; it doesn't peak at the moment the test is handed out or make his heart race in the hallway."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "D": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        2
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "T",
+    "prompt": "Jamal hasn't eaten for twelve hours. As the moment feels bigger — from a normal class to the final exam — what happens to how much his hands shake?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "With the same nerves, if he had eaten breakfast, what would happen to the shaking?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 9,
+    "secondary": 12
+  },
+  "concepts": [
+    {
+      "id": "adrenaline",
+      "label": "adrenaline from nerves",
+      "colour": "coral",
+      "synonyms": [
+        "adrenaline",
+        "alarm",
+        "nerves",
+        "nervous",
+        "stress",
+        "fight or flight",
+        "hormone"
+      ],
+      "hint": "What does the brain release when a moment feels big?"
+    },
+    {
+      "id": "heart",
+      "label": "racing heart",
+      "colour": "coral",
+      "synonyms": [
+        "heart",
+        "pulse",
+        "racing",
+        "pounding",
+        "heartbeat"
+      ],
+      "hint": "What did his body do in the hallway?"
+    },
+    {
+      "id": "fuel",
+      "label": "low fuel in the blood",
+      "colour": "amber",
+      "synonyms": [
+        "fuel",
+        "sugar",
+        "glucose",
+        "energy",
+        "food"
+      ],
+      "hint": "What was his blood short of?"
+    },
+    {
+      "id": "breakfast",
+      "label": "no breakfast",
+      "colour": "teal",
+      "synonyms": [
+        "breakfast",
+        "skipped",
+        "didn't eat",
+        "did not eat",
+        "hungry",
+        "empty stomach",
+        "lunch",
+        "sandwich"
+      ],
+      "hint": "Why was his fuel low today?"
+    },
+    {
+      "id": "together",
+      "label": "two causes add up",
+      "colour": "purple",
+      "synonyms": [
+        "together",
+        "both",
+        "combined",
+        "two things",
+        "add up",
+        "adds up",
+        "on top"
+      ],
+      "hint": "Was it one cause or two?"
+    }
+  ],
+  "transfer": {
+    "context": "Before her piano recital, Yuki skipped lunch because she felt too nervous to eat. On stage her fingers tremble more than at any recital before, even though she's played the piece perfectly at home.",
+    "illustration": "microphone",
+    "options": [
+      "The piano is out of tune.",
+      "She forgot the piece.",
+      "Stage nerves released adrenaline, and skipping lunch left her low on fuel — two causes of trembling added together.",
+      "The stage lights are too hot."
+    ],
+    "answer": 2,
+    "retryHint": "Nerves she's had before, plus something new today — which of Jamal's clues compared two days like that?",
+    "retryClue": 4,
+    "explanation": "Yuki has always had recital nerves, but this time she also skipped lunch. Adrenaline from the big moment and low fuel from the empty stomach each cause trembling, and together they add up — the same pairing that shook Jamal's hands."
+  },
+  "takeaway": "Shaky hands can have more than one cause, and causes can add up. Adrenaline from a big moment is one; running low on fuel is another. You can't always switch off nerves, but you can remove the second cause by eating."
+}

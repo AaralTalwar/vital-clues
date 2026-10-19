@@ -1,0 +1,44 @@
+{
+  "id": "nerve-pressure",
+  "name": "Nerves & pressure",
+  "colour": "amber",
+  "inputs": {
+    "primary":   { "key": "M", "label": "Minutes sitting on his foot", "min": 0, "max": 60, "step": 5, "unit": "min", "ticks": ["none", "30 min", "1 hour"] },
+    "secondary": { "key": "S", "label": "Seconds since standing up", "min": 0, "max": 120, "step": 10, "default": 0, "unit": "s", "ticks": ["just stood", "1 min", "2 min"] }
+  },
+  "outputs": [
+    { "key": "G", "label": "Nerve signals getting through", "unit": "%", "colour": "purple", "decimals": 0 },
+    { "key": "N", "label": "Numbness", "unit": "0–10", "colour": "blue", "decimals": 1 },
+    { "key": "T", "label": "Pins and needles", "unit": "0–10", "colour": "coral", "decimals": 1 }
+  ],
+  "rules": {
+    "G": "100 - clamp(1.5 * M, 0, 90) * pow(0.5, S / 30)",
+    "N": "clamp(M / 6, 0, 10) * pow(0.5, S / 30)",
+    "T": "clamp(M / 6, 0, 10) * (1 - pow(0.5, S / 10)) * pow(0.5, S / 40)"
+  },
+  "chart": { "x": "M", "y": "N", "xLabel": "minutes sitting on his foot", "yLabel": "numbness when he stands (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "torso",
+    "caption": "pressure squeezes the nerve → signals blocked → numb · pressure off → nerve restarts → pins and needles",
+    "parts": [
+      { "shape": "legs", "colour": "#F4A300", "anim": { "type": "glow", "output": "G", "min": 0, "max": 100 } },
+      { "shape": "legVeins", "colour": "#E4572E", "anim": { "type": "shiver", "output": "T" } },
+      { "shape": "pathShort", "colour": "#6C4AB6", "anim": { "type": "light", "output": "G", "threshold": 60 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows numbness growing the longer a nerve is pressed",
+      "Shows pins and needles starting after the pressure is off and fading within a couple of minutes",
+      "Shows signals returning to normal on their own"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Separate the nerve itself from its blood supply — both get squeezed",
+      "Cover numbness that happens without anything pressing"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Numbness or tingling that comes without sitting on something, or doesn't go away, is a reason to tell an adult."
+  },
+  "sources": ["NIH NINDS: Brain basics — nerves and signals (student overview)", "CK-12 Life Science: nervous system"]
+}

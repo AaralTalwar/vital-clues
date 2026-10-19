@@ -1,0 +1,239 @@
+{
+  "id": "skipped-lunch-sprint",
+  "version": 1,
+  "title": "The Skipped-Lunch Sprint",
+  "system": "Fuel & effort",
+  "model": "fuel-exercise",
+  "colour": "amber",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Digestion & fuel",
+    "Lungs & heart"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Ravi",
+    "age": 14
+  },
+  "briefing": "Ravi, 14, skipped lunch for a club meeting and has track practice at 4 p.m. The warm-up jog feels fine. In the 200 m sprints he is gasping, his legs turn to jelly, his hands shake, and he stops after two of four. His teammate Ji-woo, who ate lunch, gasps just as hard — and finishes all four.",
+  "question": "What made Ravi stop when Ji-woo didn't?",
+  "illustration": "sneaker",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Breakfast at 7, nothing since",
+      "icon": "plate",
+      "colour": "amber",
+      "text": "Breakfast was at 7 a.m. and he skipped lunch. By practice it's been nine hours without food.",
+      "shows": "nine hours with nothing to refill his fuel",
+      "visual": {
+        "type": "bars",
+        "from": 4,
+        "to": 9,
+        "unit": "hours since eating, usual → today"
+      },
+      "pointsTo": "fuel"
+    },
+    {
+      "id": 2,
+      "title": "Shaky hands, fuzzy head",
+      "icon": "brain",
+      "colour": "coral",
+      "text": "Between sprints his hands tremble and he has trouble remembering how many reps are left.",
+      "shows": "brain and muscles short of fuel",
+      "visual": null,
+      "pointsTo": "lunch"
+    },
+    {
+      "id": 3,
+      "title": "Gasping in the sprints — like everyone",
+      "icon": "lungs",
+      "colour": "teal",
+      "text": "At sprint pace Ravi takes about 45 breaths a minute with his heart pounding. Ji-woo is breathing just as hard.",
+      "shows": "muscles demanding lots of oxygen at sprint pace, the same for anyone",
+      "visual": null,
+      "pointsTo": "breath"
+    },
+    {
+      "id": 4,
+      "title": "Fine on the warm-up jog",
+      "icon": "sneaker",
+      "colour": "purple",
+      "text": "The easy jog felt normal. The trouble only started when the pace went up to sprinting.",
+      "shows": "the problem appearing only when the effort is high",
+      "visual": null,
+      "pointsTo": "sprint"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "Both: sprinting makes muscles burn fuel and oxygen very fast (that's the hard breathing everyone has), and after nine hours without food Ravi had less fuel to burn — so his muscles ran short at sprint pace even though jogging was fine.",
+      "best": true
+    },
+    {
+      "id": "B",
+      "text": "He's low on fuel because he skipped lunch.",
+      "flaw": "If it were only fuel, the easy warm-up jog would have been a struggle too."
+    },
+    {
+      "id": "C",
+      "text": "Sprinting is just very hard — everyone breathes like that.",
+      "flaw": "Ji-woo sprinted just as hard and finished; hard work alone doesn't explain shaky hands or why Ravi had to stop."
+    },
+    {
+      "id": "D",
+      "text": "His running shoes are worn out.",
+      "flaw": "Worn shoes don't make your hands shake or your head fuzzy."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "B": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "C": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        2
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "G",
+    "prompt": "Ravi hasn't eaten for nine hours. As he runs harder — from resting to sprinting — what happens to the fuel his muscles have available?",
+    "expectedShape": "falls",
+    "second": {
+      "question": "And what happens to his breathing rate?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 9,
+    "secondary": 9
+  },
+  "concepts": [
+    {
+      "id": "fuel",
+      "label": "fuel from food",
+      "colour": "amber",
+      "synonyms": [
+        "fuel",
+        "energy",
+        "sugar",
+        "glucose",
+        "food"
+      ],
+      "hint": "What do muscles burn to work?"
+    },
+    {
+      "id": "lunch",
+      "label": "a long gap since eating",
+      "colour": "coral",
+      "synonyms": [
+        "lunch",
+        "skipped",
+        "ate",
+        "eating",
+        "eat",
+        "breakfast",
+        "hours without food"
+      ],
+      "hint": "Why was Ravi's supply low today?"
+    },
+    {
+      "id": "sprint",
+      "label": "high effort",
+      "colour": "purple",
+      "synonyms": [
+        "sprint",
+        "sprints",
+        "sprinting",
+        "effort",
+        "harder",
+        "hard work",
+        "pace",
+        "fast"
+      ],
+      "hint": "When did the trouble start?"
+    },
+    {
+      "id": "breath",
+      "label": "breathing delivers oxygen",
+      "colour": "teal",
+      "synonyms": [
+        "breath",
+        "breathing",
+        "breathe",
+        "oxygen",
+        "lungs",
+        "heart"
+      ],
+      "hint": "Why was everyone gasping in the sprints?"
+    },
+    {
+      "id": "burn",
+      "label": "fuel burns faster than it's replaced",
+      "colour": "blue",
+      "synonyms": [
+        "burn",
+        "burns",
+        "burning",
+        "use up",
+        "uses up",
+        "used up",
+        "runs out",
+        "ran out",
+        "ran short",
+        "run short"
+      ],
+      "hint": "What happens to fuel at sprint pace?"
+    }
+  ],
+  "transfer": {
+    "context": "Maya plays three soccer games in a tournament. Game one at 9 a.m. goes great, but in the third game at 3 p.m. — with only a granola bar since breakfast — her legs feel heavy and she can't keep up in the sprints, though she can still jog fine.",
+    "illustration": "soccer",
+    "options": [
+      "Hard sprints burn muscle fuel fast, and with little food since breakfast her muscles ran short at high effort.",
+      "The third team is better.",
+      "Her cleats are muddy.",
+      "She is losing interest."
+    ],
+    "answer": 0,
+    "retryHint": "She's fine jogging but not sprinting, many hours after a real meal — which of Ravi's clues was that?",
+    "retryClue": 4,
+    "explanation": "Maya's third game asked her muscles for fuel at sprint pace after hours with little to eat. Jogging uses fuel slowly enough to get by; sprinting burns it faster than her low supply could keep up with — the same pairing that stopped Ravi."
+  },
+  "takeaway": "Effort and fuel are a pair. Sprinting makes everyone breathe hard because muscles burn fuel and oxygen fast; whether you can keep going depends on how much fuel is left. Lungs deliver the oxygen; food supplies the fuel."
+}

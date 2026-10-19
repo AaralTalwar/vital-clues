@@ -1,0 +1,49 @@
+{
+  "id": "heat-fuel",
+  "name": "Heat + muscle fuel",
+  "colour": "amber",
+  "inputs": {
+    "primary":   { "key": "I", "label": "Heat", "min": 0, "max": 10, "step": 1, "ticks": ["cool 70°F", "warm 82°F", "heatwave 95°F"] },
+    "secondary": { "key": "e", "label": "Hours since the last meal", "min": 0, "max": 8, "step": 1, "default": 7, "unit": "h", "ticks": ["just ate", "4 h", "8 h"] }
+  },
+  "outputs": [
+    { "key": "P", "label": "Sprint power", "unit": "% of fresh", "colour": "amber", "decimals": 0 },
+    { "key": "F", "label": "Fuel in her muscles", "unit": "%", "colour": "coral", "decimals": 0 },
+    { "key": "W", "label": "Body water", "unit": "% of normal", "colour": "blue", "decimals": 0 },
+    { "key": "S", "label": "Water lost so far", "unit": "%", "colour": "blue", "decimals": 0, "hidden": true },
+    { "key": "T", "label": "Thirst signal", "colour": "blue", "bands": [{ "upTo": 94.9, "text": "ON" }, { "text": "off" }] }
+  ],
+  "rules": {
+    "W": "clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)",
+    "F": "clamp(100 - 4 * e - (0.25 + 0.03 * I) * p, 20, 100)",
+    "P": "clamp(clamp(100 - 4 * e - (0.25 + 0.03 * I) * p, 20, 100) - 2 * (100 - clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)), 0, 100)",
+    "S": "100 - clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)",
+    "T": "clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)"
+  },
+  "chart": { "x": "p", "xMin": 0, "xMax": 90, "xTicks": ["kick-off", "half-time", "full time"], "xNow": 90, "y": "P", "xLabel": "minutes of the match", "yLabel": "sprint power (% of fresh)", "yMin": 0, "yMax": 100 },
+  "overlay": {
+    "base": "torso",
+    "caption": "heat → sweat drains water · hours without food → muscle fuel runs low · both sap sprint power",
+    "parts": [
+      { "shape": "sun", "colour": "#F4A300" },
+      { "shape": "legs", "colour": "#F4A300", "anim": { "type": "glow", "output": "F", "min": 20, "max": 100 } },
+      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0, "max": 15 } },
+      { "shape": "thirst", "colour": "#E4572E", "anim": { "type": "light", "output": "W", "below": 94.9 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows body water falling faster in hotter weather as the match goes on",
+      "Shows muscle fuel starting lower after a long gap since eating, and running down during play",
+      "Shows sprint power depending on both, so either problem alone hurts and both together hurt most"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include salt, fitness, what kind of food, or how quickly food is digested",
+      "Say what or when anyone should eat"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Feeling dizzy, sick or confused in the heat is a reason to stop, get into the shade, drink and tell a coach or adult."
+  },
+  "sources": ["CK-12 Life Science: homeostasis, digestion and the muscular system", "NIH News in Health: staying safe in the heat (student overview)"]
+}

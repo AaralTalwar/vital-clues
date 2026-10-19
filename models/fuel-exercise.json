@@ -1,0 +1,148 @@
+{
+  "id": "fuel-exercise",
+  "name": "Fuel & effort",
+  "colour": "amber",
+  "inputs": {
+    "primary": {
+      "key": "I",
+      "label": "Running intensity",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "ticks": [
+        "rest",
+        "jog",
+        "sprint"
+      ]
+    },
+    "secondary": {
+      "key": "h",
+      "label": "Hours since eating",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 9,
+      "unit": "h",
+      "ticks": [
+        "just ate",
+        "5 h",
+        "10 h"
+      ]
+    }
+  },
+  "outputs": [
+    {
+      "key": "B",
+      "label": "Breathing rate",
+      "unit": "breaths/min",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "H",
+      "label": "Heart rate",
+      "unit": "beats/min",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "G",
+      "label": "Fuel available to muscles",
+      "unit": "% of full",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "K",
+      "label": "Legs",
+      "colour": "purple",
+      "bands": [
+        {
+          "upTo": 44.9,
+          "text": "jelly"
+        },
+        {
+          "upTo": 69.9,
+          "text": "heavy"
+        },
+        {
+          "text": "strong"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "B": "12 + 3.8 * I",
+    "H": "65 + 12.5 * I",
+    "G": "clamp(105 - 4 * h - 0.5 * I * h, 20, 110)",
+    "K": "clamp(105 - 4 * h - 0.5 * I * h, 20, 110)"
+  },
+  "chart": {
+    "x": "I",
+    "y": "G",
+    "xLabel": "running intensity",
+    "yLabel": "fuel available to muscles (%)",
+    "yMin": 0,
+    "yMax": 110
+  },
+  "overlay": {
+    "base": "torso",
+    "caption": "food → fuel in the blood · lungs and heart → oxygen · both feed working legs",
+    "parts": [
+      {
+        "shape": "stomach",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "G",
+          "min": 20,
+          "max": 105
+        }
+      },
+      {
+        "shape": "legs",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "G",
+          "min": 20,
+          "max": 105
+        }
+      },
+      {
+        "shape": "lungs",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "breathe",
+          "output": "B"
+        }
+      },
+      {
+        "shape": "heart",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "beat",
+          "output": "H"
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows breathing and heart rate rising with running intensity, the same for everyone",
+      "Shows fuel in the blood falling with hours since eating, and faster at high effort",
+      "Shows legs running short only when low fuel and high effort combine"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Say what anyone should eat",
+      "Include training, sleep or heat"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Feeling shaky or dizzy during sport is a reason to stop, have a snack and water, and tell a coach."
+  },
+  "sources": [
+    "CK-12 Life Science: digestive and respiratory systems",
+    "CK-12 Life Science: cellular respiration (food + oxygen → energy)"
+  ]
+}

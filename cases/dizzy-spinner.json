@@ -1,0 +1,81 @@
+{
+  "id": "dizzy-spinner",
+  "version": 1,
+  "title": "The Dizzy Spinner",
+  "system": "Ears & balance",
+  "model": "balance-spin",
+  "colour": "purple",
+  "minutes": 8,
+  "level": "moderate",
+  "reviewed": null,
+  "character": { "name": "Amara", "age": 13 },
+  "briefing": "Amara, 13, spins around ten times on a playground spinner. When it stops, the playground seems to keep turning, she wobbles, and her friend sees her eyes flicking side to side. About half a minute later it's all gone.",
+  "question": "Why does the world keep spinning after Amara has stopped?",
+  "illustration": "swirl",
+  "clues": [
+    { "id": 1, "title": "Still turning", "icon": "swirl", "colour": "purple",
+      "text": "When the spinner stops, the playground seems to keep turning the other way. Closing her eyes doesn't stop the feeling.",
+      "shows": "her balance sense reporting a spin that isn't happening, even with her eyes shut", "visual": null, "pointsTo": "brain" },
+    { "id": 2, "title": "Wobbly steps", "icon": "leg", "colour": "amber",
+      "text": "She stumbles sideways when she tries to walk and grabs the rail. Her legs feel shaky.",
+      "shows": "her balance being thrown off", "visual": null, "pointsTo": "ear" },
+    { "id": 3, "title": "Flicking eyes", "icon": "eye", "colour": "blue",
+      "text": "For a few seconds after she stops, her friend sees Amara's eyes flicking quickly side to side. Amara isn't doing it on purpose.",
+      "shows": "the eyes trying to follow a spin the inner ear says is still happening", "visual": null, "pointsTo": "keeps" },
+    { "id": 4, "title": "More spins, longer", "icon": "clock", "colour": "teal",
+      "text": "After 5 spins the dizziness lasts a few seconds; after 20 spins it lasts about half a minute. Then it fades completely.",
+      "shows": "the effect growing with how much she spun and fading by itself", "visual": { "type": "bars", "from": 5, "to": 30, "unit": "seconds dizzy, 5 spins → 20 spins" }, "pointsTo": "fades" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "Her blood sugar is low because she skipped a snack.", "flaw": "Low fuel doesn't arrive the moment a spinner stops and vanish thirty seconds later — and it wouldn't make the playground seem to turn." },
+    { "id": "B", "text": "Fluid in the balance loops of her inner ear started swirling while she spun; when she stopped, it kept swirling for a while, so her brain was told she was still turning.", "best": true },
+    { "id": "C", "text": "She bumped her head on the spinner.", "flaw": "Nothing hit her head, and the dizziness grew with the number of spins and was gone in half a minute." },
+    { "id": "D", "text": "Her eyes are tired from watching the world go by.", "flaw": "She still felt she was turning with her eyes closed, so the feeling isn't coming from her eyes." }
+  ],
+  "evidence": {
+    "A": { "supports": [2], "doesntFit": [1, 4] },
+    "B": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "C": { "supports": [], "doesntFit": [4] },
+    "D": { "supports": [], "doesntFit": [1] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "D",
+    "prompt": "Amara spins more and more times — from none up to twenty. Right after she stops, how dizzy does she feel?",
+    "expectedShape": "rises",
+    "second": { "question": "And as the seconds pass after she stops, what happens to the dizziness?", "options": ["up", "same", "down"], "answer": "down" }
+  },
+  "labDefaults": { "primary": 10, "secondary": 0 },
+  "concepts": [
+    { "id": "ear", "label": "the inner ear", "colour": "purple",
+      "synonyms": ["ear", "ears", "inner ear", "balance organ", "canals", "loops"],
+      "hint": "Where in the body is your balance sense?" },
+    { "id": "fluid", "label": "fluid swirls", "colour": "blue",
+      "synonyms": ["fluid", "liquid", "swirling", "swirl", "swirls", "sloshing", "sloshes"],
+      "hint": "What is inside those balance loops, and what does spinning do to it?" },
+    { "id": "keeps", "label": "keeps going after stopping", "colour": "amber",
+      "synonyms": ["keeps", "keeps going", "kept going", "keeps moving", "still moving", "carries on", "momentum"],
+      "hint": "Why doesn't it stop when the spinner does?" },
+    { "id": "brain", "label": "the brain is fooled", "colour": "coral",
+      "synonyms": ["brain", "signal", "signals", "tells", "told", "thinks", "message", "messages"],
+      "hint": "Who is being told she's still turning?" },
+    { "id": "fades", "label": "it settles by itself", "colour": "teal",
+      "synonyms": ["fade", "fades", "faded", "settles", "settled", "wears off", "wore off", "goes away", "went away"],
+      "hint": "What happened after half a minute?" }
+  ],
+  "transfer": {
+    "context": "After a long ride on the spinning teacups at a fair, Ravi steps off and the ground seems to tilt and turn. He has to sit down for a minute until it passes.",
+    "illustration": "body",
+    "options": [
+      "His shoes are slippery on the grass.",
+      "The fluid in his inner ear kept swirling after the ride stopped, telling his brain he was still turning.",
+      "He was scared of the ride.",
+      "The music at the fair was too loud."
+    ],
+    "answer": 1,
+    "retryHint": "The world keeps turning after the spinning stops — which of Amara's clues was exactly that?",
+    "retryClue": 1,
+    "explanation": "The teacups set the fluid in Ravi's inner-ear loops swirling. When the ride stopped, the fluid didn't — so for a minute his brain was still being told he was turning, just like Amara on the playground."
+  },
+  "takeaway": "Your balance sense lives in fluid-filled loops in your inner ear. Spinning sets the fluid swirling, and because it keeps going after you stop, your brain thinks you are still turning until it settles."
+}

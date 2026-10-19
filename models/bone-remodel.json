@@ -1,0 +1,43 @@
+{
+  "id": "bone-remodel",
+  "name": "Bones & teeth",
+  "colour": "teal",
+  "inputs": {
+    "primary":   { "key": "W", "label": "Weeks wearing braces", "min": 0, "max": 24, "step": 1, "unit": "weeks", "ticks": ["day 1", "12 weeks", "24 weeks"] },
+    "secondary": { "key": "H", "label": "Hours a day the force acts", "min": 0, "max": 22, "step": 2, "default": 22, "unit": "h a day", "ticks": ["0 h", "11 h", "22 h"] }
+  },
+  "outputs": [
+    { "key": "M", "label": "Tooth movement", "unit": "mm", "colour": "teal", "decimals": 1 },
+    { "key": "R", "label": "Bone-rebuilding cells at work", "unit": "% of full speed", "colour": "amber", "decimals": 0 },
+    { "key": "L", "label": "Tooth feels", "colour": "purple", "bands": [{ "upTo": 40, "text": "firm" }, { "text": "slightly loose" }] }
+  ],
+  "rules": {
+    "M": "0.1 * W * H / 22",
+    "R": "100 * H / 22 * (1 - pow(0.5, W + 0.5))",
+    "L": "100 * H / 22 * (1 - pow(0.5, W + 0.5))"
+  },
+  "chart": { "x": "W", "y": "M", "xLabel": "weeks wearing braces", "yLabel": "tooth movement (mm)", "yMin": 0, "yMax": 3 },
+  "overlay": {
+    "base": "head",
+    "caption": "steady push → bone taken down on one side, built up on the other → tooth moves",
+    "parts": [
+      { "shape": "tooth", "colour": "#FFFFFF" },
+      { "shape": "fibres", "colour": "#1B998B", "anim": { "type": "count", "output": "R", "min": 0, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows a tooth moving steadily through the jaw while a gentle force is applied",
+      "Shows bone around the tooth being taken down on one side and built up on the other",
+      "Shows movement slowing when the force acts for fewer hours a day"
+    ],
+    "doesnt": [
+      "Measure any real person's teeth — the numbers are illustrative teaching values",
+      "Include how braces are planned or adjusted",
+      "Describe anything beyond mild, normal tenderness"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Sharp pain, a broken wire or a sore in your mouth that won't heal is a reason to tell an adult."
+  },
+  "sources": ["CK-12 Life Science: skeletal system — bone is living tissue", "NIH News in Health: bones are alive and always rebuilding (student overview)"]
+}

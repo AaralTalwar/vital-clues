@@ -1,0 +1,82 @@
+{
+  "id": "snowball-hands",
+  "version": 1,
+  "title": "The Snowball Hands",
+  "system": "Skin, blood flow & cold",
+  "model": "cold-hands",
+  "colour": "coral",
+  "minutes": 9,
+  "level": "difficult",
+  "twist": "Her hands feel hot while they're buried in snow — the opposite of what cold should do. The body briefly reopens finger blood vessels on purpose to stop them getting too cold.",
+  "reviewed": null,
+  "character": { "name": "Freya", "age": 13 },
+  "briefing": "Freya, 13, lost a glove and spends twenty minutes making snowballs with one bare hand. At first her fingers turn white and ache. Then, still in the snow, they turn bright red and feel almost hot. Her gloved hand looks completely normal the whole time.",
+  "question": "Why would a hand in the snow suddenly feel hot?",
+  "illustration": "snowflake",
+  "clues": [
+    { "id": 1, "title": "White and aching first", "icon": "snowflake", "colour": "blue",
+      "text": "For the first five minutes her bare fingers go white and ache. It's the same thing that happened to Jonah's fingers in the lake.",
+      "shows": "cold closing down blood flow to her fingers", "visual": null, "pointsTo": "cold" },
+    { "id": 2, "title": "Then red and hot-feeling", "icon": "thermometer", "colour": "coral",
+      "text": "After about ten minutes her fingers turn bright red and feel warm — while she's still holding snow.",
+      "shows": "warm blood flowing back into the fingers in the cold", "visual": { "type": "bars", "from": 51, "to": 93, "unit": "% blood flow, 5 min → 12 min" }, "pointsTo": "warm" },
+    { "id": 3, "title": "The gloved hand", "icon": "bandage", "colour": "purple",
+      "text": "Her other hand stayed in its glove and did the same packing and throwing. It looked and felt normal throughout.",
+      "shows": "that cold on bare skin, not the work, is causing both changes", "visual": null, "pointsTo": "vessels" },
+    { "id": 4, "title": "In waves", "icon": "clock", "colour": "teal",
+      "text": "The hot, red feeling came and went every few minutes, like the hand was switching something on and off.",
+      "shows": "the body opening the vessels in controlled bursts", "visual": null, "pointsTo": "waves" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "The snow is so cold it's 'burning' her skin, like touching something hot.", "flaw": "Snow can't put heat into her skin. The warmth she feels is her own warm blood arriving — and at first, the snow made her fingers pale, not red." },
+    { "id": "B", "text": "Cold first shuts down blood flow to her bare fingers, but after a while her body opens the finger blood vessels in bursts to send warm blood and protect them — so they turn red and feel hot.", "best": true },
+    { "id": "C", "text": "Being outside in the cold is giving her a fever.", "flaw": "A fever would warm her whole body — but only the bare hand changed, and the gloved one stayed normal." },
+    { "id": "D", "text": "Making snowballs is hard exercise that heats up her hands.", "flaw": "Her gloved hand did exactly the same work and stayed normal." }
+  ],
+  "evidence": {
+    "A": { "supports": [2], "doesntFit": [1] },
+    "B": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "C": { "supports": [], "doesntFit": [3] },
+    "D": { "supports": [], "doesntFit": [3] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "F",
+    "prompt": "After the first five minutes, as Freya keeps making snowballs bare-handed, what happens to the blood flow in her fingers?",
+    "expectedShape": "rises",
+    "second": { "question": "Once the bursts start, how pale do her fingers look?", "options": ["up", "same", "down"], "answer": "down" }
+  },
+  "labDefaults": { "primary": 12, "secondary": 7 },
+  "concepts": [
+    { "id": "cold", "label": "cold shuts blood flow down", "colour": "blue",
+      "synonyms": ["cold", "freezing", "snow", "ice", "white", "pale"],
+      "hint": "What did the cold do first?" },
+    { "id": "vessels", "label": "blood vessels in the fingers", "colour": "coral",
+      "synonyms": ["vessels", "vessel", "blood vessels", "blood flow", "blood"],
+      "hint": "What controls how much warm blood reaches the fingers?" },
+    { "id": "warm", "label": "warm blood sent back", "colour": "amber",
+      "synonyms": ["warm", "warmth", "warm blood", "rewarm", "rewarms", "opens", "open", "opened", "reopen", "reopens"],
+      "hint": "Where does the 'hot' feeling actually come from?" },
+    { "id": "protect", "label": "to protect the fingers", "colour": "teal",
+      "synonyms": ["protect", "protects", "protecting", "keep safe", "keeps them safe", "stop damage", "on purpose"],
+      "hint": "Why would the body do this?" },
+    { "id": "waves", "label": "in bursts", "colour": "purple",
+      "synonyms": ["waves", "bursts", "cycles", "on and off", "comes and goes", "came and went", "switch"],
+      "hint": "What did clue 4 notice about the timing?" }
+  ],
+  "transfer": {
+    "context": "Lars, 15, goes ice fishing and handles wet lines with bare hands. After a while his fingers turn red and tingle with warmth, even though the water is freezing.",
+    "illustration": "snowflake",
+    "options": [
+      "His gloves were too tight before he took them off.",
+      "The fish are warm.",
+      "The ice reflects sunlight onto his hands.",
+      "His body opened the blood vessels in his cold fingers in bursts to send warm blood and protect them."
+    ],
+    "answer": 3,
+    "retryHint": "Red and warm in freezing conditions — which of Freya's clues showed where that warmth comes from?",
+    "retryClue": 2,
+    "explanation": "Cold first shuts the blood vessels in Lars's fingers, just like Freya's. After a while his body opens them again in bursts, sending warm blood to protect the fingers. That surge of warm blood is the red, tingling warmth he feels."
+  },
+  "takeaway": "In the cold, your body first saves heat by shutting off blood to your fingers — then, to protect them, it opens the vessels in bursts and sends warm blood back. That's why cold hands can suddenly feel hot."
+}

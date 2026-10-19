@@ -1,0 +1,240 @@
+{
+  "id": "july-marching-band",
+  "version": 1,
+  "title": "The July Marching Band",
+  "system": "Heat, water & blood flow",
+  "model": "heat-standing",
+  "colour": "coral",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Kidneys & water",
+    "Heart & blood flow"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Keisha",
+    "age": 14
+  },
+  "briefing": "Keisha, 14, plays drums in the marching band. At July band camp it is 95 °F on the field. Marching through the show, everyone is sweaty but fine — then, twelve minutes into standing perfectly still for the anthem rehearsal, she and two others feel light-headed and wobbly.",
+  "question": "Why did standing still make them light-headed when marching in the same heat didn't?",
+  "illustration": "drum",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Soaked uniforms",
+      "icon": "sun",
+      "colour": "coral",
+      "text": "It's 95 °F and the uniforms are heavy. By mid-morning everyone's shirt is soaked through with sweat.",
+      "shows": "a lot of water leaving as sweat",
+      "visual": {
+        "type": "bars",
+        "from": 0.5,
+        "to": 2.6,
+        "unit": "cups of sweat per hour"
+      },
+      "pointsTo": "sweat"
+    },
+    {
+      "id": 2,
+      "title": "Fine in October",
+      "icon": "drop",
+      "colour": "blue",
+      "text": "At fall games the band stands for the anthem just as long and nobody feels faint. Today, their last water break was an hour ago.",
+      "shows": "the same standing is fine when they're not hot and short of water",
+      "visual": null,
+      "pointsTo": "water"
+    },
+    {
+      "id": 3,
+      "title": "Woozy only when standing still",
+      "icon": "leg",
+      "colour": "purple",
+      "text": "Nobody felt light-headed while marching. It started about twelve minutes into standing at attention, knees locked.",
+      "shows": "trouble only once the leg muscles stopped moving",
+      "visual": null,
+      "pointsTo": "legs"
+    },
+    {
+      "id": 4,
+      "title": "Better after moving",
+      "icon": "sneaker",
+      "colour": "teal",
+      "text": "Keisha shifts her weight and marches on the spot, and within a minute the wooziness is gone. Sitting down works too.",
+      "shows": "moving the legs or lowering the head fixed it fast",
+      "visual": null,
+      "pointsTo": "muscles"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "They're low on water from sweating in the heat.",
+      "flaw": "Low water alone would make them woozy during the marching too — but it only happened while standing still."
+    },
+    {
+      "id": "B",
+      "text": "Heavy sweating has left less water in their blood, and standing still lets blood pool in their legs because the leg muscles aren't squeezing it back up. Together, too little blood reaches the head.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "Standing still for a long time lets blood pool in the legs.",
+      "flaw": "Standing still alone doesn't explain why the same long anthem is fine at cool fall games."
+    },
+    {
+      "id": "D",
+      "text": "The drums are too loud.",
+      "flaw": "Loud drums don't make you light-headed only when you stop moving — and they're just as loud while marching."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        2
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "R",
+    "prompt": "On a hot July day, as the band stands still for longer — from zero to twenty minutes — what happens to how much blood gets back up to the heart?",
+    "expectedShape": "falls",
+    "second": {
+      "question": "If they march in place instead of standing still, what happens to the blood getting back to the heart?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 15,
+    "secondary": 8
+  },
+  "concepts": [
+    {
+      "id": "sweat",
+      "label": "sweating loses water",
+      "colour": "coral",
+      "synonyms": [
+        "sweat",
+        "sweating",
+        "sweated",
+        "sweaty",
+        "losing water",
+        "lost water",
+        "dehydrated"
+      ],
+      "hint": "Where was their water going?"
+    },
+    {
+      "id": "water",
+      "label": "less water in the blood",
+      "colour": "blue",
+      "synonyms": [
+        "water",
+        "drink",
+        "drank",
+        "drinking",
+        "fluid",
+        "fluids",
+        "water break"
+      ],
+      "hint": "What wasn't coming back in fast enough?"
+    },
+    {
+      "id": "legs",
+      "label": "blood pools in the legs",
+      "colour": "purple",
+      "synonyms": [
+        "legs",
+        "leg",
+        "pool",
+        "pools",
+        "pooling",
+        "pooled",
+        "feet"
+      ],
+      "hint": "Where does blood collect when you stand very still?"
+    },
+    {
+      "id": "muscles",
+      "label": "moving muscles pump it back",
+      "colour": "teal",
+      "synonyms": [
+        "muscles",
+        "muscle",
+        "squeeze",
+        "squeezes",
+        "squeezing",
+        "pump",
+        "pumps",
+        "marching",
+        "moving"
+      ],
+      "hint": "What pushes blood back up from the legs?"
+    },
+    {
+      "id": "head",
+      "label": "too little reaches the head",
+      "colour": "amber",
+      "synonyms": [
+        "head",
+        "brain",
+        "light-headed",
+        "lightheaded",
+        "dizzy",
+        "woozy",
+        "faint"
+      ],
+      "hint": "Which part of the body ran short, causing the wooziness?"
+    }
+  ],
+  "transfer": {
+    "context": "At a long school assembly on a warm afternoon, Omar stands perfectly still in the back row. After twenty minutes he feels light-headed; when he shifts from foot to foot and rises onto his toes, it passes.",
+    "illustration": "body",
+    "options": [
+      "He is bored.",
+      "The assembly hall is too noisy.",
+      "Warmth and standing still both mean less blood gets back up to his head; moving his legs squeezes it back.",
+      "He skipped breakfast and is out of energy."
+    ],
+    "answer": 2,
+    "retryHint": "What fixed it for him — and which of Keisha's clues showed the same fix?",
+    "retryClue": 4,
+    "explanation": "Standing still, Omar's leg muscles stop squeezing blood back up, so it pools in his legs; the warm room has him sweating, leaving less to go round. Moving his legs restarts the pump — the same fix that worked for Keisha."
+  },
+  "takeaway": "Blood needs a push to get from your legs back to your head. Walking muscles provide it; standing still doesn't. Add heavy sweating on a hot day and there's less blood to go around — that's when the head runs short."
+}

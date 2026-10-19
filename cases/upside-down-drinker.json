@@ -1,0 +1,82 @@
+{
+  "id": "upside-down-drinker",
+  "version": 1,
+  "title": "The Upside-Down Drinker",
+  "system": "Throat & swallowing",
+  "model": "swallow-wave",
+  "colour": "coral",
+  "minutes": 8,
+  "level": "difficult",
+  "twist": "Most people think food and drink fall down into the stomach. They don't: muscles squeeze them along, which is why Leila — and astronauts in space — can swallow upside down.",
+  "reviewed": null,
+  "character": { "name": "Leila", "age": 14 },
+  "briefing": "Leila, 14, is at gymnastics camp. Her teammates bet she can't drink water while holding a handstand against the wall. She sips through a straw, swallows, and the water ends up in her stomach — not back in her mouth or nose.",
+  "question": "How did the water go up into her stomach?",
+  "illustration": "dancer",
+  "clues": [
+    { "id": 1, "title": "Water went 'up'", "icon": "glass", "colour": "blue",
+      "text": "Upside down, her stomach was higher than her mouth. She swallowed three sips comfortably, with no coughing at all.",
+      "shows": "liquid travelling upward into her stomach", "visual": null, "pointsTo": "stomach" },
+    { "id": 2, "title": "Astronauts do it", "icon": "film", "colour": "purple",
+      "text": "Her coach shows a video of astronauts on a space station eating and swallowing with no gravity pulling anything down.",
+      "shows": "swallowing working with no gravity at all", "visual": null, "pointsTo": "gravity" },
+    { "id": 3, "title": "A ripple in the throat", "icon": "muscles", "colour": "coral",
+      "text": "A teammate watches her neck: after each swallow a squeezing ripple moves down it. Leila can feel it pushing, like toothpaste squeezed along a tube.",
+      "shows": "a wave of muscle squeezing along the food tube", "visual": null, "pointsTo": "wave" },
+    { "id": 4, "title": "A bit slower upside down", "icon": "clock", "colour": "amber",
+      "text": "Upright, she feels a sip arrive in about two seconds. Upside down it takes longer — around six or seven — but it still gets there.",
+      "shows": "gravity helping a little when upright, but not being needed", "visual": { "type": "bars", "from": 2, "to": 7, "unit": "seconds per sip, standing → handstand" }, "pointsTo": "tube" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "Swallowing is done by muscles: rings of muscle in the food tube squeeze in a wave that pushes food and water to the stomach, so it works whichever way up you are — gravity only helps a little.", "best": true },
+    { "id": "B", "text": "She was lucky — some water probably went into her nose or lungs.", "flaw": "Water going the wrong way makes you cough and splutter at once; she swallowed comfortably and felt it reach her stomach." },
+    { "id": "C", "text": "Gravity pulls water into the stomach, so it must have flowed down somehow.", "flaw": "Upside down, gravity pulls toward her head, away from her stomach — and astronauts swallow with no gravity at all." },
+    { "id": "D", "text": "The straw pushed the water down for her.", "flaw": "A straw only gets water into the mouth; the ripple in her throat did the rest, and astronauts swallow without straws." }
+  ],
+  "evidence": {
+    "A": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "B": { "supports": [], "doesntFit": [1, 3] },
+    "C": { "supports": [4], "doesntFit": [1, 2] },
+    "D": { "supports": [], "doesntFit": [2, 3] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "S",
+    "prompt": "As Leila tips from standing, to lying flat, to a full handstand, what happens to how much of each small sip reaches her stomach?",
+    "expectedShape": "flat",
+    "second": { "question": "And the time each sip takes to get there?", "options": ["up", "same", "down"], "answer": "up" }
+  },
+  "labDefaults": { "primary": 180, "secondary": 1 },
+  "concepts": [
+    { "id": "muscles", "label": "muscles do the work", "colour": "coral",
+      "synonyms": ["muscles", "muscle", "muscular", "rings of muscle"],
+      "hint": "What part of the body actually moves the water?" },
+    { "id": "wave", "label": "a squeezing wave", "colour": "amber",
+      "synonyms": ["wave", "waves", "squeeze", "squeezes", "squeezing", "squeezed", "ripple", "push", "pushes", "pushed", "pushing"],
+      "hint": "What did her teammate see moving down her neck?" },
+    { "id": "gravity", "label": "not gravity", "colour": "blue",
+      "synonyms": ["gravity", "without gravity", "upside down", "any direction", "any way up", "whichever way"],
+      "hint": "How important is gravity, given the astronauts?" },
+    { "id": "tube", "label": "the food tube", "colour": "purple",
+      "synonyms": ["tube", "food tube", "esophagus", "oesophagus", "throat", "gullet"],
+      "hint": "Which part of the body connects mouth and stomach?" },
+    { "id": "stomach", "label": "reaches the stomach", "colour": "teal",
+      "synonyms": ["stomach", "tummy", "belly"],
+      "hint": "Where did the water end up?" }
+  ],
+  "transfer": {
+    "context": "At the zoo, Orla watches a giraffe drink from a pond. Its head is far below its stomach, yet the water travels all the way up its long neck.",
+    "illustration": "drop",
+    "options": [
+      "Giraffes have a special pump in their mouths.",
+      "Muscle waves in the giraffe's long food tube squeeze the water upward to its stomach.",
+      "The giraffe holds its breath, which sucks the water up.",
+      "Gravity pulls the water toward the giraffe's stomach."
+    ],
+    "answer": 1,
+    "retryHint": "What did Leila's teammate see moving along her neck after every swallow?",
+    "retryClue": 3,
+    "explanation": "The giraffe's food tube works just like Leila's: rings of muscle squeeze in a wave, pushing water uphill to the stomach. Gravity is pulling the wrong way, so the muscles do all the work."
+  },
+  "takeaway": "Swallowing is a muscle job, not a gravity job. Rings of muscle squeeze food and drink along in a wave — which is why astronauts can eat in space and you can swallow upside down."
+}

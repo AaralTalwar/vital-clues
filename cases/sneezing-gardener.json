@@ -6,6 +6,7 @@
   "model": "immune-pollen",
   "colour": "teal",
   "minutes": 8,
+  "level": "easy",
   "reviewed": null,
   "character": {
     "name": "Diego",

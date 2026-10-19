@@ -1,0 +1,81 @@
+{
+  "id": "brain-freeze",
+  "version": 1,
+  "title": "The Brain-Freeze Smoothie",
+  "system": "Nerves & cold",
+  "model": "brain-freeze",
+  "colour": "blue",
+  "minutes": 8,
+  "level": "moderate",
+  "reviewed": null,
+  "character": { "name": "Tomás", "age": 14 },
+  "briefing": "Tomás, 14, gulps a frozen smoothie through a straw on a hot day. A few seconds later a sharp ache hits his forehead. It fades in about half a minute — and when he goes back to slow sips, it doesn't happen again.",
+  "question": "Why does something cold in his mouth make his forehead hurt?",
+  "illustration": "icecream",
+  "clues": [
+    { "id": 1, "title": "Forehead ache", "icon": "brain", "colour": "coral",
+      "text": "A few seconds after a big gulp, a sharp ache hits right behind his forehead. Nothing touched his forehead at all.",
+      "shows": "pain felt in the forehead right after something cold in the mouth", "visual": null, "pointsTo": "forehead" },
+    { "id": 2, "title": "Only big gulps", "icon": "icecream", "colour": "blue",
+      "text": "Slow sips of the same smoothie never hurt. Big gulps that hit the roof of his mouth always do.",
+      "shows": "the ache depending on cold hitting the roof of the mouth fast", "visual": null, "pointsTo": "cold" },
+    { "id": 3, "title": "Tongue to the roof", "icon": "tongue", "colour": "amber",
+      "text": "When he presses his warm tongue against the roof of his mouth, the ache fades faster.",
+      "shows": "warming the roof of the mouth easing the pain", "visual": null, "pointsTo": "roof" },
+    { "id": 4, "title": "Gone in 30 seconds", "icon": "clock", "colour": "purple",
+      "text": "The ache fades in about half a minute and leaves no trace. His friend gets exactly the same thing from ice cream.",
+      "shows": "a short, harmless signal that switches off by itself", "visual": { "type": "bars", "from": 8, "to": 1, "unit": "ache 0–10, 5 s → 30 s" }, "pointsTo": "nerves" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "The cold on the roof of his mouth made blood vessels there squeeze and then rush open; nerves near those vessels send pain signals that his brain feels as coming from his forehead.", "best": true },
+    { "id": "B", "text": "The cold is freezing his brain.", "flaw": "His brain sits deep inside his skull and stays warm; and warming the roof of his mouth with his tongue — nowhere near his brain — made the ache fade faster." },
+    { "id": "C", "text": "He is allergic to the smoothie.", "flaw": "Slow sips of the same smoothie caused no ache at all — so it is the cold and the speed, not what's in it." },
+    { "id": "D", "text": "Drinking through a straw makes you dizzy.", "flaw": "Slow sips through the same straw were fine; the ache came only when big gulps of cold hit the roof of his mouth." }
+  ],
+  "evidence": {
+    "A": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "B": { "supports": [1], "doesntFit": [3, 4] },
+    "C": { "supports": [], "doesntFit": [2] },
+    "D": { "supports": [], "doesntFit": [2] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "P",
+    "prompt": "As Tomás drinks faster — from slow sips to huge gulps — what happens to the forehead ache?",
+    "expectedShape": "rises",
+    "second": { "question": "And as the seconds pass after the gulp?", "options": ["up", "same", "down"], "answer": "down" }
+  },
+  "labDefaults": { "primary": 8, "secondary": 0 },
+  "concepts": [
+    { "id": "cold", "label": "cold", "colour": "blue",
+      "synonyms": ["cold", "freezing", "icy", "chilled", "frozen", "chill"],
+      "hint": "What hit the inside of his mouth?" },
+    { "id": "roof", "label": "the roof of the mouth", "colour": "amber",
+      "synonyms": ["roof", "palate", "roof of his mouth", "top of his mouth", "mouth"],
+      "hint": "Where exactly did the cold land?" },
+    { "id": "vessels", "label": "blood vessels squeeze then open", "colour": "purple",
+      "synonyms": ["vessels", "blood vessels", "blood", "squeeze", "squeezes", "narrow", "narrows", "widen", "widens"],
+      "hint": "What do tiny tubes carrying blood do in the cold?" },
+    { "id": "nerves", "label": "nerves send pain signals", "colour": "coral",
+      "synonyms": ["nerves", "nerve", "signal", "signals", "pain signal", "message", "messages"],
+      "hint": "What carries the 'ouch' to his brain?" },
+    { "id": "forehead", "label": "felt in the forehead", "colour": "teal",
+      "synonyms": ["forehead", "head", "headache", "behind his eyes", "felt in", "somewhere else"],
+      "hint": "Where did he feel it — and was that where the cold was?" }
+  ],
+  "transfer": {
+    "context": "Chloe bites straight into an ice-pop on a hot day and feels a stab of pain between her eyes for a few seconds.",
+    "illustration": "icecream",
+    "options": [
+      "She cracked a tooth on the ice-pop.",
+      "The ice-pop was too sweet.",
+      "Cold on the roof of her mouth made nearby blood vessels squeeze and then rush open, and nerves there send pain that her brain feels in her forehead.",
+      "Ice-pops freeze the brain for a moment."
+    ],
+    "answer": 2,
+    "retryHint": "Cold, fast, and the pain felt somewhere else — which of Tomás's clues showed the cold had to hit the roof of the mouth?",
+    "retryClue": 2,
+    "explanation": "Chloe's brain didn't freeze. The ice-pop chilled the roof of her mouth fast, the blood vessels there squeezed and then rushed open, and the nerves nearby sent a pain signal that her brain reads as coming from her forehead — the same short, harmless ache Tomás got."
+  },
+  "takeaway": "A brain freeze isn't your brain freezing. Cold on the roof of your mouth makes blood vessels squeeze and then rush open, and the nerves there send a signal your brain feels as a forehead ache — short, harmless and gone in seconds."
+}

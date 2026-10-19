@@ -6,6 +6,7 @@
   "model": "nerves-reflex",
   "colour": "purple",
   "minutes": 9,
+  "level": "easy",
   "reviewed": null,
   "character": {
     "name": "Sam",

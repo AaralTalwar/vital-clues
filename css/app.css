@@ -131,6 +131,14 @@ main > section[hidden] { display: none; }
 .badge-pending { background: var(--track); color: var(--muted); }
 .badge-soon { background: var(--track); color: var(--muted); }
 .badge-done { background: var(--navy); color: #fff; }
+.level-pills { margin: .2rem 0 1rem; }
+.level-head { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .7rem; margin-top: .6rem; padding-bottom: .3rem; border-bottom: 2px solid var(--line); }
+.level-head h3 { margin: 0; font-size: 1.1rem; }
+.badge-level { background: var(--track); color: var(--navy); }
+.badge-level[data-level="easy"] { background: #DDF2EF; color: var(--teal-dark); }
+.badge-level[data-level="moderate"] { background: #DCEBFA; color: var(--blue-dark); }
+.badge-level[data-level="difficult"] { background: #FDEFD3; color: var(--amber-dark); }
+.badge-level[data-level="complex"] { background: #ECE6F7; color: var(--purple-dark); }
 .badges { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .3rem; }
 
 /* ---------- case file ---------- */

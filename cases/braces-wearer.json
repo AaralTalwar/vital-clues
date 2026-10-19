@@ -1,0 +1,81 @@
+{
+  "id": "braces-wearer",
+  "version": 1,
+  "title": "The Braces Wearer",
+  "system": "Bones & teeth",
+  "model": "bone-remodel",
+  "colour": "teal",
+  "minutes": 8,
+  "level": "moderate",
+  "reviewed": null,
+  "character": { "name": "Zara", "age": 14 },
+  "briefing": "Zara, 14, got braces in September to close a gap between her front teeth. By spring the gap is almost gone. Her teeth felt sore after each tightening and a little wobbly for a few days — which worried her — and the one month she forgot her rubber bands, nothing moved at all.",
+  "question": "How can something as hard as a tooth slide through solid bone?",
+  "illustration": "tooth",
+  "clues": [
+    { "id": 1, "title": "Sore after tightening", "icon": "tooth", "colour": "teal",
+      "text": "The day after each visit her teeth ache when she bites. The ache fades in two or three days.",
+      "shows": "a fresh push being felt in the bone around the teeth", "visual": null, "pointsTo": "force" },
+    { "id": 2, "title": "A little wobbly", "icon": "bone", "colour": "purple",
+      "text": "For a few days after tightening her front teeth feel slightly loose. Then they firm up again.",
+      "shows": "the bone around each tooth being taken down and rebuilt", "visual": null, "pointsTo": "rebuild" },
+    { "id": 3, "title": "The gap closes slowly", "icon": "clock", "colour": "amber",
+      "text": "The gap shrinks a tiny bit each month, never all at once. It took about six months to close.",
+      "shows": "movement happening gradually over months", "visual": { "type": "bars", "from": 4, "to": 1, "unit": "mm gap, September → March" }, "pointsTo": "slow" },
+    { "id": 4, "title": "No bands, no progress", "icon": "bandage", "colour": "coral",
+      "text": "The month she forgot to wear her rubber bands, the orthodontist measured no change at all. Once she wore them again, it started moving again.",
+      "shows": "that the movement needs a steady force to keep going", "visual": null, "pointsTo": "steady" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "A steady, gentle force from the braces makes bone cells remove bone on one side of each tooth and build new bone on the other, so the tooth slowly moves through the jaw.", "best": true },
+    { "id": "B", "text": "The braces bend her teeth into a new shape, like bending wire.", "flaw": "Teeth are too hard to bend — and a tooth that wobbles is moving as a whole in its socket, not changing shape." },
+    { "id": "C", "text": "The braces are loosening her teeth so they can be pushed around.", "flaw": "Loose teeth that were only being shoved around would not close a gap neatly and then firm up again — the wobble is the bone rebuilding, and it settles." },
+    { "id": "D", "text": "Teeth move into place by themselves as you grow; the braces just hold them.", "flaw": "If the teeth moved on their own, they would have kept moving the month she forgot her bands. They stopped." }
+  ],
+  "evidence": {
+    "A": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "B": { "supports": [], "doesntFit": [2, 3] },
+    "C": { "supports": [2], "doesntFit": [3, 4] },
+    "D": { "supports": [], "doesntFit": [4] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "M",
+    "prompt": "Zara wears her braces all day, every day. As the weeks go by, how far has her tooth moved?",
+    "expectedShape": "rises",
+    "second": { "question": "If she wore the force for fewer hours a day, would the tooth move faster or slower?", "options": ["faster", "same", "slower"], "answer": "slower" }
+  },
+  "labDefaults": { "primary": 12, "secondary": 22 },
+  "concepts": [
+    { "id": "force", "label": "a steady push", "colour": "coral",
+      "synonyms": ["force", "forces", "pressure", "push", "pushes", "pushing", "pulls", "pulling"],
+      "hint": "What do the braces actually do to each tooth?" },
+    { "id": "bone", "label": "the bone around the tooth", "colour": "purple",
+      "synonyms": ["bone", "bones", "jawbone", "jaw", "socket", "sockets"],
+      "hint": "What is the tooth sitting in?" },
+    { "id": "rebuild", "label": "bone taken down and rebuilt", "colour": "teal",
+      "synonyms": ["rebuild", "rebuilds", "rebuilding", "rebuilt", "remodel", "remodels", "break down", "breaks down", "builds", "new bone", "reshape", "reshapes"],
+      "hint": "What happens to the bone on each side of the tooth?" },
+    { "id": "slow", "label": "slowly, over months", "colour": "amber",
+      "synonyms": ["slowly", "slow", "gradually", "weeks", "months", "over time", "little by little"],
+      "hint": "How fast did the gap close?" },
+    { "id": "steady", "label": "the force must keep going", "colour": "blue",
+      "synonyms": ["steady", "constant", "all the time", "every day", "wear", "wearing", "worn", "rubber bands", "bands"],
+      "hint": "Why did nothing change the month she forgot her bands?" }
+  ],
+  "transfer": {
+    "context": "Mateo, 15, has done gymnastics for three years. A scan for a sports program shows the bones in his wrists are a little thicker than most kids' his age.",
+    "illustration": "bone",
+    "options": [
+      "His wrists are swollen from an injury.",
+      "Handstands have stretched his bones longer.",
+      "Years of repeated force made his bone cells add bone where the load is — the same rebuilding that moves teeth.",
+      "He was simply born with thick wrists."
+    ],
+    "answer": 2,
+    "retryHint": "What did Zara's teeth need in order to keep changing — and what do Mateo's wrists get every practice?",
+    "retryClue": 4,
+    "explanation": "Bone is living tissue that is always being taken down and rebuilt. A force that keeps coming tells bone cells where to build: for Zara it moved teeth; for Mateo, thousands of handstands told the cells in his wrists to add bone where the load lands."
+  },
+  "takeaway": "Bone isn't dead stone — it is constantly taken down and rebuilt. A steady force tells bone cells where to remove and where to add, which is how braces move teeth and how training makes bones stronger."
+}

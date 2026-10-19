@@ -1,124 +1,484 @@
 {
   "cases": [
     {
-      "id": "tired-athlete",
-      "title": "A Case of the Tired Athlete",
-      "system": "Lungs & heart",
-      "colour": "teal",
-      "minutes": 8,
-      "illustration": "runner",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "thirsty-hiker",
-      "title": "The Thirsty Hiker",
-      "system": "Kidneys & water",
-      "colour": "blue",
-      "minutes": 8,
-      "illustration": "hiker",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "shivering-swimmer",
-      "title": "The Shivering Swimmer",
-      "system": "Skin & temperature",
-      "colour": "coral",
-      "minutes": 8,
-      "illustration": "swimmer",
-      "available": true,
-      "reviewed": false
-    },
-    {
       "id": "jumpy-goalkeeper",
       "title": "The Jumpy Goalkeeper",
       "system": "Brain & nerves",
+      "level": "easy",
       "colour": "purple",
       "minutes": 9,
       "illustration": "goalkeeper",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "sleepy-gamer",
-      "title": "The Sleepy Gamer",
-      "system": "Brain & sleep clock",
-      "colour": "purple",
-      "minutes": 8,
-      "illustration": "gamer",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "skipped-breakfast",
-      "title": "The Skipped Breakfast",
-      "system": "Digestion & fuel",
-      "colour": "amber",
-      "minutes": 8,
-      "illustration": "plate",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "sore-weightlifter",
-      "title": "The Sore Weightlifter",
-      "system": "Muscles & repair",
-      "colour": "amber",
-      "minutes": 8,
-      "illustration": "weights",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "sunburned-lifeguard",
-      "title": "The Sunburned Lifeguard",
-      "system": "Skin & sunlight",
-      "colour": "coral",
-      "minutes": 8,
-      "illustration": "lifeguard",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "stage-fright-singer",
-      "title": "The Stage-Fright Singer",
-      "system": "Adrenaline & the alarm system",
-      "colour": "coral",
-      "minutes": 8,
-      "illustration": "microphone",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "altitude-skier",
-      "title": "The Altitude Skier",
-      "system": "Oxygen & altitude",
-      "colour": "blue",
-      "minutes": 8,
-      "illustration": "skier",
-      "available": true,
-      "reviewed": false
-    },
-    {
-      "id": "sneezing-gardener",
-      "title": "The Sneezing Gardener",
-      "system": "Immune system & pollen",
-      "colour": "teal",
-      "minutes": 8,
-      "illustration": "flower",
-      "available": true,
-      "reviewed": false
+      "available": true
     },
     {
       "id": "ringing-ears",
       "title": "The Ringing Ears",
       "system": "Ears & hearing",
+      "level": "easy",
       "colour": "purple",
       "minutes": 8,
       "illustration": "headphones",
-      "available": true,
-      "reviewed": false
+      "available": true
+    },
+    {
+      "id": "scraped-knee",
+      "title": "The Scraped Knee",
+      "system": "Blood & healing",
+      "level": "easy",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "bandage",
+      "available": true
+    },
+    {
+      "id": "shivering-swimmer",
+      "title": "The Shivering Swimmer",
+      "system": "Skin & temperature",
+      "level": "easy",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "swimmer",
+      "available": true
+    },
+    {
+      "id": "skipped-breakfast",
+      "title": "The Skipped Breakfast",
+      "system": "Digestion & fuel",
+      "level": "easy",
+      "colour": "amber",
+      "minutes": 8,
+      "illustration": "plate",
+      "available": true
+    },
+    {
+      "id": "sneezing-gardener",
+      "title": "The Sneezing Gardener",
+      "system": "Immune system & pollen",
+      "level": "easy",
+      "colour": "teal",
+      "minutes": 8,
+      "illustration": "flower",
+      "available": true
+    },
+    {
+      "id": "sore-weightlifter",
+      "title": "The Sore Weightlifter",
+      "system": "Muscles & repair",
+      "level": "easy",
+      "colour": "amber",
+      "minutes": 8,
+      "illustration": "weights",
+      "available": true
+    },
+    {
+      "id": "squinting-reader",
+      "title": "The Squinting Reader",
+      "system": "Eyes & light",
+      "level": "easy",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "sun",
+      "available": true
+    },
+    {
+      "id": "stuffy-nose-taster",
+      "title": "The Stuffy-Nose Taster",
+      "system": "Nose & taste",
+      "level": "easy",
+      "colour": "teal",
+      "minutes": 8,
+      "illustration": "nose",
+      "available": true
+    },
+    {
+      "id": "sunburned-lifeguard",
+      "title": "The Sunburned Lifeguard",
+      "system": "Skin & sunlight",
+      "level": "easy",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "lifeguard",
+      "available": true
+    },
+    {
+      "id": "thirsty-hiker",
+      "title": "The Thirsty Hiker",
+      "system": "Kidneys & water",
+      "level": "easy",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "hiker",
+      "available": true
+    },
+    {
+      "id": "tired-athlete",
+      "title": "A Case of the Tired Athlete",
+      "system": "Lungs & heart",
+      "level": "easy",
+      "colour": "teal",
+      "minutes": 8,
+      "illustration": "runner",
+      "available": true
+    },
+    {
+      "id": "blinkless-gamer",
+      "title": "The Blinkless Gamer",
+      "system": "Eyes & tears",
+      "level": "moderate",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "gamer",
+      "available": true
+    },
+    {
+      "id": "braces-wearer",
+      "title": "The Braces Wearer",
+      "system": "Bones & teeth",
+      "level": "moderate",
+      "colour": "teal",
+      "minutes": 8,
+      "illustration": "tooth",
+      "available": true
+    },
+    {
+      "id": "brain-freeze",
+      "title": "The Brain-Freeze Smoothie",
+      "system": "Nerves & cold",
+      "level": "moderate",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "icecream",
+      "available": true
+    },
+    {
+      "id": "car-sick-reader",
+      "title": "The Car-Sick Reader",
+      "system": "Balance & motion",
+      "level": "moderate",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "car",
+      "available": true
+    },
+    {
+      "id": "cavity-detective",
+      "title": "The Cavity Detective",
+      "system": "Teeth & bacteria",
+      "level": "moderate",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "tooth",
+      "available": true
+    },
+    {
+      "id": "cramming-student",
+      "title": "The Cramming Student",
+      "system": "Brain & memory",
+      "level": "moderate",
+      "colour": "purple",
+      "minutes": 9,
+      "illustration": "book",
+      "available": true
+    },
+    {
+      "id": "dark-cinema",
+      "title": "The Dark Cinema",
+      "system": "Eyes & the dark",
+      "level": "moderate",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "film",
+      "available": true
+    },
+    {
+      "id": "dizzy-spinner",
+      "title": "The Dizzy Spinner",
+      "system": "Ears & balance",
+      "level": "moderate",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "swirl",
+      "available": true
+    },
+    {
+      "id": "indoor-winter",
+      "title": "The Indoor Winter",
+      "system": "Skin, sunlight & bones",
+      "level": "moderate",
+      "colour": "amber",
+      "minutes": 8,
+      "illustration": "sun",
+      "available": true
+    },
+    {
+      "id": "locker-room-smell",
+      "title": "The Locker-Room Smell",
+      "system": "Nose & smell",
+      "level": "moderate",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "sneaker",
+      "available": true
+    },
+    {
+      "id": "sleeping-foot",
+      "title": "The Sleeping Foot",
+      "system": "Nerves & pressure",
+      "level": "moderate",
+      "colour": "amber",
+      "minutes": 8,
+      "illustration": "leg",
+      "available": true
+    },
+    {
+      "id": "sleepy-gamer",
+      "title": "The Sleepy Gamer",
+      "system": "Brain & sleep clock",
+      "level": "moderate",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "gamer",
+      "available": true
+    },
+    {
+      "id": "afterimage-artist",
+      "title": "The Afterimage Artist",
+      "system": "Eyes & colour",
+      "level": "difficult",
+      "colour": "teal",
+      "minutes": 8,
+      "illustration": "eye",
+      "available": true
+    },
+    {
+      "id": "altitude-skier",
+      "title": "The Altitude Skier",
+      "system": "Oxygen & altitude",
+      "level": "difficult",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "skier",
+      "available": true
+    },
+    {
+      "id": "bitter-broccoli",
+      "title": "The Bitter Broccoli",
+      "system": "Tongue & taste",
+      "level": "difficult",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "tongue",
+      "available": true
+    },
+    {
+      "id": "feverish-friend",
+      "title": "The Feverish Friend",
+      "system": "Immune system & fever",
+      "level": "difficult",
+      "colour": "coral",
+      "minutes": 9,
+      "illustration": "thermometer",
+      "available": true
+    },
+    {
+      "id": "flagpole-faint",
+      "title": "The Flagpole Faint",
+      "system": "Legs, veins & blood flow",
+      "level": "difficult",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "flag",
+      "available": true
+    },
+    {
+      "id": "morning-light",
+      "title": "The Morning-Light Fix",
+      "system": "Brain & body clock",
+      "level": "difficult",
+      "colour": "amber",
+      "minutes": 8,
+      "illustration": "sun",
+      "available": true
+    },
+    {
+      "id": "popping-ears",
+      "title": "The Popping Ears",
+      "system": "Ears & air pressure",
+      "level": "difficult",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "plane",
+      "available": true
+    },
+    {
+      "id": "recorded-voice",
+      "title": "The Recorded Voice",
+      "system": "Ears & your own voice",
+      "level": "difficult",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "microphone",
+      "available": true
+    },
+    {
+      "id": "snowball-hands",
+      "title": "The Snowball Hands",
+      "system": "Skin, blood flow & cold",
+      "level": "difficult",
+      "colour": "coral",
+      "minutes": 9,
+      "illustration": "snowflake",
+      "available": true
+    },
+    {
+      "id": "stage-fright-singer",
+      "title": "The Stage-Fright Singer",
+      "system": "Adrenaline & the alarm system",
+      "level": "difficult",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "microphone",
+      "available": true
+    },
+    {
+      "id": "pool-dehydration",
+      "title": "The Thirsty Swimmer",
+      "system": "Kidneys & water",
+      "level": "difficult",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "swimmer",
+      "available": true
+    },
+    {
+      "id": "upside-down-drinker",
+      "title": "The Upside-Down Drinker",
+      "system": "Throat & swallowing",
+      "level": "difficult",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "dancer",
+      "available": true
+    },
+    {
+      "id": "all-nighter",
+      "title": "The All-Nighter",
+      "system": "Sleep & memory",
+      "level": "complex",
+      "colour": "purple",
+      "minutes": 9,
+      "illustration": "bed",
+      "available": true
+    },
+    {
+      "id": "breakfastless-test",
+      "title": "The Breakfastless Test",
+      "system": "Adrenaline & fuel",
+      "level": "complex",
+      "colour": "coral",
+      "minutes": 9,
+      "illustration": "book",
+      "available": true
+    },
+    {
+      "id": "concert-night",
+      "title": "The Concert Night",
+      "system": "Loud sound & short sleep",
+      "level": "complex",
+      "colour": "purple",
+      "minutes": 9,
+      "illustration": "soundwave",
+      "available": true
+    },
+    {
+      "id": "exam-week-cold",
+      "title": "The Exam-Week Cold",
+      "system": "Sleep + stress + immune defence",
+      "level": "complex",
+      "colour": "teal",
+      "minutes": 10,
+      "illustration": "book",
+      "available": true
+    },
+    {
+      "id": "heatwave-final",
+      "title": "The Heatwave Final",
+      "system": "Heat + muscle fuel",
+      "level": "complex",
+      "colour": "amber",
+      "minutes": 10,
+      "illustration": "soccer",
+      "available": true
+    },
+    {
+      "id": "july-marching-band",
+      "title": "The July Marching Band",
+      "system": "Heat, water & blood flow",
+      "level": "complex",
+      "colour": "coral",
+      "minutes": 9,
+      "illustration": "drum",
+      "available": true
+    },
+    {
+      "id": "long-haul-flight",
+      "title": "The Long-Haul Flight",
+      "system": "Body clock & water",
+      "level": "complex",
+      "colour": "teal",
+      "minutes": 9,
+      "illustration": "plane",
+      "available": true
+    },
+    {
+      "id": "mountain-hike",
+      "title": "The Mountain Hike",
+      "system": "Altitude + water",
+      "level": "complex",
+      "colour": "blue",
+      "minutes": 10,
+      "illustration": "mountain",
+      "available": true
+    },
+    {
+      "id": "pollen-season-runner",
+      "title": "The Pollen-Season Runner",
+      "system": "Pollen & breathing",
+      "level": "complex",
+      "colour": "teal",
+      "minutes": 9,
+      "illustration": "runner",
+      "available": true
+    },
+    {
+      "id": "skipped-lunch-sprint",
+      "title": "The Skipped-Lunch Sprint",
+      "system": "Fuel & effort",
+      "level": "complex",
+      "colour": "amber",
+      "minutes": 9,
+      "illustration": "sneaker",
+      "available": true
+    },
+    {
+      "id": "snow-day-sledder",
+      "title": "The Snow-Day Sledder",
+      "system": "Cold & sunlight on snow",
+      "level": "complex",
+      "colour": "blue",
+      "minutes": 9,
+      "illustration": "snowflake",
+      "available": true
+    },
+    {
+      "id": "winter-swim-team",
+      "title": "The Winter Swim Team",
+      "system": "Cold water & working muscles",
+      "level": "complex",
+      "colour": "blue",
+      "minutes": 9,
+      "illustration": "swimmer",
+      "available": true
     }
   ]
 }

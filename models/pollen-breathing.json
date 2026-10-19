@@ -1,0 +1,148 @@
+{
+  "id": "pollen-breathing",
+  "name": "Pollen & breathing",
+  "colour": "teal",
+  "inputs": {
+    "primary": {
+      "key": "G",
+      "label": "Pollen in the air",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "ticks": [
+        "none",
+        "medium",
+        "very high"
+      ]
+    },
+    "secondary": {
+      "key": "P",
+      "label": "Pace",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 8,
+      "ticks": [
+        "walking",
+        "jogging",
+        "racing"
+      ]
+    }
+  },
+  "outputs": [
+    {
+      "key": "B",
+      "label": "Breathing rate",
+      "unit": "breaths/min",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "N",
+      "label": "Pollen breathed in",
+      "unit": "units/min",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "A",
+      "label": "Alarm chemical",
+      "unit": "% above calm",
+      "colour": "coral",
+      "decimals": 0,
+      "hidden": true
+    },
+    {
+      "key": "S",
+      "label": "Sneezes",
+      "unit": "per hour",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "E",
+      "label": "Eyes",
+      "colour": "blue",
+      "bands": [
+        {
+          "upTo": 24.9,
+          "text": "fine"
+        },
+        {
+          "upTo": 59.9,
+          "text": "itchy"
+        },
+        {
+          "text": "itchy & watery"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "B": "12 + 3.6 * P",
+    "N": "G * (8 + 6 * P) / 10",
+    "A": "clamp(1.8 * G * (8 + 6 * P) / 10, 0, 100)",
+    "S": "round(clamp(G * (8 + 6 * P) / 40, 0, 16))",
+    "E": "clamp(1.8 * G * (8 + 6 * P) / 10, 0, 100)"
+  },
+  "chart": {
+    "x": "G",
+    "y": "S",
+    "xLabel": "pollen in the air",
+    "yLabel": "sneezes per hour",
+    "yMin": 0,
+    "yMax": 16
+  },
+  "overlay": {
+    "base": "head",
+    "caption": "more pollen in the air × more air breathed = a bigger alarm",
+    "parts": [
+      {
+        "shape": "pollen",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "count",
+          "output": "N",
+          "min": 0,
+          "max": 68
+        }
+      },
+      {
+        "shape": "eye",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "glow",
+          "output": "A",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "nose",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "breathe",
+          "output": "B"
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows pollen breathed in = pollen in the air × air breathed per minute",
+      "Shows the immune alarm and sneezing scaling with that dose",
+      "Shows hard breathing doing nothing when there's no pollen"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Say whether anyone has an allergy or what to do about it",
+      "Include asthma or serious reactions"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Wheezing, chest tightness or trouble breathing during exercise is a reason to stop and tell an adult right away."
+  },
+  "sources": [
+    "CK-12 Life Science: immune and respiratory systems",
+    "NIH News in Health: seasonal allergies (student overview)"
+  ]
+}

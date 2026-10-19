@@ -1,0 +1,137 @@
+{
+  "id": "adrenaline-fuel",
+  "name": "Adrenaline & fuel",
+  "colour": "coral",
+  "inputs": {
+    "primary": {
+      "key": "X",
+      "label": "How big the moment feels",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "ticks": [
+        "normal class",
+        "quiz",
+        "final exam"
+      ]
+    },
+    "secondary": {
+      "key": "h",
+      "label": "Hours since eating",
+      "min": 0,
+      "max": 14,
+      "step": 1,
+      "default": 12,
+      "unit": "h",
+      "ticks": [
+        "just ate",
+        "7 h",
+        "14 h"
+      ]
+    }
+  },
+  "outputs": [
+    {
+      "key": "A",
+      "label": "Adrenaline",
+      "unit": "% above calm",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "H",
+      "label": "Heart rate",
+      "unit": "beats/min",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "G",
+      "label": "Fuel in the blood",
+      "unit": "% of comfortable",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "T",
+      "label": "Shaky hands",
+      "unit": "0–10",
+      "colour": "purple",
+      "decimals": 1
+    }
+  ],
+  "rules": {
+    "A": "10 * X",
+    "H": "68 + 5 * X",
+    "G": "clamp(105 - 4 * h, 50, 105)",
+    "T": "clamp(0.35 * X + 0.09 * (105 - clamp(105 - 4 * h, 50, 105)), 0, 10)"
+  },
+  "chart": {
+    "x": "X",
+    "y": "T",
+    "xLabel": "how big the moment feels",
+    "yLabel": "shaky hands (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
+  "overlay": {
+    "base": "torso",
+    "caption": "big moment → adrenaline · empty stomach → low fuel · both shake the hands",
+    "parts": [
+      {
+        "shape": "bloodstream",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "glow",
+          "output": "A",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "heart",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "beat",
+          "output": "H"
+        }
+      },
+      {
+        "shape": "stomach",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "G",
+          "min": 50,
+          "max": 105
+        }
+      },
+      {
+        "shape": "hand",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "shiver",
+          "output": "T"
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows adrenaline and heart rate rising with how big the moment feels",
+      "Shows fuel in the blood falling with hours since eating",
+      "Shows shaky hands adding up from both causes"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Say anything about anxiety or any condition; this is everyday test nerves",
+      "Say what anyone should eat"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Nerves before tests are normal. If worry or feeling unwell gets in the way often, talk to an adult you trust."
+  },
+  "sources": [
+    "CK-12 Life Science: endocrine system",
+    "CK-12 Life Science: digestive system and energy"
+  ]
+}

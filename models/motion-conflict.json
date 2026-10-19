@@ -1,0 +1,44 @@
+{
+  "id": "motion-conflict",
+  "name": "Balance & motion",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "R", "label": "Minutes reading on a winding road", "min": 0, "max": 40, "step": 2, "unit": "min", "ticks": ["start", "20 min", "40 min"] },
+    "secondary": { "key": "L", "label": "How much she looks out the window", "min": 0, "max": 10, "step": 1, "default": 0, "ticks": ["never", "sometimes", "the whole time"] }
+  },
+  "outputs": [
+    { "key": "M", "label": "Eyes vs inner ear mismatch", "unit": "0–10", "colour": "purple", "decimals": 0 },
+    { "key": "Q", "label": "Queasiness", "unit": "0–10", "colour": "coral", "decimals": 1 },
+    { "key": "F", "label": "She feels", "colour": "teal", "bands": [{ "upTo": 2, "text": "fine" }, { "upTo": 5, "text": "uneasy" }, { "text": "car-sick" }] }
+  ],
+  "rules": {
+    "M": "10 - L",
+    "Q": "clamp((10 - L) * R / 40 * 0.9, 0, 10)",
+    "F": "clamp((10 - L) * R / 40 * 0.9, 0, 10)"
+  },
+  "chart": { "x": "R", "y": "Q", "xLabel": "minutes reading on a winding road", "yLabel": "queasiness (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "head",
+    "caption": "eyes: 'we're still' · inner ear: 'we're turning' · brain: mixed signals → queasy",
+    "parts": [
+      { "shape": "eye", "colour": "#16213E" },
+      { "shape": "innerEar", "colour": "#6C4AB6", "anim": { "type": "spin", "output": "M" } },
+      { "shape": "swirl", "colour": "#E4572E", "anim": { "type": "glow", "output": "Q", "min": 0, "max": 10 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows queasiness building when the eyes and the inner ear report different things",
+      "Shows the mismatch shrinking when the eyes can see the motion too (looking out the window)",
+      "Shows time adding up: a short read is fine, a long one is not"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Explain why some people are more sensitive than others",
+      "Include smells, heat or a full stomach, which can make it worse"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you feel car-sick, tell the driver — stopping for fresh air and looking at the horizon helps."
+  },
+  "sources": ["NIH NIDCD: Balance and the inner ear (student overview)", "CK-12 Life Science: senses — balance"]
+}

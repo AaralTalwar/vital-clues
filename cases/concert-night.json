@@ -1,0 +1,241 @@
+{
+  "id": "concert-night",
+  "version": 1,
+  "title": "The Concert Night",
+  "system": "Loud sound & short sleep",
+  "model": "noise-sleep",
+  "colour": "purple",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Ears & hearing",
+    "Brain & sleep"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Hana",
+    "age": 16
+  },
+  "briefing": "Hana, 16, spends three hours in the front row of a concert on a school night, gets home at 1 a.m. and is up at 6:30. In chemistry the next morning her ears ring, the teacher sounds muffled, and she keeps zoning out and forgetting what was just said. Her friend Leila went too, but stood at the back with earplugs.",
+  "question": "Is one thing wrong with Hana this morning — or two?",
+  "illustration": "soundwave",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Front row, three hours",
+      "icon": "soundwave",
+      "colour": "amber",
+      "text": "A sound-meter app on her phone read about 108 dB by the speakers. Normal conversation is about 60 dB.",
+      "shows": "a huge dose of sound energy for hours",
+      "visual": {
+        "type": "bars",
+        "from": 60,
+        "to": 108,
+        "unit": "dB, talking → front row"
+      },
+      "pointsTo": "loud"
+    },
+    {
+      "id": 2,
+      "title": "Ringing and muffled",
+      "icon": "ear",
+      "colour": "purple",
+      "text": "Her ears are still ringing at breakfast. In class the teacher sounds far away, as if through a pillow.",
+      "shows": "tired hair cells in her inner ear",
+      "visual": null,
+      "pointsTo": "hair"
+    },
+    {
+      "id": 3,
+      "title": "Five and a half hours of sleep",
+      "icon": "bed",
+      "colour": "purple",
+      "text": "Home at 1 a.m., alarm at 6:30. On a normal school night she sleeps about nine hours.",
+      "shows": "a night far shorter than her brain needs",
+      "visual": null,
+      "pointsTo": "sleep"
+    },
+    {
+      "id": 4,
+      "title": "Leila zoned out too",
+      "icon": "brain",
+      "colour": "teal",
+      "text": "Leila wore earplugs and has no ringing at all — but she yawned through chemistry and forgot the homework too.",
+      "shows": "sleepiness happening even with protected ears",
+      "visual": null,
+      "pointsTo": "focus"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "Two separate things: the loud music tired the hair cells in her inner ear (ringing, muffled hearing), and the short night left her brain under-slept (zoning out, forgetting).",
+      "best": true
+    },
+    {
+      "id": "B",
+      "text": "The loud concert hurt her hearing, which is why she can't follow the lesson.",
+      "flaw": "Hearing alone can't explain why Leila, with earplugs and no ringing, zoned out just as much."
+    },
+    {
+      "id": "C",
+      "text": "She's just tired from a late night.",
+      "flaw": "Tiredness doesn't make your ears ring or voices sound muffled."
+    },
+    {
+      "id": "D",
+      "text": "She's coming down with a cold.",
+      "flaw": "A cold doesn't make your ears ring after a concert, and it wouldn't hit both friends the same morning in the same way."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "B": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "C": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        2
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "F",
+    "prompt": "Hana stands near the speakers for three hours. As the loudness goes up from 70 to 110 decibels, what happens to how tired her inner-ear hair cells get?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "If she slept eight hours instead of five, what would happen to her morning focus?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 105,
+    "secondary": 5.5
+  },
+  "concepts": [
+    {
+      "id": "loud",
+      "label": "very loud sound",
+      "colour": "amber",
+      "synonyms": [
+        "loud",
+        "loudness",
+        "decibels",
+        "db",
+        "volume",
+        "noise",
+        "noisy",
+        "speakers"
+      ],
+      "hint": "What was different about the front row?"
+    },
+    {
+      "id": "hair",
+      "label": "tired hair cells → ringing",
+      "colour": "purple",
+      "synonyms": [
+        "hair",
+        "hair cells",
+        "hairs",
+        "inner ear",
+        "cochlea",
+        "ringing",
+        "muffled",
+        "ears"
+      ],
+      "hint": "What inside the ear was worn out by the sound?"
+    },
+    {
+      "id": "sleep",
+      "label": "too little sleep",
+      "colour": "blue",
+      "synonyms": [
+        "sleep",
+        "slept",
+        "sleeping",
+        "sleepy",
+        "late night",
+        "bedtime",
+        "five hours"
+      ],
+      "hint": "What else was short that night?"
+    },
+    {
+      "id": "focus",
+      "label": "a tired brain can't focus",
+      "colour": "teal",
+      "synonyms": [
+        "focus",
+        "concentrate",
+        "concentration",
+        "attention",
+        "zoning out",
+        "zoned out",
+        "forgetting",
+        "forgot",
+        "memory"
+      ],
+      "hint": "What does a short night do to the brain in class?"
+    },
+    {
+      "id": "both",
+      "label": "two separate causes",
+      "colour": "coral",
+      "synonyms": [
+        "both",
+        "two",
+        "two things",
+        "separate",
+        "as well",
+        "also"
+      ],
+      "hint": "Is it one problem or two?"
+    }
+  ],
+  "transfer": {
+    "context": "After a full day at a loud amusement park and a 2 a.m. drive home, Diego wakes up with his ears buzzing and can't remember the directions his mom gave him five minutes ago.",
+    "illustration": "car",
+    "options": [
+      "Two things: loud noise tired his inner-ear hair cells, and short sleep left his brain foggy.",
+      "The roller coasters shook his brain.",
+      "His ears are full of water from the log ride.",
+      "He's just not paying attention."
+    ],
+    "answer": 0,
+    "retryHint": "Two different symptoms — which of Hana's clues separated them?",
+    "retryClue": 4,
+    "explanation": "Diego has the same two problems as Hana: hours of loud noise tired the hair cells in his inner ear (the buzzing), and a 2 a.m. night left his brain under-slept (the forgetting). Fixing one wouldn't fix the other."
+  },
+  "takeaway": "Two symptoms can have two causes. Loud sound tires the hair cells that turn sound into signals; short sleep leaves the brain without the night it needs to reset and store the day. Fix one and the other is still there."
+}

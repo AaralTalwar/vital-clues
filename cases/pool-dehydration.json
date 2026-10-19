@@ -1,0 +1,82 @@
+{
+  "id": "pool-dehydration",
+  "version": 1,
+  "title": "The Thirsty Swimmer",
+  "system": "Kidneys & water",
+  "model": "water-balance",
+  "colour": "blue",
+  "minutes": 8,
+  "level": "difficult",
+  "twist": "He was surrounded by water the whole time, so 'dehydrated' sounds impossible — but skin doesn't drink pool water, and sweat hidden in the pool still leaves the body.",
+  "reviewed": null,
+  "character": { "name": "Kenji", "age": 15 },
+  "briefing": "Kenji, 15, swims a hard two-hour practice in an outdoor pool on a warm afternoon. Afterwards he has a headache, he's very thirsty, and his pee is dark yellow. “How can I be low on water?” he asks. “I've been in water for two hours!”",
+  "question": "Can you run low on water while you're surrounded by it?",
+  "illustration": "swimmer",
+  "clues": [
+    { "id": 1, "title": "Two hours of hard laps", "icon": "swimmer", "colour": "coral",
+      "text": "The practice was all sprints and long sets on an 85 °F afternoon. He's exhausted.",
+      "shows": "hard work making a lot of body heat", "visual": null, "pointsTo": "sweat" },
+    { "id": 2, "title": "Lighter after practice", "icon": "weights", "colour": "blue",
+      "text": "The coach weighs the swimmers before and after. Kenji is about 1.5 pounds lighter — nearly three cups of water gone.",
+      "shows": "water leaving his body during practice, even though he never felt sweaty", "visual": { "type": "bars", "from": 0, "to": 1.5, "unit": "pounds lighter after practice" }, "pointsTo": "pool" },
+    { "id": 3, "title": "Full water bottle", "icon": "glass", "colour": "teal",
+      "text": "His water bottle sat at the end of the lane the whole practice. It's still almost full.",
+      "shows": "almost no water going back in", "visual": null, "pointsTo": "drink" },
+    { "id": 4, "title": "Thirsty, dark pee", "icon": "kidneys", "colour": "blue",
+      "text": "He's desperately thirsty, and when he pees it's dark yellow and there isn't much.",
+      "shows": "his kidneys holding water back and his brain signalling thirst", "visual": null, "pointsTo": "kidneys" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "Chlorine in the pool made him feel unwell.", "flaw": "Chlorine wouldn't make him a pound and a half lighter, and it doesn't make the kidneys save water." },
+    { "id": "B", "text": "He's just worn out from a hard practice.", "flaw": "Tiredness explains the heavy arms, but not the thirst, the dark pee, or the weight he lost." },
+    { "id": "C", "text": "His skin soaked up so much pool water that his body is overloaded.", "flaw": "If he'd soaked up water he'd be heavier and peeing a lot — instead he's lighter and his pee is dark and scarce." },
+    { "id": "D", "text": "Hard swimming made him sweat, the pool hid it, and he drank almost nothing, so more water left his body than came in.", "best": true }
+  ],
+  "evidence": {
+    "A": { "supports": [], "doesntFit": [2, 4] },
+    "B": { "supports": [1], "doesntFit": [4] },
+    "C": { "supports": [], "doesntFit": [2, 4] },
+    "D": { "supports": [1, 2, 3, 4], "doesntFit": [] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "L",
+    "prompt": "Kenji swims hard for three hours and drinks only about half a cup an hour. What happens to the water level in his body over those three hours?",
+    "expectedShape": "falls",
+    "second": { "question": "And the amount of pee his kidneys make?", "options": ["up", "same", "down"], "answer": "down" }
+  },
+  "labDefaults": { "primary": 7, "secondary": 0.5 },
+  "concepts": [
+    { "id": "sweat", "label": "sweating", "colour": "coral",
+      "synonyms": ["sweat", "sweating", "sweated", "sweats", "losing water", "lost water", "loses water"],
+      "hint": "How does a hard-working body get rid of heat — even in a pool?" },
+    { "id": "pool", "label": "the pool hid it", "colour": "blue",
+      "synonyms": ["pool", "hidden", "hid", "couldn't tell", "could not tell", "didn't notice", "did not notice", "wet skin", "already wet"],
+      "hint": "Why didn't he notice he was sweating?" },
+    { "id": "drink", "label": "he barely drank", "colour": "teal",
+      "synonyms": ["drink", "drank", "drinking", "didn't drink", "did not drink", "bottle", "more out than in"],
+      "hint": "How much water went back in?" },
+    { "id": "kidneys", "label": "kidneys save water", "colour": "blue",
+      "synonyms": ["kidneys", "kidney", "pee", "urine", "dark yellow"],
+      "hint": "Why was his pee dark and scarce?" },
+    { "id": "thirst", "label": "thirst signal", "colour": "amber",
+      "synonyms": ["thirst", "thirsty", "headache", "brain", "signal"],
+      "hint": "How was his body telling him to drink?" }
+  ],
+  "transfer": {
+    "context": "Ingrid, 16, plays a hard hockey game in an icy rink, sweating under heavy pads. Afterwards she's very thirsty and confused — “It was freezing in there, how could I lose water?”",
+    "illustration": "snowflake",
+    "options": [
+      "The cold air froze the water in her body.",
+      "The ice soaked up her sweat.",
+      "Her heavy stick tired her out.",
+      "She sweated under her pads during hard play and drank little — cold or wet surroundings don't stop water leaving the body."
+    ],
+    "answer": 3,
+    "retryHint": "Sweating somewhere you wouldn't expect it — which of Kenji's clues proved water was leaving anyway?",
+    "retryClue": 2,
+    "explanation": "Like Kenji in the pool, Ingrid's surroundings hid the sweat: the rink is cold, but under the pads her working muscles made plenty of heat. What matters is the water budget — sweat out versus water in — not what's around you."
+  },
+  "takeaway": "Your water budget doesn't care what's around you. Hard work makes you sweat even in a pool or an ice rink, and only what you drink puts water back."
+}

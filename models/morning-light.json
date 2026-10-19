@@ -1,0 +1,47 @@
+{
+  "id": "morning-light",
+  "name": "Brain & morning light",
+  "colour": "amber",
+  "inputs": {
+    "primary":   { "key": "L", "label": "Bright morning light each day", "min": 0, "max": 60, "step": 5, "unit": "min", "ticks": ["none", "30 min", "1 hour"] },
+    "secondary": { "key": "d", "label": "Days of the routine", "min": 1, "max": 14, "step": 1, "default": 14, "unit": "days", "ticks": ["day 1", "1 week", "2 weeks"] }
+  },
+  "outputs": [
+    { "key": "C", "label": "Body clock shifted earlier", "unit": "min", "colour": "amber", "decimals": 0 },
+    { "key": "T", "label": "Feels sleepy at", "colour": "purple", "bands": [{ "upTo": 20, "text": "about 1:00 a.m." }, { "upTo": 45, "text": "about 12:15 a.m." }, { "upTo": 70, "text": "about 11:30 p.m." }, { "text": "about 10:30 p.m." }] },
+    { "key": "F", "label": "Lying awake after 10:30 p.m.", "unit": "min", "colour": "blue", "decimals": 0 },
+    { "key": "B", "label": "Morning light reaching the eyes", "unit": "min", "colour": "amber", "decimals": 0, "hidden": true }
+  ],
+  "rules": {
+    "C": "clamp(L * 1.5 * (1 - pow(0.5, d / 4)), 0, 90)",
+    "T": "clamp(L * 1.5 * (1 - pow(0.5, d / 4)), 0, 90)",
+    "F": "clamp(150 - 1.5 * clamp(L * 1.5 * (1 - pow(0.5, d / 4)), 0, 90), 10, 150)",
+    "B": "L"
+  },
+  "chart": { "x": "L", "y": "C", "xLabel": "minutes of bright morning light", "yLabel": "body clock shifted earlier (min)", "yMin": 0, "yMax": 100 },
+  "overlay": {
+    "base": "head",
+    "caption": "bright morning light → eyes → brain's clock moves earlier → sleepy sooner at night",
+    "parts": [
+      { "shape": "brain", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "C", "min": 0, "max": 90 } },
+      { "shape": "eye", "colour": "#16213E" },
+      { "shape": "sun", "colour": "#F4A300", "anim": { "type": "glow", "output": "B", "min": 0, "max": 60 } },
+      { "shape": "moon", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "C", "min": 0, "max": 90 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows bright morning light moving the body clock earlier",
+      "Shows the shift building over days of the routine",
+      "Shows an earlier clock meaning less time lying awake at night"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include evening screens, caffeine, stress or weekends",
+      "Diagnose anything; everyone's clock drifts sometimes"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you're exhausted every day no matter what you try, talk with an adult you trust."
+  },
+  "sources": ["NIH News in Health: 'Tired? Blame your body clock'", "NIH NIGMS: circadian rhythms fact sheet (student overview)"]
+}

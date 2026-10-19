@@ -1,0 +1,232 @@
+{
+  "id": "pollen-season-runner",
+  "version": 1,
+  "title": "The Pollen-Season Runner",
+  "system": "Pollen & breathing",
+  "model": "pollen-breathing",
+  "colour": "teal",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Immune system",
+    "Lungs & breathing"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Sofia",
+    "age": 15
+  },
+  "briefing": "Sofia, 15, runs cross-country. In spring, walking through the park she sneezes a few times; on hard training runs through the same park her eyes stream and she sneezes in fits. On the gym treadmill, at the same fast pace, she doesn't sneeze at all.",
+  "question": "Why does running harder make her sneezing worse — but not on a treadmill?",
+  "illustration": "runner",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Spring park, very high pollen",
+      "icon": "flower",
+      "colour": "amber",
+      "text": "The pollen count on her weather app says 'very high'. The trees along the trail are in full bloom.",
+      "shows": "lots of pollen in the air",
+      "visual": null,
+      "pointsTo": "pollen"
+    },
+    {
+      "id": 2,
+      "title": "Streaming eyes, sneezing fits",
+      "icon": "nose",
+      "colour": "coral",
+      "text": "Itchy, watery eyes and bursts of five or six sneezes at a time. Her nose runs the whole way.",
+      "shows": "her immune system sounding the alarm",
+      "visual": null,
+      "pointsTo": "immune"
+    },
+    {
+      "id": 3,
+      "title": "Worse on hard runs",
+      "icon": "lungs",
+      "colour": "teal",
+      "text": "On easy walks she sneezes a few times. On hard runs through the same park — breathing about 40 times a minute — she can't stop.",
+      "shows": "the harder she breathes, the more air (and pollen) she pulls in",
+      "visual": {
+        "type": "bars",
+        "from": 14,
+        "to": 40,
+        "unit": "breaths/min, walking → hard run"
+      },
+      "pointsTo": "breathe"
+    },
+    {
+      "id": 4,
+      "title": "Treadmill: nothing",
+      "icon": "sneaker",
+      "colour": "purple",
+      "text": "Indoors on the treadmill at the same pace, windows closed, she breathes just as hard and doesn't sneeze once.",
+      "shows": "hard breathing only matters when there's pollen in the air",
+      "visual": null,
+      "pointsTo": "indoors"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "She's allergic to pollen; her immune system reacts to it.",
+      "flaw": "Pollen alone doesn't explain why the same park is far worse when she runs hard than when she walks."
+    },
+    {
+      "id": "B",
+      "text": "Hard running irritates her nose and airways.",
+      "flaw": "On the treadmill she breathes just as hard and doesn't sneeze at all."
+    },
+    {
+      "id": "C",
+      "text": "Both: her immune system treats pollen as an intruder, and running hard makes her breathe in far more air — so far more pollen — each minute, which sets off a bigger alarm.",
+      "best": true
+    },
+    {
+      "id": "D",
+      "text": "She's catching a cold from the cold morning air.",
+      "flaw": "A cold wouldn't vanish on an indoor treadmill or depend on the pollen count."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [
+        3
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "C": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "S",
+    "prompt": "Sofia runs at a fast training pace. As the pollen count rises from none to very high, what happens to how often she sneezes?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "At the same pollen count, if she slows from running to walking, what happens to her sneezing?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 8,
+    "secondary": 8
+  },
+  "concepts": [
+    {
+      "id": "pollen",
+      "label": "pollen in the air",
+      "colour": "amber",
+      "synonyms": [
+        "pollen",
+        "trees",
+        "flowers",
+        "spring",
+        "allergen"
+      ],
+      "hint": "What's in the park air that isn't in the gym?"
+    },
+    {
+      "id": "immune",
+      "label": "the immune system reacts",
+      "colour": "coral",
+      "synonyms": [
+        "immune",
+        "allergy",
+        "allergic",
+        "alarm",
+        "histamine",
+        "reacts",
+        "reaction"
+      ],
+      "hint": "Which body system is doing the sneezing?"
+    },
+    {
+      "id": "breathe",
+      "label": "breathing pulls air in",
+      "colour": "teal",
+      "synonyms": [
+        "breathe",
+        "breathing",
+        "breathes",
+        "breaths",
+        "breath",
+        "air"
+      ],
+      "hint": "What changes when she runs instead of walks?"
+    },
+    {
+      "id": "more",
+      "label": "a bigger dose",
+      "colour": "purple",
+      "synonyms": [
+        "more",
+        "harder",
+        "faster",
+        "extra",
+        "bigger dose",
+        "pulls in",
+        "dose"
+      ],
+      "hint": "How does running change how much pollen gets in?"
+    },
+    {
+      "id": "indoors",
+      "label": "no pollen, no problem",
+      "colour": "blue",
+      "synonyms": [
+        "indoors",
+        "treadmill",
+        "inside",
+        "windows closed",
+        "no pollen",
+        "gym"
+      ],
+      "hint": "What does the treadmill run prove?"
+    }
+  ],
+  "transfer": {
+    "context": "Leo mows the lawn on a warm May afternoon and starts sneezing. Pushing the mower up the steep part of the yard, breathing hard, his sneezing gets much worse. Mowing the same lawn after a rainstorm, he barely sneezes.",
+    "illustration": "flower",
+    "options": [
+      "Mowers are loud.",
+      "Grass pollen sets off his immune system, and breathing harder pulls in more of it; rain washes pollen out of the air.",
+      "The steep part of the yard is colder.",
+      "He has a cold that comes and goes."
+    ],
+    "answer": 1,
+    "retryHint": "Worse when breathing hard, almost nothing when the pollen is gone — which of Sofia's clues matched each part?",
+    "retryClue": 3,
+    "explanation": "Leo's immune system reacts to grass pollen. Pushing uphill makes him breathe more air per minute, so he inhales a bigger pollen dose and the alarm gets louder. After rain there's little pollen in the air, so even hard breathing brings in little — just like Sofia's treadmill."
+  },
+  "takeaway": "The size of an allergy alarm depends on the dose. The immune system reacts to pollen; how much reaches it depends on how much is in the air and how much air you breathe. Run harder in pollen and you inhale a bigger dose."
+}

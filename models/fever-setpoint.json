@@ -1,0 +1,47 @@
+{
+  "id": "fever-setpoint",
+  "name": "Immune system & fever",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "G", "label": "How hard the immune system is fighting", "min": 0, "max": 10, "step": 1, "ticks": ["no germs", "fighting", "big fight"] },
+    "secondary": { "key": "H", "label": "Hours since the fight started", "min": 0, "max": 12, "step": 1, "default": 1, "unit": "h", "ticks": ["start", "6 h", "12 h"] }
+  },
+  "outputs": [
+    { "key": "S", "label": "Brain's thermostat set to", "unit": "°F", "colour": "purple", "decimals": 1 },
+    { "key": "T", "label": "Body temperature", "unit": "°F", "colour": "coral", "decimals": 1 },
+    { "key": "V", "label": "Shivering", "unit": "0–10", "colour": "amber", "decimals": 0 },
+    { "key": "F", "label": "He feels", "colour": "blue", "bands": [{ "upTo": 0.3, "text": "warm" }, { "upTo": 1, "text": "chilly" }, { "text": "cold and shivery" }] }
+  ],
+  "rules": {
+    "S": "98.6 + 0.3 * G",
+    "T": "98.6 + 0.3 * G - 0.3 * G * pow(0.5, H / 1.5)",
+    "V": "round(clamp(0.3 * G * pow(0.5, H / 1.5) * 6, 0, 10))",
+    "F": "0.3 * G * pow(0.5, H / 1.5)"
+  },
+  "chart": { "x": "G", "y": "T", "xLabel": "how hard the immune system is fighting", "yLabel": "body temperature (°F)", "yMin": 98, "yMax": 102 },
+  "overlay": {
+    "base": "torso",
+    "caption": "germs → immune system turns the brain's thermostat up → shiver to heat up",
+    "parts": [
+      { "shape": "germs", "colour": "#1B998B", "anim": { "type": "count", "output": "G", "min": 0, "max": 10 } },
+      { "shape": "core", "colour": "#E4572E", "anim": { "type": "glow", "output": "T", "min": 98.6, "max": 101.6 } },
+      { "shape": "thermostat", "colour": "#6C4AB6" },
+      { "shape": "shiverMarks", "colour": "#F4A300", "anim": { "type": "shiver", "output": "V" } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the immune system raising the brain's temperature set point while it fights germs",
+      "Shows the body shivering to heat up until it reaches the new, higher set point",
+      "Shows the gap (and the shivering) shrinking over the first hours"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Model high or dangerous fevers; it stops at about 101.6 °F",
+      "Say anything about what to do for a fever"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "A fever that is very high or lasts more than a couple of days is a reason to tell an adult."
+  },
+  "sources": ["CK-12 Life Science: immune system and homeostasis", "NIH MedlinePlus: Fever (overview for students and families)"]
+}

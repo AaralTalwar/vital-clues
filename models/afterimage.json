@@ -1,0 +1,43 @@
+{
+  "id": "afterimage",
+  "name": "Eyes & colour",
+  "colour": "teal",
+  "inputs": {
+    "primary":   { "key": "s", "label": "Seconds staring at red", "min": 0, "max": 60, "step": 5, "unit": "s", "ticks": ["0 s", "30 s", "60 s"] },
+    "secondary": { "key": "b", "label": "How vivid the red is", "min": 1, "max": 3, "step": 1, "default": 3, "ticks": ["dull", "medium", "vivid"] }
+  },
+  "outputs": [
+    { "key": "F", "label": "Red-sensing cells tired", "unit": "%", "colour": "coral", "decimals": 0 },
+    { "key": "G", "label": "Green afterimage strength", "unit": "0–10", "colour": "teal", "decimals": 1 },
+    { "key": "D", "label": "How long it lasts", "unit": "s", "colour": "purple", "decimals": 0 }
+  ],
+  "rules": {
+    "F": "clamp(100 * (1 - pow(0.5, s / 15)) * b / 3, 0, 100)",
+    "G": "clamp(10 * (1 - pow(0.5, s / 15)) * b / 3, 0, 10)",
+    "D": "0.25 * clamp(100 * (1 - pow(0.5, s / 15)) * b / 3, 0, 100)"
+  },
+  "chart": { "x": "s", "y": "G", "xLabel": "seconds staring at red", "yLabel": "green afterimage strength (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "head",
+    "caption": "staring at red → red-sensing cells tire → white looks green until they recover",
+    "parts": [
+      { "shape": "iris", "colour": "#E4572E", "anim": { "type": "shift", "output": "G", "min": 0, "max": 10, "from": "#E4572E", "to": "#1B998B" } },
+      { "shape": "brainGlow", "colour": "#1B998B", "anim": { "type": "glow", "output": "G", "min": 0, "max": 10 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows colour-sensing cells tiring the longer they stare at one colour",
+      "Shows the afterimage being the opposite colour and growing stronger with longer staring",
+      "Shows the effect fading as the cells recover"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Cover colour blindness or how colour is processed in the brain in detail",
+      "Suggest staring at bright lights or the sun — never do that"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Afterimages from paint or paper fade in seconds. If spots in your vision don't fade, tell an adult."
+  },
+  "sources": ["NIH National Eye Institute: how the eyes work (student pages)", "CK-12 Life Science: senses, the eye and colour vision"]
+}

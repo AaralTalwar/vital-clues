@@ -1,0 +1,81 @@
+{
+  "id": "stuffy-nose-taster",
+  "version": 1,
+  "title": "The Stuffy-Nose Taster",
+  "system": "Nose & taste",
+  "model": "smell-taste",
+  "colour": "teal",
+  "minutes": 8,
+  "level": "easy",
+  "reviewed": null,
+  "character": { "name": "Keisha", "age": 14 },
+  "briefing": "Keisha, 14, has a cold and a completely blocked nose. Her favourite strawberry yogurt tastes like “sweet nothing”, and with her eyes closed she can't tell a slice of apple from a slice of potato. She can still tell that lemon is sour and chips are salty.",
+  "question": "Where did the flavour of Keisha's food go?",
+  "illustration": "nose",
+  "clues": [
+    { "id": 1, "title": "Blocked nose", "icon": "nose", "colour": "blue",
+      "text": "Keisha can't breathe through her nose at all. She doesn't notice the toast burning in the kitchen until she sees the smoke.",
+      "shows": "smells not reaching her nose", "visual": null, "pointsTo": "smell" },
+    { "id": 2, "title": "Sweet nothing", "icon": "tongue", "colour": "coral",
+      "text": "Her strawberry yogurt tastes sweet, but not like strawberry. Lemon still tastes sour and chips still taste salty.",
+      "shows": "the tongue's basic tastes still working while the rest of the flavour is missing", "visual": null, "pointsTo": "tongue" },
+    { "id": 3, "title": "Apple or potato?", "icon": "plate", "colour": "amber",
+      "text": "With her eyes closed she can't tell a slice of apple from a slice of raw potato. Both are just “crunchy and a bit sweet”.",
+      "shows": "two different foods becoming impossible to tell apart once smell is gone", "visual": null, "pointsTo": "flavour" },
+    { "id": 4, "title": "Back to normal", "icon": "clock", "colour": "purple",
+      "text": "Three days later her nose clears. The first spoonful of the same yogurt tastes of strawberries again.",
+      "shows": "flavour coming back the moment smell does", "visual": { "type": "bars", "from": 25, "to": 100, "unit": "% flavour, blocked nose → clear nose" }, "pointsTo": "nose" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "Being ill has damaged her tongue.", "flaw": "Her tongue still tastes sweet, salty and sour perfectly well — only the strawberry part is missing, and it came back the moment her nose cleared." },
+    { "id": "B", "text": "The yogurt has gone bad.", "flaw": "Every food lost its flavour at once, not just the yogurt — and the same yogurt tasted normal three days later." },
+    { "id": "C", "text": "She's too tired to notice what she's eating.", "flaw": "She noticed sweet, sour and salty without any trouble; only the flavours that come from smell disappeared." },
+    { "id": "D", "text": "Most of what we call flavour is actually smell: smells from food drift up the back of the throat to the nose. With her nose blocked, only the tongue's basic tastes — like sweet, salty and sour — get through.", "best": true }
+  ],
+  "evidence": {
+    "A": { "supports": [], "doesntFit": [2, 4] },
+    "B": { "supports": [], "doesntFit": [3, 4] },
+    "C": { "supports": [], "doesntFit": [2] },
+    "D": { "supports": [1, 2, 3, 4], "doesntFit": [] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "F",
+    "prompt": "As Keisha's nose gets more and more blocked — from clear to completely stuffed — what happens to how much flavour she notices?",
+    "expectedShape": "falls",
+    "second": { "question": "And the basic sweet and sour tastes from her tongue?", "options": ["up", "same", "down"], "answer": "same" }
+  },
+  "labDefaults": { "primary": 90, "secondary": 0 },
+  "concepts": [
+    { "id": "smell", "label": "smell", "colour": "blue",
+      "synonyms": ["smell", "smells", "smelling", "scent", "scents", "aroma", "odour", "odor"],
+      "hint": "Which sense is missing when your nose is blocked?" },
+    { "id": "nose", "label": "the blocked nose", "colour": "teal",
+      "synonyms": ["nose", "nostrils", "blocked", "stuffy", "stuffed", "congested"],
+      "hint": "Which part of her body is the problem?" },
+    { "id": "tongue", "label": "the tongue's basic tastes", "colour": "coral",
+      "synonyms": ["tongue", "taste buds", "tastebuds", "sweet", "salty", "sour", "bitter"],
+      "hint": "What could she still taste, and with what?" },
+    { "id": "flavour", "label": "flavour", "colour": "amber",
+      "synonyms": ["flavour", "flavor", "flavours", "flavors", "strawberry taste"],
+      "hint": "What is the word for 'tastes like strawberry'?" },
+    { "id": "together", "label": "smell + taste work together", "colour": "purple",
+      "synonyms": ["together", "combine", "combines", "combined", "both", "mix", "mixes", "team"],
+      "hint": "How do the nose and the tongue share the job?" }
+  ],
+  "transfer": {
+    "context": "Leo holds his nose and eats a jellybean. It just tastes sweet. When he lets go of his nose, it suddenly tastes of cherry.",
+    "illustration": "plate",
+    "options": [
+      "Letting go let cherry smells from his mouth reach his nose, adding flavour to the sweet taste his tongue already had.",
+      "Holding his nose stopped his tongue working.",
+      "The jellybean changed flavour as it melted.",
+      "He swallowed too fast to taste it."
+    ],
+    "answer": 0,
+    "retryHint": "Sweet but no flavour, then flavour back the moment the nose opens — which of Keisha's clues matches that?",
+    "retryClue": 4,
+    "explanation": "Leo's tongue tasted 'sweet' the whole time. The cherry part is a smell: once he let go, smell molecules from the jellybean drifted up the back of his throat to his nose and the flavour appeared — exactly what happened when Keisha's nose cleared."
+  },
+  "takeaway": "Flavour is a team effort. Your tongue senses only a few basic tastes; the rest comes from smells that drift up the back of your throat to your nose. Block the nose and food tastes flat."
+}

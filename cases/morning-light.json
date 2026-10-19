@@ -1,0 +1,82 @@
+{
+  "id": "morning-light",
+  "version": 1,
+  "title": "The Morning-Light Fix",
+  "system": "Brain & body clock",
+  "model": "morning-light",
+  "colour": "amber",
+  "minutes": 8,
+  "level": "difficult",
+  "twist": "Most people try to fix a late bedtime at night. Sofia's fix came from the other end of the day: bright light in the morning pulled her body clock earlier.",
+  "reviewed": null,
+  "character": { "name": "Sofia", "age": 16 },
+  "briefing": "Sofia, 16, can't fall asleep before 1 a.m. on school nights, even when she goes to bed at 10. Then her coach moves practice to 6:30 a.m., outdoors at sunrise, for two weeks. By the second week she is yawning at 10:30 p.m. and asleep within minutes.",
+  "question": "How did an early morning practice fix her nights?",
+  "illustration": "sun",
+  "clues": [
+    { "id": 1, "title": "Awake till 1 a.m.", "icon": "bed", "colour": "purple",
+      "text": "Even in the fall, when 4 p.m. swim practice wore her out, she lay awake until about 1 a.m. Going to bed earlier just meant more time staring at the ceiling.",
+      "shows": "a body clock running late, even when she was physically tired", "visual": null, "pointsTo": "clock" },
+    { "id": 2, "title": "Dark mornings", "icon": "moon", "colour": "blue",
+      "text": "In winter she leaves for school in the dark and spends the day indoors. Her bedroom blinds stay shut until noon on weekends.",
+      "shows": "almost no bright light in her mornings", "visual": null, "pointsTo": "light" },
+    { "id": 3, "title": "Sunrise practice", "icon": "sun", "colour": "amber",
+      "text": "For two weeks, practice starts at 6:30 a.m. on an open field as the sun comes up. She is out in bright light for about an hour every morning.",
+      "shows": "a big dose of bright morning light every day", "visual": { "type": "bars", "from": 0, "to": 60, "unit": "minutes of morning daylight, before → practice weeks" }, "pointsTo": "morning" },
+    { "id": 4, "title": "Sleepy by 10:30", "icon": "clock", "colour": "teal",
+      "text": "By the second week she feels sleepy around 10:30 p.m. and falls asleep fast. It happened gradually over several days, not on the first night.",
+      "shows": "her sleepy time moving earlier, day by day", "visual": null, "pointsTo": "earlier" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "Bright light in the morning resets her brain's body clock earlier each day, so her sleep signal arrives earlier at night; dark mornings had let the clock drift late.", "best": true },
+    { "id": "B", "text": "Practice tires her out, so she is exhausted by evening.", "flaw": "Hard afternoon swim practice tired her out last fall and she still lay awake until 1 a.m. — tiredness alone didn't move her bedtime." },
+    { "id": "C", "text": "She just got used to the early alarm.", "flaw": "Getting used to an alarm doesn't make you sleepy earlier at night — that's the body clock moving, and it only moved once her mornings got bright." },
+    { "id": "D", "text": "She is worried about practice, so she goes to bed early to be ready.", "flaw": "Going to bed early never worked before — she just lay awake. What changed is that she actually feels sleepy earlier." }
+  ],
+  "evidence": {
+    "A": { "supports": [1, 2, 3, 4], "doesntFit": [] },
+    "B": { "supports": [4], "doesntFit": [1] },
+    "C": { "supports": [], "doesntFit": [2, 4] },
+    "D": { "supports": [], "doesntFit": [1] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "C",
+    "prompt": "After two weeks of the routine, how far earlier does Sofia's body clock shift as her daily dose of bright morning light goes from none to a full hour?",
+    "expectedShape": "rises",
+    "second": { "question": "And the time she spends lying awake at night?", "options": ["up", "same", "down"], "answer": "down" }
+  },
+  "labDefaults": { "primary": 60, "secondary": 14 },
+  "concepts": [
+    { "id": "light", "label": "bright light", "colour": "amber",
+      "synonyms": ["light", "sunlight", "bright", "daylight", "sunrise"],
+      "hint": "What reached her eyes at practice that didn't before?" },
+    { "id": "morning", "label": "in the morning", "colour": "amber",
+      "synonyms": ["morning", "mornings", "early", "practice"],
+      "hint": "When in the day did the change happen?" },
+    { "id": "clock", "label": "the body clock", "colour": "purple",
+      "synonyms": ["clock", "body clock", "rhythm", "timing", "circadian"],
+      "hint": "What inside her brain decides when she feels sleepy?" },
+    { "id": "earlier", "label": "moved earlier", "colour": "teal",
+      "synonyms": ["earlier", "sooner", "shifted", "shifts", "moved", "resets", "reset"],
+      "hint": "Which way did her sleepy time move?" },
+    { "id": "sleep", "label": "sleep signal at night", "colour": "blue",
+      "synonyms": ["sleep", "sleepy", "melatonin", "sleep signal", "fall asleep", "bedtime"],
+      "hint": "What arrives at night when the clock says it's time?" }
+  ],
+  "transfer": {
+    "context": "After a summer of sleeping until noon, Ben dreads the first week of school. His sister suggests he eats breakfast on the sunny porch every morning for the week before school starts.",
+    "illustration": "plate",
+    "options": [
+      "Breakfast food makes you sleepy at night.",
+      "Fresh air will tire him out.",
+      "Bright morning light will pull his body clock earlier, so he gets sleepy at a normal bedtime.",
+      "It's a nice habit, but it can't change when he feels sleepy."
+    ],
+    "answer": 2,
+    "retryHint": "What changed in Sofia's mornings before her bedtime moved?",
+    "retryClue": 3,
+    "explanation": "The porch gives Ben what sunrise practice gave Sofia: bright light first thing every morning. That light nudges his body clock earlier day by day, so after a week his sleep signal arrives near a school-night bedtime."
+  },
+  "takeaway": "Your body clock is set by light. Bright light in the morning pulls it earlier, so sleepiness arrives earlier at night — the best fix for a late bedtime starts at sunrise."
+}

@@ -1,0 +1,82 @@
+{
+  "id": "mountain-hike",
+  "version": 1,
+  "title": "The Mountain Hike",
+  "system": "Altitude + water",
+  "model": "altitude-water",
+  "colour": "blue",
+  "minutes": 10,
+  "level": "complex",
+  "systems": ["Oxygen & altitude", "Kidneys & water"],
+  "reviewed": null,
+  "character": { "name": "Elena", "age": 15 },
+  "briefing": "Elena, 15, hikes a trail from a valley up to a lake at 11,000 feet on a dry, sunny day, carrying one small water bottle. By the afternoon she is panting on gentle slopes, her heart is pounding even when she sits, her lips are cracked, and she has a headache.",
+  "question": "Is it the height, the water, or something else?",
+  "illustration": "mountain",
+  "clues": [
+    { "id": 1, "title": "Breathless on easy slopes", "icon": "lungs", "colour": "teal",
+      "text": "Near the top, even a gentle slope leaves her panting. At the trailhead that morning she walked the same kind of slope easily.",
+      "shows": "each breath carrying less oxygen high up", "visual": null, "pointsTo": "altitude" },
+    { "id": 2, "title": "Heart pounding at rest", "icon": "heart", "colour": "coral",
+      "text": "Sitting by the lake, her pulse is about 95. At home her resting pulse is about 70.",
+      "shows": "her heart working harder to deliver oxygen", "visual": { "type": "bars", "from": 70, "to": 95, "unit": "resting pulse, home → 11,000 ft" }, "pointsTo": "oxygen" },
+    { "id": 3, "title": "Bottle empty by noon", "icon": "glass", "colour": "blue",
+      "text": "The dry mountain air and sun had her sweating, and her one small bottle was empty by noon. Her lips cracked and she felt really thirsty.",
+      "shows": "more water leaving than coming in", "visual": null, "pointsTo": "water" },
+    { "id": 4, "title": "Two problems, two fixes", "icon": "kidneys", "colour": "amber",
+      "text": "Her one bathroom stop gave very little, dark-yellow pee. After refilling from a filtered stream and drinking two cups, her headache eased — but the panting only went away once she hiked back down.",
+      "shows": "the water problem easing with a drink while the breathing problem only eased lower down", "visual": null, "pointsTo": "kidneys" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "Thin air: there's less oxygen in each breath at 11,000 feet, so her lungs and heart work harder.", "flaw": "Thin air explains the panting and pounding heart, but not the cracked lips, dark pee and a headache that eased with water." },
+    { "id": "B", "text": "She is low on water: she lost more through sweat than she drank.", "flaw": "Low water explains the thirst and dark pee, but not why she panted on gentle slopes — and drinking didn't fix that." },
+    { "id": "C", "text": "She is just unfit for hiking.", "flaw": "Fitness can't change in an afternoon, yet her breathing improved as soon as she walked down — and fitness doesn't explain dark pee." },
+    { "id": "D", "text": "Both: the thin air means less oxygen per breath, so she breathes and pumps harder — and breathing hard in dry mountain air plus sweating made her lose more water than she drank.", "best": true }
+  ],
+  "evidence": {
+    "A": { "supports": [1, 2], "doesntFit": [3] },
+    "B": { "supports": [3, 4], "doesntFit": [1] },
+    "C": { "supports": [], "doesntFit": [3, 4] },
+    "D": { "supports": [1, 2, 3, 4], "doesntFit": [] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "L",
+    "prompt": "Elena drinks half a cup of water an hour. As the trail climbs from sea level to 12,000 feet, what happens to her body water after four hours?",
+    "expectedShape": "falls",
+    "second": { "question": "And her breathing rate at rest as she climbs?", "options": ["up", "same", "down"], "answer": "up" }
+  },
+  "labDefaults": { "primary": 11, "secondary": 0.5 },
+  "concepts": [
+    { "id": "altitude", "label": "high altitude, thin air", "colour": "blue",
+      "synonyms": ["altitude", "high", "thin air", "thinner air", "mountain", "elevation", "height"],
+      "hint": "What's different about the air up at the lake?" },
+    { "id": "oxygen", "label": "less oxygen → breathe and pump harder", "colour": "teal",
+      "synonyms": ["oxygen", "o2", "breathe", "breathing", "breathless", "panting", "heart"],
+      "hint": "Why are her lungs and heart working harder?" },
+    { "id": "water", "label": "water lost faster than drunk", "colour": "coral",
+      "synonyms": ["water", "dehydrated", "thirsty", "thirst", "sweat", "sweating", "drink", "drank"],
+      "hint": "Where did her water go, and how much came back in?" },
+    { "id": "kidneys", "label": "kidneys save water", "colour": "amber",
+      "synonyms": ["kidneys", "kidney", "pee", "urine", "dark yellow"],
+      "hint": "What did her body do about the low water?" },
+    { "id": "both", "label": "both at once", "colour": "purple",
+      "synonyms": ["both", "together", "combined", "two problems", "as well as", "plus"],
+      "hint": "Can one cause explain everything she felt?" }
+  ],
+  "transfer": {
+    "context": "On a ski trip at 9,000 feet, Jamal forgets his water bottle all day. That evening he's out of breath climbing the lodge stairs, has a pounding headache and very dark pee.",
+    "illustration": "skier",
+    "options": [
+      "Both: thin air gives less oxygen per breath, and a day in dry mountain air without water left him low on water.",
+      "Only thin air — water has nothing to do with it.",
+      "Only low water — the altitude doesn't matter.",
+      "The lodge heating is turned up too high."
+    ],
+    "answer": 0,
+    "retryHint": "One of Elena's problems eased with a drink and the other only going downhill — which clue showed that?",
+    "retryClue": 4,
+    "explanation": "Jamal has both of Elena's problems. Thin air explains the breathless stairs; a day of dry air and no bottle explains the headache and dark pee. A drink will help the second, but only time at altitude or lower ground fixes the first."
+  },
+  "takeaway": "Two problems can stack. At altitude each breath carries less oxygen, so you breathe and pump harder — and breathing hard in dry mountain air also drains water. A drink fixes one; only time or lower ground fixes the other."
+}

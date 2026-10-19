@@ -6,6 +6,7 @@
   "model": "water-balance",
   "colour": "blue",
   "minutes": 8,
+  "level": "easy",
   "reviewed": null,
   "character": {
     "name": "Priya",

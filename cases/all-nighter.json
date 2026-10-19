@@ -1,0 +1,234 @@
+{
+  "id": "all-nighter",
+  "version": 1,
+  "title": "The All-Nighter",
+  "system": "Sleep & memory",
+  "model": "sleep-memory",
+  "colour": "purple",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Brain & sleep",
+    "Brain & memory"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Chloe",
+    "age": 16
+  },
+  "briefing": "Chloe, 16, has a history test on Friday. On Wednesday she studies for an hour and sleeps nine hours. On Thursday she studies five more hours, until 3 a.m., and sleeps three. In the test she yawns, rereads questions, and can't recall the dates she crammed on Thursday — but Wednesday's material comes back easily.",
+  "question": "Why did five extra hours of studying barely help?",
+  "illustration": "bed",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Three hours of sleep",
+      "icon": "bed",
+      "colour": "purple",
+      "text": "Up studying until 3 a.m., alarm at 6. Her usual school night is about nine hours.",
+      "shows": "a night far shorter than her brain needs",
+      "visual": {
+        "type": "bars",
+        "from": 9,
+        "to": 3,
+        "unit": "hours of sleep, Wednesday → Thursday"
+      },
+      "pointsTo": "sleep"
+    },
+    {
+      "id": 2,
+      "title": "Yawning, rereading questions",
+      "icon": "brain",
+      "colour": "amber",
+      "text": "She reads some questions three times before they make sense, and keeps losing her place.",
+      "shows": "a tired brain struggling to focus",
+      "visual": null,
+      "pointsTo": "tired"
+    },
+    {
+      "id": 3,
+      "title": "Wednesday's facts stuck",
+      "icon": "book",
+      "colour": "teal",
+      "text": "What she studied on Wednesday — then slept nine hours — came back quickly and clearly.",
+      "shows": "material followed by a full night's sleep was stored well",
+      "visual": null,
+      "pointsTo": "store"
+    },
+    {
+      "id": 4,
+      "title": "Thursday's facts gone",
+      "icon": "clock",
+      "colour": "coral",
+      "text": "The dates she crammed after midnight felt familiar but wouldn't come back, even when she wasn't rushed.",
+      "shows": "studying without sleep afterwards didn't get properly saved",
+      "visual": null,
+      "pointsTo": "store"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "The test was harder than the practice questions.",
+      "flaw": "A harder test wouldn't make Wednesday's facts come back easily and Thursday's not at all."
+    },
+    {
+      "id": "B",
+      "text": "She was too tired to concentrate during the test.",
+      "flaw": "If it were only tiredness in the test, Wednesday's facts would be just as hard to recall as Thursday's — but they came back easily."
+    },
+    {
+      "id": "C",
+      "text": "The extra studying didn't get stored, because memories are saved during sleep.",
+      "flaw": "Storage alone doesn't explain the yawning and having to reread questions."
+    },
+    {
+      "id": "D",
+      "text": "Both: sleep is when the brain stores what you studied, so Thursday night's cramming was never properly saved — and the short night also left her too tired to focus during the test.",
+      "best": true
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "C": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        2
+      ]
+    },
+    "D": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "M",
+    "prompt": "Chloe studies the same amount each time. As she gets more hours of sleep afterwards — from 2 to 10 — what happens to how much of what she studied her brain stores?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "If she studies more hours but still sleeps only three, what happens to her alertness in the test?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "same"
+    }
+  },
+  "labDefaults": {
+    "primary": 3,
+    "secondary": 5
+  },
+  "concepts": [
+    {
+      "id": "sleep",
+      "label": "too little sleep",
+      "colour": "purple",
+      "synonyms": [
+        "sleep",
+        "slept",
+        "sleeping",
+        "three hours",
+        "all-nighter",
+        "all nighter",
+        "short night"
+      ],
+      "hint": "What was different about Thursday night?"
+    },
+    {
+      "id": "store",
+      "label": "sleep stores memories",
+      "colour": "teal",
+      "synonyms": [
+        "store",
+        "stores",
+        "stored",
+        "storing",
+        "save",
+        "saved",
+        "saves",
+        "memory",
+        "memories"
+      ],
+      "hint": "What does the brain do with the day's learning while you sleep?"
+    },
+    {
+      "id": "tired",
+      "label": "a tired brain",
+      "colour": "amber",
+      "synonyms": [
+        "tired",
+        "tiredness",
+        "yawning",
+        "sleepy",
+        "exhausted"
+      ],
+      "hint": "How did she feel in the test?"
+    },
+    {
+      "id": "focus",
+      "label": "hard to focus",
+      "colour": "coral",
+      "synonyms": [
+        "focus",
+        "concentrate",
+        "concentration",
+        "attention",
+        "rereading",
+        "reread"
+      ],
+      "hint": "What did tiredness do during the test?"
+    },
+    {
+      "id": "both",
+      "label": "two separate costs",
+      "colour": "blue",
+      "synonyms": [
+        "both",
+        "two",
+        "two things",
+        "as well",
+        "also"
+      ],
+      "hint": "Did the short night cost her one thing or two?"
+    }
+  ],
+  "transfer": {
+    "context": "Ana and her friend practise a new dance routine for two hours on Monday evening. Ana sleeps well and dances it better on Tuesday than at the end of practice. Her friend stays up until 3 a.m. gaming, forgets half the steps on Tuesday and keeps yawning.",
+    "illustration": "dancer",
+    "options": [
+      "Ana's friend is a worse dancer.",
+      "Ana warmed up more.",
+      "The routine was changed overnight.",
+      "Sleep stored Ana's practice and left her alert; her friend's short night meant the steps weren't stored and she was too tired to focus."
+    ],
+    "answer": 3,
+    "retryHint": "Same practice, different nights — which of Chloe's clues compared what happened after a full night with what happened after a short one?",
+    "retryClue": 3,
+    "explanation": "Both dancers practised the same amount. Ana's full night let her brain store the routine and left her alert. Her friend lost both: the steps weren't saved, and the tired brain struggled to focus on what was."
+  },
+  "takeaway": "Sleep does two jobs for learning: it stores what you studied during the day, and it leaves you alert enough to use it. An all-nighter loses both — the extra hours of study never get saved, and the tired brain struggles to find what was."
+}

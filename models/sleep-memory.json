@@ -1,0 +1,118 @@
+{
+  "id": "sleep-memory",
+  "name": "Sleep & memory",
+  "colour": "purple",
+  "inputs": {
+    "primary": {
+      "key": "S",
+      "label": "Hours of sleep after studying",
+      "min": 2,
+      "max": 10,
+      "step": 0.5,
+      "unit": "h",
+      "ticks": [
+        "2 h",
+        "6 h",
+        "10 h"
+      ]
+    },
+    "secondary": {
+      "key": "T",
+      "label": "Hours studied",
+      "min": 0,
+      "max": 6,
+      "step": 0.5,
+      "default": 5,
+      "unit": "h",
+      "ticks": [
+        "0",
+        "3 h",
+        "6 h"
+      ]
+    }
+  },
+  "outputs": [
+    {
+      "key": "M",
+      "label": "Studying stored",
+      "unit": "% kept",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "R",
+      "label": "Facts recalled",
+      "unit": "facts",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "A",
+      "label": "Alertness in the test",
+      "unit": "0–10",
+      "colour": "amber",
+      "decimals": 1
+    }
+  ],
+  "rules": {
+    "M": "clamp(15 + 9 * S, 20, 95)",
+    "R": "round(10 * T * clamp(15 + 9 * S, 20, 95) / 100)",
+    "A": "clamp(1.1 * S - 0.5, 1, 10)"
+  },
+  "chart": {
+    "x": "S",
+    "y": "M",
+    "xLabel": "hours of sleep after studying",
+    "yLabel": "studying stored (%)",
+    "yMin": 0,
+    "yMax": 100
+  },
+  "overlay": {
+    "base": "head",
+    "caption": "sleep stores the day's learning · sleep refills alertness",
+    "parts": [
+      {
+        "shape": "brain",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "M",
+          "min": 20,
+          "max": 95
+        }
+      },
+      {
+        "shape": "eye",
+        "colour": "#16213E",
+        "anim": {
+          "type": "glow",
+          "output": "A",
+          "min": 1,
+          "max": 10
+        }
+      },
+      {
+        "shape": "moon",
+        "colour": "#F4A300"
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows how much of what was studied gets stored, rising with the hours of sleep afterwards",
+      "Shows alertness the next day rising with sleep",
+      "Shows extra study hours adding little when sleep is short"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include how well someone studied, interest in the subject, or naps",
+      "Say how much sleep any particular person needs"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If stress about schoolwork keeps you from sleeping, talk to an adult you trust."
+  },
+  "sources": [
+    "CK-12 Life Science: nervous system and memory",
+    "NIH NIGMS: circadian rhythms fact sheet"
+  ]
+}

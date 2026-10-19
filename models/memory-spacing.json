@@ -1,0 +1,43 @@
+{
+  "id": "memory-spacing",
+  "name": "Brain & memory",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "D", "label": "Days the study is spread over", "min": 1, "max": 7, "step": 1, "unit": "days", "ticks": ["1 night", "4 days", "7 days"] },
+    "secondary": { "key": "H", "label": "Total study time", "min": 0.5, "max": 4, "step": 0.5, "default": 2, "unit": "h", "ticks": ["30 min", "2 h", "4 h"] }
+  },
+  "outputs": [
+    { "key": "R", "label": "Words remembered a week later", "unit": "%", "colour": "purple", "decimals": 0 },
+    { "key": "N", "label": "Next-morning quiz score", "unit": "%", "colour": "teal", "decimals": 0 },
+    { "key": "S", "label": "Nights of sleep between sessions", "unit": "nights", "colour": "amber", "decimals": 0 }
+  ],
+  "rules": {
+    "R": "100 - (80 - 10 * H) * pow(0.6, D - 1)",
+    "N": "clamp(40 + 20 * H, 0, 95)",
+    "S": "D - 1"
+  },
+  "chart": { "x": "D", "y": "R", "xLabel": "days the study is spread over", "yLabel": "remembered a week later (%)", "yMin": 0, "yMax": 105 },
+  "overlay": {
+    "base": "head",
+    "caption": "pull it back up after a gap + sleep between sessions → a stronger, longer-lasting memory",
+    "parts": [
+      { "shape": "brain", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "R", "min": 20, "max": 100 } },
+      { "shape": "moon", "colour": "#F4A300", "anim": { "type": "glow", "output": "S", "min": 0, "max": 6 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows that spreading the same practice over more days leaves more remembered a week later",
+      "Shows cramming working about as well for a quiz the very next morning",
+      "Shows the benefit levelling off after several days"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include what kind of studying you do (quizzing yourself beats re-reading)",
+      "Say anything about anyone's ability; it's about method, not talent"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If studying ever feels overwhelming or stressful, talk to a teacher or an adult you trust."
+  },
+  "sources": ["NIH News in Health: sleep and memory (student overview)", "Any educational psychology text: the spacing effect"]
+}

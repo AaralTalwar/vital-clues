@@ -1,0 +1,45 @@
+{
+  "id": "smell-taste",
+  "name": "Nose & taste",
+  "colour": "teal",
+  "inputs": {
+    "primary": { "key": "B", "label": "How blocked her nose is", "min": 0, "max": 100, "step": 10, "unit": "%", "ticks": ["clear", "half", "fully blocked"] }
+  },
+  "outputs": [
+    { "key": "F", "label": "Flavour she notices", "unit": "% of normal", "colour": "amber", "decimals": 0 },
+    { "key": "S", "label": "Smell reaching her nose", "unit": "% of normal", "colour": "blue", "decimals": 0 },
+    { "key": "T", "label": "Tongue's basic tastes", "unit": "% of normal", "colour": "coral", "decimals": 0 },
+    { "key": "N", "label": "Apple or potato?", "colour": "teal", "bands": [{ "upTo": 29, "text": "can't tell" }, { "upTo": 59, "text": "barely" }, { "text": "easy" }] }
+  ],
+  "rules": {
+    "F": "25 + 0.75 * (100 - B)",
+    "S": "100 - B",
+    "T": "100",
+    "N": "100 - B"
+  },
+  "chart": { "x": "B", "y": "F", "xLabel": "how blocked the nose is (%)", "yLabel": "flavour noticed (% of normal)", "yMin": 0, "yMax": 105 },
+  "overlay": {
+    "base": "head",
+    "caption": "tongue: a few basic tastes · nose: smells from the back of the mouth add everything else",
+    "parts": [
+      { "shape": "nose", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 100 } },
+      { "shape": "tongue", "colour": "#E4572E" },
+      { "shape": "tasteBuds", "colour": "#F4A300" }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the flavour you notice falling as the nose gets more blocked",
+      "Shows the tongue's basic tastes — sweet, salty, sour, bitter, savory — staying the same",
+      "Shows that most of what we call flavour depends on smell"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include texture, temperature or spiciness, which also shape flavour",
+      "Say anything about colds or how to clear a stuffy nose"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you lose your sense of smell or taste for a long time without a stuffy nose, tell an adult."
+  },
+  "sources": ["NIH NIDCD: Smell and taste (student pages)", "CK-12 Life Science: the senses"]
+}

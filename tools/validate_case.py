@@ -24,6 +24,7 @@ import json
 import sys
 from pathlib import Path
 
+LEVELS = ["easy", "moderate", "difficult", "complex"]
 ALLOWED_SHAPES = {"rises", "falls", "flat", "rises-then-levels", "straight-rise", "flat-then-rises", "falls-then-levels", "straight-fall"}
 REQUIRED = {
     "id": str, "version": int, "title": str, "system": str, "model": str, "colour": str, "minutes": int,
@@ -115,6 +116,36 @@ def validate(case, model=None):
         need(isinstance(t.get(f), str) and t[f].strip(), f"transfer is missing '{f}'")
     need(t.get("retryClue") in (1, 2, 3, 4), "transfer.retryClue must name a clue 1–4")
 
+    # level rules: difficulty comes from the shape of the evidence, not just the topic
+    level = case.get("level")
+    need(level in LEVELS, f"level must be one of {LEVELS} (found {level!r})")
+    best_id = best[0] if len(best) == 1 else None
+    others = [h for h in ids if h != best_id]
+    shared = sorted({cid for h in others for cid in ev.get(h, {}).get("supports", [])})
+    supported_others = [h for h in others if ev.get(h, {}).get("supports")]
+    for h in others:
+        need(ev.get(h, {}).get("doesntFit"), f"hypothesis {h} needs at least one clue that doesn't fit it")
+    if level == "easy":
+        need(not shared, f"easy: no clue may also support a wrong hypothesis (clues {shared} do)")
+    elif level == "moderate":
+        need(len(shared) >= 1, "moderate: at least one clue must also support a wrong hypothesis")
+    elif level == "difficult":
+        need(isinstance(case.get("twist"), str) and len(case["twist"]) >= 40, "difficult: needs a 'twist' sentence (40+ chars) saying what is counter-intuitive")
+        need(len(shared) >= 1, "difficult: at least one clue must also support a wrong hypothesis")
+    elif level == "complex":
+        need(isinstance(case.get("systems"), list) and len(case["systems"]) == 2, "complex: needs 'systems' naming exactly two body systems")
+        need(len(supported_others) >= 2, "complex: at least two wrong hypotheses must each be partly supported (one per single-system answer)")
+        if model is not None:
+            need(bool(model.get("inputs", {}).get("secondary")), "complex: the model must have a second slider to separate the two systems")
+
+    # composed hints need their ingredients when no hand-written hints exist
+    if not case["mismatchHints"]:
+        for c in clues:
+            need(isinstance(c.get("shows"), str) and c["shows"].strip(), f"clue {c.get('id')} needs a 'shows' phrase (used to build hints)")
+        for h in hyps:
+            if not h.get("best"):
+                need(isinstance(h.get("flaw"), str) and h["flaw"].strip(), f"hypothesis {h.get('id')} needs a 'flaw' sentence (used to build hints)")
+
     # safety posture: no diagnosis / treatment language anywhere in the text
     banned = ["diagnos", "treatment", "prescri", "medication", "you should see a doctor", "emergency"]
     blob = json.dumps(case).lower()
@@ -143,6 +174,9 @@ def reviewer_script(case, model=None):
     out("VITAL CLUES — SCIENCE REVIEW HANDOUT")
     out("=" * 60)
     out(f"Case: {case['title']}   (id: {case['id']}, v{case['version']})")
+    out(f"Level: {case.get('level', '?')}" + (f"   Systems: {' + '.join(case['systems'])}" if case.get("systems") else ""))
+    if case.get("twist"):
+        out(f"Twist: {case['twist']}")
     out(f"Body system: {case['system']}   Model: {case['model']}   Length: about {case['minutes']} min")
     rev = case.get("reviewed")
     out(f"Reviewed: {rev['by']} on {rev['on']}" if rev else "Reviewed: NOT YET — please read every line below")

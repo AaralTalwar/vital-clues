@@ -1,0 +1,46 @@
+{
+  "id": "muscle-pump",
+  "name": "Legs, veins & the muscle pump",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "m", "label": "Minutes standing still", "min": 0, "max": 40, "step": 5, "unit": "min", "ticks": ["0", "20 min", "40 min"] },
+    "secondary": { "key": "w", "label": "Leg movement", "min": 0, "max": 2, "step": 1, "default": 0, "ticks": ["locked knees", "shifting weight", "marching on the spot"] }
+  },
+  "outputs": [
+    { "key": "P", "label": "Extra blood pooled in legs", "unit": "%", "colour": "purple", "decimals": 0 },
+    { "key": "B", "label": "Blood flow to the brain", "unit": "% of normal", "colour": "teal", "decimals": 0 },
+    { "key": "H", "label": "Heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 },
+    { "key": "F", "label": "How he feels", "colour": "amber", "bands": [{ "upTo": 9.9, "text": "fine" }, { "upTo": 17.9, "text": "a bit woozy" }, { "text": "light-headed — sit down" }] }
+  ],
+  "rules": {
+    "P": "clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)",
+    "B": "100 - 0.8 * clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)",
+    "H": "70 + 0.8 * clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)",
+    "F": "clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)"
+  },
+  "chart": { "x": "m", "y": "P", "xLabel": "minutes standing still", "yLabel": "extra blood pooled in legs (%)", "yMin": 0, "yMax": 30 },
+  "overlay": {
+    "base": "torso",
+    "caption": "standing still → blood pools in the legs → less reaches the brain; moving legs pump it back",
+    "parts": [
+      { "shape": "legVeins", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "P", "min": 0, "max": 25 } },
+      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } },
+      { "shape": "brainGlow", "colour": "#1B998B", "anim": { "type": "glow", "output": "B", "min": 78, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows blood pooling in the legs the longer someone stands perfectly still",
+      "Shows leg-muscle movement squeezing veins and pushing blood back to the heart",
+      "Shows less blood reaching the brain when more of it sits in the legs"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include heat, hunger, water or anyone's health",
+      "Model fainting itself; it stops at feeling light-headed"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you feel light-headed while standing, sit or crouch down straight away and tell an adult."
+  },
+  "sources": ["CK-12 Life Science: circulatory system, veins and valves", "NIH NHLBI: how the heart and blood vessels work (student overview)"]
+}

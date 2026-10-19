@@ -6,6 +6,8 @@
   "model": "stress-response",
   "colour": "coral",
   "minutes": 8,
+  "level": "difficult",
+  "twist": "Usually 'she's nervous' is the lazy wrong answer in these cases. Here the nerves really are the cause — the job is to explain how a thought becomes a racing heart, sweaty palms and a dry mouth all at once.",
   "reviewed": null,
   "character": {
     "name": "Ava",
@@ -85,7 +87,9 @@
   ],
   "evidence": {
     "A": {
-      "supports": [],
+      "supports": [
+        1
+      ],
       "doesntFit": [
         1,
         2

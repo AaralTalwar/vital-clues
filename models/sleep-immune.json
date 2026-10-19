@@ -1,0 +1,44 @@
+{
+  "id": "sleep-immune",
+  "name": "Sleep + stress + immune defence",
+  "colour": "teal",
+  "inputs": {
+    "primary":   { "key": "s", "label": "Hours of sleep each night", "min": 4, "max": 9, "step": 0.5, "unit": "h", "ticks": ["4 h", "6.5 h", "9 h"] },
+    "secondary": { "key": "x", "label": "Stress level", "min": 0, "max": 10, "step": 1, "default": 8, "ticks": ["calm", "busy", "finals week"] }
+  },
+  "outputs": [
+    { "key": "D", "label": "Immune defence", "unit": "% of full", "colour": "teal", "decimals": 0 },
+    { "key": "C", "label": "Stress hormones", "unit": "% above calm", "colour": "coral", "decimals": 0 },
+    { "key": "R", "label": "Chance the going-around cold gets through", "unit": "%", "colour": "purple", "decimals": 0 }
+  ],
+  "rules": {
+    "D": "clamp(100 - 9 * max(0, 8 - s) - 2.5 * x, 20, 100)",
+    "C": "10 * x",
+    "R": "clamp(15 + 0.7 * (100 - clamp(100 - 9 * max(0, 8 - s) - 2.5 * x, 20, 100)), 5, 80)"
+  },
+  "chart": { "x": "s", "y": "D", "xLabel": "hours of sleep each night", "yLabel": "immune defence (% of full)", "yMin": 0, "yMax": 100 },
+  "overlay": {
+    "base": "torso",
+    "caption": "short sleep + stress hormones → weaker defence → the cold going around gets through",
+    "parts": [
+      { "shape": "core", "colour": "#1B998B", "anim": { "type": "glow", "output": "D", "min": 20, "max": 100 } },
+      { "shape": "brainGlow", "colour": "#E4572E", "anim": { "type": "glow", "output": "C", "min": 0, "max": 100 } },
+      { "shape": "germs", "colour": "#6C4AB6", "anim": { "type": "count", "output": "R", "min": 5, "max": 80 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows immune defence dropping with less sleep than about 8 hours",
+      "Shows long-lasting stress lowering immune defence too",
+      "Shows the two together lowering it most, so a cold that's going around is more likely to get through"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include handwashing, how many germs are around, or anyone's health",
+      "Say that sleep or stress cause colds; colds come from viruses passed between people"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you feel run down for weeks, or stress feels like too much, talk with an adult you trust."
+  },
+  "sources": ["NIH News in Health: sleep and your health; stress and your health (student overviews)", "CK-12 Life Science: immune system"]
+}

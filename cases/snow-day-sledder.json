@@ -1,0 +1,234 @@
+{
+  "id": "snow-day-sledder",
+  "version": 1,
+  "title": "The Snow-Day Sledder",
+  "system": "Cold & sunlight on snow",
+  "model": "cold-uv",
+  "colour": "blue",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Skin & temperature",
+    "Skin & sunlight"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Elif",
+    "age": 12
+  },
+  "briefing": "Elif, 12, sleds for five hours on a bright, freezing snow day with no hat and no sunscreen. She comes home shivering with white fingers, and warms up by the fire in twenty minutes. But by bedtime her cheeks and nose are red and sore, and two days later they peel.",
+  "question": "The cold was over in twenty minutes — so why did her face hurt that night?",
+  "illustration": "snowflake",
+  "clues": [
+    {
+      "id": 1,
+      "title": "White fingers, shivering",
+      "icon": "snowflake",
+      "colour": "blue",
+      "text": "When she comes in her fingers are white and she can't stop shivering. It's 20 °F outside.",
+      "shows": "cold air pulling heat out and blood kept away from her skin",
+      "visual": null,
+      "pointsTo": "cold"
+    },
+    {
+      "id": 2,
+      "title": "Warm in twenty minutes",
+      "icon": "clock",
+      "colour": "teal",
+      "text": "By the fire, the shivering stops and her fingers turn pink again within twenty minutes.",
+      "shows": "the cold response switching off as soon as she warmed up",
+      "visual": null,
+      "pointsTo": "shiver"
+    },
+    {
+      "id": 3,
+      "title": "Red that night",
+      "icon": "skin",
+      "colour": "coral",
+      "text": "Nothing showed at dinner. By 9 p.m. her cheeks and nose were red, hot and sore — only the skin her scarf didn't cover.",
+      "shows": "a delayed reaction on exactly the skin the light reached",
+      "visual": null,
+      "pointsTo": "uv"
+    },
+    {
+      "id": 4,
+      "title": "Dazzling snow",
+      "icon": "sun",
+      "colour": "amber",
+      "text": "The sun on the snow was so bright she squinted all afternoon. The light seemed to come from below as well as above.",
+      "shows": "sunlight bouncing off snow onto her face",
+      "visual": {
+        "type": "bars",
+        "from": 1,
+        "to": 1.8,
+        "unit": "× UV on grass → on snow (illustrative)"
+      },
+      "pointsTo": "snow"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "She's allergic to snow.",
+      "flaw": "An allergy wouldn't follow exactly where the sunlight reached, or settle by the fire and then flare up hours later."
+    },
+    {
+      "id": "B",
+      "text": "The cold air froze her skin.",
+      "flaw": "The cold was gone in twenty minutes; it can't explain redness that first appeared hours later, only where the sun hit."
+    },
+    {
+      "id": "C",
+      "text": "Two things: the cold made her shiver and pulled blood away from her skin (gone once she warmed up), and UV light — boosted by snow reflecting it — damaged her skin cells, showing up as redness hours later.",
+      "best": true
+    },
+    {
+      "id": "D",
+      "text": "She got a sunburn.",
+      "flaw": "A sunburn doesn't make you shiver or turn your fingers white."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "C": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "D": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        1
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "B",
+    "prompt": "Elif sleds in the snow on a bright day. As her hours outside go up from none to six, what happens to how red her face will be that night?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "If the day were milder but just as sunny, what would happen to her shivering?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 5,
+    "secondary": 7
+  },
+  "concepts": [
+    {
+      "id": "cold",
+      "label": "cold takes heat",
+      "colour": "blue",
+      "synonyms": [
+        "cold",
+        "freezing",
+        "chilly",
+        "losing heat",
+        "heat loss"
+      ],
+      "hint": "What was the freezing air doing to her?"
+    },
+    {
+      "id": "shiver",
+      "label": "shivering and pale skin",
+      "colour": "teal",
+      "synonyms": [
+        "shiver",
+        "shivering",
+        "shivers",
+        "pale",
+        "white",
+        "blood"
+      ],
+      "hint": "How did her body respond to the cold?"
+    },
+    {
+      "id": "uv",
+      "label": "UV light from the sun",
+      "colour": "amber",
+      "synonyms": [
+        "uv",
+        "ultraviolet",
+        "sunlight",
+        "sun",
+        "rays"
+      ],
+      "hint": "What in sunlight harms skin cells?"
+    },
+    {
+      "id": "snow",
+      "label": "snow reflects it",
+      "colour": "purple",
+      "synonyms": [
+        "snow",
+        "reflect",
+        "reflects",
+        "reflected",
+        "reflecting",
+        "bounce",
+        "bounces",
+        "bouncing"
+      ],
+      "hint": "Why was the dose so big on a winter day?"
+    },
+    {
+      "id": "later",
+      "label": "damage shows up later",
+      "colour": "coral",
+      "synonyms": [
+        "later",
+        "hours later",
+        "that night",
+        "delayed",
+        "delay",
+        "evening",
+        "bedtime"
+      ],
+      "hint": "When did the redness appear compared with the shivering?"
+    }
+  ],
+  "transfer": {
+    "context": "Tomás spends a sunny afternoon fishing from a boat on a cold lake in early spring. He comes home shivering and warms up in a hot shower, but by bedtime the backs of his hands and his nose are bright red.",
+    "illustration": "sun",
+    "options": [
+      "The shower water was too hot.",
+      "He's allergic to fish.",
+      "The cold wind burned his skin.",
+      "Cold made him shiver (fixed by the shower), while sunlight — plus light bouncing off the water — damaged his skin cells, showing up hours later."
+    ],
+    "answer": 3,
+    "retryHint": "Red hours later, only where light reached — and where else was the light coming from? Look at Elif's clue about the snow.",
+    "retryClue": 4,
+    "explanation": "Tomás had two separate things happening, just like Elif. The cold made him shiver, and a hot shower switched that off. Meanwhile UV light — some of it reflected off the lake — damaged the skin cells on his hands and nose, and the redness appeared hours later."
+  },
+  "takeaway": "Cold and sunlight can hit the same skin on the same day but work differently. Cold triggers a fast response that switches off when you warm up; UV damage is silent at first and shows up hours later — and snow or water can boost the dose."
+}

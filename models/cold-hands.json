@@ -1,0 +1,44 @@
+{
+  "id": "cold-hands",
+  "name": "Skin, blood flow & cold",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "M", "label": "Minutes making snowballs bare-handed", "min": 5, "max": 20, "step": 1, "unit": "min", "ticks": ["5 min", "12 min", "20 min"] },
+    "secondary": { "key": "C", "label": "How cold the snow is", "min": 0, "max": 10, "step": 1, "default": 7, "ticks": ["slushy", "cold", "freezing"] }
+  },
+  "outputs": [
+    { "key": "F", "label": "Blood flow to fingers", "unit": "% of normal", "colour": "coral", "decimals": 0 },
+    { "key": "T", "label": "Finger skin temperature", "unit": "°F", "colour": "amber", "decimals": 0 },
+    { "key": "R", "label": "Fingers look", "colour": "purple", "bands": [{ "upTo": 60, "text": "pale and aching" }, { "upTo": 85, "text": "pink" }, { "text": "red, feel hot" }] }
+  ],
+  "rules": {
+    "F": "clamp(100 - 70 * min(1, M / 4) * C / 10 + 60 * C / 10 * clamp((M - 5) / 5, 0, 1), 20, 110)",
+    "T": "45 + 0.35 * clamp(100 - 70 * min(1, M / 4) * C / 10 + 60 * C / 10 * clamp((M - 5) / 5, 0, 1), 20, 110)",
+    "R": "clamp(100 - 70 * min(1, M / 4) * C / 10 + 60 * C / 10 * clamp((M - 5) / 5, 0, 1), 20, 110)"
+  },
+  "chart": { "x": "M", "y": "F", "xLabel": "minutes making snowballs (after the first five)", "yLabel": "blood flow to fingers (%)", "yMin": 0, "yMax": 110 },
+  "overlay": {
+    "base": "arm",
+    "caption": "cold shuts finger blood vessels → after a while they reopen in bursts → red, hot-feeling fingers",
+    "parts": [
+      { "shape": "snow", "colour": "#8FA3C7" },
+      { "shape": "bloodstream", "colour": "#E4572E", "anim": { "type": "glow", "output": "F", "min": 20, "max": 110 } },
+      { "shape": "hand", "colour": "#E4572E", "anim": { "type": "shift", "output": "F", "min": 40, "max": 100, "from": "#EEF4FB", "to": "#E4572E" } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows cold first closing down blood flow to bare fingers (they go pale)",
+      "Shows the body reopening finger blood vessels after several minutes to send warm blood",
+      "Shows that the colder it is, the stronger both effects are"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Show the on-and-off waves of reopening; it shows the average",
+      "Model dangerous cold — the reopening only protects for a while"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Fingers that stay white, numb or hard in the cold are a reason to go inside and tell an adult right away."
+  },
+  "sources": ["CK-12 Life Science: integumentary system and thermoregulation", "Any high-school physiology text: cold-induced vasodilation ('hunting reaction')"]
+}

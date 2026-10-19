@@ -132,7 +132,9 @@ function setupSlider(id, spec, value) {
 function shownValue(spec, value, vars) {
   const v = spec.valueFormula ? evaluate(spec.valueFormula, vars) : value;
   const num = Number.isInteger(v) ? String(v) : String(Math.round(v * 10) / 10);
-  return `${num}${spec.unit ? " " + spec.unit : ""}${spec.ticks && !spec.unit ? " · " + tickFor(spec, value) : ""}`;
+  const tick = spec.ticks && !spec.unit ? tickFor(spec, value) : "";
+  // Show the tick word only when it is a word ("bright beach"), never a number that could disagree with the value.
+  return `${num}${spec.unit ? " " + spec.unit : ""}${tick && !/\d/.test(tick) ? " · " + tick : ""}`;
 }
 
 function tickFor(spec, value) {
@@ -230,9 +232,10 @@ function openLimits() {
   }
   document.getElementById("limits-text").textContent = m.limits.text;
   document.getElementById("limits-wellbeing").textContent = m.limits.wellbeing;
-  document.getElementById("limits-reviewer").textContent = c.reviewed
-    ? `Science review: ${c.reviewed.by}, ${c.reviewed.on}.`
-    : "Science review: pending — this case has not yet been signed off by a teacher.";
+  const r = engine.review;
+  document.getElementById("limits-reviewer").textContent = r
+    ? `Science review: ${r.reviewer} (${r.role}), ${r.date}. ${r.scope}`
+    : "Science review: pending. The models behind these cases have not yet been signed off by a science teacher.";
   const src = document.getElementById("limits-sources"); clear(src);
   m.sources.forEach((t) => src.appendChild(el("li", {}, t)));
   openDialog(dlg);

@@ -29,6 +29,8 @@ async function boot() {
 
   const res = await fetch("cases/index.json");
   engine.library = (await res.json()).cases;
+  try { engine.review = await fetch("review.json").then((r) => (r.ok ? r.json() : null)); } catch { engine.review = null; }
+  if (engine.review && !engine.review.reviewer) engine.review = null;
 
   let seen = false;
   try { seen = localStorage.getItem("vc.seenSplash") === "1"; } catch { /* storage may be unavailable */ }
@@ -41,34 +43,77 @@ async function boot() {
 
 // ---------- S1 library ----------
 
+export const LEVELS = [
+  { id: "easy", label: "Easy", blurb: "Every clue points one way." },
+  { id: "moderate", label: "Moderate", blurb: "One clue fits two ideas — weigh them." },
+  { id: "difficult", label: "Difficult", blurb: "A twist: the obvious answer is wrong." },
+  { id: "complex", label: "Complex", blurb: "Two body systems at once." }
+];
+let libraryFilter = "all";
+try { libraryFilter = localStorage.getItem("vc.filter") || "all"; } catch { /* ignore */ }
+
+function reviewLabel() {
+  const r = engine.review;
+  return r ? { cls: "badge badge-reviewed", text: "Science reviewed" } : { cls: "badge badge-pending", text: "Review pending" };
+}
+
 function renderLibrary() {
   const grid = document.getElementById("case-grid");
   clear(grid);
   const done = progress.completed();
-  const count = engine.library.filter((x) => x.available).length;
-  document.getElementById("lib-count").textContent = `${Object.keys(done).length} of ${count} cases closed`;
-  for (const item of engine.library) {
-    const card = el("button", { class: "case-card", type: "button", "data-colour": item.colour });
-    card.disabled = !item.available;
-    const swatch = el("div", { class: "swatch" }); swatch.appendChild(icon(item.illustration));
-    const body = el("div");
-    body.appendChild(el("h3", {}, item.title));
-    body.appendChild(el("div", { class: "muted small" }, `${item.system} · about ${item.minutes} min`));
-    const badges = el("div", { class: "badges" });
-    badges.appendChild(el("span", { class: item.reviewed ? "badge badge-reviewed" : "badge badge-pending" }, item.reviewed ? "Teacher reviewed" : "Review pending"));
-    if (done[item.id]) badges.appendChild(el("span", { class: "badge badge-done" }, `✓ Closed · best ${done[item.id].best}`));
-    body.appendChild(badges);
-    card.append(swatch, body);
-    card.addEventListener("click", () => startCase(item.id));
-    grid.appendChild(card);
+  const playable = engine.library.filter((x) => x.available);
+  document.getElementById("lib-count").textContent = `${Object.keys(done).filter((id) => playable.some((x) => x.id === id)).length} of ${playable.length} cases closed`;
+
+  // level filter pills
+  const pills = document.getElementById("level-pills"); clear(pills);
+  for (const f of [{ id: "all", label: "All" }, ...LEVELS]) {
+    const n = f.id === "all" ? playable.length : playable.filter((x) => x.level === f.id).length;
+    const b = el("button", { class: "pill", type: "button", "aria-pressed": String(libraryFilter === f.id) }, `${f.label} · ${n}`);
+    b.addEventListener("click", () => { libraryFilter = f.id; try { localStorage.setItem("vc.filter", f.id); } catch { /* ignore */ } renderLibrary(); });
+    pills.appendChild(b);
+  }
+
+  const rev = reviewLabel();
+  const groups = LEVELS.filter((lv) => libraryFilter === "all" || libraryFilter === lv.id);
+  for (const lv of groups) {
+    const items = playable.filter((x) => x.level === lv.id);
+    if (!items.length) continue;
+    const doneHere = items.filter((x) => done[x.id]).length;
+    const head = el("div", { class: "level-head", "data-level": lv.id });
+    head.appendChild(el("h3", {}, lv.label));
+    head.appendChild(el("span", { class: "muted small" }, `${lv.blurb} · ${doneHere}/${items.length} closed`));
+    grid.appendChild(head);
+    for (const item of items) {
+      const card = el("button", { class: "case-card", type: "button", "data-colour": item.colour });
+      const swatch = el("div", { class: "swatch" }); swatch.appendChild(icon(item.illustration));
+      const body = el("div");
+      body.appendChild(el("h3", {}, item.title));
+      body.appendChild(el("div", { class: "muted small" }, `${item.system} · about ${item.minutes} min`));
+      const badges = el("div", { class: "badges" });
+      badges.appendChild(el("span", { class: `badge badge-level`, "data-level": item.level }, lv.label));
+      badges.appendChild(el("span", { class: rev.cls }, rev.text));
+      if (done[item.id]) badges.appendChild(el("span", { class: "badge badge-done" }, `✓ Closed · best ${done[item.id].best}`));
+      body.appendChild(badges);
+      card.append(swatch, body);
+      card.addEventListener("click", () => startCase(item.id));
+      grid.appendChild(card);
+    }
   }
   document.getElementById("surprise").onclick = () => {
-    const playable = engine.library.filter((x) => x.available);
-    const unplayed = playable.filter((x) => !done[x.id]);
-    const pool = unplayed.length ? unplayed : playable;
+    const pool0 = playable.filter((x) => libraryFilter === "all" || x.level === libraryFilter);
+    const unplayed = pool0.filter((x) => !done[x.id]);
+    const pool = unplayed.length ? unplayed : pool0;
     startCase(pool[Math.floor(Math.random() * pool.length)].id);
   };
   document.getElementById("lib-clear").onclick = () => { progress.clearAll(); renderLibrary(); engine.toast("Progress on this device cleared."); };
+  showOfflineReady();
+}
+
+// "Ready to play offline" appears once the service worker is active, which means every file is cached.
+function showOfflineReady() {
+  const badge = document.getElementById("offline-ready");
+  if (!navigator.serviceWorker || !badge) return;
+  navigator.serviceWorker.ready.then(() => { badge.hidden = false; }).catch(() => {});
 }
 
 async function startCase(caseId) {
@@ -91,10 +136,13 @@ function renderCaseFile() {
   document.getElementById("case-briefing").textContent = c.briefing;
   document.getElementById("case-question").textContent = c.question;
   const chips = document.getElementById("case-chips"); clear(chips);
-  [`${c.clues.length} clues`, "1 body lab", `about ${c.minutes} min`, c.system].forEach((t) => chips.appendChild(el("span", { class: "chip" }, t)));
+  const lv = LEVELS.find((x) => x.id === c.level);
+  [lv ? `${lv.label} level` : null, `${c.clues.length} clues`, "1 body lab", `about ${c.minutes} min`, c.system].filter(Boolean).forEach((t) => chips.appendChild(el("span", { class: "chip" }, t)));
+  if (c.systems) chips.appendChild(el("span", { class: "chip" }, `Two systems: ${c.systems.join(" + ")}`));
   const reviewed = document.getElementById("case-reviewed");
-  reviewed.textContent = c.reviewed ? `Teacher reviewed by ${c.reviewed.by} on ${c.reviewed.on}` : "Science review pending";
-  reviewed.className = c.reviewed ? "badge badge-reviewed" : "badge badge-pending";
+  const r = engine.review;
+  reviewed.textContent = r ? `Science reviewed by ${r.reviewer}, ${r.role}` : "Science review pending";
+  reviewed.className = r ? "badge badge-reviewed" : "badge badge-pending";
 
   const box = document.getElementById("ack");
   const row = document.getElementById("ack-row");

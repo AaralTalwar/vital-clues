@@ -6,6 +6,7 @@
   "model": "hearing",
   "colour": "purple",
   "minutes": 8,
+  "level": "easy",
   "reviewed": null,
   "character": {
     "name": "Zoe",

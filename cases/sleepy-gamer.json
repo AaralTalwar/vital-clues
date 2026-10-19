@@ -6,6 +6,7 @@
   "model": "sleep-clock",
   "colour": "purple",
   "minutes": 8,
+  "level": "moderate",
   "reviewed": null,
   "character": {
     "name": "Theo",
@@ -21,7 +22,7 @@
       "icon": "screen",
       "colour": "blue",
       "text": "His monitor is a foot from his face and set to full brightness. The room lights are on too.",
-      "shows": "bright light reaching his eyes late at night",
+      "shows": "bright light reaching his eyes late at night — while he is playing something exciting",
       "visual": null,
       "pointsTo": "light"
     },
@@ -100,7 +101,9 @@
       "doesntFit": []
     },
     "C": {
-      "supports": [],
+      "supports": [
+        1
+      ],
       "doesntFit": [
         2,
         4

@@ -1,0 +1,43 @@
+{
+  "id": "clotting",
+  "name": "Blood & healing",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "M", "label": "Minutes since the scrape", "min": 0, "max": 10, "step": 1, "unit": "min", "ticks": ["scrape", "5 min", "10 min"] },
+    "secondary": { "key": "A", "label": "Size of the scrape", "min": 1, "max": 3, "step": 1, "default": 2, "ticks": ["small", "medium", "large"] }
+  },
+  "outputs": [
+    { "key": "B", "label": "Bleeding", "unit": "% of the first minute", "colour": "coral", "decimals": 0 },
+    { "key": "C", "label": "Clot strength", "unit": "%", "colour": "purple", "decimals": 0 },
+    { "key": "S", "label": "The scrape is", "colour": "teal", "bands": [{ "upTo": 10, "text": "stopped" }, { "upTo": 50, "text": "slowing" }, { "text": "bleeding" }] }
+  ],
+  "rules": {
+    "B": "100 * pow(0.5, M / (1 + 0.5 * A))",
+    "C": "100 * (1 - pow(0.5, M / (1 + 0.5 * A)))",
+    "S": "100 * pow(0.5, M / (1 + 0.5 * A))"
+  },
+  "chart": { "x": "M", "y": "B", "xLabel": "minutes since the scrape", "yLabel": "bleeding (% of the first minute)", "yMin": 0, "yMax": 105 },
+  "overlay": {
+    "base": "arm",
+    "caption": "cut → platelets stick → a mesh plugs the leak → scab guards new skin",
+    "parts": [
+      { "shape": "drops", "colour": "#E4572E", "anim": { "type": "count", "output": "B", "min": 0, "max": 100 } },
+      { "shape": "clot", "colour": "#A33A17", "anim": { "type": "glow", "output": "C", "min": 0, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows bleeding slowing and stopping as a clot builds over minutes",
+      "Shows a bigger scrape taking longer to plug",
+      "Shows clot strength rising as bleeding falls"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Show the days-long regrowth of skin under the scab",
+      "Cover deep cuts or anything that needs an adult's help"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "A cut that keeps bleeding after you press on it for a few minutes is a reason to get an adult."
+  },
+  "sources": ["NIH NHLBI: blood and platelets (student overview)", "CK-12 Life Science: circulatory system and blood"]
+}

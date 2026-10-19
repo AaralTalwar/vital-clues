@@ -1,0 +1,42 @@
+{
+  "id": "bone-conduction",
+  "name": "Ears & your own voice",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "f", "label": "Pitch of the sound", "min": 100, "max": 1000, "step": 100, "unit": "Hz", "ticks": ["low", "middle", "high"] },
+    "secondary": { "key": "o", "label": "Ears", "min": 0, "max": 1, "step": 1, "default": 0, "ticks": ["open", "plugged with fingers"] }
+  },
+  "outputs": [
+    { "key": "B", "label": "Extra loudness through bone", "unit": "0–16", "colour": "purple", "decimals": 1 },
+    { "key": "S", "label": "Your voice sounds to you", "colour": "amber", "bands": [{ "upTo": 3, "text": "about the same" }, { "upTo": 6, "text": "a bit deeper" }, { "text": "much deeper" }] },
+    { "key": "R", "label": "What a recording captures", "colour": "teal", "text": "air route only" }
+  ],
+  "rules": {
+    "B": "clamp((10 - 0.009 * f) * (1 + 0.6 * o), 0, 16)",
+    "S": "clamp((10 - 0.009 * f) * (1 + 0.6 * o), 0, 16)"
+  },
+  "chart": { "x": "f", "y": "B", "xLabel": "pitch (Hz)", "yLabel": "extra loudness through bone (0–16)", "yMin": 0, "yMax": 16 },
+  "overlay": {
+    "base": "head",
+    "caption": "your voice reaches your ears through the air AND through your skull; a recording catches only the air",
+    "parts": [
+      { "shape": "sound", "colour": "#F4A300" },
+      { "shape": "ear", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "B", "min": 0, "max": 16 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows your own voice reaching your ears through bone as well as through the air",
+      "Shows the bone route adding mostly low, deep sound",
+      "Shows plugging your ears making the bone route louder"
+    ],
+    "doesnt": [
+      "Measure any real person or any real microphone",
+      "Include hearing loss or how the brain processes voices",
+      "Say how anyone's voice should sound"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If your own voice suddenly sounds very loud or echoey to you and it doesn't go away, tell an adult."
+  },
+  "sources": ["NIH NIDCD: how do we hear? (student pages)", "CK-12 Physical Science: sound travelling through solids"]
+}

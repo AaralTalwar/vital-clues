@@ -5,7 +5,7 @@
 A 2026 Congressional App Challenge entry (CA-27). Built as a responsive web app that runs on iPhone, Android and Chromebook from one link, installs to the home screen, and works offline.
 
 - **Live app:** _(GitHub Pages link goes here once enabled)_
-- **Age:** 12–16 · **Time:** about 8 minutes per case · **12 cases**
+- **Age:** 12–16 · **Time:** about 8 minutes per case · **48 cases at four levels**
 - **Privacy:** no account, no name, no age, no health information, no analytics. Explanations are checked on the device and forgotten when you finish.
 
 ## How to play
@@ -31,22 +31,17 @@ Never speed. Never grades, stars or comparisons. The rules live in `js/score.js`
 
 ## The cases
 
-| Case | Body system | Model | Status |
-|---|---|---|---|
-| A Case of the Tired Athlete | Lungs & heart | `lungs-heart` | built · science review pending |
-| The Thirsty Hiker | Kidneys & water | `water-balance` | built · science review pending |
-| The Shivering Swimmer | Skin & temperature | `temperature` | built · science review pending |
-| The Jumpy Goalkeeper | Brain & nerves | `nerves-reflex` | built · science review pending |
-| The Sleepy Gamer | Brain & sleep clock | `sleep-clock` | built · science review pending |
-| The Skipped Breakfast | Digestion & fuel | `fuel-sugar` | built · science review pending |
-| The Sore Weightlifter | Muscles & repair | `muscle-repair` | built · science review pending |
-| The Sunburned Lifeguard | Skin & sunlight | `skin-uv` | built · science review pending |
-| The Stage-Fright Singer | Adrenaline & the alarm system | `stress-response` | built · science review pending |
-| The Altitude Skier | Oxygen & altitude | `altitude` | built · science review pending |
-| The Sneezing Gardener | Immune system & pollen | `immune-pollen` | built · science review pending |
-| The Ringing Ears | Ears & hearing | `hearing` | built · science review pending |
+48 fictional cases, 12 per level, built on 47 simplified body models. Levels describe how hard the *reasoning* is, and `tools/validate_case.py` enforces each level's evidence pattern.
 
-Every character is fictional. Every number is an illustrative teaching value and is labelled so in the app. Model formulas are visible to students in the **Model limits** panel. Two cases deliberately flip a wrong answer from another case into the right one (nerves in *Stage-Fright Singer*, thin air in *Altitude Skier*) so students can't pattern-match.
+**Easy — every clue points one way:** The Jumpy Goalkeeper (Brain & nerves); The Ringing Ears (Ears & hearing); The Scraped Knee (Blood & healing); The Shivering Swimmer (Skin & temperature); The Skipped Breakfast (Digestion & fuel); The Sneezing Gardener (Immune system & pollen); The Sore Weightlifter (Muscles & repair); The Squinting Reader (Eyes & light); The Stuffy-Nose Taster (Nose & taste); The Sunburned Lifeguard (Skin & sunlight); The Thirsty Hiker (Kidneys & water); A Case of the Tired Athlete (Lungs & heart).
+
+**Moderate — one clue also fits a wrong idea:** The Blinkless Gamer (Eyes & tears); The Braces Wearer (Bones & teeth); The Brain-Freeze Smoothie (Nerves & cold); The Car-Sick Reader (Balance & motion); The Cavity Detective (Teeth & bacteria); The Cramming Student (Brain & memory); The Dark Cinema (Eyes & the dark); The Dizzy Spinner (Ears & balance); The Indoor Winter (Skin, sunlight & bones); The Locker-Room Smell (Nose & smell); The Sleeping Foot (Nerves & pressure); The Sleepy Gamer (Brain & sleep clock).
+
+**Difficult — a twist: the obvious answer is wrong:** The Afterimage Artist (Eyes & colour); The Altitude Skier (Oxygen & altitude); The Bitter Broccoli (Tongue & taste); The Feverish Friend (Immune system & fever); The Flagpole Faint (Legs, veins & blood flow); The Morning-Light Fix (Brain & body clock); The Popping Ears (Ears & air pressure); The Recorded Voice (Ears & your own voice); The Snowball Hands (Skin, blood flow & cold); The Stage-Fright Singer (Adrenaline & the alarm system); The Thirsty Swimmer (Kidneys & water); The Upside-Down Drinker (Throat & swallowing).
+
+**Complex — two body systems at once:** The All-Nighter (Sleep & memory); The Breakfastless Test (Adrenaline & fuel); The Concert Night (Loud sound & short sleep); The Exam-Week Cold (Sleep + stress + immune defence); The Heatwave Final (Heat + muscle fuel); The July Marching Band (Heat, water & blood flow); The Long-Haul Flight (Body clock & water); The Mountain Hike (Altitude + water); The Pollen-Season Runner (Pollen & breathing); The Skipped-Lunch Sprint (Fuel & effort); The Snow-Day Sledder (Cold & sunlight on snow); The Winter Swim Team (Cold water & working muscles).
+
+Every character is fictional and every number is an illustrative teaching value, labelled so in the app. Model formulas are visible to students in the **Model limits** panel.
 
 ## Adding a case
 
@@ -55,14 +50,16 @@ A fifth case is a data file, not code.
 1. Copy `cases/tired-athlete.json`, change the content, keep the structure: 4 clues, 4 hypotheses with exactly one `best`, an evidence map, mismatch hints, 5 concepts with synonyms, 1 transfer question.
 2. Add a model in `models/` if the body system is new. Formulas are plain text like `"12 + 3.8 * I * pow(0.5, R / 30)"`; the app reads them with its own small evaluator (`js/rules.js`, functions: max min pow round clamp abs), never `eval()`. The animated body picture is data too: `overlay.parts` lists shapes from `js/overlay.js` with an animation bound to an output.
 3. Run the validator: `python3 tools/validate_case.py cases/your-case.json --models models/ --script`
-4. Add the case to `cases/index.json` and the precache list in `sw.js`, and bump the `CACHE` name in `sw.js`.
-5. Get a science teacher to read the printed handout and fill in `reviewed`.
+4. Run `python3 tools/build_index.py`. It rebuilds `cases/index.json` and the offline file list in `sw.js`, and sets the cache name from a hash of the files.
+5. Run `python3 tools/review_pack.py` and give the science reviewer `review/REVIEW_PACK.html`.
 
 ## Running locally
 
 ```
 python3 -m http.server 8000      # then open http://localhost:8000
-npm test                         # node --test, 52 tests incl. every model's curve shape
+npm test                         # node --test, 124 tests incl. every model's curve shape
+python3 tools/build_index.py     # after any case/model change
+python3 tools/review_pack.py     # regenerate the science review pack
 python3 tools/validate_case.py cases/tired-athlete.json --models models/
 ```
 
@@ -94,11 +91,13 @@ tests/*.test.js
 
 ## Science review
 
-_Reviewer name, role and date go here when signed off._ Sources: NHLBI "How the Lungs Work"; CK-12 Life Science.
+Review is **model-level**, not case by case. All the science sits in the body models; each case applies one model to a story. `tools/review_pack.py` writes `review/REVIEW_PACK.md` and `.html`, which list every model's formulas, limits and wellbeing line, plus the one-line claims of every case that uses it (best answer, twist, takeaway, transfer answer), and name one full case per level to read end to end. The reviewer's sign-off goes in `review.json`. Until it is filled in, the app shows "Review pending"; after that it shows "Science reviewed" and states the review's scope in the Model limits panel.
+
+_Reviewer, role and date go here once signed off._
 
 ## Authorship
 
-Built by _[student name]_ for the 2026 Congressional App Challenge, with a parent advising on architecture. AI tools assisted with scaffolding and first drafts; every line was read, edited and tested by the student. The three pieces she can walk through unaided: the formula evaluator (`js/rules.js`), the sketch classifier (`js/sketch.js` → `classify`), and the concept matcher (`js/explain.js`).
+Built by _[student name]_ for the 2026 Congressional App Challenge, with a parent advising on architecture. AI tools assisted with the engine scaffolding and drafted most of the 48 case stories; the student edited the cases used in the demo and wrote or rewrote the three core algorithms below. The case content is checked by an automated validator and a model-level science review, not by hand line by line. The three pieces she can walk through unaided: the formula evaluator (`js/rules.js`), the sketch classifier (`js/sketch.js` → `classify`), and the concept matcher (`js/explain.js`).
 
 ## Licence
 

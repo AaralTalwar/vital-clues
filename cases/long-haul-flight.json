@@ -1,0 +1,233 @@
+{
+  "id": "long-haul-flight",
+  "version": 1,
+  "title": "The Long-Haul Flight",
+  "system": "Body clock & water",
+  "model": "jetlag-water",
+  "colour": "teal",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Brain & sleep clock",
+    "Kidneys & water"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Arjun",
+    "age": 13
+  },
+  "briefing": "Arjun, 13, flies eleven hours from Los Angeles to London, crossing eight time zones. He lands with a headache, dry lips and dark-yellow pee. Water fixes the headache by dinner — but for the next four nights he is wide awake at 3 a.m.",
+  "question": "Why did one problem go away in hours and the other take days?",
+  "illustration": "plane",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Wide awake at 3 a.m.",
+      "icon": "moon",
+      "colour": "purple",
+      "text": "For four nights he lies awake from about 3 to 5 a.m., then can barely keep his eyes open at 3 p.m.",
+      "shows": "his body clock still running on Los Angeles time",
+      "visual": null,
+      "pointsTo": "clock"
+    },
+    {
+      "id": 2,
+      "title": "A little better each night",
+      "icon": "clock",
+      "colour": "purple",
+      "text": "Each night he sleeps a bit later than the night before. By the fifth night he sleeps right through.",
+      "shows": "the clock shifting slowly, a bit each day",
+      "visual": null,
+      "pointsTo": "days"
+    },
+    {
+      "id": 3,
+      "title": "Dry lips, dark pee, headache",
+      "icon": "drop",
+      "colour": "blue",
+      "text": "The cabin air felt very dry. In eleven hours he drank two small cups of water.",
+      "shows": "water lost to dry cabin air and not replaced",
+      "visual": {
+        "type": "bars",
+        "from": 2,
+        "to": 6,
+        "unit": "cups drunk vs cups lost (illustrative)"
+      },
+      "pointsTo": "water"
+    },
+    {
+      "id": 4,
+      "title": "Water fixed the headache fast",
+      "icon": "glass",
+      "colour": "teal",
+      "text": "Three glasses of water at the hotel: by dinner the headache was gone and his pee was pale. He still woke at 3 a.m. that night.",
+      "shows": "the water problem fixed in hours, but not the sleep problem",
+      "visual": null,
+      "pointsTo": "hours"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "It's jet lag: his body clock is still set to Los Angeles time.",
+      "flaw": "A body clock out of step doesn't dry your lips or darken your pee."
+    },
+    {
+      "id": "B",
+      "text": "He ate something on the plane that disagreed with him.",
+      "flaw": "A bad meal doesn't wake you at 3 a.m. for four nights, and water wouldn't fix it by dinner."
+    },
+    {
+      "id": "C",
+      "text": "He's low on water after the flight.",
+      "flaw": "Being low on water was fixed by dinner, but he still woke at 3 a.m. — something else is going on."
+    },
+    {
+      "id": "D",
+      "text": "Two problems: dry cabin air and too little drinking left him low on water (fixed in hours by drinking), and crossing eight time zones left his body clock out of step (fixed slowly, by daylight, over days).",
+      "best": true
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "C": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        1
+      ]
+    },
+    "D": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "M",
+    "prompt": "The more time zones Arjun crosses — from none to ten — what happens to how long he lies awake in the middle of the night after landing?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "If he drinks six cups on the flight instead of two, what happens to his body water when he lands?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 8,
+    "secondary": 2
+  },
+  "concepts": [
+    {
+      "id": "clock",
+      "label": "body clock out of step",
+      "colour": "purple",
+      "synonyms": [
+        "clock",
+        "body clock",
+        "time zone",
+        "time zones",
+        "rhythm",
+        "jet lag",
+        "jetlag"
+      ],
+      "hint": "Why is he awake at 3 a.m.?"
+    },
+    {
+      "id": "water",
+      "label": "low on water",
+      "colour": "blue",
+      "synonyms": [
+        "water",
+        "dehydrated",
+        "drink",
+        "drank",
+        "drinking",
+        "fluids"
+      ],
+      "hint": "What was he short of when he landed?"
+    },
+    {
+      "id": "dry",
+      "label": "dry cabin air",
+      "colour": "teal",
+      "synonyms": [
+        "dry",
+        "cabin",
+        "cabin air",
+        "air",
+        "lips"
+      ],
+      "hint": "What took the water away during the flight?"
+    },
+    {
+      "id": "days",
+      "label": "the clock shifts slowly",
+      "colour": "amber",
+      "synonyms": [
+        "days",
+        "slowly",
+        "few days",
+        "daylight",
+        "nights",
+        "gradually"
+      ],
+      "hint": "How fast did the 3 a.m. waking fix itself?"
+    },
+    {
+      "id": "hours",
+      "label": "water fixes fast",
+      "colour": "coral",
+      "synonyms": [
+        "hours",
+        "quickly",
+        "fast",
+        "by dinner",
+        "right away",
+        "soon"
+      ],
+      "hint": "How fast did the headache fix itself?"
+    }
+  ],
+  "transfer": {
+    "context": "Nia's family drives from Arizona to Florida. When they arrive she's thirsty with a headache that a big bottle of water fixes by evening — but she's still yawning through breakfast for the next two mornings.",
+    "illustration": "car",
+    "options": [
+      "She's allergic to something in Florida.",
+      "Not enough water on the drive (fixed fast by drinking) plus a body clock that has to catch up with a two-hour time change (fixed slowly).",
+      "She's car-sick.",
+      "She stayed up too late reading."
+    ],
+    "answer": 1,
+    "retryHint": "One problem fixed by evening, one lasting days — which of Arjun's clues showed that split?",
+    "retryClue": 4,
+    "explanation": "Like Arjun, Nia has two problems that heal at different speeds. The headache was low water, fixed as fast as she drank. The yawning is her body clock running two hours behind, which daylight nudges back over a few days."
+  },
+  "takeaway": "Two causes can heal at different speeds. Water lost to dry air comes back as fast as you drink it; a body clock shifted by several time zones moves only about an hour a day, nudged by daylight."
+}

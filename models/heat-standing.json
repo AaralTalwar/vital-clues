@@ -1,0 +1,159 @@
+{
+  "id": "heat-standing",
+  "name": "Heat, water & blood flow",
+  "colour": "coral",
+  "inputs": {
+    "primary": {
+      "key": "m",
+      "label": "Minutes standing still",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "min",
+      "ticks": [
+        "0",
+        "10 min",
+        "20 min"
+      ]
+    },
+    "secondary": {
+      "key": "H",
+      "label": "Heat",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 8,
+      "ticks": [
+        "cool fall day",
+        "warm",
+        "July heat"
+      ]
+    }
+  },
+  "outputs": [
+    {
+      "key": "P",
+      "label": "Blood pooled in the legs",
+      "unit": "% extra",
+      "colour": "purple",
+      "decimals": 0,
+      "hidden": true
+    },
+    {
+      "key": "R",
+      "label": "Blood getting back to the heart",
+      "unit": "% of normal",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "Q",
+      "label": "Heart rate",
+      "unit": "beats/min",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "W",
+      "label": "Sweat lost",
+      "unit": "cups/hour",
+      "colour": "blue",
+      "decimals": 1
+    },
+    {
+      "key": "F",
+      "label": "How the head feels",
+      "colour": "purple",
+      "bands": [
+        {
+          "upTo": 69.9,
+          "text": "light-headed — sit down"
+        },
+        {
+          "upTo": 84.9,
+          "text": "a bit woozy"
+        },
+        {
+          "text": "fine"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "P": "clamp(m * (1.2 + 0.15 * H), 0, 60)",
+    "R": "100 - clamp(m * (1.2 + 0.15 * H), 0, 60)",
+    "Q": "75 + 1.2 * clamp(m * (1.2 + 0.15 * H), 0, 60) + 2 * H",
+    "W": "0.2 + 0.3 * H",
+    "F": "100 - clamp(m * (1.2 + 0.15 * H), 0, 60)"
+  },
+  "chart": {
+    "x": "m",
+    "y": "R",
+    "xLabel": "minutes standing still",
+    "yLabel": "blood getting back to the heart (%)",
+    "yMin": 40,
+    "yMax": 100
+  },
+  "overlay": {
+    "base": "torso",
+    "caption": "sweat out ↑ · blood pools in still legs ↓ · less reaches the head",
+    "parts": [
+      {
+        "shape": "legVeins",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "P",
+          "min": 0,
+          "max": 60
+        }
+      },
+      {
+        "shape": "drops",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "count",
+          "output": "W",
+          "min": 0,
+          "max": 3.2
+        }
+      },
+      {
+        "shape": "heart",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "beat",
+          "output": "Q"
+        }
+      },
+      {
+        "shape": "brainGlow",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "R",
+          "min": 40,
+          "max": 100
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows blood pooling in the legs the longer someone stands completely still",
+      "Shows heat and sweating making it worse",
+      "Shows the heart speeding up to make up for it"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include body size, uniform weight or exactly how much someone drank",
+      "Model fainting itself; it stops at feeling light-headed"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Feeling light-headed is a signal to sit down, drink water and tell an adult."
+  },
+  "sources": [
+    "CK-12 Life Science: circulatory system",
+    "Any middle-school life-science text: how leg muscles help return blood to the heart"
+  ]
+}

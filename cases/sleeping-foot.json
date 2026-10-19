@@ -1,0 +1,81 @@
+{
+  "id": "sleeping-foot",
+  "version": 1,
+  "title": "The Sleeping Foot",
+  "system": "Nerves & pressure",
+  "model": "nerve-pressure",
+  "colour": "amber",
+  "minutes": 8,
+  "level": "moderate",
+  "reviewed": null,
+  "character": { "name": "Kofi", "age": 13 },
+  "briefing": "Kofi, 13, sits cross-legged on the floor playing a video game for 40 minutes, with his right foot tucked under his left leg. When he stands up, the right foot feels numb and “dead”, then fizzes with pins and needles for a minute before going back to normal.",
+  "question": "Why did Kofi's foot “fall asleep” — and why does it fizz as it wakes up?",
+  "illustration": "leg",
+  "clues": [
+    { "id": 1, "title": "Dead foot", "icon": "leg", "colour": "purple",
+      "text": "When Kofi stands, his right foot feels numb, like it belongs to someone else. He can't feel the carpet under it.",
+      "shows": "signals from the foot not reaching his brain", "visual": null, "pointsTo": "numb" },
+    { "id": 2, "title": "Only the squashed foot", "icon": "sneaker", "colour": "amber",
+      "text": "His left foot, which was resting on top, feels completely fine. Only the right one, pressed under his leg for 40 minutes, went numb.",
+      "shows": "the effect only where there was pressure", "visual": null, "pointsTo": "pressure" },
+    { "id": 3, "title": "Fizzing", "icon": "swirl", "colour": "coral",
+      "text": "About ten seconds after he stands, the numb foot starts to fizz and prickle like TV static. The foot feels warm, not cold.",
+      "shows": "the nerve starting up again with jumbled signals", "visual": null, "pointsTo": "tingle" },
+    { "id": 4, "title": "Back in a minute", "icon": "clock", "colour": "teal",
+      "text": "After about a minute the fizzing fades and his foot is completely normal. It's always worse after long gaming sessions.",
+      "shows": "full recovery once the pressure is off, and a bigger effect the longer he sat", "visual": { "type": "bars", "from": 10, "to": 60, "unit": "seconds of pins and needles, 10 min → 40 min sitting" }, "pointsTo": "recover" }
+  ],
+  "hypotheses": [
+    { "id": "A", "text": "His foot got cold from the floor.", "flaw": "His foot felt warm, his other foot on the same floor was fine, and cold doesn't make a foot fizz once you stand up." },
+    { "id": "B", "text": "He has hurt his foot.", "flaw": "Nothing hit it, and it was completely normal again a minute after he stood up." },
+    { "id": "C", "text": "His foot ran out of energy from not moving.", "flaw": "His left foot didn't move either and was fine; only the foot being pressed on went numb." },
+    { "id": "D", "text": "Sitting on his foot pressed on a nerve and its blood supply, so its signals slowed and the foot went numb; once the pressure was off, the nerve started up again with jumbled signals — pins and needles — until it was back to normal.", "best": true }
+  ],
+  "evidence": {
+    "A": { "supports": [1], "doesntFit": [2, 3] },
+    "B": { "supports": [], "doesntFit": [4] },
+    "C": { "supports": [], "doesntFit": [2] },
+    "D": { "supports": [1, 2, 3, 4], "doesntFit": [] }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "N",
+    "prompt": "The longer Kofi sits on his foot — from a few minutes up to an hour — how numb is it when he stands up?",
+    "expectedShape": "rises",
+    "second": { "question": "And once he's standing and the pressure is off, what happens to the numbness?", "options": ["up", "same", "down"], "answer": "down" }
+  },
+  "labDefaults": { "primary": 40, "secondary": 0 },
+  "concepts": [
+    { "id": "nerve", "label": "a nerve carries signals", "colour": "purple",
+      "synonyms": ["nerve", "nerves", "signal", "signals", "messages", "message"],
+      "hint": "What carries feeling from the foot to the brain?" },
+    { "id": "pressure", "label": "pressure squeezes it", "colour": "amber",
+      "synonyms": ["pressure", "pressed", "pressing", "squashed", "squeezed", "sat on", "sitting on"],
+      "hint": "What was different about the right foot?" },
+    { "id": "numb", "label": "numb", "colour": "blue",
+      "synonyms": ["numb", "numbness", "can't feel", "cannot feel", "no feeling", "dead"],
+      "hint": "What does it feel like when the signals can't get through?" },
+    { "id": "tingle", "label": "pins and needles", "colour": "coral",
+      "synonyms": ["tingle", "tingling", "tingles", "pins and needles", "prickle", "prickly", "fizz", "fizzing"],
+      "hint": "What happens as the nerve starts working again?" },
+    { "id": "recover", "label": "back to normal", "colour": "teal",
+      "synonyms": ["recover", "recovers", "recovered", "back to normal", "comes back", "wakes up", "restart", "restarts"],
+      "hint": "How did it end?" }
+  ],
+  "transfer": {
+    "context": "Isabel falls asleep with her arm folded under her head. She wakes up and her hand is numb and floppy, then it tingles for a minute before it's normal.",
+    "illustration": "bed",
+    "options": [
+      "Her arm got too cold in the night.",
+      "Her head pressed on a nerve in her arm so its signals slowed; when she moved, the nerve started up again with tingling.",
+      "She slept for too long.",
+      "Her hand was still dreaming."
+    ],
+    "answer": 1,
+    "retryHint": "Numb only where something pressed, then fizzing as it recovers — which of Kofi's clues showed it was only the squashed part?",
+    "retryClue": 2,
+    "explanation": "Isabel's head did to her arm what Kofi's leg did to his foot: it pressed on a nerve for hours, so the signals slowed and the hand went numb. When she moved, the pressure came off, the nerve restarted with jumbled signals — tingling — and then everything was back to normal."
+  },
+  "takeaway": "Nerves carry messages from your body to your brain. Squash one for a while and the messages slow down — numb. Take the pressure off and it restarts with jumbled signals — pins and needles — before getting back to normal."
+}

@@ -1,0 +1,44 @@
+{
+  "id": "balance-spin",
+  "name": "Ears & balance",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "N", "label": "Spins on the spinner", "min": 0, "max": 20, "step": 1, "ticks": ["none", "10 spins", "20 spins"] },
+    "secondary": { "key": "S", "label": "Seconds after stopping", "min": 0, "max": 40, "step": 5, "default": 0, "unit": "s", "ticks": ["just stopped", "20 s", "40 s"] }
+  },
+  "outputs": [
+    { "key": "F", "label": "Inner-ear fluid still swirling", "unit": "%", "colour": "purple", "decimals": 0 },
+    { "key": "D", "label": "Dizziness", "unit": "0–10", "colour": "coral", "decimals": 1 },
+    { "key": "E", "label": "Eyes", "colour": "blue", "bands": [{ "upTo": 1.9, "text": "steady" }, { "upTo": 5.9, "text": "flicking a little" }, { "text": "flicking side to side" }] }
+  ],
+  "rules": {
+    "F": "clamp(6 * N, 0, 100) * pow(0.5, S / 8)",
+    "D": "clamp(0.6 * N, 0, 10) * pow(0.5, S / 8)",
+    "E": "clamp(0.6 * N, 0, 10) * pow(0.5, S / 8)"
+  },
+  "chart": { "x": "N", "y": "D", "xLabel": "number of spins", "yLabel": "dizziness (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "head",
+    "caption": "spinning sets the inner-ear fluid swirling · it keeps going after you stop",
+    "parts": [
+      { "shape": "innerEar", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "F", "min": 0, "max": 100 } },
+      { "shape": "swirl", "colour": "#6C4AB6", "anim": { "type": "spin", "output": "D" } },
+      { "shape": "eye", "colour": "#16213E", "anim": { "type": "shiver", "output": "D" } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows dizziness growing with the number of spins",
+      "Shows it fading by itself in the seconds after stopping",
+      "Shows the eyes flicking while the inner-ear fluid is still moving"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include motion sickness, which is a related but different effect",
+      "Say anything about dizziness that comes without spinning"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Dizziness that comes without spinning, or doesn't go away, is a reason to tell an adult."
+  },
+  "sources": ["NIH NIDCD: Balance and the inner ear (student pages)", "CK-12 Life Science: the ear and balance"]
+}

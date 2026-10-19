@@ -1,0 +1,44 @@
+{
+  "id": "dark-adapt",
+  "name": "Eyes & the dark",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "M", "label": "Minutes in the dark", "min": 0, "max": 20, "step": 1, "unit": "min", "ticks": ["walk in", "10 min", "20 min"] },
+    "secondary": { "key": "B", "label": "How bright it was before", "min": 0, "max": 10, "step": 1, "default": 10, "ticks": ["dim room", "cloudy day", "sunny lobby"] }
+  },
+  "outputs": [
+    { "key": "S", "label": "Eye sensitivity in dim light", "unit": "% of fully adjusted", "colour": "teal", "decimals": 0 },
+    { "key": "P", "label": "Pupil width", "unit": "mm", "colour": "blue", "decimals": 1 },
+    { "key": "V", "label": "What she can see", "colour": "purple", "bands": [{ "upTo": 20, "text": "almost nothing" }, { "upTo": 60, "text": "shapes and steps" }, { "upTo": 85, "text": "seats and faces" }, { "text": "fine details" }] }
+  ],
+  "rules": {
+    "S": "100 - (5 + 9 * B) * pow(0.5, M / 4)",
+    "P": "8 - 6 * pow(0.5, M * 30)",
+    "V": "100 - (5 + 9 * B) * pow(0.5, M / 4)"
+  },
+  "chart": { "x": "M", "y": "S", "xLabel": "minutes in the dark", "yLabel": "sensitivity (% of fully adjusted)", "yMin": 0, "yMax": 105 },
+  "overlay": {
+    "base": "head",
+    "caption": "pupils open in seconds · light-sensing cells rebuild their pigment over minutes",
+    "parts": [
+      { "shape": "moon", "colour": "#F4A300", "anim": { "type": "glow", "output": "S", "min": 0, "max": 100 } },
+      { "shape": "iris", "colour": "#6C4AB6" },
+      { "shape": "pupil", "colour": "#16213E", "anim": { "type": "scale", "output": "P", "min": 2, "max": 8, "from": 0.3, "to": 1.25 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows pupils opening fully within seconds",
+      "Shows the eye's sensitivity to dim light climbing for many minutes — fastest at first",
+      "Shows that coming in from brighter light means starting further behind"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Separate the cone cells (colour, bright light) from the rod cells (dim light)",
+      "Say anything about problems seeing at night"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you find it unusually hard to see in dim light, tell an adult."
+  },
+  "sources": ["NIH National Eye Institute: How the eyes work (student pages)", "CK-12 Life Science: vision"]
+}

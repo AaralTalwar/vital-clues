@@ -1,0 +1,46 @@
+{
+  "id": "tooth-acid",
+  "name": "Teeth & bacteria",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "N", "label": "Separate sugary sips per day", "min": 0, "max": 20, "step": 1, "ticks": ["none", "10 sips", "20 sips"] },
+    "secondary": { "key": "B", "label": "Times brushed per day", "min": 0, "max": 3, "step": 1, "default": 2, "ticks": ["0", "1–2", "3"] }
+  },
+  "outputs": [
+    { "key": "A", "label": "Minutes of acid attack per day", "unit": "min", "colour": "coral", "decimals": 0 },
+    { "key": "F", "label": "Acid-free time for repair (of 8 waking hours)", "unit": "min", "colour": "teal", "decimals": 0 },
+    { "key": "R", "label": "Enamel", "colour": "purple", "bands": [{ "upTo": 60, "text": "repairs fully between sips" }, { "upTo": 150, "text": "struggling to keep up" }, { "text": "losing ground" }] },
+    { "key": "G", "label": "Sugar arrivals", "colour": "amber", "hidden": true }
+  ],
+  "rules": {
+    "A": "20 * N * (1 - 0.15 * B)",
+    "F": "clamp(480 - 20 * N * (1 - 0.15 * B), 0, 480)",
+    "R": "20 * N * (1 - 0.15 * B)",
+    "G": "N"
+  },
+  "chart": { "x": "N", "y": "A", "xLabel": "separate sugary sips per day", "yLabel": "minutes of acid per day", "yMin": 0, "yMax": 420 },
+  "overlay": {
+    "base": "head",
+    "caption": "sugar → mouth bacteria make acid → acid softens enamel · saliva repairs it between sips",
+    "parts": [
+      { "shape": "tooth", "colour": "#F7F9FD" },
+      { "shape": "enamelSpots", "colour": "#9A6200", "anim": { "type": "count", "output": "A", "min": 0, "max": 400 } },
+      { "shape": "germs", "colour": "#1B998B", "anim": { "type": "count", "output": "G", "min": 0, "max": 20 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows each sugary sip starting about 20 minutes of acid",
+      "Shows that splitting the same sugar into more sips means far more acid time",
+      "Shows brushing lowering the bacteria that make the acid"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include fluoride, the type of food, or how saliva differs between people",
+      "Tell anyone how to look after their teeth — that's a dentist's job"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Tooth pain or sensitivity is a reason to tell an adult so a dentist can take a look."
+  },
+  "sources": ["NIH National Institute of Dental and Craniofacial Research: tooth decay (student pages)", "CK-12 Life Science: digestive system — the mouth and teeth"]
+}

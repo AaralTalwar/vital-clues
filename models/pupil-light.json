@@ -1,0 +1,46 @@
+{
+  "id": "pupil-light",
+  "name": "Eyes & light",
+  "colour": "blue",
+  "inputs": {
+    "primary":   { "key": "L", "label": "Light around her", "min": 0, "max": 10, "step": 1, "ticks": ["dim room", "cloudy day", "bright beach"] },
+    "secondary": { "key": "S", "label": "Seconds after stepping out of the sun", "min": 0, "max": 10, "step": 1, "default": 10, "unit": "s", "ticks": ["just stepped in", "5 s", "10 s"] }
+  },
+  "outputs": [
+    { "key": "P", "label": "Pupil width", "unit": "mm", "colour": "blue", "decimals": 1 },
+    { "key": "E", "label": "Light reaching the back of the eye", "unit": "units", "colour": "amber", "decimals": 0 },
+    { "key": "R", "label": "Reading the page", "colour": "teal", "bands": [{ "upTo": 5.9, "text": "too dark — squinting" }, { "text": "comfortable" }] },
+    { "key": "K", "label": "Outside light", "colour": "amber", "hidden": true }
+  ],
+  "rules": {
+    "P": "8 / (1 + 0.3 * L) + (2 - 8 / (1 + 0.3 * L)) * pow(0.5, S)",
+    "E": "(L + 1) * pow(8 / (1 + 0.3 * L) + (2 - 8 / (1 + 0.3 * L)) * pow(0.5, S), 2) / 4",
+    "R": "(L + 1) * pow(8 / (1 + 0.3 * L) + (2 - 8 / (1 + 0.3 * L)) * pow(0.5, S), 2) / 4",
+    "K": "L"
+  },
+  "chart": { "x": "L", "y": "P", "xLabel": "light around her", "yLabel": "pupil width (mm)", "yMin": 0, "yMax": 9 },
+  "overlay": {
+    "base": "head",
+    "caption": "bright light → iris squeezes the pupil small · dim light → pupil opens wide",
+    "parts": [
+      { "shape": "sun", "colour": "#F4A300", "anim": { "type": "glow", "output": "K", "min": 0, "max": 10 } },
+      { "shape": "iris", "colour": "#2E86DE" },
+      { "shape": "pupil", "colour": "#16213E", "anim": { "type": "scale", "output": "P", "min": 2, "max": 8, "from": 0.3, "to": 1.25 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows pupils shrinking as the light gets brighter and widening as it dims",
+      "Shows the light reaching the back of the eye staying much steadier than the light outside",
+      "Shows pupils finishing their change within a few seconds"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include the slower adjustment of the light-sensing cells themselves (see The Dark Cinema)",
+      "Say anything about eye health"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Never look straight at the sun, even with small pupils — and tell an adult if bright light ever hurts your eyes."
+  },
+  "sources": ["NIH National Eye Institute: How the eyes work (student pages)", "CK-12 Life Science: the eye and vision"]
+}

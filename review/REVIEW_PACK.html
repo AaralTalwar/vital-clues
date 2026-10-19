@@ -1,0 +1,1069 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vital Clues — Science Review Pack</title>
+<style>
+body{font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;color:#16213E;background:#fff;max-width:760px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:1.7rem} h2{margin-top:2rem;border-bottom:2px solid #D5DEEC;padding-bottom:.3rem} h3{margin-top:1.8rem;color:#4E3390}
+code{background:#EEF4FB;border-radius:4px;padding:0 .3em;font-size:.88em} li{margin:.2rem 0}
+@media print{h3{break-after:avoid} body{padding:0}}
+</style></head><body>
+<h1>Vital Clues — Science Review Pack</h1>
+<p>48 fictional cases built on 47 simplified body models, for students aged 12–16. Levels: 12 Easy, 12 Moderate, 12 Difficult, 12 Complex.</p>
+<h2>How to review (about 60–90 minutes)</h2>
+<p>This is a <strong>model-level</strong> review. All the science sits in the body models below; each case is a short story that applies one model. You are not asked to read every case.</p>
+<ol>
+<li>For each model, check the formulas give the right <em>direction and shape</em> for middle/high-school biology (the numbers are labelled illustrative in the app).</li>
+<li>Check each model&#x27;s &quot;does / doesn&#x27;t&quot; limits and wellbeing line are honest and age-appropriate.</li>
+<li>Under each model, read the one-line claims of the cases that use it: the best answer, the takeaway and the transfer answer. Flag any sentence that is wrong or misleading.</li>
+<li>Read the four spot-check cases end to end in the app (one per level): <strong>A Case of the Tired Athlete</strong> (Easy), <strong>The Sleepy Gamer</strong> (Moderate), <strong>The Stage-Fright Singer</strong> (Difficult), <strong>The All-Nighter</strong> (Complex).</li>
+<li>Sign off below, or list corrections. Corrections to a model fix every case that uses it.</li>
+</ol>
+<p>Nothing in the app diagnoses or advises on any real person; every case carries a fictional-character notice and a &quot;tell an adult&quot; line.</p>
+<h2>Models</h2>
+<h3>Adrenaline &amp; fuel  ·  <code>adrenaline-fuel</code></h3>
+<p><strong>Sliders:</strong> How big the moment feels (0–10); Hours since eating (0–14 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Adrenaline (% above calm): <code>A = 10 * X</code></li>
+<li>Heart rate (beats/min): <code>H = 68 + 5 * X</code></li>
+<li>Fuel in the blood (% of comfortable): <code>G = clamp(105 - 4 * h, 50, 105)</code></li>
+<li>Shaky hands (0–10): <code>T = clamp(0.35 <em> X + 0.09 </em> (105 - clamp(105 - 4 * h, 50, 105)), 0, 10)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows adrenaline and heart rate rising with how big the moment feels; Shows fuel in the blood falling with hours since eating; Shows shaky hands adding up from both causes.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Say anything about anxiety or any condition; this is everyday test nerves; Say what anyone should eat.</p>
+<p><strong>Wellbeing line:</strong> Nerves before tests are normal. If worry or feeling unwell gets in the way often, talk to an adult you trust.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: endocrine system; CK-12 Life Science: digestive system and energy</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Breakfastless Test</strong> — Complex · Adrenaline &amp; the alarm system + Digestion &amp; fuel</li>
+<ul>
+<li>Best answer: Both: the test switched on his alarm system (adrenaline — racing heart, sweaty palms, some shaking), and fourteen hours without food left his blood low on fuel, which adds its own shakiness. Together, his hands shook far more than either would cause alone.</li>
+<li>Takeaway: Shaky hands can have more than one cause, and causes can add up. Adrenaline from a big moment is one; running low on fuel is another. You can&#x27;t always switch off nerves, but you can remove the second cause by eating.</li>
+<li>Transfer: Before her piano recital, Yuki skipped lunch because she felt too nervous to eat. On stage her fingers tremble more than at any recital before, even though she&#x27;s played the piece perfectly at home. → <em>Stage nerves released adrenaline, and skipping lunch left her low on fuel — two causes of trembling added together.</em></li>
+</ul>
+</ul>
+<h3>Adrenaline &amp; the alarm system  ·  <code>stress-response</code></h3>
+<p><strong>Sliders:</strong> How big the moment feels (0–10); Minutes after it&#x27;s over (0–20 min)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Adrenaline (% above calm): <code>A = 10 <em> X </em> pow(0.5, R / 5)</code></li>
+<li>Heart rate (beats/min): <code>H = 68 + 5.5 <em> X </em> pow(0.5, R / 5)</code></li>
+<li>Sweaty palms: <code>W = 10 <em> X </em> pow(0.5, R / 5)</code> → shown as dry / a little / yes</li>
+<li>Mouth: <code>Y = 10 <em> X </em> pow(0.5, R / 5)</code> → shown as normal / dry</li>
+</ul>
+<p><strong>The model shows:</strong> Shows one signal (adrenaline) changing several body systems at the same time; Shows the response scaling with how big the moment feels, not with any real danger; Shows everything settling back within minutes once the moment passes (halving every 5 minutes).</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Say anything about anxiety, panic or any condition; this is the everyday pre-performance response; Model what happens with long-lasting stress.</p>
+<p><strong>Wellbeing line:</strong> Nerves before a big moment are normal and pass. If worry gets in the way of everyday life, talk with an adult you trust.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: endocrine system, adrenal glands; NIH News in Health: the stress response (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Stage-Fright Singer</strong> — Difficult</li>
+<ul>
+<li>Best answer: Her brain judged the solo as a big moment and released adrenaline, which gets the whole body ready to act at once — heart, sweat, mouth — and fades within minutes when the moment passes.</li>
+<li>Twist: Usually &#x27;she&#x27;s nervous&#x27; is the lazy wrong answer in these cases. Here the nerves really are the cause — the job is to explain how a thought becomes a racing heart, sweaty palms and a dry mouth all at once.</li>
+<li>Takeaway: Your brain has an alarm system. When it judges a moment as big, one chemical — adrenaline — changes heart, sweat and mouth all at once to get you ready, and it fades within minutes when the moment passes.</li>
+<li>Transfer: Eli is waiting to take a driving test. Sitting in the parked car he notices his heart thumping, his hands clammy on the wheel and a dry mouth. → <em>His brain has judged the test as a big moment and released adrenaline, so his heart, sweat glands and mouth all respond at once.</em></li>
+</ul>
+</ul>
+<h3>Altitude + water  ·  <code>altitude-water</code></h3>
+<p><strong>Sliders:</strong> Altitude (0–12 × 1,000 ft); Water drunk (0–3 cups/hour)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Oxygen in each breath (% of sea level): <code>O = 100 - 3.3 * K</code></li>
+<li>Breathing at rest (breaths/min): <code>B = 12 + 1.0 * K</code></li>
+<li>Water lost (sweat + breath) (cups/hour): <code>S = 0.6 + 0.08 * K</code></li>
+<li>Body water after 4 h (% of normal): <code>L = clamp(100 - 7 <em> (0.6 + 0.08 </em> K - W) * t, 70, 100)</code></li>
+<li>Pee: <code>P = clamp(100 - 7 <em> (0.6 + 0.08 </em> K - W) * t, 70, 100)</code> → shown as very little, dark / less / normal</li>
+<li>Thirst signal: <code>T = clamp(100 - 7 <em> (0.6 + 0.08 </em> K - W) * t, 70, 100)</code> → shown as ON / off</li>
+<li>Constants: <code>t = 4</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows less oxygen in each breath higher up, and faster breathing to make up for it; Shows more water lost at altitude, from sweating and from breathing hard in dry air; Shows that drinking more fixes the water problem but not the oxygen problem.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include the days-long adjustment to altitude, food, or temperature; Model altitude sickness or anything dangerous.</p>
+<p><strong>Wellbeing line:</strong> A headache, feeling sick or being very short of breath on a mountain is a reason to rest, drink water and tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: respiratory system and homeostasis; NOAA / NASA: how air pressure changes with altitude (student pages)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Mountain Hike</strong> — Complex · Oxygen &amp; altitude + Kidneys &amp; water</li>
+<ul>
+<li>Best answer: Both: the thin air means less oxygen per breath, so she breathes and pumps harder — and breathing hard in dry mountain air plus sweating made her lose more water than she drank.</li>
+<li>Takeaway: Two problems can stack. At altitude each breath carries less oxygen, so you breathe and pump harder — and breathing hard in dry mountain air also drains water. A drink fixes one; only time or lower ground fixes the other.</li>
+<li>Transfer: On a ski trip at 9,000 feet, Jamal forgets his water bottle all day. That evening he&#x27;s out of breath climbing the lodge stairs, has a pounding headache and very dark pee. → <em>Both: thin air gives less oxygen per breath, and a day in dry mountain air without water left him low on water.</em></li>
+</ul>
+</ul>
+<h3>Balance &amp; motion  ·  <code>motion-conflict</code></h3>
+<p><strong>Sliders:</strong> Minutes reading on a winding road (0–40 min); How much she looks out the window (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Eyes vs inner ear mismatch (0–10): <code>M = 10 - L</code></li>
+<li>Queasiness (0–10): <code>Q = clamp((10 - L) <em> R / 40 </em> 0.9, 0, 10)</code></li>
+<li>She feels: <code>F = clamp((10 - L) <em> R / 40 </em> 0.9, 0, 10)</code> → shown as fine / uneasy / car-sick</li>
+</ul>
+<p><strong>The model shows:</strong> Shows queasiness building when the eyes and the inner ear report different things; Shows the mismatch shrinking when the eyes can see the motion too (looking out the window); Shows time adding up: a short read is fine, a long one is not.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Explain why some people are more sensitive than others; Include smells, heat or a full stomach, which can make it worse.</p>
+<p><strong>Wellbeing line:</strong> If you feel car-sick, tell the driver — stopping for fresh air and looking at the horizon helps.</p>
+<p><strong>Sources:</strong> NIH NIDCD: Balance and the inner ear (student overview); CK-12 Life Science: senses — balance</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Car-Sick Reader</strong> — Moderate</li>
+<ul>
+<li>Best answer: Her eyes report &#x27;still&#x27; while her inner ear reports &#x27;swaying&#x27;, so her brain gets mixed signals and responds with queasiness; looking out the window makes them agree.</li>
+<li>Takeaway: Your brain checks your eyes against your inner ear. When one says &#x27;moving&#x27; and the other says &#x27;still&#x27;, the mismatch can make you feel sick — letting your eyes see the motion brings them back into agreement.</li>
+<li>Transfer: Kofi, 14, sits on the sofa playing a virtual-reality flying game. After ten minutes of swooping through the sky he feels queasy, even though he hasn&#x27;t moved. → <em>His eyes say he&#x27;s moving but his inner ear says he&#x27;s still — the same mismatch as reading in a car, the other way round.</em></li>
+</ul>
+</ul>
+<h3>Blood &amp; healing  ·  <code>clotting</code></h3>
+<p><strong>Sliders:</strong> Minutes since the scrape (0–10 min); Size of the scrape (1–3)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Bleeding (% of the first minute): <code>B = 100 <em> pow(0.5, M / (1 + 0.5 </em> A))</code></li>
+<li>Clot strength (%): <code>C = 100 <em> (1 - pow(0.5, M / (1 + 0.5 </em> A)))</code></li>
+<li>The scrape is: <code>S = 100 <em> pow(0.5, M / (1 + 0.5 </em> A))</code> → shown as stopped / slowing / bleeding</li>
+</ul>
+<p><strong>The model shows:</strong> Shows bleeding slowing and stopping as a clot builds over minutes; Shows a bigger scrape taking longer to plug; Shows clot strength rising as bleeding falls.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Show the days-long regrowth of skin under the scab; Cover deep cuts or anything that needs an adult&#x27;s help.</p>
+<p><strong>Wellbeing line:</strong> A cut that keeps bleeding after you press on it for a few minutes is a reason to get an adult.</p>
+<p><strong>Sources:</strong> NIH NHLBI: blood and platelets (student overview); CK-12 Life Science: circulatory system and blood</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Scraped Knee</strong> — Easy</li>
+<ul>
+<li>Best answer: Tiny cell pieces in his blood called platelets rushed to the scrape and stuck together, building a mesh that plugged the leak; the plug dried into a scab that protects the knee while new skin grows underneath.</li>
+<li>Takeaway: Your blood carries its own repair kit. Platelets stick together at a cut and build a mesh plug in minutes; the plug becomes a scab that guards the spot while new skin grows underneath.</li>
+<li>Transfer: Ana cuts her finger on the edge of a sheet of paper. It bleeds a little, then stops after a couple of minutes, and a thin dark line forms along the cut. → <em>Platelets stuck together at the cut and built a plug, which dried into a thin scab.</em></li>
+</ul>
+</ul>
+<h3>Body clock &amp; water on a long flight  ·  <code>jetlag-water</code></h3>
+<p><strong>Sliders:</strong> Time zones crossed (0–10); Water drunk on the flight (0–8 cups)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Awake in the middle of the night (min): <code>M = clamp(12 * Z, 0, 120)</code></li>
+<li>Nights to adjust (nights): <code>D = round(0.7 * Z)</code></li>
+<li>Body water on landing (% of normal): <code>L = clamp(100 + 1.5 <em> (W - 0.5 </em> h), 85, 100)</code></li>
+<li>Headache: <code>Q = clamp(100 + 1.5 <em> (W - 0.5 </em> h), 85, 100)</code> → shown as likely / unlikely</li>
+<li>Constants: <code>h = 11</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows the body clock out of step by about an hour for each time zone crossed; Shows water lost to dry cabin air over an 11-hour flight, and drinking putting it back; Shows the two fixing at different speeds: water in hours, the clock over several nights.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include direction of travel, naps or caffeine; Show the clock shifting day by day; it shows the first nights after landing.</p>
+<p><strong>Wellbeing line:</strong> On long trips, sip water, get morning daylight, and tell an adult if you feel unwell.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: circadian rhythms; CK-12 Life Science: excretory system and water balance</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Long-Haul Flight</strong> — Complex · Brain &amp; sleep clock + Kidneys &amp; water</li>
+<ul>
+<li>Best answer: Two problems: dry cabin air and too little drinking left him low on water (fixed in hours by drinking), and crossing eight time zones left his body clock out of step (fixed slowly, by daylight, over days).</li>
+<li>Takeaway: Two causes can heal at different speeds. Water lost to dry air comes back as fast as you drink it; a body clock shifted by several time zones moves only about an hour a day, nudged by daylight.</li>
+<li>Transfer: Nia&#x27;s family drives from Arizona to Florida. When they arrive she&#x27;s thirsty with a headache that a big bottle of water fixes by evening — but she&#x27;s still yawning through breakfast for the next two mornings. → <em>Not enough water on the drive (fixed fast by drinking) plus a body clock that has to catch up with a two-hour time change (fixed slowly).</em></li>
+</ul>
+</ul>
+<h3>Bones &amp; teeth  ·  <code>bone-remodel</code></h3>
+<p><strong>Sliders:</strong> Weeks wearing braces (0–24 weeks); Hours a day the force acts (0–22 h a day)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Tooth movement (mm): <code>M = 0.1 <em> W </em> H / 22</code></li>
+<li>Bone-rebuilding cells at work (% of full speed): <code>R = 100 <em> H / 22 </em> (1 - pow(0.5, W + 0.5))</code></li>
+<li>Tooth feels: <code>L = 100 <em> H / 22 </em> (1 - pow(0.5, W + 0.5))</code> → shown as firm / slightly loose</li>
+</ul>
+<p><strong>The model shows:</strong> Shows a tooth moving steadily through the jaw while a gentle force is applied; Shows bone around the tooth being taken down on one side and built up on the other; Shows movement slowing when the force acts for fewer hours a day.</p>
+<p><strong>It does not:</strong> Measure any real person&#x27;s teeth — the numbers are illustrative teaching values; Include how braces are planned or adjusted; Describe anything beyond mild, normal tenderness.</p>
+<p><strong>Wellbeing line:</strong> Sharp pain, a broken wire or a sore in your mouth that won&#x27;t heal is a reason to tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: skeletal system — bone is living tissue; NIH News in Health: bones are alive and always rebuilding (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Braces Wearer</strong> — Moderate</li>
+<ul>
+<li>Best answer: A steady, gentle force from the braces makes bone cells remove bone on one side of each tooth and build new bone on the other, so the tooth slowly moves through the jaw.</li>
+<li>Takeaway: Bone isn&#x27;t dead stone — it is constantly taken down and rebuilt. A steady force tells bone cells where to remove and where to add, which is how braces move teeth and how training makes bones stronger.</li>
+<li>Transfer: Mateo, 15, has done gymnastics for three years. A scan for a sports program shows the bones in his wrists are a little thicker than most kids&#x27; his age. → <em>Years of repeated force made his bone cells add bone where the load is — the same rebuilding that moves teeth.</em></li>
+</ul>
+</ul>
+<h3>Brain &amp; memory  ·  <code>memory-spacing</code></h3>
+<p><strong>Sliders:</strong> Days the study is spread over (1–7 days); Total study time (0.5–4 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Words remembered a week later (%): <code>R = 100 - (80 - 10 <em> H) </em> pow(0.6, D - 1)</code></li>
+<li>Next-morning quiz score (%): <code>N = clamp(40 + 20 * H, 0, 95)</code></li>
+<li>Nights of sleep between sessions (nights): <code>S = D - 1</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows that spreading the same practice over more days leaves more remembered a week later; Shows cramming working about as well for a quiz the very next morning; Shows the benefit levelling off after several days.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include what kind of studying you do (quizzing yourself beats re-reading); Say anything about anyone&#x27;s ability; it&#x27;s about method, not talent.</p>
+<p><strong>Wellbeing line:</strong> If studying ever feels overwhelming or stressful, talk to a teacher or an adult you trust.</p>
+<p><strong>Sources:</strong> NIH News in Health: sleep and memory (student overview); Any educational psychology text: the spacing effect</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Cramming Student</strong> — Moderate</li>
+<ul>
+<li>Best answer: Spreading practice over several days, with sleep in between, makes the brain pull each word back up again and again; each recall after a gap makes the memory stronger and longer-lasting. Cramming fills a short-term memory that fades fast.</li>
+<li>Takeaway: How you split your practice matters as much as how long you practise. Short sessions spread over days, with sleep in between, make your brain pull memories back again and again — and each time they get stronger. Cramming fades fast.</li>
+<li>Transfer: Ollie learns a piano piece by practising 15 minutes a day for two weeks. His friend practises the same piece for 3½ hours the day before the recital. Both play well at the recital; a month later Ollie can still play it and his friend can&#x27;t. → <em>Spaced practice with sleep in between made Ollie&#x27;s memory of the piece stronger and longer-lasting.</em></li>
+</ul>
+</ul>
+<h3>Brain &amp; morning light  ·  <code>morning-light</code></h3>
+<p><strong>Sliders:</strong> Bright morning light each day (0–60 min); Days of the routine (1–14 days)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Body clock shifted earlier (min): <code>C = clamp(L <em> 1.5 </em> (1 - pow(0.5, d / 4)), 0, 90)</code></li>
+<li>Feels sleepy at: <code>T = clamp(L <em> 1.5 </em> (1 - pow(0.5, d / 4)), 0, 90)</code> → shown as about 1:00 a.m. / about 12:15 a.m. / about 11:30 p.m. / about 10:30 p.m.</li>
+<li>Lying awake after 10:30 p.m. (min): <code>F = clamp(150 - 1.5 <em> clamp(L </em> 1.5 * (1 - pow(0.5, d / 4)), 0, 90), 10, 150)</code></li>
+<li>Morning light reaching the eyes (min): <code>B = L</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows bright morning light moving the body clock earlier; Shows the shift building over days of the routine; Shows an earlier clock meaning less time lying awake at night.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include evening screens, caffeine, stress or weekends; Diagnose anything; everyone&#x27;s clock drifts sometimes.</p>
+<p><strong>Wellbeing line:</strong> If you&#x27;re exhausted every day no matter what you try, talk with an adult you trust.</p>
+<p><strong>Sources:</strong> NIH News in Health: &#x27;Tired? Blame your body clock&#x27;; NIH NIGMS: circadian rhythms fact sheet (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Morning-Light Fix</strong> — Difficult</li>
+<ul>
+<li>Best answer: Bright light in the morning resets her brain&#x27;s body clock earlier each day, so her sleep signal arrives earlier at night; dark mornings had let the clock drift late.</li>
+<li>Twist: Most people try to fix a late bedtime at night. Sofia&#x27;s fix came from the other end of the day: bright light in the morning pulled her body clock earlier.</li>
+<li>Takeaway: Your body clock is set by light. Bright light in the morning pulls it earlier, so sleepiness arrives earlier at night — the best fix for a late bedtime starts at sunrise.</li>
+<li>Transfer: After a summer of sleeping until noon, Ben dreads the first week of school. His sister suggests he eats breakfast on the sunny porch every morning for the week before school starts. → <em>Bright morning light will pull his body clock earlier, so he gets sleepy at a normal bedtime.</em></li>
+</ul>
+</ul>
+<h3>Brain &amp; nerves  ·  <code>nerves-reflex</code></h3>
+<p><strong>Sliders:</strong> How close the shot is (0–27 m away); Hours of practice (0–20 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Time before the ball arrives (s): <code>t = (far - k) / speed</code></li>
+<li>Reflex pathway (s): <code>r = 0.10</code></li>
+<li>Decision pathway (s): <code>c = max(0.19, 0.25 - 0.003 * P)</code></li>
+<li>What makes it in time: <code>which = (far - k) / speed - max(0.19, 0.25 - 0.003 * P)</code> → shown as only the reflex / reflex + decision</li>
+<li>Constants: <code>speed = 20</code>, <code>far = 30</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows how little time a fast ball gives you and how that time shrinks with distance; Shows that a reflex pathway is fixed and fast, while a decision takes longer; Shows that practice speeds decisions a little but never the reflex.</p>
+<p><strong>It does not:</strong> Measure any real person — times are rounded teaching values; Include the goalkeeper&#x27;s movement time or the ball slowing down; Tell anyone how good a goalkeeper they are.</p>
+<p><strong>Wellbeing line:</strong> Protect your eyes and head in sport — a reflex is fast, but a helmet or goggles is faster.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: nervous system, reflex arcs; Any middle-school text: reaction time versus reflex</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Jumpy Goalkeeper</strong> — Easy</li>
+<ul>
+<li>Best answer: Signals travel along nerves from her eyes to her brain and spinal cord and out to her muscles; some pathways are short and automatic (reflexes), others go through decision-making and are slower but can be trained.</li>
+<li>Takeaway: Your nervous system has a fast lane and a thinking lane. Reflexes protect you before you can decide; decisions are slower but get faster with practice.</li>
+<li>Transfer: Dev touches a hot pan and his hand jerks away before he feels any pain. → <em>A reflex pathway through his spinal cord moved his hand before the pain signal reached the part of his brain that notices it.</em></li>
+</ul>
+</ul>
+<h3>Brain &amp; sleep clock  ·  <code>sleep-clock</code></h3>
+<p><strong>Sliders:</strong> Bright screen time before bed (0–4 h); Nights in a row (1–7 nights)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Sleep signal (melatonin) (% of normal): <code>M = clamp(100 - 15 * S, 30, 100)</code></li>
+<li>Time to fall asleep (min): <code>F = 15 + 12 * S</code></li>
+<li>Morning alertness (0–10): <code>A = clamp(9 - 0.9 <em> S - 0.3 </em> (N - 1) * S, 1, 10)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows the brain&#x27;s night-time sleep signal dropping when bright light reaches the eyes late; Shows falling asleep taking longer as a result; Shows the effect piling up over several nights.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include caffeine, noise, stress, naps or what time school starts; Diagnose anything; everyone has nights like this.</p>
+<p><strong>Wellbeing line:</strong> If you often can&#x27;t sleep or feel exhausted every day, that&#x27;s worth talking about with an adult you trust.</p>
+<p><strong>Sources:</strong> NIH News in Health: &#x27;Tired? Blame your body clock&#x27;; CK-12 Life Science: nervous system and endocrine system</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Sleepy Gamer</strong> — Moderate</li>
+<ul>
+<li>Best answer: Bright light late at night tells his brain&#x27;s clock it is still daytime, so the sleep signal is held back; without screens the clock runs on its own and sleep comes easily.</li>
+<li>Takeaway: Your brain has a clock, and light is how it tells the time. Bright light late holds back the sleep signal; dim evenings and morning daylight keep the clock on time.</li>
+<li>Transfer: Nadia flies from California to Spain. For the first three nights she is wide awake at 2 a.m. and exhausted by lunchtime, then it fades. → <em>Her body clock is still set to California time; daylight in Spain slowly re-sets it over a few days.</em></li>
+</ul>
+</ul>
+<h3>Cold &amp; sunlight on snow  ·  <code>cold-uv</code></h3>
+<p><strong>Sliders:</strong> Hours outside (0–6 h); How cold (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>UV energy reaching the face (units): <code>E = uv <em> snow </em> O</code></li>
+<li>Face redness that night (0–10): <code>B = clamp((uv <em> snow </em> O - 12) / 2, 0, 10)</code></li>
+<li>Shivering now (0–10): <code>V = round(clamp(0.9 * C - 1, 0, 10))</code></li>
+<li>Blood flow to skin: <code>F = 100 - 6 * C</code> → shown as low / reduced / normal</li>
+<li>Constants: <code>uv = 4</code>, <code>snow = 1.8</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows UV energy adding up with hours outside, boosted by light bouncing off snow; Shows redness appearing only after a threshold dose, hours later; Shows shivering depending on the cold, not on the sunlight.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Account for skin tone, altitude, clouds or time of day; Show any dangerous cold.</p>
+<p><strong>Wellbeing line:</strong> Snow reflects sunlight: on bright days a hat and sunscreen help. Tell an adult about blistering or feeling sick.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: integumentary system; US EPA SunWise: UV Index for students</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Snow-Day Sledder</strong> — Complex · Skin &amp; temperature + Skin &amp; sunlight</li>
+<ul>
+<li>Best answer: Two things: the cold made her shiver and pulled blood away from her skin (gone once she warmed up), and UV light — boosted by snow reflecting it — damaged her skin cells, showing up as redness hours later.</li>
+<li>Takeaway: Cold and sunlight can hit the same skin on the same day but work differently. Cold triggers a fast response that switches off when you warm up; UV damage is silent at first and shows up hours later — and snow or water can boost the dose.</li>
+<li>Transfer: Tomás spends a sunny afternoon fishing from a boat on a cold lake in early spring. He comes home shivering and warms up in a hot shower, but by bedtime the backs of his hands and his nose are bright red. → <em>Cold made him shiver (fixed by the shower), while sunlight — plus light bouncing off the water — damaged his skin cells, showing up hours later.</em></li>
+</ul>
+</ul>
+<h3>Cold water &amp; working muscles  ·  <code>cold-exercise</code></h3>
+<p><strong>Sliders:</strong> How cold the water is (0–10); Swimming effort (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Heat lost to the water (units/min): <code>L = 2 + 1.0 * C</code></li>
+<li>Heat made by muscles (units/min): <code>M = 1 + 0.9 * E</code></li>
+<li>Shivering (0–10): <code>V = round(clamp((2 + C) - (1 + 0.9 * E) - 1, 0, 10))</code></li>
+<li>Breathing rate (breaths/min): <code>B = 12 + 3.5 * E</code></li>
+<li>Heat balance: <code>K = (1 + 0.9 * E) - (2 + C)</code> → shown as losing heat / about even / making extra heat</li>
+</ul>
+<p><strong>The model shows:</strong> Shows heat lost to cold water and heat made by working muscles as two separate flows; Shows shivering switching on when heat lost is bigger than heat made; Shows hard swimming making enough heat to switch shivering off.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include body size, body fat, wetsuits or wind; Model dangerous cold; it stays inside a normal practice.</p>
+<p><strong>Wellbeing line:</strong> If someone can&#x27;t stop shivering or seems confused after a cold swim, get them warm and tell an adult right away.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: homeostasis and temperature regulation; Any middle-school life-science text: heat from muscle activity</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Winter Swim Team</strong> — Complex · Skin &amp; temperature + Muscles &amp; energy</li>
+<ul>
+<li>Best answer: The cold water takes heat away the whole time, while working muscles make heat. Swimming slowly, heat loss wins and they shiver; sprinting, the muscles&#x27; heat wins.</li>
+<li>Takeaway: Your temperature is a balance between heat lost to the surroundings and heat made by working muscles. Cold water or air pulls heat out all the time — move hard and you make enough to win; stop moving and shivering has to take over.</li>
+<li>Transfer: Priya goes cross-country skiing on a freezing morning. Skiing uphill she unzips her jacket because she&#x27;s too warm; when she stops at the top to wait for her friends, she&#x27;s soon shivering. → <em>The cold air takes heat the whole time; skiing uphill her muscles make more heat than she loses, but standing still they make almost none, so she shivers.</em></li>
+</ul>
+</ul>
+<h3>Digestion &amp; fuel  ·  <code>fuel-sugar</code></h3>
+<p><strong>Sliders:</strong> Hours since the last meal (0–6 h); Breakfast eaten (0–2)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Fuel in the blood (% of comfortable): <code>G = clamp(70 + 20 <em> B - 6 </em> h + 10 <em> B </em> max(0, 3 - h) / 3, 50, 110)</code></li>
+<li>Energy for the brain: <code>E = clamp(70 + 20 <em> B - 6 </em> h + 10 <em> B </em> max(0, 3 - h) / 3, 50, 110)</code> → shown as running low / dipping / steady</li>
+<li>Stomach rumbles (per hour): <code>R = round(clamp(2 <em> h - 2 </em> B, 0, 12))</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows the fuel the brain and muscles use drifting down the longer it has been since a meal; Shows a meal in the morning holding it up through the school morning; Shows the stomach&#x27;s hunger signals growing as fuel drops.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Model any medical condition or say what anyone should eat; Include what kind of food, exercise, or sleep.</p>
+<p><strong>Wellbeing line:</strong> Feeling shaky, dizzy or unwell at school is a reason to tell a teacher or the school nurse.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: digestive system; NIH News in Health: how the body uses food for energy (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Skipped Breakfast</strong> — Easy</li>
+<ul>
+<li>Best answer: After fifteen hours without food, the fuel her brain and muscles run on is running low; eating refills it.</li>
+<li>Takeaway: Food is fuel. Your brain and muscles burn it all the time, so a long gap without eating shows up as fuzzy thinking and shakiness before anything else — and a meal fixes it fast.</li>
+<li>Transfer: Omar runs a cross-country race in the afternoon without eating since early morning. In the last mile his legs feel like jelly and he can&#x27;t think straight. → <em>His muscles and brain are running out of fuel after hours without food and a long effort.</em></li>
+</ul>
+</ul>
+<h3>Ears &amp; air pressure  ·  <code>ear-pressure</code></h3>
+<p><strong>Sliders:</strong> Minutes into the descent (0–20 min); Swallows or yawns per minute (0–6 per min)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Pressure difference across the eardrum (units): <code>P = D * pow(0.5, S)</code></li>
+<li>Eardrum: <code>E = D * pow(0.5, S)</code> → shown as barely pushed / pushed in / pushed in hard</li>
+<li>Ear feels: <code>K = D * pow(0.5, S)</code> → shown as normal / blocked / painful</li>
+</ul>
+<p><strong>The model shows:</strong> Shows the pressure difference building as the cabin pressure rises during the descent; Shows each swallow or yawn letting air through a small tube to even it out (halving it); Shows why the descent, not the climb, is usually the uncomfortable part.</p>
+<p><strong>It does not:</strong> Measure any real person or plane — the numbers are illustrative teaching values; Include a blocked nose, which makes the tube harder to open; Model diving, where the pressure changes much faster.</p>
+<p><strong>Wellbeing line:</strong> Ear pain that doesn&#x27;t go away after landing is a reason to tell an adult.</p>
+<p><strong>Sources:</strong> NIH NIDCD: How do we hear? — the middle ear (student overview); CK-12 Physical Science: air pressure</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Popping Ears</strong> — Difficult</li>
+<ul>
+<li>Best answer: As the plane descends, the air pressure in the cabin rises but the air behind her eardrum stays at the lower pressure, so the eardrum is pushed in — until swallowing or yawning opens a small tube that lets air in to even it out.</li>
+<li>Twist: Most people expect the climb to hurt because the plane is going up. It&#x27;s actually the descent, when the cabin air pushes harder on the eardrum than the air trapped behind it — and a swallow fixes it.</li>
+<li>Takeaway: Your eardrum has air on both sides. When the outside pressure rises — a plane coming down, or diving deeper — the eardrum gets pushed in until a swallow or yawn opens a small tube and evens the pressure out.</li>
+<li>Transfer: Yusuf, 14, swims down to the bottom of the deep end and his ears start to hurt. When he gently swallows, they pop and feel better. → <em>Deeper water pushes harder on his eardrums than the air trapped behind them; swallowing opens the tube and lets air in to even the pressure.</em></li>
+</ul>
+</ul>
+<h3>Ears &amp; balance  ·  <code>balance-spin</code></h3>
+<p><strong>Sliders:</strong> Spins on the spinner (0–20); Seconds after stopping (0–40 s)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Inner-ear fluid still swirling (%): <code>F = clamp(6 <em> N, 0, 100) </em> pow(0.5, S / 8)</code></li>
+<li>Dizziness (0–10): <code>D = clamp(0.6 <em> N, 0, 10) </em> pow(0.5, S / 8)</code></li>
+<li>Eyes: <code>E = clamp(0.6 <em> N, 0, 10) </em> pow(0.5, S / 8)</code> → shown as steady / flicking a little / flicking side to side</li>
+</ul>
+<p><strong>The model shows:</strong> Shows dizziness growing with the number of spins; Shows it fading by itself in the seconds after stopping; Shows the eyes flicking while the inner-ear fluid is still moving.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include motion sickness, which is a related but different effect; Say anything about dizziness that comes without spinning.</p>
+<p><strong>Wellbeing line:</strong> Dizziness that comes without spinning, or doesn&#x27;t go away, is a reason to tell an adult.</p>
+<p><strong>Sources:</strong> NIH NIDCD: Balance and the inner ear (student pages); CK-12 Life Science: the ear and balance</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Dizzy Spinner</strong> — Moderate</li>
+<ul>
+<li>Best answer: Fluid in the balance loops of her inner ear started swirling while she spun; when she stopped, it kept swirling for a while, so her brain was told she was still turning.</li>
+<li>Takeaway: Your balance sense lives in fluid-filled loops in your inner ear. Spinning sets the fluid swirling, and because it keeps going after you stop, your brain thinks you are still turning until it settles.</li>
+<li>Transfer: After a long ride on the spinning teacups at a fair, Ravi steps off and the ground seems to tilt and turn. He has to sit down for a minute until it passes. → <em>The fluid in his inner ear kept swirling after the ride stopped, telling his brain he was still turning.</em></li>
+</ul>
+</ul>
+<h3>Ears &amp; hearing  ·  <code>hearing</code></h3>
+<p><strong>Sliders:</strong> Loudness (60–110 dB); Time listening (0–180 min)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Sound energy reaching the ear (× talking level): <code>L = round(pow(10, (V - 60) / 10))</code></li>
+<li>Hair-cell fatigue (0–10): <code>F = clamp(pow(10, (V - 95) / 10) <em> T / 60 </em> 3, 0, 10)</code></li>
+<li>Ringing afterwards: <code>R = clamp(pow(10, (V - 95) / 10) <em> T / 60 </em> 3, 0, 10)</code> → shown as none / a little, fades / yes, hours</li>
+</ul>
+<p><strong>The model shows:</strong> Shows that every 10 dB is ten times the sound energy, not a little more; Shows the tiny hair cells in the inner ear tiring with loudness and time — barely at all below about 85 dB, then steeply; Shows ringing as the sign that they were pushed too far.</p>
+<p><strong>It does not:</strong> Measure any real person or any real headphones; Model permanent hearing damage; it stops at temporary ringing; Replace a hearing test.</p>
+<p><strong>Wellbeing line:</strong> Ringing that lasts more than a day, or hearing that seems muffled, is a reason to tell an adult.</p>
+<p><strong>Sources:</strong> NIH NIDCD: Noise-Induced Hearing Loss (student pages); CK-12 Physical Science: sound and the decibel scale</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Ringing Ears</strong> — Easy</li>
+<ul>
+<li>Best answer: Loud sound bent the tiny hair cells in her inner ear too hard for too long; they tired and sent a false &#x27;ringing&#x27; signal while hearing less of the real one, then recovered overnight.</li>
+<li>Takeaway: Hearing runs on tiny hair cells that bend with sound. Loud sound bends them too hard; ringing afterwards is their complaint. Give them a break and they recover — this time. Volume, time and rest all matter.</li>
+<li>Transfer: Tariq uses earbuds at full volume for his whole two-hour commute every day. Lately he turns the TV up louder than anyone else in the house. → <em>Hours of loud sound every day are tiring his inner-ear hair cells faster than they can recover, so quieter sounds are getting harder to hear.</em></li>
+</ul>
+</ul>
+<h3>Ears &amp; your own voice  ·  <code>bone-conduction</code></h3>
+<p><strong>Sliders:</strong> Pitch of the sound (100–1000 Hz); Ears (0–1)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Extra loudness through bone (0–16): <code>B = clamp((10 - 0.009 <em> f) </em> (1 + 0.6 * o), 0, 16)</code></li>
+<li>Your voice sounds to you: <code>S = clamp((10 - 0.009 <em> f) </em> (1 + 0.6 * o), 0, 16)</code> → shown as about the same / a bit deeper / much deeper</li>
+<li>What a recording captures: always shown as &quot;air route only&quot;</li>
+</ul>
+<p><strong>The model shows:</strong> Shows your own voice reaching your ears through bone as well as through the air; Shows the bone route adding mostly low, deep sound; Shows plugging your ears making the bone route louder.</p>
+<p><strong>It does not:</strong> Measure any real person or any real microphone; Include hearing loss or how the brain processes voices; Say how anyone&#x27;s voice should sound.</p>
+<p><strong>Wellbeing line:</strong> If your own voice suddenly sounds very loud or echoey to you and it doesn&#x27;t go away, tell an adult.</p>
+<p><strong>Sources:</strong> NIH NIDCD: how do we hear? (student pages); CK-12 Physical Science: sound travelling through solids</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Recorded Voice</strong> — Difficult</li>
+<ul>
+<li>Best answer: Malik hears his own voice two ways — through the air and through the bones of his skull, which carry the deep sounds best. The recording only catches the air route, which is what everyone else hears.</li>
+<li>Twist: The voice you hear in your head isn&#x27;t the one other people hear. The &#x27;weird&#x27; recording is the accurate one — the voice in your head has extra deep sound carried through bone.</li>
+<li>Takeaway: You hear your own voice through the air and through the bones of your head, which add deep tones. A recording catches only the air — so the strange-sounding playback is how everyone else hears you.</li>
+<li>Transfer: When Inés eats crunchy chips, the crunching sounds really loud to her — but her friend across the table can barely hear it. → <em>The crunch travels through the bones of Inés&#x27;s jaw and skull straight to her ears, a route her friend&#x27;s ears don&#x27;t get.</em></li>
+</ul>
+</ul>
+<h3>Eyes &amp; colour  ·  <code>afterimage</code></h3>
+<p><strong>Sliders:</strong> Seconds staring at red (0–60 s); How vivid the red is (1–3)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Red-sensing cells tired (%): <code>F = clamp(100 <em> (1 - pow(0.5, s / 15)) </em> b / 3, 0, 100)</code></li>
+<li>Green afterimage strength (0–10): <code>G = clamp(10 <em> (1 - pow(0.5, s / 15)) </em> b / 3, 0, 10)</code></li>
+<li>How long it lasts (s): <code>D = 0.25 <em> clamp(100 </em> (1 - pow(0.5, s / 15)) * b / 3, 0, 100)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows colour-sensing cells tiring the longer they stare at one colour; Shows the afterimage being the opposite colour and growing stronger with longer staring; Shows the effect fading as the cells recover.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Cover colour blindness or how colour is processed in the brain in detail; Suggest staring at bright lights or the sun — never do that.</p>
+<p><strong>Wellbeing line:</strong> Afterimages from paint or paper fade in seconds. If spots in your vision don&#x27;t fade, tell an adult.</p>
+<p><strong>Sources:</strong> NIH National Eye Institute: how the eyes work (student pages); CK-12 Life Science: senses, the eye and colour vision</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Afterimage Artist</strong> — Difficult</li>
+<ul>
+<li>Best answer: The red-sensing cells in her eyes got tired from staring, so when she looks at white the other colour cells &#x27;win&#x27; and her brain sees the opposite colour — green — until the tired cells recover.</li>
+<li>Twist: Hana sees a colour that isn&#x27;t there at all. The green isn&#x27;t on the wall or in her eye — it&#x27;s made by tired red-sensing cells, and it shows up as the opposite colour.</li>
+<li>Takeaway: Your eyes have cells for different colours. Stare too long at one colour and those cells tire; then white looks like the opposite colour until they recover. That colour is made inside your eyes and brain.</li>
+<li>Transfer: Tomás stares at a bright yellow sticky note on his desk for a minute. When he looks at a blank white page, he sees a bluish square. → <em>The cells that sense yellow light tired from staring, so the white page looks like the opposite colour, blue, until they recover.</em></li>
+</ul>
+</ul>
+<h3>Eyes &amp; light  ·  <code>pupil-light</code></h3>
+<p><strong>Sliders:</strong> Light around her (0–10); Seconds after stepping out of the sun (0–10 s)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Pupil width (mm): <code>P = 8 / (1 + 0.3 <em> L) + (2 - 8 / (1 + 0.3 </em> L)) * pow(0.5, S)</code></li>
+<li>Light reaching the back of the eye (units): <code>E = (L + 1) <em> pow(8 / (1 + 0.3 </em> L) + (2 - 8 / (1 + 0.3 <em> L)) </em> pow(0.5, S), 2) / 4</code></li>
+<li>Reading the page: <code>R = (L + 1) <em> pow(8 / (1 + 0.3 </em> L) + (2 - 8 / (1 + 0.3 <em> L)) </em> pow(0.5, S), 2) / 4</code> → shown as too dark — squinting / comfortable</li>
+<li>Outside light: <code>K = L</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows pupils shrinking as the light gets brighter and widening as it dims; Shows the light reaching the back of the eye staying much steadier than the light outside; Shows pupils finishing their change within a few seconds.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include the slower adjustment of the light-sensing cells themselves (see The Dark Cinema); Say anything about eye health.</p>
+<p><strong>Wellbeing line:</strong> Never look straight at the sun, even with small pupils — and tell an adult if bright light ever hurts your eyes.</p>
+<p><strong>Sources:</strong> NIH National Eye Institute: How the eyes work (student pages); CK-12 Life Science: the eye and vision</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Squinting Reader</strong> — Easy</li>
+<ul>
+<li>Best answer: Her irises — the coloured rings around the pupils — are muscles that squeeze the pupils small in bright light and open them wide in dim light, controlling how much light gets into her eyes.</li>
+<li>Takeaway: Your pupils are adjustable windows. The iris squeezes them small in bright light and opens them wide in dim light — in seconds and without you deciding — so the light reaching the back of your eye stays in a comfortable range.</li>
+<li>Transfer: Jamal walks out of a dark movie theatre into a sunny parking lot. For a few seconds everything looks blindingly bright and he squints, then it feels normal. → <em>His pupils were wide open from the dark theatre; in the sun his irises squeeze them small so less light gets in.</em></li>
+</ul>
+</ul>
+<h3>Eyes &amp; tears  ·  <code>blink-rate</code></h3>
+<p><strong>Sliders:</strong> Minutes of focused screen time (0–60 min); Look-away breaks per hour (0–3)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Blinks per minute (per min): <code>K = 15 - 9 * (1 - pow(0.5, F / 4))</code></li>
+<li>Eye dryness (0–10): <code>D = clamp(9 <em> (1 - pow(0.5, F / 4)) </em> F / 54 <em> (1 - 0.25 </em> B), 0, 10)</code></li>
+<li>Eyes feel: <code>E = clamp(9 <em> (1 - pow(0.5, F / 4)) </em> F / 54 <em> (1 - 0.25 </em> B), 0, 10)</code> → shown as comfortable / a bit dry / stinging</li>
+</ul>
+<p><strong>The model shows:</strong> Shows blinking dropping sharply in the first minutes of concentrating; Shows the thin film of tears on the eye drying out the longer blinks stay rare; Shows short look-away breaks letting the tear film recover.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include screen brightness, room air or how close the screen is; Say anything about eyesight or glasses.</p>
+<p><strong>Wellbeing line:</strong> Eyes that stay red, sore or blurry after resting are a reason to tell an adult.</p>
+<p><strong>Sources:</strong> NIH National Eye Institute: tips for eye health and screen use (student overview); CK-12 Life Science: the eye</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Blinkless Gamer</strong> — Moderate</li>
+<ul>
+<li>Best answer: When he concentrates on the screen he blinks far less, so the thin film of tears on his eyes dries out and they sting; the watering afterwards is the eye catching up.</li>
+<li>Takeaway: Every blink spreads a fresh layer of tears over your eyes. Concentrating hard makes you blink far less, so the eyes dry and sting — short breaks to look away let blinking and tears catch up.</li>
+<li>Transfer: Sofia, 15, spends an hour peering into a microscope in biology lab. Afterwards her eyes sting and feel dry. → <em>She blinked much less while concentrating, so the tear film on her eyes dried out.</em></li>
+</ul>
+</ul>
+<h3>Eyes &amp; the dark  ·  <code>dark-adapt</code></h3>
+<p><strong>Sliders:</strong> Minutes in the dark (0–20 min); How bright it was before (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Eye sensitivity in dim light (% of fully adjusted): <code>S = 100 - (5 + 9 <em> B) </em> pow(0.5, M / 4)</code></li>
+<li>Pupil width (mm): <code>P = 8 - 6 <em> pow(0.5, M </em> 30)</code></li>
+<li>What she can see: <code>V = 100 - (5 + 9 <em> B) </em> pow(0.5, M / 4)</code> → shown as almost nothing / shapes and steps / seats and faces / fine details</li>
+</ul>
+<p><strong>The model shows:</strong> Shows pupils opening fully within seconds; Shows the eye&#x27;s sensitivity to dim light climbing for many minutes — fastest at first; Shows that coming in from brighter light means starting further behind.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Separate the cone cells (colour, bright light) from the rod cells (dim light); Say anything about problems seeing at night.</p>
+<p><strong>Wellbeing line:</strong> If you find it unusually hard to see in dim light, tell an adult.</p>
+<p><strong>Sources:</strong> NIH National Eye Institute: How the eyes work (student pages); CK-12 Life Science: vision</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Dark Cinema</strong> — Moderate</li>
+<ul>
+<li>Best answer: Two things happened: her pupils opened wide in seconds, and over many minutes the light-sensing cells at the back of her eyes rebuilt the pigment that bright light had used up, making them far more sensitive.</li>
+<li>Takeaway: Your eyes adjust to the dark in two steps: pupils open wide in seconds, then the light-sensing cells slowly rebuild their pigment over many minutes, making you far more sensitive to dim light.</li>
+<li>Transfer: Wei goes outside at night to look at the stars. At first he sees only a few; after twenty minutes away from his phone screen he sees hundreds. → <em>His eyes rebuilt their light-sensing pigment in the dark, becoming far more sensitive over many minutes.</em></li>
+</ul>
+</ul>
+<h3>Fuel &amp; effort  ·  <code>fuel-exercise</code></h3>
+<p><strong>Sliders:</strong> Running intensity (0–10); Hours since eating (0–10 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Breathing rate (breaths/min): <code>B = 12 + 3.8 * I</code></li>
+<li>Heart rate (beats/min): <code>H = 65 + 12.5 * I</code></li>
+<li>Fuel available to muscles (% of full): <code>G = clamp(105 - 4 <em> h - 0.5 </em> I * h, 20, 110)</code></li>
+<li>Legs: <code>K = clamp(105 - 4 <em> h - 0.5 </em> I * h, 20, 110)</code> → shown as jelly / heavy / strong</li>
+</ul>
+<p><strong>The model shows:</strong> Shows breathing and heart rate rising with running intensity, the same for everyone; Shows fuel in the blood falling with hours since eating, and faster at high effort; Shows legs running short only when low fuel and high effort combine.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Say what anyone should eat; Include training, sleep or heat.</p>
+<p><strong>Wellbeing line:</strong> Feeling shaky or dizzy during sport is a reason to stop, have a snack and water, and tell a coach.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: digestive and respiratory systems; CK-12 Life Science: cellular respiration (food + oxygen → energy)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Skipped-Lunch Sprint</strong> — Complex · Digestion &amp; fuel + Lungs &amp; heart</li>
+<ul>
+<li>Best answer: Both: sprinting makes muscles burn fuel and oxygen very fast (that&#x27;s the hard breathing everyone has), and after nine hours without food Ravi had less fuel to burn — so his muscles ran short at sprint pace even though jogging was fine.</li>
+<li>Takeaway: Effort and fuel are a pair. Sprinting makes everyone breathe hard because muscles burn fuel and oxygen fast; whether you can keep going depends on how much fuel is left. Lungs deliver the oxygen; food supplies the fuel.</li>
+<li>Transfer: Maya plays three soccer games in a tournament. Game one at 9 a.m. goes great, but in the third game at 3 p.m. — with only a granola bar since breakfast — her legs feel heavy and she can&#x27;t keep up in the sprints, though she can still jog fine. → <em>Hard sprints burn muscle fuel fast, and with little food since breakfast her muscles ran short at high effort.</em></li>
+</ul>
+</ul>
+<h3>Heat + muscle fuel  ·  <code>heat-fuel</code></h3>
+<p><strong>Sliders:</strong> Heat (0–10); Hours since the last meal (0–8 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Sprint power (% of fresh): <code>P = clamp(clamp(100 - 4 <em> e - (0.25 + 0.03 </em> I) <em> p, 20, 100) - 2 </em> (100 - clamp(100 - (0.04 + 0.012 <em> I) </em> p, 80, 100)), 0, 100)</code></li>
+<li>Fuel in her muscles (%): <code>F = clamp(100 - 4 <em> e - (0.25 + 0.03 </em> I) * p, 20, 100)</code></li>
+<li>Body water (% of normal): <code>W = clamp(100 - (0.04 + 0.012 <em> I) </em> p, 80, 100)</code></li>
+<li>Water lost so far (%): <code>S = 100 - clamp(100 - (0.04 + 0.012 <em> I) </em> p, 80, 100)</code></li>
+<li>Thirst signal: <code>T = clamp(100 - (0.04 + 0.012 <em> I) </em> p, 80, 100)</code> → shown as ON / off</li>
+</ul>
+<p><strong>The model shows:</strong> Shows body water falling faster in hotter weather as the match goes on; Shows muscle fuel starting lower after a long gap since eating, and running down during play; Shows sprint power depending on both, so either problem alone hurts and both together hurt most.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include salt, fitness, what kind of food, or how quickly food is digested; Say what or when anyone should eat.</p>
+<p><strong>Wellbeing line:</strong> Feeling dizzy, sick or confused in the heat is a reason to stop, get into the shade, drink and tell a coach or adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: homeostasis, digestion and the muscular system; NIH News in Health: staying safe in the heat (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Heatwave Final</strong> — Complex · Kidneys &amp; water + Digestion &amp; fuel</li>
+<ul>
+<li>Best answer: Both: in the heat she sweated out far more water than she drank, AND seven hours without food left her muscles short of fuel — together they drained her in the second half.</li>
+<li>Takeaway: Heat drains water; time without food drains fuel. In a long hot game both run down at once, and each needs its own fix — a drink for water, food for fuel.</li>
+<li>Transfer: Leo hikes all day in desert heat. He keeps refilling his water bottle at every spring but brought no snacks. By evening he isn&#x27;t thirsty at all, yet his legs are shaky and weak. → <em>He&#x27;s low on fuel — he drank enough but ate nothing, so only the fuel problem is left.</em></li>
+</ul>
+</ul>
+<h3>Heat, water &amp; blood flow  ·  <code>heat-standing</code></h3>
+<p><strong>Sliders:</strong> Minutes standing still (0–20 min); Heat (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Blood pooled in the legs (% extra): <code>P = clamp(m <em> (1.2 + 0.15 </em> H), 0, 60)</code></li>
+<li>Blood getting back to the heart (% of normal): <code>R = 100 - clamp(m <em> (1.2 + 0.15 </em> H), 0, 60)</code></li>
+<li>Heart rate (beats/min): <code>Q = 75 + 1.2 <em> clamp(m </em> (1.2 + 0.15 <em> H), 0, 60) + 2 </em> H</code></li>
+<li>Sweat lost (cups/hour): <code>W = 0.2 + 0.3 * H</code></li>
+<li>How the head feels: <code>F = 100 - clamp(m <em> (1.2 + 0.15 </em> H), 0, 60)</code> → shown as light-headed — sit down / a bit woozy / fine</li>
+</ul>
+<p><strong>The model shows:</strong> Shows blood pooling in the legs the longer someone stands completely still; Shows heat and sweating making it worse; Shows the heart speeding up to make up for it.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include body size, uniform weight or exactly how much someone drank; Model fainting itself; it stops at feeling light-headed.</p>
+<p><strong>Wellbeing line:</strong> Feeling light-headed is a signal to sit down, drink water and tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: circulatory system; Any middle-school life-science text: how leg muscles help return blood to the heart</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The July Marching Band</strong> — Complex · Kidneys &amp; water + Heart &amp; blood flow</li>
+<ul>
+<li>Best answer: Heavy sweating has left less water in their blood, and standing still lets blood pool in their legs because the leg muscles aren&#x27;t squeezing it back up. Together, too little blood reaches the head.</li>
+<li>Takeaway: Blood needs a push to get from your legs back to your head. Walking muscles provide it; standing still doesn&#x27;t. Add heavy sweating on a hot day and there&#x27;s less blood to go around — that&#x27;s when the head runs short.</li>
+<li>Transfer: At a long school assembly on a warm afternoon, Omar stands perfectly still in the back row. After twenty minutes he feels light-headed; when he shifts from foot to foot and rises onto his toes, it passes. → <em>Warmth and standing still both mean less blood gets back up to his head; moving his legs squeezes it back.</em></li>
+</ul>
+</ul>
+<h3>Immune system &amp; fever  ·  <code>fever-setpoint</code></h3>
+<p><strong>Sliders:</strong> How hard the immune system is fighting (0–10); Hours since the fight started (0–12 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Brain&#x27;s thermostat set to (°F): <code>S = 98.6 + 0.3 * G</code></li>
+<li>Body temperature (°F): <code>T = 98.6 + 0.3 <em> G - 0.3 </em> G * pow(0.5, H / 1.5)</code></li>
+<li>Shivering (0–10): <code>V = round(clamp(0.3 <em> G </em> pow(0.5, H / 1.5) * 6, 0, 10))</code></li>
+<li>He feels: <code>F = 0.3 <em> G </em> pow(0.5, H / 1.5)</code> → shown as warm / chilly / cold and shivery</li>
+</ul>
+<p><strong>The model shows:</strong> Shows the immune system raising the brain&#x27;s temperature set point while it fights germs; Shows the body shivering to heat up until it reaches the new, higher set point; Shows the gap (and the shivering) shrinking over the first hours.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Model high or dangerous fevers; it stops at about 101.6 °F; Say anything about what to do for a fever.</p>
+<p><strong>Wellbeing line:</strong> A fever that is very high or lasts more than a couple of days is a reason to tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: immune system and homeostasis; NIH MedlinePlus: Fever (overview for students and families)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Feverish Friend</strong> — Difficult</li>
+<ul>
+<li>Best answer: His immune system is fighting germs and has turned up the brain&#x27;s thermostat, so at his normal temperature he feels too cold and shivers to heat up; when the fight eases, the thermostat drops and he sweats to cool off.</li>
+<li>Twist: A hot person shivering seems backwards. His body isn&#x27;t too cold at all — his brain&#x27;s thermostat has been turned up, so a normal temperature suddenly feels cold.</li>
+<li>Takeaway: A fever isn&#x27;t the body losing control — it&#x27;s the immune system turning the brain&#x27;s thermostat up while it fights germs. Shivering heats you to the new target; sweating cools you down when the target drops again.</li>
+<li>Transfer: Nia, 14, has a cold. On a warm afternoon she suddenly gets goosebumps, wants a sweater, and her temperature reads 100.5 °F. → <em>Her immune system turned up her brain&#x27;s thermostat, so her normal temperature now feels too cold and she tries to warm up.</em></li>
+</ul>
+</ul>
+<h3>Immune system &amp; pollen  ·  <code>immune-pollen</code></h3>
+<p><strong>Sliders:</strong> Pollen in the air (0–10); Minutes after going indoors (0–60 min)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Alarm chemical (histamine) (% above calm): <code>A = 10 <em> G </em> pow(0.5, M / 20)</code></li>
+<li>Sneezes (per hour): <code>S = round(1.2 <em> G </em> pow(0.5, M / 20))</code></li>
+<li>Eyes: <code>E = 10 <em> G </em> pow(0.5, M / 20)</code> → shown as fine / itchy / itchy &amp; watery</li>
+</ul>
+<p><strong>The model shows:</strong> Shows the immune system treating harmless pollen as an intruder and releasing an alarm chemical; Shows sneezing and itchy eyes scaling with how much pollen is around; Shows the reaction fading once away from the pollen (halving every 20 minutes).</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Say whether anyone has an allergy or what to do about one; Cover food, pets, dust or serious reactions.</p>
+<p><strong>Wellbeing line:</strong> Sneezing is harmless. Trouble breathing or swelling of the face is serious — get an adult right away.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: immune system; NIH News in Health: seasonal allergies explained (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Sneezing Gardener</strong> — Easy</li>
+<ul>
+<li>Best answer: Diego&#x27;s immune system has learned to treat pollen as an intruder. When pollen lands in his nose and eyes, immune cells release an alarm chemical that causes sneezing, itching and watering to flush it out; his friend&#x27;s immune system has not learned this, so it stays quiet.</li>
+<li>Takeaway: Your immune system is a guard that sometimes raises the alarm about something harmless. Sneezing, itching and watering are its way of flushing an intruder out — and because each immune system learns differently, the same pollen can bother one person and not the next.</li>
+<li>Transfer: Mei pets a neighbour&#x27;s cat for ten minutes. Soon her eyes itch and she sneezes several times. Her brother, petting the same cat, is fine. → <em>Mei&#x27;s immune system treats something from the cat as an intruder and releases an alarm chemical; her brother&#x27;s immune system does not react to it.</em></li>
+</ul>
+</ul>
+<h3>Kidneys &amp; water  ·  <code>water-balance</code></h3>
+<p><strong>Sliders:</strong> Heat &amp; effort (0–10); Water drunk (0–4 cups/hour)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Sweat lost (cups/hour): <code>S = 0.2 + 0.3 * I</code></li>
+<li>Body water after 3 h (% of normal): <code>L = clamp(100 - 8 <em> (0.2 + 0.3 </em> I - W) * t, 70, 100)</code></li>
+<li>Pee output: <code>P = clamp(100 - 8 <em> (0.2 + 0.3 </em> I - W) * t, 70, 100)</code> → shown as very little / less / normal</li>
+<li>Thirst signal: <code>T = clamp(100 - 8 <em> (0.2 + 0.3 </em> I - W) * t, 70, 100)</code> → shown as ON / off</li>
+<li>Constants: <code>t = 3</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows a water budget: sweat out versus water drunk, over three hours; Shows the kidneys holding water back (less pee) when the body is low; Shows the thirst signal switching on when body water falls.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include salt, food, breathing losses or body size; Model dangerous dehydration; the water level never falls below 70 %.</p>
+<p><strong>Wellbeing line:</strong> If someone feels dizzy or sick outdoors, get them into the shade and tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: excretory system; NIH MedlinePlus: Water in diet (overview for students)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Thirsty Hiker</strong> — Easy</li>
+<ul>
+<li>Best answer: She has lost more water (sweat) than she drank, so her body is low on water and is trying to save it.</li>
+<li>Takeaway: Your body keeps a water budget. When more goes out as sweat than comes in, the kidneys hold water back and the brain turns on thirst — two different signals, one cause.</li>
+<li>Transfer: Marco plays a 90-minute soccer match on a hot day. Afterwards he has a headache and his pee is dark yellow. → <em>He sweated out more water than he drank, so his body is low on water.</em></li>
+</ul>
+<li><strong>The Thirsty Swimmer</strong> — Difficult</li>
+<ul>
+<li>Best answer: Hard swimming made him sweat, the pool hid it, and he drank almost nothing, so more water left his body than came in.</li>
+<li>Twist: He was surrounded by water the whole time, so &#x27;dehydrated&#x27; sounds impossible — but skin doesn&#x27;t drink pool water, and sweat hidden in the pool still leaves the body.</li>
+<li>Takeaway: Your water budget doesn&#x27;t care what&#x27;s around you. Hard work makes you sweat even in a pool or an ice rink, and only what you drink puts water back.</li>
+<li>Transfer: Ingrid, 16, plays a hard hockey game in an icy rink, sweating under heavy pads. Afterwards she&#x27;s very thirsty and confused — “It was freezing in there, how could I lose water?” → <em>She sweated under her pads during hard play and drank little — cold or wet surroundings don&#x27;t stop water leaving the body.</em></li>
+</ul>
+</ul>
+<h3>Legs, veins &amp; the muscle pump  ·  <code>muscle-pump</code></h3>
+<p><strong>Sliders:</strong> Minutes standing still (0–40 min); Leg movement (0–2)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Extra blood pooled in legs (%): <code>P = clamp(25 <em> (1 - pow(0.5, m / 8)) </em> (1 - 0.45 * w), 0, 30)</code></li>
+<li>Blood flow to the brain (% of normal): <code>B = 100 - 0.8 <em> clamp(25 </em> (1 - pow(0.5, m / 8)) <em> (1 - 0.45 </em> w), 0, 30)</code></li>
+<li>Heart rate (beats/min): <code>H = 70 + 0.8 <em> clamp(25 </em> (1 - pow(0.5, m / 8)) <em> (1 - 0.45 </em> w), 0, 30)</code></li>
+<li>How he feels: <code>F = clamp(25 <em> (1 - pow(0.5, m / 8)) </em> (1 - 0.45 * w), 0, 30)</code> → shown as fine / a bit woozy / light-headed — sit down</li>
+</ul>
+<p><strong>The model shows:</strong> Shows blood pooling in the legs the longer someone stands perfectly still; Shows leg-muscle movement squeezing veins and pushing blood back to the heart; Shows less blood reaching the brain when more of it sits in the legs.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include heat, hunger, water or anyone&#x27;s health; Model fainting itself; it stops at feeling light-headed.</p>
+<p><strong>Wellbeing line:</strong> If you feel light-headed while standing, sit or crouch down straight away and tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: circulatory system, veins and valves; NIH NHLBI: how the heart and blood vessels work (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Flagpole Faint</strong> — Difficult</li>
+<ul>
+<li>Best answer: Standing still lets gravity pool blood in his legs; without leg muscles squeezing the veins, less blood gets back to his heart and up to his brain. Marching works those muscles, so it&#x27;s easier.</li>
+<li>Twist: Everyone assumes the hour of marching wore him out. The opposite is true: marching kept his leg muscles pumping blood back up, and standing perfectly still was the hard part.</li>
+<li>Takeaway: Your leg muscles help your veins. Moving squeezes blood back up to the heart; standing perfectly still lets it pool — so marching is easier on your brain than standing at attention.</li>
+<li>Transfer: Ana, 16, volunteers at a museum ticket desk, standing still for hours. By evening her ankles are puffy and she feels woozy — but on days she walks the galleries as a guide, she feels fine. → <em>Standing still lets blood pool in her legs; walking makes her leg muscles pump it back up.</em></li>
+</ul>
+</ul>
+<h3>Loud sound &amp; short sleep  ·  <code>noise-sleep</code></h3>
+<p><strong>Sliders:</strong> Loudness (70–110 dB); Hours of sleep (3–9 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Sound energy (× talking level): <code>L = round(pow(10, (V - 60) / 10))</code></li>
+<li>Hair-cell fatigue (0–10): <code>F = clamp(pow(10, (V - 95) / 10) * T / 60, 0, 10)</code></li>
+<li>Ringing next morning: <code>R = clamp(pow(10, (V - 95) / 10) * T / 60, 0, 10)</code> → shown as none / a little / yes</li>
+<li>Morning focus (0–10): <code>A = clamp(10 - 1.4 * (8 - S), 1, 10)</code></li>
+<li>Constants: <code>T = 180</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows hair-cell fatigue rising steeply with loudness over a three-hour concert; Shows morning focus falling with each hour of sleep lost; Shows the two as separate effects: earplugs don&#x27;t fix sleep, and sleep doesn&#x27;t fix ringing.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Model permanent hearing damage; it stops at temporary ringing; Include caffeine, naps or how interesting the class is.</p>
+<p><strong>Wellbeing line:</strong> Ringing that lasts more than a day, or feeling exhausted every day, is worth telling an adult about.</p>
+<p><strong>Sources:</strong> NIH NIDCD: Noise-Induced Hearing Loss (student pages); CK-12 Life Science: nervous system and sleep</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Concert Night</strong> — Complex · Ears &amp; hearing + Brain &amp; sleep</li>
+<ul>
+<li>Best answer: Two separate things: the loud music tired the hair cells in her inner ear (ringing, muffled hearing), and the short night left her brain under-slept (zoning out, forgetting).</li>
+<li>Takeaway: Two symptoms can have two causes. Loud sound tires the hair cells that turn sound into signals; short sleep leaves the brain without the night it needs to reset and store the day. Fix one and the other is still there.</li>
+<li>Transfer: After a full day at a loud amusement park and a 2 a.m. drive home, Diego wakes up with his ears buzzing and can&#x27;t remember the directions his mom gave him five minutes ago. → <em>Two things: loud noise tired his inner-ear hair cells, and short sleep left his brain foggy.</em></li>
+</ul>
+</ul>
+<h3>Lungs &amp; heart  ·  <code>lungs-heart</code></h3>
+<p><strong>Sliders:</strong> Exercise intensity (0–10); Seconds after stopping (0–120 s)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Breathing rate (breaths/min): <code>B = 12 + 3.8 <em> I </em> pow(0.5, R / 30)</code></li>
+<li>Heart rate (beats/min): <code>H = 65 + 12.5 <em> I </em> pow(0.5, R / 30)</code></li>
+<li>Oxygen demand (× rest): <code>D = 1 + 0.9 <em> I </em> pow(0.5, R / 30)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows that breathing and heart rate rise together as effort rises; Shows that oxygen demand from the muscles drives both; Shows both settling back toward rest after the work stops (halving every 30 seconds).</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Account for age, fitness, illness, altitude or temperature; Model anything dangerous; it stays inside a healthy teenager&#x27;s everyday range.</p>
+<p><strong>Wellbeing line:</strong> If you ever feel faint or can&#x27;t catch your breath after exercise, tell an adult.</p>
+<p><strong>Sources:</strong> NHLBI, How the Lungs Work (nhlbi.nih.gov/health/lungs); CK-12 Life Science: respiratory and circulatory systems</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>A Case of the Tired Athlete</strong> — Easy</li>
+<ul>
+<li>Best answer: Her working muscles need more oxygen and energy, so her lungs and heart speed up to deliver it.</li>
+<li>Takeaway: Breathing and circulation are a delivery team. When muscles work harder they need more oxygen, so the lungs and heart speed up together — and slow down together when the work stops.</li>
+<li>Transfer: Leo carries heavy boxes up three flights of stairs and notices he is breathing harder with each floor. → <em>His arm and leg muscles need more oxygen, so his breathing and heart rate rise.</em></li>
+</ul>
+</ul>
+<h3>Muscles &amp; repair  ·  <code>muscle-repair</code></h3>
+<p><strong>Sliders:</strong> Days since the hard workout (0–7 days); How hard the workout was (1–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Soreness (0–10): <code>S = clamp(L <em> 0.9 </em> (D <em> pow(0.5, D / 1.4)) </em> 1.6, 0, 10)</code></li>
+<li>Repair under way (% done): <code>R = clamp(100 * (1 - pow(0.5, D / 1.5)), 0, 100)</code></li>
+<li>Strength vs before (%): <code>P = clamp(100 - 0.6 <em> L </em> pow(0.5, D / 1.2) + 0.4 <em> L </em> (1 - pow(0.5, D / 1.5)), 85, 110)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows soreness peaking a day or two after a hard effort, then fading; Shows repair work running in the background for about a week; Shows strength dipping first and then ending slightly higher than before.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Tell the difference between normal soreness and an injury; Say how anyone should train or what to eat.</p>
+<p><strong>Wellbeing line:</strong> Normal soreness is dull and fades in a few days. Sharp pain, swelling or pain that gets worse is a reason to stop and tell a coach or adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: muscular system; NIH News in Health: exercise and muscle (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Sore Weightlifter</strong> — Easy</li>
+<ul>
+<li>Best answer: Hard work made tiny tears in his muscle fibres; the repair process over several days causes the delayed soreness and rebuilds the fibres slightly stronger.</li>
+<li>Takeaway: Muscles get stronger by being repaired. Hard work causes tiny tears; the repair takes days, hurts a little in the middle, and finishes slightly stronger than before — which is why rest days are part of training.</li>
+<li>Transfer: Jade starts a new dance class on Tuesday. On Thursday her calves are too sore to go up on her toes; by the next week&#x27;s class she manages the whole routine. → <em>New movements made tiny tears in her calf muscles; repairing them caused the delayed soreness and left them a little stronger for next week.</em></li>
+</ul>
+</ul>
+<h3>Nerves &amp; cold  ·  <code>brain-freeze</code></h3>
+<p><strong>Sliders:</strong> How fast he gulps (0–10); Seconds after the gulp (0–60 s)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Roof of the mouth cooled by (°F): <code>T = 2 <em> G </em> pow(0.5, S / 10)</code></li>
+<li>Forehead ache (0–10): <code>P = clamp(1.2 <em> (G - 2), 0, 10) </em> pow(0.5, S / 10)</code></li>
+<li>Blood vessels in the roof of the mouth: <code>V = clamp(1.2 <em> (G - 2), 0, 10) </em> pow(0.5, S / 10)</code> → shown as normal / squeezing / squeezed, then rushing open</li>
+</ul>
+<p><strong>The model shows:</strong> Shows the ache growing with how much cold hits the roof of the mouth, and how fast; Shows the ache fading within half a minute; Shows slow sips causing little or no ache.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Show the exact timing of the blood vessels; scientists are still studying how it works; Say anything about other kinds of headaches.</p>
+<p><strong>Wellbeing line:</strong> Headaches that come without anything cold, or don&#x27;t go away, are a reason to tell an adult.</p>
+<p><strong>Sources:</strong> NIH News in Health: how the body senses cold and pain (student overview); CK-12 Life Science: nervous system</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Brain-Freeze Smoothie</strong> — Moderate</li>
+<ul>
+<li>Best answer: The cold on the roof of his mouth made blood vessels there squeeze and then rush open; nerves near those vessels send pain signals that his brain feels as coming from his forehead.</li>
+<li>Takeaway: A brain freeze isn&#x27;t your brain freezing. Cold on the roof of your mouth makes blood vessels squeeze and then rush open, and the nerves there send a signal your brain feels as a forehead ache — short, harmless and gone in seconds.</li>
+<li>Transfer: Chloe bites straight into an ice-pop on a hot day and feels a stab of pain between her eyes for a few seconds. → <em>Cold on the roof of her mouth made nearby blood vessels squeeze and then rush open, and nerves there send pain that her brain feels in her forehead.</em></li>
+</ul>
+</ul>
+<h3>Nerves &amp; pressure  ·  <code>nerve-pressure</code></h3>
+<p><strong>Sliders:</strong> Minutes sitting on his foot (0–60 min); Seconds since standing up (0–120 s)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Nerve signals getting through (%): <code>G = 100 - clamp(1.5 <em> M, 0, 90) </em> pow(0.5, S / 30)</code></li>
+<li>Numbness (0–10): <code>N = clamp(M / 6, 0, 10) * pow(0.5, S / 30)</code></li>
+<li>Pins and needles (0–10): <code>T = clamp(M / 6, 0, 10) <em> (1 - pow(0.5, S / 10)) </em> pow(0.5, S / 40)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows numbness growing the longer a nerve is pressed; Shows pins and needles starting after the pressure is off and fading within a couple of minutes; Shows signals returning to normal on their own.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Separate the nerve itself from its blood supply — both get squeezed; Cover numbness that happens without anything pressing.</p>
+<p><strong>Wellbeing line:</strong> Numbness or tingling that comes without sitting on something, or doesn&#x27;t go away, is a reason to tell an adult.</p>
+<p><strong>Sources:</strong> NIH NINDS: Brain basics — nerves and signals (student overview); CK-12 Life Science: nervous system</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Sleeping Foot</strong> — Moderate</li>
+<ul>
+<li>Best answer: Sitting on his foot pressed on a nerve and its blood supply, so its signals slowed and the foot went numb; once the pressure was off, the nerve started up again with jumbled signals — pins and needles — until it was back to normal.</li>
+<li>Takeaway: Nerves carry messages from your body to your brain. Squash one for a while and the messages slow down — numb. Take the pressure off and it restarts with jumbled signals — pins and needles — before getting back to normal.</li>
+<li>Transfer: Isabel falls asleep with her arm folded under her head. She wakes up and her hand is numb and floppy, then it tingles for a minute before it&#x27;s normal. → <em>Her head pressed on a nerve in her arm so its signals slowed; when she moved, the nerve started up again with tingling.</em></li>
+</ul>
+</ul>
+<h3>Nose &amp; smell  ·  <code>smell-adapt</code></h3>
+<p><strong>Sliders:</strong> Minutes in the room (0–20 min); How strong the smell is (1–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Smell actually in the air (% of max): <code>A = S * 10</code></li>
+<li>How strongly it&#x27;s noticed (% of max): <code>N = S <em> 10 </em> (0.15 + 0.85 * pow(0.5, m / 3))</code></li>
+<li>Smell receptors are: <code>R = 0.15 + 0.85 * pow(0.5, m / 3)</code> → shown as quiet (adapted) / settling down / firing hard</li>
+</ul>
+<p><strong>The model shows:</strong> Shows the smell staying in the air while the sense of it fades; Shows smell receptors quieting down when a smell doesn&#x27;t change (halving every 3 minutes); Shows that a stronger smell takes longer to fade from notice.</p>
+<p><strong>It does not:</strong> Measure any real person or any real smell — the numbers are illustrative teaching values; Include the brain&#x27;s own habit of ignoring familiar things, which adds to the effect; Say anything about whether a smell is harmful.</p>
+<p><strong>Wellbeing line:</strong> If you smell gas or smoke, don&#x27;t wait to get used to it — leave and tell an adult right away.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: the senses — smell; NIH NIDCD: Smell disorders and how smell works (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Locker-Room Smell</strong> — Moderate</li>
+<ul>
+<li>Best answer: Smell receptors in his nose fire hard at a new smell but quiet down when it doesn&#x27;t change, so his brain stops getting the alarm — even though the smell is still in the air.</li>
+<li>Takeaway: Your senses report change, not sameness. Smell receptors quiet down when a smell stays the same, so you stop noticing it — even though it never left. A short break resets them.</li>
+<li>Transfer: Hana, 14, puts on perfume before school. By lunch she can&#x27;t smell it at all and thinks it has worn off — but her friend sitting next to her says she can still smell it clearly. → <em>Hana&#x27;s smell receptors adapted to the steady smell, so her brain stopped reporting it — her friend&#x27;s nose hasn&#x27;t adapted.</em></li>
+</ul>
+</ul>
+<h3>Nose &amp; taste  ·  <code>smell-taste</code></h3>
+<p><strong>Sliders:</strong> How blocked her nose is (0–100 %)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Flavour she notices (% of normal): <code>F = 25 + 0.75 * (100 - B)</code></li>
+<li>Smell reaching her nose (% of normal): <code>S = 100 - B</code></li>
+<li>Tongue&#x27;s basic tastes (% of normal): <code>T = 100</code></li>
+<li>Apple or potato?: <code>N = 100 - B</code> → shown as can&#x27;t tell / barely / easy</li>
+</ul>
+<p><strong>The model shows:</strong> Shows the flavour you notice falling as the nose gets more blocked; Shows the tongue&#x27;s basic tastes — sweet, salty, sour, bitter, savory — staying the same; Shows that most of what we call flavour depends on smell.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include texture, temperature or spiciness, which also shape flavour; Say anything about colds or how to clear a stuffy nose.</p>
+<p><strong>Wellbeing line:</strong> If you lose your sense of smell or taste for a long time without a stuffy nose, tell an adult.</p>
+<p><strong>Sources:</strong> NIH NIDCD: Smell and taste (student pages); CK-12 Life Science: the senses</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Stuffy-Nose Taster</strong> — Easy</li>
+<ul>
+<li>Best answer: Most of what we call flavour is actually smell: smells from food drift up the back of the throat to the nose. With her nose blocked, only the tongue&#x27;s basic tastes — like sweet, salty and sour — get through.</li>
+<li>Takeaway: Flavour is a team effort. Your tongue senses only a few basic tastes; the rest comes from smells that drift up the back of your throat to your nose. Block the nose and food tastes flat.</li>
+<li>Transfer: Leo holds his nose and eats a jellybean. It just tastes sweet. When he lets go of his nose, it suddenly tastes of cherry. → <em>Letting go let cherry smells from his mouth reach his nose, adding flavour to the sweet taste his tongue already had.</em></li>
+</ul>
+</ul>
+<h3>Oxygen &amp; altitude  ·  <code>altitude</code></h3>
+<p><strong>Sliders:</strong> Altitude (0–12 × 1,000 ft); Days at altitude (0–7 days)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Oxygen in each breath (% of sea level): <code>O = 100 - 3.3 * K</code></li>
+<li>Breathing rate at rest (breaths/min): <code>B = 12 + 1.0 <em> K </em> pow(0.5, D / 4)</code></li>
+<li>Heart rate at rest (beats/min): <code>H = 65 + 2.5 <em> K </em> pow(0.5, D / 4)</code></li>
+<li>Red blood cells: <code>C = 100 + 1.2 <em> K </em> (1 - pow(0.5, D / 3))</code> → shown as normal / rising / raised</li>
+</ul>
+<p><strong>The model shows:</strong> Shows there is less oxygen in each breath higher up; Shows breathing and heart rate rising at first to make up for it; Shows the slower fix: more red blood cells over several days, which lets breathing settle.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Model altitude sickness or anything dangerous; it stays at ski-resort heights; Account for fitness, age or exercise.</p>
+<p><strong>Wellbeing line:</strong> A headache or feeling sick on a mountain trip is a reason to rest, drink water and tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: respiratory and circulatory systems; NASA / NOAA: how air pressure changes with altitude (student pages)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Altitude Skier</strong> — Difficult</li>
+<ul>
+<li>Best answer: The air at 9,000 ft holds less oxygen per breath, so her lungs and heart work harder at first; over a few days her body makes more red blood cells to carry oxygen, and the effort fades.</li>
+<li>Twist: In the Thirsty Hiker case &#x27;the air is thin&#x27; was wrong. Here it is the right answer — and the body&#x27;s fix takes days, not minutes, without any extra fitness.</li>
+<li>Takeaway: Higher up, each breath holds less oxygen. The body has a quick fix (breathe and pump harder) and a slow fix (make more red blood cells over days). When the slow fix is in place, the quick fix can relax.</li>
+<li>Transfer: A soccer team from a sea-level city plays a match in a city at 7,000 ft the day they arrive. The players tire much faster than usual, even though the home team runs just as far. → <em>Each breath at 7,000 ft holds less oxygen; the visitors&#x27; bodies have not yet adjusted, while the home team&#x27;s have.</em></li>
+</ul>
+</ul>
+<h3>Pollen &amp; breathing  ·  <code>pollen-breathing</code></h3>
+<p><strong>Sliders:</strong> Pollen in the air (0–10); Pace (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Breathing rate (breaths/min): <code>B = 12 + 3.6 * P</code></li>
+<li>Pollen breathed in (units/min): <code>N = G <em> (8 + 6 </em> P) / 10</code></li>
+<li>Alarm chemical (% above calm): <code>A = clamp(1.8 <em> G </em> (8 + 6 * P) / 10, 0, 100)</code></li>
+<li>Sneezes (per hour): <code>S = round(clamp(G <em> (8 + 6 </em> P) / 40, 0, 16))</code></li>
+<li>Eyes: <code>E = clamp(1.8 <em> G </em> (8 + 6 * P) / 10, 0, 100)</code> → shown as fine / itchy / itchy &amp; watery</li>
+</ul>
+<p><strong>The model shows:</strong> Shows pollen breathed in = pollen in the air × air breathed per minute; Shows the immune alarm and sneezing scaling with that dose; Shows hard breathing doing nothing when there&#x27;s no pollen.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Say whether anyone has an allergy or what to do about it; Include asthma or serious reactions.</p>
+<p><strong>Wellbeing line:</strong> Wheezing, chest tightness or trouble breathing during exercise is a reason to stop and tell an adult right away.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: immune and respiratory systems; NIH News in Health: seasonal allergies (student overview)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Pollen-Season Runner</strong> — Complex · Immune system + Lungs &amp; breathing</li>
+<ul>
+<li>Best answer: Both: her immune system treats pollen as an intruder, and running hard makes her breathe in far more air — so far more pollen — each minute, which sets off a bigger alarm.</li>
+<li>Takeaway: The size of an allergy alarm depends on the dose. The immune system reacts to pollen; how much reaches it depends on how much is in the air and how much air you breathe. Run harder in pollen and you inhale a bigger dose.</li>
+<li>Transfer: Leo mows the lawn on a warm May afternoon and starts sneezing. Pushing the mower up the steep part of the yard, breathing hard, his sneezing gets much worse. Mowing the same lawn after a rainstorm, he barely sneezes. → <em>Grass pollen sets off his immune system, and breathing harder pulls in more of it; rain washes pollen out of the air.</em></li>
+</ul>
+</ul>
+<h3>Skin &amp; sunlight  ·  <code>skin-uv</code></h3>
+<p><strong>Sliders:</strong> Hours in strong sun (0–6 h); Protection (0–2)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>UV energy reaching skin (units): <code>E = uv <em> H </em> (1 - 0.45 * P)</code></li>
+<li>Skin redness (0–10): <code>B = clamp((uv <em> H </em> (1 - 0.45 * P) - 18) / 2.4, 0, 10)</code></li>
+<li>Melanin response: <code>M = uv <em> H </em> (1 - 0.45 * P)</code> → shown as starting / building / strong</li>
+<li>Constants: <code>uv = 8</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows UV energy adding up with time in the sun; Shows redness appearing only once a threshold dose is passed, then growing quickly; Shows the skin&#x27;s slower melanin response starting to build.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Account for skin tone, time of day, altitude, water or clouds; Give medical advice about sunburn.</p>
+<p><strong>Wellbeing line:</strong> Blistering, fever or feeling sick after sun is a reason to tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: integumentary system; US EPA SunWise: UV Index for students</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Sunburned Lifeguard</strong> — Easy</li>
+<ul>
+<li>Best answer: UV light damaged his skin cells; the redness is the repair response hours later, peeling clears the worst-hit cells, and extra melanin is the skin preparing for next time.</li>
+<li>Takeaway: Sunlight carries UV energy that damages skin cells. Redness hours later is the repair crew arriving, peeling is the clear-out, and the darker skin afterwards is the body building its own shade for next time.</li>
+<li>Transfer: Rosa skis all day on a bright, snowy mountain. That night her cheeks and nose are red and sore even though it was freezing cold. → <em>UV light — made stronger by altitude and reflected by snow — damaged her skin cells, and the redness is the delayed repair response.</em></li>
+</ul>
+</ul>
+<h3>Skin &amp; temperature  ·  <code>temperature</code></h3>
+<p><strong>Sliders:</strong> How cold the water is (0–10); Minutes wrapped in a towel (0–10 min)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Water temperature (°F): <code>T = 85 - 3.5 * C</code></li>
+<li>Shivering (0–10): <code>V = round(clamp(10 <em> (70 - (85 - 3.5 </em> C)) / 20, 0, 10) * pow(0.5, M / 2))</code></li>
+<li>Blood flow to skin: <code>F = 100 - 60 <em> max(0, (75 - (85 - 3.5 </em> C)) / 25)</code> → shown as low / reduced / normal</li>
+<li>Core temperature: always shown as &quot;steady&quot;</li>
+</ul>
+<p><strong>The model shows:</strong> Shows shivering starting once the water is cold enough and growing as it gets colder; Shows blood flow to the skin dropping so warm blood stays near the organs; Shows shivering fading once wrapped up (halving every 2 minutes).</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Show core temperature changing: it is displayed as steady because the body guards it; Model dangerous cold; the model stops well short of it.</p>
+<p><strong>Wellbeing line:</strong> If someone can&#x27;t stop shivering or seems confused in the cold, get an adult right away.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: integumentary system and homeostasis; Any middle-school life-science text: thermoregulation</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Shivering Swimmer</strong> — Easy</li>
+<ul>
+<li>Best answer: His body is losing heat to the cold water, so it makes heat (shivering) and keeps warm blood near his organs (pale skin).</li>
+<li>Takeaway: Your body guards its inside temperature. In the cold it makes heat with shivering and keeps warm blood away from the skin — looking pale is the body being smart, not sick.</li>
+<li>Transfer: Aiko waits at a windy winter bus stop without a coat. She notices she is shivering and her hands have gone white. → <em>Her body is losing heat to the cold air, so her muscles shiver to make heat and blood stays near her organs.</em></li>
+</ul>
+</ul>
+<h3>Skin, blood flow &amp; cold  ·  <code>cold-hands</code></h3>
+<p><strong>Sliders:</strong> Minutes making snowballs bare-handed (5–20 min); How cold the snow is (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Blood flow to fingers (% of normal): <code>F = clamp(100 - 70 <em> min(1, M / 4) </em> C / 10 + 60 <em> C / 10 </em> clamp((M - 5) / 5, 0, 1), 20, 110)</code></li>
+<li>Finger skin temperature (°F): <code>T = 45 + 0.35 <em> clamp(100 - 70 </em> min(1, M / 4) <em> C / 10 + 60 </em> C / 10 * clamp((M - 5) / 5, 0, 1), 20, 110)</code></li>
+<li>Fingers look: <code>R = clamp(100 - 70 <em> min(1, M / 4) </em> C / 10 + 60 <em> C / 10 </em> clamp((M - 5) / 5, 0, 1), 20, 110)</code> → shown as pale and aching / pink / red, feel hot</li>
+</ul>
+<p><strong>The model shows:</strong> Shows cold first closing down blood flow to bare fingers (they go pale); Shows the body reopening finger blood vessels after several minutes to send warm blood; Shows that the colder it is, the stronger both effects are.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Show the on-and-off waves of reopening; it shows the average; Model dangerous cold — the reopening only protects for a while.</p>
+<p><strong>Wellbeing line:</strong> Fingers that stay white, numb or hard in the cold are a reason to go inside and tell an adult right away.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: integumentary system and thermoregulation; Any high-school physiology text: cold-induced vasodilation (&#x27;hunting reaction&#x27;)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Snowball Hands</strong> — Difficult</li>
+<ul>
+<li>Best answer: Cold first shuts down blood flow to her bare fingers, but after a while her body opens the finger blood vessels in bursts to send warm blood and protect them — so they turn red and feel hot.</li>
+<li>Twist: Her hands feel hot while they&#x27;re buried in snow — the opposite of what cold should do. The body briefly reopens finger blood vessels on purpose to stop them getting too cold.</li>
+<li>Takeaway: In the cold, your body first saves heat by shutting off blood to your fingers — then, to protect them, it opens the vessels in bursts and sends warm blood back. That&#x27;s why cold hands can suddenly feel hot.</li>
+<li>Transfer: Lars, 15, goes ice fishing and handles wet lines with bare hands. After a while his fingers turn red and tingle with warmth, even though the water is freezing. → <em>His body opened the blood vessels in his cold fingers in bursts to send warm blood and protect them.</em></li>
+</ul>
+</ul>
+<h3>Skin, sunlight &amp; bones  ·  <code>vitamin-d</code></h3>
+<p><strong>Sliders:</strong> Hours outdoors in daylight each week (0–10 h/week); Season (0–2)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Vitamin D made (% of what the body needs): <code>V = clamp(15 + O <em> (4 + 8 </em> S), 0, 150)</code></li>
+<li>Calcium taken in from food (% of what&#x27;s eaten): <code>C = clamp(10 + 0.25 <em> clamp(15 + O </em> (4 + 8 * S), 0, 150), 10, 40)</code></li>
+<li>Bones are: <code>B = clamp(15 + O <em> (4 + 8 </em> S), 0, 150)</code> → shown as short of building material / getting some / well supplied</li>
+</ul>
+<p><strong>The model shows:</strong> Shows skin making vitamin D when daylight reaches it, much less in winter; Shows vitamin D helping the gut take calcium in from food; Shows that milk&#x27;s calcium is only useful once it is absorbed.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Account for skin tone, sunscreen, clothing, latitude or vitamin D in food; Say how much sun anyone should get — too much sun burns skin (see The Sunburned Lifeguard).</p>
+<p><strong>Wellbeing line:</strong> Questions about what your own body needs are worth asking a parent or school nurse.</p>
+<p><strong>Sources:</strong> NIH Office of Dietary Supplements: Vitamin D fact sheet for consumers; CK-12 Life Science: skeletal system and nutrition</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Indoor Winter</strong> — Moderate</li>
+<ul>
+<li>Best answer: Her skin makes vitamin D only in sunlight, and vitamin D lets her gut absorb calcium — so with almost no sun, much of the milk&#x27;s calcium isn&#x27;t taken in.</li>
+<li>Takeaway: Bones are built from calcium, but the gut needs vitamin D to take calcium in — and skin makes vitamin D in daylight. Food and sunlight work as a team.</li>
+<li>Transfer: Two classes drink the same amount of milk at lunch. One class has PE outdoors all year; the other has PE in a basement gym with no windows. → <em>The outdoor class takes in more calcium, because sunlight on their skin makes vitamin D, which helps the gut absorb it.</em></li>
+</ul>
+</ul>
+<h3>Sleep &amp; memory  ·  <code>sleep-memory</code></h3>
+<p><strong>Sliders:</strong> Hours of sleep after studying (2–10 h); Hours studied (0–6 h)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Studying stored (% kept): <code>M = clamp(15 + 9 * S, 20, 95)</code></li>
+<li>Facts recalled (facts): <code>R = round(10 <em> T </em> clamp(15 + 9 * S, 20, 95) / 100)</code></li>
+<li>Alertness in the test (0–10): <code>A = clamp(1.1 * S - 0.5, 1, 10)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows how much of what was studied gets stored, rising with the hours of sleep afterwards; Shows alertness the next day rising with sleep; Shows extra study hours adding little when sleep is short.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include how well someone studied, interest in the subject, or naps; Say how much sleep any particular person needs.</p>
+<p><strong>Wellbeing line:</strong> If stress about schoolwork keeps you from sleeping, talk to an adult you trust.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: nervous system and memory; NIH NIGMS: circadian rhythms fact sheet</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The All-Nighter</strong> — Complex · Brain &amp; sleep + Brain &amp; memory</li>
+<ul>
+<li>Best answer: Both: sleep is when the brain stores what you studied, so Thursday night&#x27;s cramming was never properly saved — and the short night also left her too tired to focus during the test.</li>
+<li>Takeaway: Sleep does two jobs for learning: it stores what you studied during the day, and it leaves you alert enough to use it. An all-nighter loses both — the extra hours of study never get saved, and the tired brain struggles to find what was.</li>
+<li>Transfer: Ana and her friend practise a new dance routine for two hours on Monday evening. Ana sleeps well and dances it better on Tuesday than at the end of practice. Her friend stays up until 3 a.m. gaming, forgets half the steps on Tuesday and keeps yawning. → <em>Sleep stored Ana&#x27;s practice and left her alert; her friend&#x27;s short night meant the steps weren&#x27;t stored and she was too tired to focus.</em></li>
+</ul>
+</ul>
+<h3>Sleep + stress + immune defence  ·  <code>sleep-immune</code></h3>
+<p><strong>Sliders:</strong> Hours of sleep each night (4–9 h); Stress level (0–10)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Immune defence (% of full): <code>D = clamp(100 - 9 <em> max(0, 8 - s) - 2.5 </em> x, 20, 100)</code></li>
+<li>Stress hormones (% above calm): <code>C = 10 * x</code></li>
+<li>Chance the going-around cold gets through (%): <code>R = clamp(15 + 0.7 <em> (100 - clamp(100 - 9 </em> max(0, 8 - s) - 2.5 * x, 20, 100)), 5, 80)</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows immune defence dropping with less sleep than about 8 hours; Shows long-lasting stress lowering immune defence too; Shows the two together lowering it most, so a cold that&#x27;s going around is more likely to get through.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include handwashing, how many germs are around, or anyone&#x27;s health; Say that sleep or stress cause colds; colds come from viruses passed between people.</p>
+<p><strong>Wellbeing line:</strong> If you feel run down for weeks, or stress feels like too much, talk with an adult you trust.</p>
+<p><strong>Sources:</strong> NIH News in Health: sleep and your health; stress and your health (student overviews); CK-12 Life Science: immune system</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Exam-Week Cold</strong> — Complex · Brain &amp; sleep + Adrenaline &amp; the alarm system</li>
+<ul>
+<li>Best answer: Both: night after night of short sleep and a week of stress hormones each weakened his immune defences, so together they let the cold going around get through.</li>
+<li>Takeaway: Your immune system needs sleep, and long-lasting stress pushes it down. Each alone weakens your defences a little; together they open the door for whatever cold is going around.</li>
+<li>Transfer: During tech week for the school play, the cast rehearses until 11 p.m. every night and everyone is nervous about opening night. By Friday half the cast has the cold going around backstage. → <em>Short sleep and stress together weakened their immune defences, so the cold going around got past them.</em></li>
+</ul>
+</ul>
+<h3>Teeth &amp; bacteria  ·  <code>tooth-acid</code></h3>
+<p><strong>Sliders:</strong> Separate sugary sips per day (0–20); Times brushed per day (0–3)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Minutes of acid attack per day (min): <code>A = 20 <em> N </em> (1 - 0.15 * B)</code></li>
+<li>Acid-free time for repair (of 8 waking hours) (min): <code>F = clamp(480 - 20 <em> N </em> (1 - 0.15 * B), 0, 480)</code></li>
+<li>Enamel: <code>R = 20 <em> N </em> (1 - 0.15 * B)</code> → shown as repairs fully between sips / struggling to keep up / losing ground</li>
+<li>Sugar arrivals: <code>G = N</code></li>
+</ul>
+<p><strong>The model shows:</strong> Shows each sugary sip starting about 20 minutes of acid; Shows that splitting the same sugar into more sips means far more acid time; Shows brushing lowering the bacteria that make the acid.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include fluoride, the type of food, or how saliva differs between people; Tell anyone how to look after their teeth — that&#x27;s a dentist&#x27;s job.</p>
+<p><strong>Wellbeing line:</strong> Tooth pain or sensitivity is a reason to tell an adult so a dentist can take a look.</p>
+<p><strong>Sources:</strong> NIH National Institute of Dental and Craniofacial Research: tooth decay (student pages); CK-12 Life Science: digestive system — the mouth and teeth</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Cavity Detective</strong> — Moderate</li>
+<ul>
+<li>Best answer: Bacteria in his mouth turn sugar into acid, and every sip starts about twenty minutes of acid softening his enamel. Sipping every few minutes means the acid never stops, so his saliva never gets the chance to repair the enamel.</li>
+<li>Takeaway: Teeth care about how often, not just how much. Every sugary sip feeds mouth bacteria that make acid for about twenty minutes; spread the sips all day and the acid never stops, so saliva never gets its turn to repair the enamel.</li>
+<li>Transfer: Nia chews sugary gum, one piece after another, from the start of school until lunch. Her brother eats the same amount of sugar as one dessert after dinner. Who is more likely to get soft spots on their teeth? → <em>Nia, because each piece keeps acid attacking her teeth all morning, with no break for saliva to repair them.</em></li>
+</ul>
+</ul>
+<h3>Throat &amp; swallowing  ·  <code>swallow-wave</code></h3>
+<p><strong>Sliders:</strong> Body angle (0–180 °); Size of each sip (1–3)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Each sip reaching the stomach (%): <code>S = clamp(100 - 4 <em> (v - 1) </em> a / 180, 80, 100)</code></li>
+<li>Time to reach the stomach (s): <code>T = 2 + 5 * a / 180</code></li>
+<li>Muscle squeeze waves (per minute): <code>Q = 12</code></li>
+<li>Gravity: <code>G = 100 - a * 200 / 180</code> → shown as pulling the wrong way / no help / helping a little</li>
+</ul>
+<p><strong>The model shows:</strong> Shows swallowing working at any body angle because muscles do the pushing; Shows gravity helping a little when upright, so liquid arrives a bit sooner; Shows bigger gulps being slightly harder to manage upside down.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include choking, breathing, or how the airway is protected; Suggest anyone should practise drinking upside down.</p>
+<p><strong>Wellbeing line:</strong> Eat and drink sitting up in everyday life; if swallowing ever hurts or feels stuck, tell an adult.</p>
+<p><strong>Sources:</strong> CK-12 Life Science: digestive system, the esophagus; NASA: how astronauts eat and drink in space (student page)</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Upside-Down Drinker</strong> — Difficult</li>
+<ul>
+<li>Best answer: Swallowing is done by muscles: rings of muscle in the food tube squeeze in a wave that pushes food and water to the stomach, so it works whichever way up you are — gravity only helps a little.</li>
+<li>Twist: Most people think food and drink fall down into the stomach. They don&#x27;t: muscles squeeze them along, which is why Leila — and astronauts in space — can swallow upside down.</li>
+<li>Takeaway: Swallowing is a muscle job, not a gravity job. Rings of muscle squeeze food and drink along in a wave — which is why astronauts can eat in space and you can swallow upside down.</li>
+<li>Transfer: At the zoo, Orla watches a giraffe drink from a pond. Its head is far below its stomach, yet the water travels all the way up its long neck. → <em>Muscle waves in the giraffe&#x27;s long food tube squeeze the water upward to its stomach.</em></li>
+</ul>
+</ul>
+<h3>Tongue &amp; bitter taste  ·  <code>taste-genes</code></h3>
+<p><strong>Sliders:</strong> How bitter the food is (0–10); Inherited bitter sensitivity (0–2)</p>
+<p><strong>Formulas</strong></p>
+<ul>
+<li>Bitterness she tastes (0–10): <code>B = clamp(c <em> (0.3 + 0.45 </em> g), 0, 10)</code></li>
+<li>Bitter receptors firing (%): <code>T = clamp(10 <em> c </em> (0.3 + 0.45 * g), 0, 100)</code></li>
+<li>Wants another bite: <code>W = clamp(c <em> (0.3 + 0.45 </em> g), 0, 10)</code> → shown as yes / maybe / no thanks</li>
+</ul>
+<p><strong>The model shows:</strong> Shows the same bitter chemical tasting stronger to someone with more sensitive bitter receptors; Shows bitterness tasted rising with how bitter the food is; Shows sensitivity as something inherited, set by genes.</p>
+<p><strong>It does not:</strong> Measure any real person — the numbers are illustrative teaching values; Include smell, cooking, habits or how taste changes with age; Say anything about what anyone should eat.</p>
+<p><strong>Wellbeing line:</strong> If a food suddenly tastes very strange or you lose your sense of taste, tell an adult.</p>
+<p><strong>Sources:</strong> NIH News in Health: how taste works (student overview); CK-12 Life Science: senses, taste and inherited traits</p>
+<p><strong>Cases using this model</strong></p>
+<ul>
+<li><strong>The Bitter Broccoli</strong> — Difficult</li>
+<ul>
+<li>Best answer: Imani inherited extra-sensitive bitter-taste receptors on her tongue, so the same chemical in broccoli tastes much more bitter to her than to her brother.</li>
+<li>Twist: The obvious answer — &#x27;she&#x27;s just a picky eater&#x27; — is wrong. Her tongue really is detecting a bitter chemical more strongly than her brother&#x27;s, and she inherited that.</li>
+<li>Takeaway: Taste isn&#x27;t the same for everyone. Genes help decide how sensitive your bitter-taste receptors are, so the same broccoli can be mild to one person and harsh to another — that&#x27;s biology, not pickiness.</li>
+<li>Transfer: Raj and his best friend share the same cup of black hot chocolate made with dark cocoa. Raj says it&#x27;s harshly bitter; his friend says it just tastes rich. → <em>Raj probably inherited more sensitive bitter-taste receptors, so the same chemicals taste stronger to him.</em></li>
+</ul>
+</ul>
+<h2>Sign-off</h2>
+<p>I have reviewed the body models and the case claims listed above at the level of the science, and read the four spot-check cases in full.</p>
+<p>Name: ______________________   Role: ______________________   Date: __________</p>
+<p>Corrections (model or case, and what to change):</p>
+<p>________________________________________________________________________</p>
+<p>________________________________________________________________________</p>
+<p><em>Generated by <code>tools/review_pack.py</code> from the case and model files. Re-run after any change.</em></p>
+</body></html>

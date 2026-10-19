@@ -1,0 +1,239 @@
+{
+  "id": "winter-swim-team",
+  "version": 1,
+  "title": "The Winter Swim Team",
+  "system": "Cold water & working muscles",
+  "model": "cold-exercise",
+  "colour": "blue",
+  "minutes": 9,
+  "level": "complex",
+  "systems": [
+    "Skin & temperature",
+    "Muscles & energy"
+  ],
+  "reviewed": null,
+  "character": {
+    "name": "Mateo",
+    "age": 15
+  },
+  "briefing": "Mateo, 15, swims for his high-school team, which trains in an outdoor pool all winter. During slow kicking drills the swimmers climb out shivering with blue lips. Ten minutes later, after a hard sprint set in the same water, they are red-faced, puffing — and not shivering at all.",
+  "question": "Why does the same cold water make them shiver in one set and not the next?",
+  "illustration": "swimmer",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Cold water, slow drills",
+      "icon": "thermometer",
+      "colour": "blue",
+      "text": "The pool is 58 °F in February. During the slow kicking drills, almost everyone is shivering by the end.",
+      "shows": "the cold water pulling heat out while they barely move",
+      "visual": {
+        "type": "bars",
+        "from": 78,
+        "to": 58,
+        "unit": "°F, summer pool → winter pool"
+      },
+      "pointsTo": "cold"
+    },
+    {
+      "id": 2,
+      "title": "Bench = coldest",
+      "icon": "snowflake",
+      "colour": "blue",
+      "text": "Swimmers who sit wet on the bench between sets shiver hardest of all. Their fingers go white.",
+      "shows": "losing heat while making almost none",
+      "visual": null,
+      "pointsTo": "shiver"
+    },
+    {
+      "id": 3,
+      "title": "Sprint set: flushed and puffing",
+      "icon": "lungs",
+      "colour": "teal",
+      "text": "After four hard 50 m sprints, Mateo is breathing about 40 times a minute and his face is red. Nobody is shivering.",
+      "shows": "hard-working muscles making lots of heat",
+      "visual": null,
+      "pointsTo": "muscles"
+    },
+    {
+      "id": 4,
+      "title": "Warm hands mid-sprint",
+      "icon": "muscles",
+      "colour": "amber",
+      "text": "Mateo says his hands feel warm in the water during sprints. The water hasn't changed temperature at all.",
+      "shows": "heat coming from inside him, not from the water",
+      "visual": null,
+      "pointsTo": "heat"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "The cold water pulls heat out of their bodies, and shivering is how they make it back.",
+      "flaw": "Cold water alone would make them shiver more the longer they're in, not stop during the hardest set."
+    },
+    {
+      "id": "B",
+      "text": "The pool chemicals are irritating their skin.",
+      "flaw": "Chemicals don't make you shiver on the bench, and they don't switch off when you swim fast."
+    },
+    {
+      "id": "C",
+      "text": "Hard swimming makes them hot and tired.",
+      "flaw": "Exercise heat explains the flushed sprint set, but not why they shiver during the slow drills in the same water."
+    },
+    {
+      "id": "D",
+      "text": "The cold water takes heat away the whole time, while working muscles make heat. Swimming slowly, heat loss wins and they shiver; sprinting, the muscles' heat wins.",
+      "best": true
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [
+        1,
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    },
+    "C": {
+      "supports": [
+        3,
+        4
+      ],
+      "doesntFit": [
+        1
+      ]
+    },
+    "D": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "V",
+    "prompt": "During slow drills, the water gets colder — from a warm pool to a cold one. What happens to how much the swimmers shiver?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "And if they sprint hard in the same cold water, what happens to the shivering?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 8,
+    "secondary": 2
+  },
+  "concepts": [
+    {
+      "id": "cold",
+      "label": "cold water takes heat",
+      "colour": "blue",
+      "synonyms": [
+        "cold",
+        "cold water",
+        "losing heat",
+        "lose heat",
+        "loses heat",
+        "heat loss",
+        "takes heat",
+        "pulls heat"
+      ],
+      "hint": "What is the water doing to their body heat the whole time?"
+    },
+    {
+      "id": "muscles",
+      "label": "working muscles",
+      "colour": "amber",
+      "synonyms": [
+        "muscles",
+        "muscle",
+        "working muscles",
+        "exercise",
+        "sprinting",
+        "sprint",
+        "sprints",
+        "swimming hard"
+      ],
+      "hint": "What changes between the slow drills and the sprints?"
+    },
+    {
+      "id": "heat",
+      "label": "muscles make heat",
+      "colour": "coral",
+      "synonyms": [
+        "heat",
+        "warm",
+        "warmth",
+        "make heat",
+        "makes heat",
+        "produce heat",
+        "produces heat"
+      ],
+      "hint": "What do working muscles give off besides movement?"
+    },
+    {
+      "id": "balance",
+      "label": "which one wins",
+      "colour": "purple",
+      "synonyms": [
+        "balance",
+        "wins",
+        "win",
+        "more than",
+        "less than",
+        "outweighs",
+        "beats",
+        "cancels"
+      ],
+      "hint": "How do heat lost and heat made compare in each set?"
+    },
+    {
+      "id": "shiver",
+      "label": "shivering fills the gap",
+      "colour": "teal",
+      "synonyms": [
+        "shiver",
+        "shivering",
+        "shivers",
+        "shake",
+        "shaking"
+      ],
+      "hint": "What does the body do when heat lost is winning?"
+    }
+  ],
+  "transfer": {
+    "context": "Priya goes cross-country skiing on a freezing morning. Skiing uphill she unzips her jacket because she's too warm; when she stops at the top to wait for her friends, she's soon shivering.",
+    "illustration": "skier",
+    "options": [
+      "She is coming down with a cold.",
+      "The uphill slope is warmer than the top.",
+      "Her jacket zipper is broken.",
+      "The cold air takes heat the whole time; skiing uphill her muscles make more heat than she loses, but standing still they make almost none, so she shivers."
+    ],
+    "answer": 3,
+    "retryHint": "Same cold, different effort — which of Mateo's clues compared sitting still with working hard?",
+    "retryClue": 2,
+    "explanation": "The freezing air pulls heat from Priya the whole time, just as the pool did from Mateo. Climbing, her muscles make more heat than she loses, so she's too warm. Standing still, they make almost none — heat loss wins and shivering takes over."
+  },
+  "takeaway": "Your temperature is a balance between heat lost to the surroundings and heat made by working muscles. Cold water or air pulls heat out all the time — move hard and you make enough to win; stop moving and shivering has to take over."
+}

@@ -1,0 +1,146 @@
+{
+  "id": "jetlag-water",
+  "name": "Body clock & water on a long flight",
+  "colour": "teal",
+  "inputs": {
+    "primary": {
+      "key": "Z",
+      "label": "Time zones crossed",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "ticks": [
+        "none",
+        "5",
+        "10"
+      ]
+    },
+    "secondary": {
+      "key": "W",
+      "label": "Water drunk on the flight",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 2,
+      "unit": "cups",
+      "ticks": [
+        "none",
+        "4 cups",
+        "8 cups"
+      ]
+    }
+  },
+  "constants": {
+    "h": 11
+  },
+  "outputs": [
+    {
+      "key": "M",
+      "label": "Awake in the middle of the night",
+      "unit": "min",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "D",
+      "label": "Nights to adjust",
+      "unit": "nights",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "L",
+      "label": "Body water on landing",
+      "unit": "% of normal",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "Q",
+      "label": "Headache",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 95.9,
+          "text": "likely"
+        },
+        {
+          "text": "unlikely"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "M": "clamp(12 * Z, 0, 120)",
+    "D": "round(0.7 * Z)",
+    "L": "clamp(100 + 1.5 * (W - 0.5 * h), 85, 100)",
+    "Q": "clamp(100 + 1.5 * (W - 0.5 * h), 85, 100)"
+  },
+  "chart": {
+    "x": "Z",
+    "y": "M",
+    "xLabel": "time zones crossed",
+    "yLabel": "minutes awake at night",
+    "yMin": 0,
+    "yMax": 130
+  },
+  "overlay": {
+    "base": "torso",
+    "caption": "dry cabin air takes water · daylight resets the clock slowly",
+    "parts": [
+      {
+        "shape": "plane",
+        "colour": "#8FA3C7"
+      },
+      {
+        "shape": "moon",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "M",
+          "min": 0,
+          "max": 120
+        }
+      },
+      {
+        "shape": "kidneys",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "shift",
+          "output": "L",
+          "min": 85,
+          "max": 100,
+          "from": "#E4572E",
+          "to": "#2E86DE"
+        }
+      },
+      {
+        "shape": "thirst",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "light",
+          "output": "L",
+          "below": 95.9
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the body clock out of step by about an hour for each time zone crossed",
+      "Shows water lost to dry cabin air over an 11-hour flight, and drinking putting it back",
+      "Shows the two fixing at different speeds: water in hours, the clock over several nights"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include direction of travel, naps or caffeine",
+      "Show the clock shifting day by day; it shows the first nights after landing"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "On long trips, sip water, get morning daylight, and tell an adult if you feel unwell."
+  },
+  "sources": [
+    "CK-12 Life Science: circadian rhythms",
+    "CK-12 Life Science: excretory system and water balance"
+  ]
+}

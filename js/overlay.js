@@ -198,6 +198,112 @@ const SHAPES = {
     const g = node("g");
     g.appendChild(node("ellipse", { cx: 48, cy: 150, rx: 11, ry: 14, fill: colour }));
     return g;
+  },
+  pupil(colour) {         // eye with a pupil that scales (use anim "scale")
+    const g = node("g");
+    g.appendChild(node("circle", { cx: 60, cy: 92, r: 13, fill: colour }));
+    return g;
+  },
+  iris(colour) {
+    const g = node("g");
+    g.appendChild(node("ellipse", { cx: 60, cy: 92, rx: 34, ry: 22, fill: "#fff", stroke: COL.line, "stroke-width": 2 }));
+    g.appendChild(node("circle", { cx: 60, cy: 92, r: 19, fill: colour }));
+    return g;
+  },
+  bone(colour) {
+    const g = node("g");
+    g.appendChild(node("path", { d: "M52 40 C44 32 36 40 44 48 L48 52 L48 168 L44 172 C36 180 44 188 52 180 L60 176 L68 180 C76 188 84 180 76 172 L72 168 L72 52 L76 48 C84 40 76 32 68 40 L60 44 Z", fill: colour }));
+    return g;
+  },
+  tooth(colour) {
+    const g = node("g");
+    g.appendChild(node("path", { d: "M36 60 C36 44 50 44 60 50 C70 44 84 44 84 60 C84 80 78 96 74 120 C72 132 66 132 64 120 L60 100 L56 120 C54 132 48 132 46 120 C42 96 36 80 36 60 Z", fill: colour, stroke: COL.line, "stroke-width": 2 }));
+    return g;
+  },
+  enamelSpots(colour) {
+    const g = node("g");
+    [[48, 62], [70, 60], [58, 74], [44, 80], [74, 78], [60, 58]].forEach(([x, y], i) => g.appendChild(node("circle", { cx: x, cy: y, r: 4, fill: colour, "data-i": i })));
+    return g;
+  },
+  tongue(colour) {
+    const g = node("g");
+    g.appendChild(node("path", { d: "M36 130 C36 112 84 112 84 130 C84 160 72 176 60 176 C48 176 36 160 36 130 Z", fill: colour }));
+    g.appendChild(node("path", { d: "M60 122 L60 160", stroke: "#fff", "stroke-width": 2, opacity: .6 }));
+    return g;
+  },
+  tasteBuds(colour) {
+    const g = node("g");
+    [[48, 132], [60, 128], [72, 132], [52, 144], [68, 144], [56, 156], [64, 156], [60, 140], [46, 120], [74, 120]].forEach(([x, y], i) => g.appendChild(node("circle", { cx: x, cy: y, r: 2.6, fill: colour, "data-i": i })));
+    return g;
+  },
+  innerEar(colour) {      // three loops of the balance canals
+    const g = node("g");
+    g.appendChild(node("path", { d: "M60 120 C40 120 40 90 60 90 C80 90 80 120 60 120 M60 120 C60 140 90 140 90 120 M60 120 C60 140 30 140 30 120", stroke: colour, "stroke-width": 5, fill: "none", "stroke-linecap": "round" }));
+    return g;
+  },
+  swirl(colour) {         // dizziness swirl, pair with "spin"
+    const g = node("g");
+    g.appendChild(node("path", { d: "M60 30 C76 30 76 50 60 50 C48 50 48 36 58 36", stroke: colour, "stroke-width": 3, fill: "none", "stroke-linecap": "round" }));
+    return g;
+  },
+  clot(colour) {          // a cut with a plug forming
+    const g = node("g");
+    g.appendChild(node("path", { d: "M34 150 L86 150", stroke: "#E4572E", "stroke-width": 6, "stroke-linecap": "round", opacity: .5 }));
+    g.appendChild(node("ellipse", { cx: 60, cy: 150, rx: 22, ry: 7, fill: colour }));
+    return g;
+  },
+  germs(colour) {
+    const g = node("g");
+    [[30, 70], [92, 76], [26, 120], [94, 126], [40, 170], [80, 172], [60, 60], [60, 196], [20, 96], [100, 100]].forEach(([x, y], i) => {
+      const c = node("g", { "data-i": i });
+      c.appendChild(node("circle", { cx: x, cy: y, r: 5, fill: colour }));
+      c.appendChild(node("path", { d: `M${x - 8} ${y} L${x + 8} ${y} M${x} ${y - 8} L${x} ${y + 8}`, stroke: colour, "stroke-width": 1.6 }));
+      g.appendChild(c);
+    });
+    return g;
+  },
+  thermostat(colour) {    // a dial in the head, for fever set-point
+    const g = node("g");
+    g.appendChild(node("circle", { cx: 60, cy: 22, r: 10, fill: "#fff", stroke: colour, "stroke-width": 3 }));
+    g.appendChild(node("path", { d: "M60 22 L66 15", stroke: colour, "stroke-width": 3, "stroke-linecap": "round" }));
+    return g;
+  },
+  legVeins(colour) {      // blood pooling in the legs
+    const g = node("g");
+    g.appendChild(node("rect", { x: 42, y: 140, width: 12, height: 64, rx: 6, fill: colour }));
+    g.appendChild(node("rect", { x: 66, y: 140, width: 12, height: 64, rx: 6, fill: colour }));
+    return g;
+  },
+  diaphragm(colour) {
+    const g = node("g");
+    g.appendChild(node("path", { d: "M30 104 Q60 84 90 104", stroke: colour, "stroke-width": 5, fill: "none", "stroke-linecap": "round" }));
+    return g;
+  },
+  throat(colour) {        // food tube with a squeeze wave
+    const g = node("g");
+    g.appendChild(node("path", { d: "M56 36 L56 92 M64 36 L64 92", stroke: colour, "stroke-width": 4, "stroke-linecap": "round" }));
+    g.appendChild(node("ellipse", { cx: 60, cy: 64, rx: 8, ry: 5, fill: colour }));
+    return g;
+  },
+  brainGlow(colour) {     // the brain as a soft glow, for memory / sleep / alertness
+    const g = node("g");
+    g.appendChild(node("ellipse", { cx: 60, cy: 18, rx: 13, ry: 11, fill: colour }));
+    return g;
+  },
+  plane(colour) {
+    const g = node("g");
+    g.appendChild(node("path", { d: "M70 14 L84 12 L100 4 L104 4 L96 14 L110 15 L110 17 L96 18 L104 28 L100 28 L84 20 L70 18 Z", fill: colour }));
+    return g;
+  },
+  snow(colour) {
+    const g = node("g");
+    [[14, 30], [104, 40], [20, 140], [100, 150], [12, 90], [108, 96]].forEach(([x, y], i) => g.appendChild(node("path", { d: `M${x - 5} ${y} L${x + 5} ${y} M${x} ${y - 5} L${x} ${y + 5} M${x - 4} ${y - 4} L${x + 4} ${y + 4} M${x + 4} ${y - 4} L${x - 4} ${y + 4}`, stroke: colour, "stroke-width": 1.8, "data-i": i })));
+    return g;
+  },
+  sound(colour) {         // sound coming out of the mouth
+    const g = node("g");
+    [6, 11, 16].forEach((r) => g.appendChild(node("path", { d: `M${72} ${28 - r} A${r} ${r} 0 0 1 ${72} ${28 + r}`, stroke: colour, "stroke-width": 2.5, fill: "none" })));
+    return g;
   }
 };
 
@@ -240,6 +346,7 @@ export function mount(svg, cfg) {
       else if (a.type === "fade") g.querySelectorAll("*").forEach((el) => el.setAttribute("fill", mix(a.from || "#E4572E", a.to || "#EEF4FB", frac)));
       else if (a.type === "shift") g.querySelectorAll("*").forEach((el) => el.setAttribute("fill", mix(a.from, a.to, frac)));
       else if (a.type === "count") { const n = Math.round(frac * g.children.length); [...g.children].forEach((el, i) => el.style.opacity = i < n ? "1" : "0.08"); }
+      else if (a.type === "scale") { const lo = a.from ?? 0.5, hi = a.to ?? 1.5; g.style.transform = `scale(${(lo + (hi - lo) * frac).toFixed(3)})`; }
       else if (a.type === "light") g.style.opacity = (a.below !== undefined ? v <= a.below : v >= a.threshold) ? "1" : "0.18";
       else if (a.type === "bend") { const deg = frac * 50; [...g.children].forEach((el) => { if (el.dataset.i !== undefined) el.style.transform = `rotate(${deg}deg)`; el.style.transformOrigin = "bottom"; el.style.transformBox = "fill-box"; }); }
     }
@@ -253,6 +360,7 @@ export function mount(svg, cfg) {
       if (a.type === "breathe") { const period = 60 / Math.max(1, v); g.style.transform = `scale(${(1 + 0.08 * (0.5 + 0.5 * Math.sin(2 * Math.PI * t / period))).toFixed(3)})`; }
       else if (a.type === "beat") { const period = 60 / Math.max(1, v); g.style.transform = `scale(${(1 + 0.12 * Math.max(0, Math.sin(2 * Math.PI * t / period)) ** 3).toFixed(3)})`; }
       else if (a.type === "shiver") { const amp = Math.max(0, Math.min(10, v)) * 0.3; g.style.transform = `translate(${(Math.sin(t * 40) * amp).toFixed(2)}px, 0)`; }
+      else if (a.type === "spin") { const sp = Math.max(0, Math.min(10, v)); g.style.transform = `rotate(${((t * sp * 60) % 360).toFixed(1)}deg)`; }
       else if (a.type === "pulseGlow") { const period = 60 / Math.max(1, v); g.style.opacity = String(0.45 + 0.55 * Math.max(0, Math.sin(2 * Math.PI * t / period))); }
     }
     frame = requestAnimationFrame(tick);

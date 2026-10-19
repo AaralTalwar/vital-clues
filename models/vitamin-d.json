@@ -1,0 +1,45 @@
+{
+  "id": "vitamin-d",
+  "name": "Skin, sunlight & bones",
+  "colour": "amber",
+  "inputs": {
+    "primary":   { "key": "O", "label": "Hours outdoors in daylight each week", "min": 0, "max": 10, "step": 0.5, "unit": "h/week", "ticks": ["none", "5 h", "10 h"] },
+    "secondary": { "key": "S", "label": "Season", "min": 0, "max": 2, "step": 1, "default": 0, "ticks": ["winter", "spring", "summer"] }
+  },
+  "outputs": [
+    { "key": "V", "label": "Vitamin D made", "unit": "% of what the body needs", "colour": "amber", "decimals": 0 },
+    { "key": "C", "label": "Calcium taken in from food", "unit": "% of what's eaten", "colour": "teal", "decimals": 0 },
+    { "key": "B", "label": "Bones are", "colour": "purple", "bands": [{ "upTo": 39, "text": "short of building material" }, { "upTo": 79, "text": "getting some" }, { "text": "well supplied" }] }
+  ],
+  "rules": {
+    "V": "clamp(15 + O * (4 + 8 * S), 0, 150)",
+    "C": "clamp(10 + 0.25 * clamp(15 + O * (4 + 8 * S), 0, 150), 10, 40)",
+    "B": "clamp(15 + O * (4 + 8 * S), 0, 150)"
+  },
+  "chart": { "x": "O", "y": "V", "xLabel": "hours outdoors per week", "yLabel": "vitamin D made (% of need)", "yMin": 0, "yMax": 150 },
+  "overlay": {
+    "base": "torso",
+    "caption": "sunlight on skin → vitamin D → gut takes in calcium → bones",
+    "parts": [
+      { "shape": "sun", "colour": "#F4A300" },
+      { "shape": "skin", "colour": "#F4A300", "anim": { "type": "glow", "output": "V", "min": 15, "max": 150 } },
+      { "shape": "stomach", "colour": "#E4572E" },
+      { "shape": "legs", "colour": "#8FA3C7", "anim": { "type": "glow", "output": "C", "min": 10, "max": 40 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows skin making vitamin D when daylight reaches it, much less in winter",
+      "Shows vitamin D helping the gut take calcium in from food",
+      "Shows that milk's calcium is only useful once it is absorbed"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Account for skin tone, sunscreen, clothing, latitude or vitamin D in food",
+      "Say how much sun anyone should get — too much sun burns skin (see The Sunburned Lifeguard)"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Questions about what your own body needs are worth asking a parent or school nurse."
+  },
+  "sources": ["NIH Office of Dietary Supplements: Vitamin D fact sheet for consumers", "CK-12 Life Science: skeletal system and nutrition"]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "ear-pressure",
+  "name": "Ears & air pressure",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "D", "label": "Minutes into the descent", "min": 0, "max": 20, "step": 1, "unit": "min", "ticks": ["start", "10 min", "landing"] },
+    "secondary": { "key": "S", "label": "Swallows or yawns per minute", "min": 0, "max": 6, "step": 1, "default": 0, "unit": "per min", "ticks": ["none", "3 a min", "6 a min"] }
+  },
+  "outputs": [
+    { "key": "P", "label": "Pressure difference across the eardrum", "unit": "units", "colour": "purple", "decimals": 0 },
+    { "key": "E", "label": "Eardrum", "colour": "coral", "bands": [{ "upTo": 4, "text": "barely pushed" }, { "upTo": 10, "text": "pushed in" }, { "text": "pushed in hard" }] },
+    { "key": "K", "label": "Ear feels", "colour": "teal", "bands": [{ "upTo": 4, "text": "normal" }, { "upTo": 10, "text": "blocked" }, { "text": "painful" }] }
+  ],
+  "rules": {
+    "P": "D * pow(0.5, S)",
+    "E": "D * pow(0.5, S)",
+    "K": "D * pow(0.5, S)"
+  },
+  "chart": { "x": "D", "y": "P", "xLabel": "minutes into the descent", "yLabel": "pressure difference across the eardrum", "yMin": 0, "yMax": 22 },
+  "overlay": {
+    "base": "head",
+    "caption": "cabin air pushes in · air behind the eardrum is trapped · a swallow opens the tube and evens it out",
+    "parts": [
+      { "shape": "plane", "colour": "#2E86DE" },
+      { "shape": "ear", "colour": "#6C4AB6", "anim": { "type": "shift", "output": "P", "min": 0, "max": 20, "from": "#6C4AB6", "to": "#E4572E" } },
+      { "shape": "throat", "colour": "#1B998B" }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the pressure difference building as the cabin pressure rises during the descent",
+      "Shows each swallow or yawn letting air through a small tube to even it out (halving it)",
+      "Shows why the descent, not the climb, is usually the uncomfortable part"
+    ],
+    "doesnt": [
+      "Measure any real person or plane — the numbers are illustrative teaching values",
+      "Include a blocked nose, which makes the tube harder to open",
+      "Model diving, where the pressure changes much faster"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Ear pain that doesn't go away after landing is a reason to tell an adult."
+  },
+  "sources": ["NIH NIDCD: How do we hear? — the middle ear (student overview)", "CK-12 Physical Science: air pressure"]
+}

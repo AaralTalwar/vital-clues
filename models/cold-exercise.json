@@ -1,0 +1,157 @@
+{
+  "id": "cold-exercise",
+  "name": "Cold water & working muscles",
+  "colour": "blue",
+  "inputs": {
+    "primary": {
+      "key": "C",
+      "label": "How cold the water is",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "ticks": [
+        "warm pool",
+        "cool",
+        "cold pool"
+      ]
+    },
+    "secondary": {
+      "key": "E",
+      "label": "Swimming effort",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "ticks": [
+        "floating",
+        "laps",
+        "sprints"
+      ]
+    }
+  },
+  "outputs": [
+    {
+      "key": "L",
+      "label": "Heat lost to the water",
+      "unit": "units/min",
+      "colour": "blue",
+      "decimals": 1
+    },
+    {
+      "key": "M",
+      "label": "Heat made by muscles",
+      "unit": "units/min",
+      "colour": "amber",
+      "decimals": 1
+    },
+    {
+      "key": "V",
+      "label": "Shivering",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "B",
+      "label": "Breathing rate",
+      "unit": "breaths/min",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "K",
+      "label": "Heat balance",
+      "colour": "purple",
+      "bands": [
+        {
+          "upTo": -2,
+          "text": "losing heat"
+        },
+        {
+          "upTo": 1,
+          "text": "about even"
+        },
+        {
+          "text": "making extra heat"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "L": "2 + 1.0 * C",
+    "M": "1 + 0.9 * E",
+    "V": "round(clamp((2 + C) - (1 + 0.9 * E) - 1, 0, 10))",
+    "B": "12 + 3.5 * E",
+    "K": "(1 + 0.9 * E) - (2 + C)"
+  },
+  "chart": {
+    "x": "C",
+    "y": "V",
+    "xLabel": "colder water →",
+    "yLabel": "shivering (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
+  "overlay": {
+    "base": "torso",
+    "caption": "cold water takes heat · working muscles make heat · shivering fills the gap",
+    "parts": [
+      {
+        "shape": "skin",
+        "colour": "#C9D3E6",
+        "anim": {
+          "type": "shift",
+          "output": "V",
+          "min": 0,
+          "max": 10,
+          "from": "#F7F9FD",
+          "to": "#C9D3E6"
+        }
+      },
+      {
+        "shape": "legs",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "M",
+          "min": 1,
+          "max": 10
+        }
+      },
+      {
+        "shape": "lungs",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "breathe",
+          "output": "B"
+        }
+      },
+      {
+        "shape": "shiverMarks",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "shiver",
+          "output": "V"
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows heat lost to cold water and heat made by working muscles as two separate flows",
+      "Shows shivering switching on when heat lost is bigger than heat made",
+      "Shows hard swimming making enough heat to switch shivering off"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include body size, body fat, wetsuits or wind",
+      "Model dangerous cold; it stays inside a normal practice"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If someone can't stop shivering or seems confused after a cold swim, get them warm and tell an adult right away."
+  },
+  "sources": [
+    "CK-12 Life Science: homeostasis and temperature regulation",
+    "Any middle-school life-science text: heat from muscle activity"
+  ]
+}
