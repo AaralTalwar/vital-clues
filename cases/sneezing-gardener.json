@@ -1,0 +1,238 @@
+{
+  "id": "sneezing-gardener",
+  "version": 1,
+  "title": "The Sneezing Gardener",
+  "system": "Immune system & pollen",
+  "model": "immune-pollen",
+  "colour": "teal",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Diego",
+    "age": 14
+  },
+  "briefing": "Diego, 14, volunteers at the community garden every spring Saturday. Within twenty minutes of arriving he is sneezing in bursts, his eyes itch and water, and his nose runs. His friend working beside him feels nothing. An hour after he goes indoors, it all stops.",
+  "question": "Why is Diego's body fighting something that isn't dangerous — and why only his?",
+  "illustration": "flower",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Only in the garden, only in spring",
+      "icon": "flower",
+      "colour": "amber",
+      "text": "No sneezing at school, at home, or at the garden in winter. The pollen count on spring Saturdays is 'very high'.",
+      "shows": "that the trigger is something in the spring garden air",
+      "visual": {
+        "type": "bars",
+        "from": 1,
+        "to": 9,
+        "unit": "pollen level, winter → spring Saturday"
+      },
+      "pointsTo": "pollen"
+    },
+    {
+      "id": 2,
+      "title": "Sneezes, itch, water",
+      "icon": "nose",
+      "colour": "coral",
+      "text": "Bursts of sneezing, itchy watery eyes, runny nose — all starting within about twenty minutes.",
+      "shows": "the body trying to flush something out of the nose and eyes",
+      "visual": null,
+      "pointsTo": "flush"
+    },
+    {
+      "id": 3,
+      "title": "His friend is fine",
+      "icon": "body",
+      "colour": "purple",
+      "text": "Same garden, same pollen, same hour — his friend does not sneeze once.",
+      "shows": "that the reaction depends on the person, not just the pollen",
+      "visual": null,
+      "pointsTo": "person"
+    },
+    {
+      "id": 4,
+      "title": "Stops indoors",
+      "icon": "clock",
+      "colour": "teal",
+      "text": "Indoors with the windows shut, the sneezing fades within an hour and his eyes clear.",
+      "shows": "the reaction fading as soon as the trigger is gone",
+      "visual": null,
+      "pointsTo": "fade"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "Diego is catching a cold every Saturday.",
+      "flaw": "A cold lasts days and does not switch off an hour after going indoors — and it would not skip winter Saturdays."
+    },
+    {
+      "id": "B",
+      "text": "Diego's immune system has learned to treat pollen as an intruder. When pollen lands in his nose and eyes, immune cells release an alarm chemical that causes sneezing, itching and watering to flush it out; his friend's immune system has not learned this, so it stays quiet.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "The garden soil is dusty.",
+      "flaw": "Dust is there in winter too, and his friend breathes the same dust without sneezing."
+    },
+    {
+      "id": "D",
+      "text": "He is working too hard and getting out of breath.",
+      "flaw": "Hard work does not make your eyes itch and water, and his friend works just as hard."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        3
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "S",
+    "prompt": "As the amount of pollen in the air goes up — from none to very high — what happens to how often Diego sneezes?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "After he goes indoors, what happens to the alarm chemical in his nose?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 8,
+    "secondary": 0
+  },
+  "concepts": [
+    {
+      "id": "pollen",
+      "label": "pollen is the trigger",
+      "colour": "amber",
+      "synonyms": [
+        "pollen",
+        "plants",
+        "flowers",
+        "spring",
+        "garden air",
+        "trigger",
+        "allergen"
+      ],
+      "hint": "What is in the spring garden air that isn't there in winter?"
+    },
+    {
+      "id": "immune",
+      "label": "the immune system reacts",
+      "colour": "teal",
+      "synonyms": [
+        "immune",
+        "immune system",
+        "defence",
+        "defense",
+        "white blood cells",
+        "antibodies",
+        "thinks it is dangerous",
+        "mistakes",
+        "overreacts",
+        "allergic",
+        "allergy"
+      ],
+      "hint": "Which body system is doing the fighting?"
+    },
+    {
+      "id": "histamine",
+      "label": "alarm chemical released",
+      "colour": "coral",
+      "synonyms": [
+        "histamine",
+        "chemical",
+        "chemicals",
+        "alarm",
+        "signal",
+        "releases",
+        "released"
+      ],
+      "hint": "What do the immune cells release to raise the alarm?"
+    },
+    {
+      "id": "flush",
+      "label": "sneezing and watering flush it out",
+      "colour": "blue",
+      "synonyms": [
+        "sneeze",
+        "sneezing",
+        "sneezes",
+        "flush",
+        "flushes",
+        "wash out",
+        "get rid of",
+        "itchy",
+        "watery",
+        "runny nose",
+        "push it out"
+      ],
+      "hint": "What are sneezing and watery eyes actually for?"
+    },
+    {
+      "id": "person",
+      "label": "depends on the person",
+      "colour": "purple",
+      "synonyms": [
+        "his friend",
+        "friend",
+        "different people",
+        "some people",
+        "not everyone",
+        "his body",
+        "learned",
+        "sensitive"
+      ],
+      "hint": "Why does his friend stay fine?"
+    }
+  ],
+  "transfer": {
+    "context": "Mei pets a neighbour's cat for ten minutes. Soon her eyes itch and she sneezes several times. Her brother, petting the same cat, is fine.",
+    "illustration": "cat",
+    "options": [
+      "The cat scratched her.",
+      "Mei's immune system treats something from the cat as an intruder and releases an alarm chemical; her brother's immune system does not react to it.",
+      "The cat was dusty.",
+      "She is nervous around animals."
+    ],
+    "answer": 1,
+    "retryHint": "Two people, same trigger, only one reacts — which of Diego's clues is about that?",
+    "retryClue": 3,
+    "explanation": "Different trigger, same mechanism. Mei's immune system has learned to see something in cat hair or skin as an intruder, so it releases the alarm chemical and she sneezes and itches. Her brother's immune system has not learned that, so for him the cat is just a cat."
+  },
+  "takeaway": "Your immune system is a guard that sometimes raises the alarm about something harmless. Sneezing, itching and watering are its way of flushing an intruder out — and because each immune system learns differently, the same pollen can bother one person and not the next."
+}

@@ -1,0 +1,237 @@
+{
+  "id": "shivering-swimmer",
+  "version": 1,
+  "title": "The Shivering Swimmer",
+  "system": "Skin & temperature",
+  "model": "temperature",
+  "colour": "coral",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Jonah",
+    "age": 12
+  },
+  "briefing": "Jonah, 12, jumped into the lake on the first warm day of spring. After ten minutes he climbs out shivering hard, his lips look a bit blue, and the hair on his arms is standing up. His friend says, “You're fine, it's sunny!”",
+  "question": "Is Jonah's body doing something smart?",
+  "illustration": "swimmer",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Cold water, warm air",
+      "icon": "thermometer",
+      "colour": "blue",
+      "text": "The air is 75 °F but the lake is 58 °F. He felt fine on the dock and cold within a minute of getting in.",
+      "shows": "that the cold water, not the air, is pulling heat out of him",
+      "visual": {
+        "type": "bars",
+        "from": 75,
+        "to": 58,
+        "unit": "°F, air → lake"
+      },
+      "pointsTo": "cold"
+    },
+    {
+      "id": 2,
+      "title": "Shivering",
+      "icon": "muscles",
+      "colour": "amber",
+      "text": "His jaw and arms are shaking in fast little movements he can't stop, even when he tries.",
+      "shows": "muscles working automatically",
+      "visual": null,
+      "pointsTo": "shiver"
+    },
+    {
+      "id": 3,
+      "title": "Pale skin, bluish lips",
+      "icon": "heart",
+      "colour": "coral",
+      "text": "His fingers are white and his lips blue-tinged — but his chest feels warm when he touches it.",
+      "shows": "blood moved away from the skin while the middle stays warm",
+      "visual": null,
+      "pointsTo": "skin"
+    },
+    {
+      "id": 4,
+      "title": "Towel and sun",
+      "icon": "clock",
+      "colour": "purple",
+      "text": "Wrapped in a towel in the sun, the shivering stops in about five minutes and his colour comes back.",
+      "shows": "everything reversing as soon as he warms up",
+      "visual": null,
+      "pointsTo": "warm"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "Jonah is scared of the water.",
+      "flaw": "Fear does not turn your fingers white or stop the instant you get a towel — and he was happy to jump in."
+    },
+    {
+      "id": "B",
+      "text": "His body is losing heat to the cold water, so it makes heat (shivering) and keeps warm blood near his organs (pale skin).",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "He is allergic to lake water.",
+      "flaw": "An allergy would cause itching or a rash, not shivering, and it would not vanish in five minutes of sunshine."
+    },
+    {
+      "id": "D",
+      "text": "He swam so hard he is exhausted.",
+      "flaw": "Hard swimming makes you hot and flushed, not pale and cold — and he was only in for ten minutes."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        3
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "V",
+    "prompt": "As the water gets colder — from a warm bath to a cold lake — what happens to how much Jonah shivers?",
+    "expectedShape": "flat-then-rises",
+    "second": {
+      "question": "And blood flow to his skin?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 8,
+    "secondary": 0
+  },
+  "concepts": [
+    {
+      "id": "cold",
+      "label": "cold takes heat",
+      "colour": "blue",
+      "synonyms": [
+        "cold",
+        "cold water",
+        "losing heat",
+        "lose heat",
+        "loses heat",
+        "heat loss",
+        "lost heat",
+        "took heat"
+      ],
+      "hint": "What was the water doing to his body heat?"
+    },
+    {
+      "id": "shiver",
+      "label": "shivering makes heat",
+      "colour": "amber",
+      "synonyms": [
+        "shiver",
+        "shivering",
+        "shivers",
+        "shaking",
+        "shake",
+        "muscles make heat",
+        "make heat",
+        "makes heat",
+        "warm up",
+        "warms up"
+      ],
+      "hint": "What does all that shaking actually do?"
+    },
+    {
+      "id": "skin",
+      "label": "blood away from skin",
+      "colour": "coral",
+      "synonyms": [
+        "pale",
+        "white",
+        "blue lips",
+        "blood",
+        "skin",
+        "vessels",
+        "fingers"
+      ],
+      "hint": "Why did his fingers and lips change colour?"
+    },
+    {
+      "id": "core",
+      "label": "keeping the inside warm",
+      "colour": "teal",
+      "synonyms": [
+        "inside",
+        "core",
+        "organs",
+        "warm blood",
+        "keep warm",
+        "keeps warm",
+        "chest",
+        "middle",
+        "heart and brain"
+      ],
+      "hint": "What is the body protecting by doing this?"
+    },
+    {
+      "id": "warm",
+      "label": "stops when warm",
+      "colour": "purple",
+      "synonyms": [
+        "towel",
+        "sun",
+        "warm again",
+        "warmed up",
+        "stopped",
+        "stops",
+        "went away",
+        "came back",
+        "normal again"
+      ],
+      "hint": "What happened once he was out and wrapped up?"
+    }
+  ],
+  "transfer": {
+    "context": "Aiko waits at a windy winter bus stop without a coat. She notices she is shivering and her hands have gone white.",
+    "illustration": "busstop",
+    "options": [
+      "She is nervous about school.",
+      "Her body is losing heat to the cold air, so her muscles shiver to make heat and blood stays near her organs.",
+      "She has a cold coming on.",
+      "She skipped breakfast."
+    ],
+    "answer": 1,
+    "retryHint": "White hands and shivering, in the cold — which two of Jonah's clues does that match?",
+    "retryClue": 3,
+    "explanation": "Cold air pulls heat from Aiko just as cold water did from Jonah. Her body responds the same two ways: shivering muscles make heat, and blood is kept away from the skin so the organs stay warm — which is why her hands look white."
+  },
+  "takeaway": "Your body guards its inside temperature. In the cold it makes heat with shivering and keeps warm blood away from the skin — looking pale is the body being smart, not sick."
+}

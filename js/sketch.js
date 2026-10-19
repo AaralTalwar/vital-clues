@@ -78,7 +78,7 @@ export function mount(canvas, { onChange, xLabels = [], colour = "#F4A300" } = {
     for (let i = 1; i < 4; i++) { ctx.beginPath(); ctx.moveTo(PAD.l, g.py(i / 4)); ctx.lineTo(g.w - PAD.r, g.py(i / 4)); ctx.stroke(); }
     // x labels
     ctx.fillStyle = "#4A5876"; ctx.font = "600 12px Nunito, system-ui, sans-serif"; ctx.textAlign = "center";
-    xLabels.forEach((label, k) => { const i = k * 2; ctx.fillText(label, g.px(i), g.h - 10); });
+    xLabels.forEach((label, k) => { const i = k * (4 / Math.max(1, xLabels.length - 1)); ctx.textAlign = k === 0 ? "left" : k === xLabels.length - 1 ? "right" : "center"; ctx.fillText(label, g.px(i), g.h - 10); });
     ctx.textAlign = "right"; ctx.fillText("high", PAD.l - 6, PAD.t + 10); ctx.fillText("low", PAD.l - 6, g.h - PAD.b);
     // curve
     ctx.strokeStyle = colour; ctx.lineWidth = 3; ctx.setLineDash([8, 6]);

@@ -1,0 +1,44 @@
+{
+  "id": "immune-pollen",
+  "name": "Immune system & pollen",
+  "colour": "teal",
+  "inputs": {
+    "primary":   { "key": "G", "label": "Pollen in the air", "min": 0, "max": 10, "step": 1, "ticks": ["none", "medium", "very high"] },
+    "secondary": { "key": "M", "label": "Minutes after going indoors", "min": 0, "max": 60, "step": 5, "default": 0, "unit": "min", "ticks": ["still outside", "30 min", "1 hour"] }
+  },
+  "outputs": [
+    { "key": "A", "label": "Alarm chemical (histamine)", "unit": "% above calm", "colour": "coral", "decimals": 0 },
+    { "key": "S", "label": "Sneezes", "unit": "per hour", "colour": "teal", "decimals": 0 },
+    { "key": "E", "label": "Eyes", "colour": "blue", "bands": [{ "upTo": 24, "text": "fine" }, { "upTo": 59, "text": "itchy" }, { "text": "itchy & watery" }] }
+  ],
+  "rules": {
+    "A": "10 * G * pow(0.5, M / 20)",
+    "S": "round(1.2 * G * pow(0.5, M / 20))",
+    "E": "10 * G * pow(0.5, M / 20)"
+  },
+  "chart": { "x": "G", "y": "S", "xLabel": "pollen in the air", "yLabel": "sneezes per hour", "yMin": 0, "yMax": 14 },
+  "overlay": {
+    "base": "head",
+    "caption": "pollen lands → immune cells sound the alarm → sneeze, itch, water",
+    "parts": [
+      { "shape": "pollen", "colour": "#F4A300", "anim": { "type": "count", "output": "G", "min": 0, "max": 10 } },
+      { "shape": "eye", "colour": "#2E86DE", "anim": { "type": "glow", "output": "E", "min": 0, "max": 100 } },
+      { "shape": "nose", "colour": "#E4572E", "anim": { "type": "glow", "output": "A", "min": 0, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the immune system treating harmless pollen as an intruder and releasing an alarm chemical",
+      "Shows sneezing and itchy eyes scaling with how much pollen is around",
+      "Shows the reaction fading once away from the pollen (halving every 20 minutes)"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Say whether anyone has an allergy or what to do about one",
+      "Cover food, pets, dust or serious reactions"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Sneezing is harmless. Trouble breathing or swelling of the face is serious — get an adult right away."
+  },
+  "sources": ["CK-12 Life Science: immune system", "NIH News in Health: seasonal allergies explained (student overview)"]
+}

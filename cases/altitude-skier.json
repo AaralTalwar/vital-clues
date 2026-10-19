@@ -1,0 +1,239 @@
+{
+  "id": "altitude-skier",
+  "version": 1,
+  "title": "The Altitude Skier",
+  "system": "Oxygen & altitude",
+  "model": "altitude",
+  "colour": "blue",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Noor",
+    "age": 15
+  },
+  "briefing": "Noor, 15, lives near the beach and flies to a ski resort at 9,000 feet. On the first evening she is out of breath after one flight of stairs, her heart is thumping while she sits, and she has a dull headache. By the fourth day the stairs are easy and she feels normal — even though she is no fitter than when she arrived.",
+  "question": "What changed in four days — the mountain, or Noor?",
+  "illustration": "skier",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Breathless on the stairs",
+      "icon": "lungs",
+      "colour": "teal",
+      "text": "One flight of stairs at the lodge leaves her puffing. At home she runs up three without noticing.",
+      "shows": "that the same effort costs far more breath up here",
+      "visual": null,
+      "pointsTo": "oxygen"
+    },
+    {
+      "id": 2,
+      "title": "Thumping while sitting",
+      "icon": "heart",
+      "colour": "coral",
+      "text": "Resting on the sofa her pulse is about 90. At home it is about 65.",
+      "shows": "the heart working harder even at rest",
+      "visual": {
+        "type": "bars",
+        "from": 65,
+        "to": 90,
+        "unit": "resting pulse, beach → 9,000 ft"
+      },
+      "pointsTo": "heart"
+    },
+    {
+      "id": 3,
+      "title": "Thin, cold air",
+      "icon": "mountain",
+      "colour": "blue",
+      "text": "The resort sign says 9,000 ft. A water bottle she sealed at sea level has puffed up like a balloon.",
+      "shows": "that the air pressure here is lower, so each breath holds less oxygen",
+      "visual": null,
+      "pointsTo": "thin"
+    },
+    {
+      "id": 4,
+      "title": "Fine by day four",
+      "icon": "clock",
+      "colour": "purple",
+      "text": "Same stairs, same lodge: by day four she is not breathless, her resting pulse is back near 70, and the headache is gone.",
+      "shows": "the body adjusting over several days without any training",
+      "visual": null,
+      "pointsTo": "adjust"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "She is unfit from sitting on the plane.",
+      "flaw": "One day of sitting does not undo fitness, and if it had, four days of skiing would not bring her pulse down to normal."
+    },
+    {
+      "id": "B",
+      "text": "The air at 9,000 ft holds less oxygen per breath, so her lungs and heart work harder at first; over a few days her body makes more red blood cells to carry oxygen, and the effort fades.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "The cold is making her breathless.",
+      "flaw": "It is just as cold on day four, when she feels fine — and cold air does not raise your resting pulse on a warm sofa."
+    },
+    {
+      "id": "D",
+      "text": "She is dehydrated from the flight.",
+      "flaw": "A drink of water would fix dehydration in an hour, not four days, and it does not explain the puffed-up bottle."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "B",
+    "prompt": "Noor goes higher and higher — from sea level up to 12,000 ft — on the day she arrives. What happens to her breathing rate while resting?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "After a week at altitude, does her resting breathing rate go back down?",
+      "options": [
+        "yes",
+        "no"
+      ],
+      "answer": "yes"
+    }
+  },
+  "labDefaults": {
+    "primary": 9,
+    "secondary": 0
+  },
+  "concepts": [
+    {
+      "id": "thin",
+      "label": "thinner air, less oxygen",
+      "colour": "blue",
+      "synonyms": [
+        "thin air",
+        "thinner air",
+        "less oxygen",
+        "less air",
+        "lower pressure",
+        "air pressure",
+        "altitude",
+        "high up",
+        "mountain"
+      ],
+      "hint": "What is different about the air up there?"
+    },
+    {
+      "id": "oxygen",
+      "label": "the body needs oxygen",
+      "colour": "teal",
+      "synonyms": [
+        "oxygen",
+        "o2",
+        "air",
+        "breath",
+        "breathing",
+        "breathe",
+        "lungs"
+      ],
+      "hint": "What does every breath deliver less of?"
+    },
+    {
+      "id": "heart",
+      "label": "lungs and heart work harder",
+      "colour": "coral",
+      "synonyms": [
+        "heart",
+        "pulse",
+        "heart rate",
+        "faster",
+        "harder",
+        "pump",
+        "pumps",
+        "more breaths",
+        "breathes faster"
+      ],
+      "hint": "What is the quick fix the body uses on day one?"
+    },
+    {
+      "id": "cells",
+      "label": "more red blood cells",
+      "colour": "purple",
+      "synonyms": [
+        "red blood cells",
+        "red cells",
+        "blood cells",
+        "more blood",
+        "carries oxygen",
+        "carry oxygen",
+        "haemoglobin",
+        "hemoglobin"
+      ],
+      "hint": "What is the slow fix that takes days?"
+    },
+    {
+      "id": "adjust",
+      "label": "adjusts over days",
+      "colour": "amber",
+      "synonyms": [
+        "adjust",
+        "adjusts",
+        "adjusted",
+        "adapt",
+        "adapts",
+        "adapted",
+        "acclimatize",
+        "acclimatise",
+        "acclimated",
+        "used to it",
+        "few days",
+        "day four",
+        "over time"
+      ],
+      "hint": "What happened between day one and day four?"
+    }
+  ],
+  "transfer": {
+    "context": "A soccer team from a sea-level city plays a match in a city at 7,000 ft the day they arrive. The players tire much faster than usual, even though the home team runs just as far.",
+    "illustration": "soccer",
+    "options": [
+      "The visiting team is less fit.",
+      "Each breath at 7,000 ft holds less oxygen; the visitors' bodies have not yet adjusted, while the home team's have.",
+      "The grass is longer.",
+      "They are nervous about the crowd."
+    ],
+    "answer": 1,
+    "retryHint": "Same effort, far more breath needed, on day one — which of Noor's clues is that?",
+    "retryClue": 1,
+    "explanation": "The visitors arrived the same day, so their bodies are still on the quick fix — breathing and pumping harder — and tire fast. The home players have lived at 7,000 ft long enough to have the slow fix in place: more red blood cells carrying oxygen. That is why teams often arrive days early."
+  },
+  "takeaway": "Higher up, each breath holds less oxygen. The body has a quick fix (breathe and pump harder) and a slow fix (make more red blood cells over days). When the slow fix is in place, the quick fix can relax."
+}

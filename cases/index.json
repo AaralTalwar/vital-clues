@@ -1,8 +1,124 @@
 {
   "cases": [
-    { "id": "tired-athlete", "title": "A Case of the Tired Athlete", "system": "Lungs & heart", "colour": "teal", "minutes": 8, "illustration": "runner", "available": true },
-    { "id": "thirsty-hiker", "title": "The Thirsty Hiker", "system": "Kidneys & water", "colour": "blue", "minutes": 8, "illustration": "hiker", "available": false },
-    { "id": "shivering-swimmer", "title": "The Shivering Swimmer", "system": "Skin & temperature", "colour": "coral", "minutes": 8, "illustration": "swimmer", "available": false },
-    { "id": "jumpy-goalkeeper", "title": "The Jumpy Goalkeeper", "system": "Brain & nerves", "colour": "purple", "minutes": 9, "illustration": "goalkeeper", "available": false }
+    {
+      "id": "tired-athlete",
+      "title": "A Case of the Tired Athlete",
+      "system": "Lungs & heart",
+      "colour": "teal",
+      "minutes": 8,
+      "illustration": "runner",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "thirsty-hiker",
+      "title": "The Thirsty Hiker",
+      "system": "Kidneys & water",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "hiker",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "shivering-swimmer",
+      "title": "The Shivering Swimmer",
+      "system": "Skin & temperature",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "swimmer",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "jumpy-goalkeeper",
+      "title": "The Jumpy Goalkeeper",
+      "system": "Brain & nerves",
+      "colour": "purple",
+      "minutes": 9,
+      "illustration": "goalkeeper",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "sleepy-gamer",
+      "title": "The Sleepy Gamer",
+      "system": "Brain & sleep clock",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "gamer",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "skipped-breakfast",
+      "title": "The Skipped Breakfast",
+      "system": "Digestion & fuel",
+      "colour": "amber",
+      "minutes": 8,
+      "illustration": "plate",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "sore-weightlifter",
+      "title": "The Sore Weightlifter",
+      "system": "Muscles & repair",
+      "colour": "amber",
+      "minutes": 8,
+      "illustration": "weights",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "sunburned-lifeguard",
+      "title": "The Sunburned Lifeguard",
+      "system": "Skin & sunlight",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "lifeguard",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "stage-fright-singer",
+      "title": "The Stage-Fright Singer",
+      "system": "Adrenaline & the alarm system",
+      "colour": "coral",
+      "minutes": 8,
+      "illustration": "microphone",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "altitude-skier",
+      "title": "The Altitude Skier",
+      "system": "Oxygen & altitude",
+      "colour": "blue",
+      "minutes": 8,
+      "illustration": "skier",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "sneezing-gardener",
+      "title": "The Sneezing Gardener",
+      "system": "Immune system & pollen",
+      "colour": "teal",
+      "minutes": 8,
+      "illustration": "flower",
+      "available": true,
+      "reviewed": false
+    },
+    {
+      "id": "ringing-ears",
+      "title": "The Ringing Ears",
+      "system": "Ears & hearing",
+      "colour": "purple",
+      "minutes": 8,
+      "illustration": "headphones",
+      "available": true,
+      "reviewed": false
+    }
   ]
 }

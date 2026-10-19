@@ -9,6 +9,16 @@
 
 const OPERATORS = "+-*/(),";
 
+// The only functions a formula may call. Adding one here is the only way to add one.
+const FUNCTIONS = {
+  max: Math.max,
+  min: Math.min,
+  pow: Math.pow,                                   // pow(0.5, R/30) — halving decay
+  round: Math.round,
+  clamp: (v, lo, hi) => Math.min(hi, Math.max(lo, v)),
+  abs: Math.abs
+};
+
 export function tokenize(expr) {
   const tokens = [];
   let i = 0;
@@ -73,12 +83,12 @@ export function evaluate(expr, vars = {}) {
       return value;
     }
     if (t.type === "name") {
-      if (t.value === "max" || t.value === "min") {
+      if (t.value in FUNCTIONS) {
         expect("(");
         const args = [sum()];
         while (isOp(",")) { next(); args.push(sum()); }
         expect(")");
-        return t.value === "max" ? Math.max(...args) : Math.min(...args);
+        return FUNCTIONS[t.value](...args);
       }
       if (!(t.value in vars)) throw new Error(`Unknown name "${t.value}" in "${expr}"`);
       return vars[t.value];

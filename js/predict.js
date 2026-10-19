@@ -20,7 +20,8 @@ function renderSketch() {
 
   const canvas = document.getElementById("sketch-canvas");
   if (!pad) {
-    pad = mount(canvas, { xLabels: m.inputs.primary.ticks || [], onChange: (y) => { moved = true; st.sketch = y; st.sketchMode = "drawn"; } });
+    const xLabels = m.chart.xTicks || (m.chart.x === m.inputs.primary.key ? m.inputs.primary.ticks : null) || [];
+    pad = mount(canvas, { xLabels, onChange: (y) => { moved = true; st.sketch = y; st.sketchMode = "drawn"; } });
   }
   if (st.sketch && st.sketchMode === "drawn") pad.set(st.sketch); else if (!st.sketch) pad.reset();
   moved = !!(st.sketch && st.sketchMode);

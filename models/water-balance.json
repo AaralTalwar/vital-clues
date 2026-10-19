@@ -1,0 +1,47 @@
+{
+  "id": "water-balance",
+  "name": "Kidneys & water",
+  "colour": "blue",
+  "inputs": {
+    "primary":   { "key": "I", "label": "Heat & effort", "min": 0, "max": 10, "step": 1, "ticks": ["cool & resting", "warm walk", "hot climb"] },
+    "secondary": { "key": "W", "label": "Water drunk", "min": 0, "max": 4, "step": 0.5, "default": 1, "unit": "cups/hour", "ticks": ["none", "2 cups/h", "4 cups/h"] }
+  },
+  "constants": { "t": 3 },
+  "outputs": [
+    { "key": "S", "label": "Sweat lost", "unit": "cups/hour", "colour": "coral", "decimals": 1 },
+    { "key": "L", "label": "Body water after 3 h", "unit": "% of normal", "colour": "blue", "decimals": 0 },
+    { "key": "P", "label": "Pee output", "colour": "blue", "bands": [{ "upTo": 89.9, "text": "very little" }, { "upTo": 96.9, "text": "less" }, { "text": "normal" }] },
+    { "key": "T", "label": "Thirst signal", "colour": "amber", "bands": [{ "upTo": 94.9, "text": "ON" }, { "text": "off" }] }
+  ],
+  "rules": {
+    "S": "0.2 + 0.3 * I",
+    "L": "clamp(100 - 8 * (0.2 + 0.3 * I - W) * t, 70, 100)",
+    "P": "clamp(100 - 8 * (0.2 + 0.3 * I - W) * t, 70, 100)",
+    "T": "clamp(100 - 8 * (0.2 + 0.3 * I - W) * t, 70, 100)"
+  },
+  "chart": { "x": "t", "xMin": 0, "xMax": 3, "xTicks": ["start", "1.5 h", "3 h"], "xNow": 3, "y": "L", "xLabel": "hours on the trail", "yLabel": "body water (% of normal)", "yMin": 60, "yMax": 105 },
+  "overlay": {
+    "base": "torso",
+    "caption": "sweat out ↑ · drink in ↓ · kidneys save water",
+    "parts": [
+      { "shape": "kidneys", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 3.2 } },
+      { "shape": "drops",   "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0, "max": 3.2 } },
+      { "shape": "thirst",  "colour": "#E4572E", "anim": { "type": "light", "output": "L", "below": 94.9 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows a water budget: sweat out versus water drunk, over three hours",
+      "Shows the kidneys holding water back (less pee) when the body is low",
+      "Shows the thirst signal switching on when body water falls"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include salt, food, breathing losses or body size",
+      "Model dangerous dehydration; the water level never falls below 70 %"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If someone feels dizzy or sick outdoors, get them into the shade and tell an adult."
+  },
+  "sources": ["CK-12 Life Science: excretory system", "NIH MedlinePlus: Water in diet (overview for students)"]
+}

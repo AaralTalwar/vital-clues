@@ -1,0 +1,144 @@
+{
+  "id": "nerves-reflex",
+  "name": "Brain & nerves",
+  "colour": "purple",
+  "inputs": {
+    "primary": {
+      "key": "k",
+      "label": "How close the shot is",
+      "min": 0,
+      "max": 27,
+      "step": 1,
+      "unit": "m away",
+      "ticks": [
+        "far (30 m)",
+        "mid",
+        "close (3 m)"
+      ],
+      "valueFormula": "far - k"
+    },
+    "secondary": {
+      "key": "P",
+      "label": "Hours of practice",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "h",
+      "ticks": [
+        "none",
+        "10 h",
+        "20 h"
+      ]
+    }
+  },
+  "constants": {
+    "speed": 20,
+    "far": 30
+  },
+  "outputs": [
+    {
+      "key": "t",
+      "label": "Time before the ball arrives",
+      "unit": "s",
+      "colour": "purple",
+      "decimals": 2
+    },
+    {
+      "key": "r",
+      "label": "Reflex pathway",
+      "unit": "s",
+      "colour": "purple",
+      "decimals": 2
+    },
+    {
+      "key": "c",
+      "label": "Decision pathway",
+      "unit": "s",
+      "colour": "amber",
+      "decimals": 2
+    },
+    {
+      "key": "which",
+      "label": "What makes it in time",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 0,
+          "text": "only the reflex"
+        },
+        {
+          "text": "reflex + decision"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "t": "(far - k) / speed",
+    "r": "0.10",
+    "c": "max(0.19, 0.25 - 0.003 * P)",
+    "which": "(far - k) / speed - max(0.19, 0.25 - 0.003 * P)"
+  },
+  "chart": {
+    "x": "k",
+    "y": "t",
+    "xLabel": "shot gets closer →",
+    "yLabel": "seconds before the ball arrives",
+    "yMin": 0,
+    "yMax": 1.6
+  },
+  "overlay": {
+    "base": "head",
+    "caption": "fast lane: eye → brainstem → hands · thinking lane: eye → cortex → hands",
+    "parts": [
+      {
+        "shape": "brain",
+        "colour": "#C9D3E6"
+      },
+      {
+        "shape": "eye",
+        "colour": "#16213E"
+      },
+      {
+        "shape": "pathLong",
+        "colour": "#8FA3C7",
+        "anim": {
+          "type": "light",
+          "output": "which",
+          "threshold": 0
+        }
+      },
+      {
+        "shape": "pathShort",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "light",
+          "output": "t",
+          "threshold": 0.1
+        }
+      },
+      {
+        "shape": "hand",
+        "colour": "#F4A300"
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows how little time a fast ball gives you and how that time shrinks with distance",
+      "Shows that a reflex pathway is fixed and fast, while a decision takes longer",
+      "Shows that practice speeds decisions a little but never the reflex"
+    ],
+    "doesnt": [
+      "Measure any real person — times are rounded teaching values",
+      "Include the goalkeeper's movement time or the ball slowing down",
+      "Tell anyone how good a goalkeeper they are"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Protect your eyes and head in sport — a reflex is fast, but a helmet or goggles is faster."
+  },
+  "sources": [
+    "CK-12 Life Science: nervous system, reflex arcs",
+    "Any middle-school text: reaction time versus reflex"
+  ]
+}

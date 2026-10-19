@@ -1,0 +1,133 @@
+{
+  "id": "skin-uv",
+  "name": "Skin & sunlight",
+  "colour": "coral",
+  "inputs": {
+    "primary": {
+      "key": "H",
+      "label": "Hours in strong sun",
+      "min": 0,
+      "max": 6,
+      "step": 0.5,
+      "unit": "h",
+      "ticks": [
+        "none",
+        "3 h",
+        "6 h"
+      ]
+    },
+    "secondary": {
+      "key": "P",
+      "label": "Protection",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 0,
+      "ticks": [
+        "none",
+        "shirt or shade half the time",
+        "shade + sunscreen"
+      ]
+    }
+  },
+  "constants": {
+    "uv": 8
+  },
+  "outputs": [
+    {
+      "key": "E",
+      "label": "UV energy reaching skin",
+      "unit": "units",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "B",
+      "label": "Skin redness",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
+      "key": "M",
+      "label": "Melanin response",
+      "colour": "purple",
+      "bands": [
+        {
+          "upTo": 7.9,
+          "text": "starting"
+        },
+        {
+          "upTo": 19.9,
+          "text": "building"
+        },
+        {
+          "text": "strong"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "E": "uv * H * (1 - 0.45 * P)",
+    "B": "clamp((uv * H * (1 - 0.45 * P) - 18) / 2.4, 0, 10)",
+    "M": "uv * H * (1 - 0.45 * P)"
+  },
+  "chart": {
+    "x": "H",
+    "y": "B",
+    "xLabel": "hours in strong sun",
+    "yLabel": "skin redness (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
+  "overlay": {
+    "base": "torso",
+    "caption": "UV light → skin cells stressed → redness now, melanin later",
+    "parts": [
+      {
+        "shape": "sun",
+        "colour": "#F4A300"
+      },
+      {
+        "shape": "skin",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "shift",
+          "output": "B",
+          "min": 0,
+          "max": 10,
+          "from": "#F7F9FD",
+          "to": "#E4572E"
+        }
+      },
+      {
+        "shape": "melanin",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "count",
+          "output": "M",
+          "min": 0,
+          "max": 30
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows UV energy adding up with time in the sun",
+      "Shows redness appearing only once a threshold dose is passed, then growing quickly",
+      "Shows the skin's slower melanin response starting to build"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Account for skin tone, time of day, altitude, water or clouds",
+      "Give medical advice about sunburn"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Blistering, fever or feeling sick after sun is a reason to tell an adult."
+  },
+  "sources": [
+    "CK-12 Life Science: integumentary system",
+    "US EPA SunWise: UV Index for students"
+  ]
+}

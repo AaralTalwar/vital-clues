@@ -5,7 +5,7 @@
 A 2026 Congressional App Challenge entry (CA-27). Built as a responsive web app that runs on iPhone, Android and Chromebook from one link, installs to the home screen, and works offline.
 
 - **Live app:** _(GitHub Pages link goes here once enabled)_
-- **Age:** 11–15 · **Time:** about 8 minutes per case
+- **Age:** 12–16 · **Time:** about 8 minutes per case · **12 cases**
 - **Privacy:** no account, no name, no age, no health information, no analytics. Explanations are checked on the device and forgotten when you finish.
 
 ## How to play
@@ -34,27 +34,35 @@ Never speed. Never grades, stars or comparisons. The rules live in `js/score.js`
 | Case | Body system | Model | Status |
 |---|---|---|---|
 | A Case of the Tired Athlete | Lungs & heart | `lungs-heart` | built · science review pending |
-| The Thirsty Hiker | Kidneys & water | `water-balance` | planned |
-| The Shivering Swimmer | Skin & temperature | `temperature` | planned |
-| The Jumpy Goalkeeper | Brain & nerves | `nerves-reflex` | planned |
+| The Thirsty Hiker | Kidneys & water | `water-balance` | built · science review pending |
+| The Shivering Swimmer | Skin & temperature | `temperature` | built · science review pending |
+| The Jumpy Goalkeeper | Brain & nerves | `nerves-reflex` | built · science review pending |
+| The Sleepy Gamer | Brain & sleep clock | `sleep-clock` | built · science review pending |
+| The Skipped Breakfast | Digestion & fuel | `fuel-sugar` | built · science review pending |
+| The Sore Weightlifter | Muscles & repair | `muscle-repair` | built · science review pending |
+| The Sunburned Lifeguard | Skin & sunlight | `skin-uv` | built · science review pending |
+| The Stage-Fright Singer | Adrenaline & the alarm system | `stress-response` | built · science review pending |
+| The Altitude Skier | Oxygen & altitude | `altitude` | built · science review pending |
+| The Sneezing Gardener | Immune system & pollen | `immune-pollen` | built · science review pending |
+| The Ringing Ears | Ears & hearing | `hearing` | built · science review pending |
 
-Every character is fictional. Every number is an illustrative teaching value and is labelled so in the app. Model formulas are visible to students in the **Model limits** panel.
+Every character is fictional. Every number is an illustrative teaching value and is labelled so in the app. Model formulas are visible to students in the **Model limits** panel. Two cases deliberately flip a wrong answer from another case into the right one (nerves in *Stage-Fright Singer*, thin air in *Altitude Skier*) so students can't pattern-match.
 
 ## Adding a case
 
 A fifth case is a data file, not code.
 
 1. Copy `cases/tired-athlete.json`, change the content, keep the structure: 4 clues, 4 hypotheses with exactly one `best`, an evidence map, mismatch hints, 5 concepts with synonyms, 1 transfer question.
-2. Add a model in `models/` if the body system is new. Formulas are plain text like `"12 + 3.8 * I"`; the app reads them with its own small evaluator (`js/rules.js`), never `eval()`.
+2. Add a model in `models/` if the body system is new. Formulas are plain text like `"12 + 3.8 * I * pow(0.5, R / 30)"`; the app reads them with its own small evaluator (`js/rules.js`, functions: max min pow round clamp abs), never `eval()`. The animated body picture is data too: `overlay.parts` lists shapes from `js/overlay.js` with an animation bound to an output.
 3. Run the validator: `python3 tools/validate_case.py cases/your-case.json --models models/ --script`
-4. Add the case to `cases/index.json` and the precache list in `sw.js`.
+4. Add the case to `cases/index.json` and the precache list in `sw.js`, and bump the `CACHE` name in `sw.js`.
 5. Get a science teacher to read the printed handout and fill in `reviewed`.
 
 ## Running locally
 
 ```
 python3 -m http.server 8000      # then open http://localhost:8000
-npm test                         # node --test, 28 tests
+npm test                         # node --test, 52 tests incl. every model's curve shape
 python3 tools/validate_case.py cases/tired-athlete.json --models models/
 ```
 
@@ -71,7 +79,9 @@ js/engine.js         screen router, session state, gates, toast, clue drawer
 js/board.js          clue cards, clue modal, pin chooser, board check, lead
 js/predict.js        prediction sketch screen and presets
 js/sketch.js         canvas handles + the shape classifier
-js/lab.js            model evaluation, chart, overlay animation, limits panel
+js/lab.js            model evaluation, chart, second slider, limits panel
+js/overlay.js        data-driven animated body picture (shapes + animation types)
+js/progress.js       device-local completion record (localStorage)
 js/rules.js          the formula evaluator (tokenizer + parser)
 js/explain.js        normaliser + concept matcher + highlight ranges
 js/score.js          the four scoring rules

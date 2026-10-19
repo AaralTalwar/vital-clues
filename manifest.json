@@ -1,7 +1,7 @@
 {
   "name": "Vital Clues — The Body Detective",
   "short_name": "Vital Clues",
-  "description": "A body-science detective game that scores how you reason. Fictional cases for ages 11–15. Nothing is collected.",
+  "description": "A body-science detective game that scores how you reason. Fictional cases for ages 12–16. Nothing is collected.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

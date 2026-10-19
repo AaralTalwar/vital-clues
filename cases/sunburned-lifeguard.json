@@ -1,0 +1,234 @@
+{
+  "id": "sunburned-lifeguard",
+  "version": 1,
+  "title": "The Sunburned Lifeguard",
+  "system": "Skin & sunlight",
+  "model": "skin-uv",
+  "colour": "coral",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Kai",
+    "age": 16
+  },
+  "briefing": "Kai, 16, worked his first full shift as a junior lifeguard: six hours in the chair, no shirt, forgot the sunscreen. His shoulders looked fine when he left. By bedtime they were bright red and hot to touch. A week later the red was gone and his shoulders were a shade darker than the rest of him.",
+  "question": "What did the sunlight do, and why did the skin react twice?",
+  "illustration": "lifeguard",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Six hours of strong sun",
+      "icon": "sun",
+      "colour": "amber",
+      "text": "UV index 8 all afternoon, no shade, no shirt, no sunscreen. His legs, under the chair's shade, were fine.",
+      "shows": "a large dose of UV energy landing on bare skin",
+      "visual": {
+        "type": "bars",
+        "from": 8,
+        "to": 48,
+        "unit": "UV units reached the skin, 1 h → 6 h"
+      },
+      "pointsTo": "uv"
+    },
+    {
+      "id": 2,
+      "title": "Red hours later",
+      "icon": "thermometer",
+      "colour": "coral",
+      "text": "Nothing visible at 4 p.m. Bright red and hot by 9 p.m. The redness was only where the sun hit.",
+      "shows": "a delayed response in exactly the sun-hit skin",
+      "visual": null,
+      "pointsTo": "damage"
+    },
+    {
+      "id": 3,
+      "title": "Peeling on day four",
+      "icon": "skin",
+      "colour": "coral",
+      "text": "The top layer of skin on his shoulders flaked off in thin sheets.",
+      "shows": "the body shedding cells that were too badly stressed to keep",
+      "visual": null,
+      "pointsTo": "shed"
+    },
+    {
+      "id": 4,
+      "title": "Darker a week later",
+      "icon": "clock",
+      "colour": "purple",
+      "text": "Once the red faded, the shoulders stayed a shade darker than his chest for weeks.",
+      "shows": "the skin's slow protective response: more melanin",
+      "visual": null,
+      "pointsTo": "melanin"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "The chair's metal frame burned him.",
+      "flaw": "A hot-metal burn appears instantly and only where metal touched; this appeared hours later across everything the sun reached."
+    },
+    {
+      "id": "B",
+      "text": "UV light damaged his skin cells; the redness is the repair response hours later, peeling clears the worst-hit cells, and extra melanin is the skin preparing for next time.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "He is allergic to chlorine from the pool.",
+      "flaw": "Chlorine touched his whole body, but only the sun-exposed shoulders reacted — and allergies do not leave skin darker afterwards."
+    },
+    {
+      "id": "D",
+      "text": "The heat of the day made his skin red.",
+      "flaw": "Heat flushes the whole body evenly and fades once you cool down; it does not wait five hours, pick out the sun-hit patches, or cause peeling."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        2
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "B",
+    "prompt": "Kai sits in strong sun with no protection. As the hours go by — from none up to six — what happens to how red his skin will become?",
+    "expectedShape": "flat-then-rises",
+    "second": {
+      "question": "If he wears a shirt half the time and sunscreen, what happens to the UV energy reaching his skin?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 4,
+    "secondary": 0
+  },
+  "concepts": [
+    {
+      "id": "uv",
+      "label": "UV light carries energy",
+      "colour": "amber",
+      "synonyms": [
+        "uv",
+        "ultraviolet",
+        "sunlight",
+        "sun",
+        "rays",
+        "radiation",
+        "energy from the sun"
+      ],
+      "hint": "What in sunlight actually does the damage?"
+    },
+    {
+      "id": "damage",
+      "label": "skin cells damaged",
+      "colour": "coral",
+      "synonyms": [
+        "damage",
+        "damaged",
+        "cells",
+        "skin cells",
+        "dna",
+        "hurt the cells",
+        "stressed"
+      ],
+      "hint": "What happened inside the skin before anything was visible?"
+    },
+    {
+      "id": "redness",
+      "label": "redness = repair response",
+      "colour": "coral",
+      "synonyms": [
+        "red",
+        "redness",
+        "inflammation",
+        "blood rushes",
+        "more blood",
+        "repair",
+        "healing",
+        "hot to touch"
+      ],
+      "hint": "Why did it turn red and hot hours later?"
+    },
+    {
+      "id": "shed",
+      "label": "peeling clears damaged cells",
+      "colour": "blue",
+      "synonyms": [
+        "peel",
+        "peeling",
+        "peeled",
+        "flake",
+        "flaking",
+        "shed",
+        "sheds",
+        "dead cells",
+        "new skin"
+      ],
+      "hint": "What is peeling for?"
+    },
+    {
+      "id": "melanin",
+      "label": "melanin builds protection",
+      "colour": "purple",
+      "synonyms": [
+        "melanin",
+        "pigment",
+        "tan",
+        "tanned",
+        "darker",
+        "protect",
+        "protection",
+        "protects",
+        "next time"
+      ],
+      "hint": "Why did the skin end up darker, and what is that for?"
+    }
+  ],
+  "transfer": {
+    "context": "Rosa skis all day on a bright, snowy mountain. That night her cheeks and nose are red and sore even though it was freezing cold.",
+    "illustration": "skier",
+    "options": [
+      "The cold air froze her cheeks.",
+      "UV light — made stronger by altitude and reflected by snow — damaged her skin cells, and the redness is the delayed repair response.",
+      "She is allergic to snow.",
+      "Her goggles were too tight."
+    ],
+    "answer": 1,
+    "retryHint": "Red hours later, only on the parts the light hit — which of Kai's clues matches that?",
+    "retryClue": 2,
+    "explanation": "Cold has nothing to do with it: snow reflects UV upward and the thin mountain air filters less of it, so Rosa's face got a big dose. Just like Kai's shoulders, the skin cells were damaged during the day and the repair response — redness and soreness — showed up hours later."
+  },
+  "takeaway": "Sunlight carries UV energy that damages skin cells. Redness hours later is the repair crew arriving, peeling is the clear-out, and the darker skin afterwards is the body building its own shade for next time."
+}

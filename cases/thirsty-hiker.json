@@ -1,0 +1,233 @@
+{
+  "id": "thirsty-hiker",
+  "version": 1,
+  "title": "The Thirsty Hiker",
+  "system": "Kidneys & water",
+  "model": "water-balance",
+  "colour": "blue",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Priya",
+    "age": 14
+  },
+  "briefing": "Priya, 14, is leading her scout troop up a sunny canyon trail. Two hours in she feels dizzy, her mouth is dry, and she hasn't needed a bathroom break all morning.",
+  "question": "What is her body telling her?",
+  "illustration": "hiker",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Dry mouth and thirst",
+      "icon": "drop",
+      "colour": "blue",
+      "text": "She keeps licking her lips and says she is really thirsty — but not hungry at all.",
+      "shows": "a strong thirst signal with no hunger",
+      "visual": null,
+      "pointsTo": "thirst"
+    },
+    {
+      "id": 2,
+      "title": "Sweaty, hot morning",
+      "icon": "sun",
+      "colour": "coral",
+      "text": "It is 92 °F on the trail. After two hours of climbing her shirt is soaked through with sweat.",
+      "shows": "a lot of water leaving her body as sweat",
+      "visual": {
+        "type": "bars",
+        "from": 0.5,
+        "to": 2.6,
+        "unit": "cups of sweat per hour"
+      },
+      "pointsTo": "sweat"
+    },
+    {
+      "id": 3,
+      "title": "No bathroom break",
+      "icon": "kidneys",
+      "colour": "blue",
+      "text": "None since 8 a.m. When she finally goes, there is very little, and it is dark yellow.",
+      "shows": "her kidneys holding water back",
+      "visual": null,
+      "pointsTo": "kidneys"
+    },
+    {
+      "id": 4,
+      "title": "Better in the shade",
+      "icon": "clock",
+      "colour": "purple",
+      "text": "Ten minutes after two cups of water in the shade, the dizziness fades and she feels like herself again.",
+      "shows": "that water fixed it quickly",
+      "visual": null,
+      "pointsTo": "drink"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "She is just tired from walking uphill.",
+      "flaw": "Tiredness from walking does not make you thirsty with a dry mouth, and it would not switch off ten minutes after a drink."
+    },
+    {
+      "id": "B",
+      "text": "She has lost more water (sweat) than she drank, so her body is low on water and is trying to save it.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "She ate too much breakfast.",
+      "flaw": "A big breakfast would make her feel full, not dizzy and thirsty — and it has nothing to do with sweat or dark pee."
+    },
+    {
+      "id": "D",
+      "text": "The trail is too high and the air is thin.",
+      "flaw": "A canyon trail is not high enough for thin air, and thin air does not dry your mouth or stop you needing the bathroom."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        3
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        2,
+        3
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "L",
+    "prompt": "Priya climbs in the heat for three hours, drinking about one cup an hour. What happens to the water level in her body over those three hours?",
+    "expectedShape": "falls",
+    "second": {
+      "question": "And the amount of pee her kidneys make?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 8,
+    "secondary": 1
+  },
+  "concepts": [
+    {
+      "id": "sweat",
+      "label": "sweating / losing water",
+      "colour": "coral",
+      "synonyms": [
+        "sweat",
+        "sweating",
+        "sweaty",
+        "sweated",
+        "losing water",
+        "lost water",
+        "loses water",
+        "dehydrated",
+        "dried out"
+      ],
+      "hint": "Where was the water going?"
+    },
+    {
+      "id": "balance",
+      "label": "more out than in",
+      "colour": "blue",
+      "synonyms": [
+        "more than she drank",
+        "didn't drink enough",
+        "did not drink enough",
+        "not enough water",
+        "out than in",
+        "more out",
+        "losing more",
+        "lost more"
+      ],
+      "hint": "Compare what went out with what came in."
+    },
+    {
+      "id": "kidneys",
+      "label": "kidneys / pee",
+      "colour": "blue",
+      "synonyms": [
+        "kidney",
+        "kidneys",
+        "pee",
+        "peeing",
+        "urine",
+        "bathroom",
+        "wee"
+      ],
+      "hint": "Which organ decides how much water to let go?"
+    },
+    {
+      "id": "thirst",
+      "label": "thirst signal",
+      "colour": "amber",
+      "synonyms": [
+        "thirst",
+        "thirsty",
+        "brain",
+        "signal",
+        "dry mouth"
+      ],
+      "hint": "How does the body tell her to drink?"
+    },
+    {
+      "id": "drink",
+      "label": "drinking fixes it",
+      "colour": "purple",
+      "synonyms": [
+        "drink",
+        "drank",
+        "drinking",
+        "water helped",
+        "shade",
+        "recover",
+        "recovered",
+        "better",
+        "fixed"
+      ],
+      "hint": "What made her feel better, and how fast?"
+    }
+  ],
+  "transfer": {
+    "context": "Marco plays a 90-minute soccer match on a hot day. Afterwards he has a headache and his pee is dark yellow.",
+    "illustration": "soccer",
+    "options": [
+      "He strained a muscle in his leg.",
+      "He sweated out more water than he drank, so his body is low on water.",
+      "The sun gave him a sunburn.",
+      "The grass made him sneeze."
+    ],
+    "answer": 1,
+    "retryHint": "Dark yellow pee after a hot game — which of Priya's clues was almost the same?",
+    "retryClue": 3,
+    "explanation": "Running for 90 minutes in the heat means a lot of sweat. If Marco drank less than he sweated, his body is low on water: the kidneys save water (dark pee) and the brain signals it (headache, thirst). Same water budget as Priya's."
+  },
+  "takeaway": "Your body keeps a water budget. When more goes out as sweat than comes in, the kidneys hold water back and the brain turns on thirst — two different signals, one cause."
+}

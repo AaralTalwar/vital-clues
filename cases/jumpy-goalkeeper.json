@@ -1,0 +1,236 @@
+{
+  "id": "jumpy-goalkeeper",
+  "version": 1,
+  "title": "The Jumpy Goalkeeper",
+  "system": "Brain & nerves",
+  "model": "nerves-reflex",
+  "colour": "purple",
+  "minutes": 9,
+  "reviewed": null,
+  "character": {
+    "name": "Sam",
+    "age": 13
+  },
+  "briefing": "Sam, 13, is the goalkeeper. A shot comes straight at her face from close range; she blinks and her hands fly up and block it before she even knows what happened. Yet a slow, curling shot from far away went in last week while she “just watched it.”",
+  "question": "Why did her body move faster than her thinking the first time — and not the second?",
+  "illustration": "goalkeeper",
+  "clues": [
+    {
+      "id": 1,
+      "title": "The blink came first",
+      "icon": "eye",
+      "colour": "purple",
+      "text": "Her eyes shut before she saw the ball clearly. She did not choose to blink — it just happened.",
+      "shows": "a reaction that happened without any decision",
+      "visual": null,
+      "pointsTo": "reflex"
+    },
+    {
+      "id": 2,
+      "title": "Hands up, no plan",
+      "icon": "brain",
+      "colour": "purple",
+      "text": "Her hands were already in front of her face by the time her mind “caught up” with what was happening.",
+      "shows": "the body acting before the thinking part knew",
+      "visual": null,
+      "pointsTo": "reflex"
+    },
+    {
+      "id": 3,
+      "title": "Practice makes faster",
+      "icon": "clock",
+      "colour": "amber",
+      "text": "After two weeks of drills, her dive starts about a tenth of a second sooner than before.",
+      "shows": "that the deciding kind of reaction can be trained",
+      "visual": {
+        "type": "bars",
+        "from": 0.25,
+        "to": 0.19,
+        "unit": "s to start the dive, before → after drills"
+      },
+      "pointsTo": "practice"
+    },
+    {
+      "id": 4,
+      "title": "Tired = slower",
+      "icon": "moon",
+      "colour": "purple",
+      "text": "At the end of a double practice she reacts noticeably later to the same drill — but she still blinks just as fast.",
+      "shows": "tiredness slowing decisions but not the automatic reaction",
+      "visual": null,
+      "pointsTo": "tired"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "Sam is scared of the ball.",
+      "flaw": "Fear would make her flinch away or freeze, and it would not explain why practice makes her faster or why tiredness makes her slower."
+    },
+    {
+      "id": "B",
+      "text": "Signals travel along nerves from her eyes to her brain and spinal cord and out to her muscles; some pathways are short and automatic (reflexes), others go through decision-making and are slower but can be trained.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "Sam's eyes are faster than other people's.",
+      "flaw": "Eyes see at the same speed for everyone; what changes is how long the signal takes to turn into a movement — and eyes can't be made faster by drills."
+    },
+    {
+      "id": "D",
+      "text": "She just guesses where the ball will go.",
+      "flaw": "A guess is a decision, and decisions take time — the blink and the hands came before any guess was possible."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        2
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "t",
+    "prompt": "A shot is taken from close range, then from further and further away at the same speed. How does the time Sam has to react change as the shot gets closer?",
+    "expectedShape": "falls",
+    "second": {
+      "question": "Does practice make the blink reflex itself faster?",
+      "options": [
+        "yes",
+        "no"
+      ],
+      "answer": "no"
+    }
+  },
+  "labDefaults": {
+    "primary": 20,
+    "secondary": 0
+  },
+  "concepts": [
+    {
+      "id": "nerves",
+      "label": "nerves carry signals",
+      "colour": "purple",
+      "synonyms": [
+        "nerve",
+        "nerves",
+        "signal",
+        "signals",
+        "brain",
+        "spinal cord",
+        "message",
+        "messages"
+      ],
+      "hint": "What carries information from her eyes to her hands?"
+    },
+    {
+      "id": "reflex",
+      "label": "reflex: fast and automatic",
+      "colour": "purple",
+      "synonyms": [
+        "reflex",
+        "reflexes",
+        "automatic",
+        "automatically",
+        "without thinking",
+        "didn't decide",
+        "did not decide",
+        "before she knew",
+        "short path",
+        "shortcut"
+      ],
+      "hint": "What do we call a reaction that skips the decision?"
+    },
+    {
+      "id": "decide",
+      "label": "deciding takes longer",
+      "colour": "amber",
+      "synonyms": [
+        "decide",
+        "decides",
+        "decision",
+        "decisions",
+        "thinking",
+        "think",
+        "slower",
+        "takes longer",
+        "longer path"
+      ],
+      "hint": "Why did the slow curling shot go in?"
+    },
+    {
+      "id": "practice",
+      "label": "practice speeds decisions",
+      "colour": "teal",
+      "synonyms": [
+        "practice",
+        "practiced",
+        "practised",
+        "practising",
+        "practicing",
+        "drills",
+        "train",
+        "trained",
+        "training",
+        "faster with"
+      ],
+      "hint": "What did two weeks of drills change?"
+    },
+    {
+      "id": "tired",
+      "label": "tired = slower",
+      "colour": "blue",
+      "synonyms": [
+        "tired",
+        "tiredness",
+        "exhausted",
+        "slower when",
+        "end of practice",
+        "worn out"
+      ],
+      "hint": "What happens at the end of a double practice?"
+    }
+  ],
+  "transfer": {
+    "context": "Dev touches a hot pan and his hand jerks away before he feels any pain.",
+    "illustration": "pan",
+    "options": [
+      "His hand is used to heat.",
+      "A reflex pathway through his spinal cord moved his hand before the pain signal reached the part of his brain that notices it.",
+      "He decided very quickly.",
+      "The pan was not really hot."
+    ],
+    "answer": 1,
+    "retryHint": "The hand moved before he felt anything — which of Sam's clues was exactly like that?",
+    "retryClue": 1,
+    "explanation": "The signal from Dev's hand reached his spinal cord, which sent a 'pull away' command straight back — the fast lane. The slower route to the thinking part of his brain, where pain is noticed, finished a moment later. That is why he moved before it hurt."
+  },
+  "takeaway": "Your nervous system has a fast lane and a thinking lane. Reflexes protect you before you can decide; decisions are slower but get faster with practice."
+}

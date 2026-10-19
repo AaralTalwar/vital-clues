@@ -128,7 +128,11 @@ def validate(case, model=None):
         need(p.get("output") in outputs, f"prediction.output '{p.get('output')}' is not a model output ({sorted(outputs)})")
         need(model.get("chart", {}).get("y") == p.get("output"), "model.chart.y should equal prediction.output")
         for o in model.get("outputs", []):
+            if "text" in o:
+                continue  # a constant word, e.g. core temperature "steady"
             need(o["key"] in model.get("rules", {}), f"model has no rule for output '{o['key']}'")
+        need(model.get("chart", {}).get("x"), "model.chart.x is missing")
+        need(isinstance(model.get("overlay", {}).get("parts"), list), "model.overlay.parts must be a list")
 
     return problems
 

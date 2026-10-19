@@ -1,0 +1,235 @@
+{
+  "id": "sleepy-gamer",
+  "version": 1,
+  "title": "The Sleepy Gamer",
+  "system": "Brain & sleep clock",
+  "model": "sleep-clock",
+  "colour": "purple",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Theo",
+    "age": 15
+  },
+  "briefing": "Theo, 15, plays on a bright screen until midnight most school nights. He goes to bed tired but lies awake for an hour, then can barely keep his eyes open in first period. On camping weekends with no screens, he is asleep in minutes and wakes up early without an alarm.",
+  "question": "Why can't a tired person fall asleep — and why does camping fix it?",
+  "illustration": "gamer",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Bright until midnight",
+      "icon": "screen",
+      "colour": "blue",
+      "text": "His monitor is a foot from his face and set to full brightness. The room lights are on too.",
+      "shows": "bright light reaching his eyes late at night",
+      "visual": null,
+      "pointsTo": "light"
+    },
+    {
+      "id": 2,
+      "title": "Awake for an hour",
+      "icon": "moon",
+      "colour": "purple",
+      "text": "Lights off at 12:05, but he checks the clock at 12:30 and again at 1:00. He feels wired, not sleepy.",
+      "shows": "the brain not yet in night mode even though he is tired",
+      "visual": {
+        "type": "bars",
+        "from": 15,
+        "to": 60,
+        "unit": "minutes to fall asleep, camping → gaming nights"
+      },
+      "pointsTo": "signal"
+    },
+    {
+      "id": 3,
+      "title": "Foggy first period",
+      "icon": "brain",
+      "colour": "amber",
+      "text": "He yawns through math, misreads a question he knows, and his friend says he looks 'half there'.",
+      "shows": "a brain that got too little sleep",
+      "visual": null,
+      "pointsTo": "sleep"
+    },
+    {
+      "id": 4,
+      "title": "Camping cure",
+      "icon": "sun",
+      "colour": "teal",
+      "text": "Camping weekends: no screens, firelight only, asleep in ten minutes, awake at sunrise feeling great.",
+      "shows": "that dim evenings and natural light reset the pattern fast",
+      "visual": null,
+      "pointsTo": "reset"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "Theo is just a night owl and there is nothing to explain.",
+      "flaw": "A fixed 'night owl' would still be one when camping — but there he falls asleep early and wakes at dawn."
+    },
+    {
+      "id": "B",
+      "text": "Bright light late at night tells his brain's clock it is still daytime, so the sleep signal is held back; without screens the clock runs on its own and sleep comes easily.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "The games are too exciting and that keeps him awake.",
+      "flaw": "Excitement fades within minutes of stopping; it does not explain an hour of lying awake, and a calm movie on a bright screen would do the same thing."
+    },
+    {
+      "id": "D",
+      "text": "His bed is uncomfortable.",
+      "flaw": "A sleeping bag on the ground is far less comfortable than his bed — yet that is where he sleeps best."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "F",
+    "prompt": "As Theo spends more hours in front of a bright screen before bed — from none up to four — what happens to the time it takes him to fall asleep?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "And his brain's night-time sleep signal (melatonin)?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
+  },
+  "labDefaults": {
+    "primary": 3,
+    "secondary": 1
+  },
+  "concepts": [
+    {
+      "id": "light",
+      "label": "bright light late",
+      "colour": "blue",
+      "synonyms": [
+        "light",
+        "bright",
+        "screen",
+        "screens",
+        "monitor",
+        "blue light",
+        "brightness"
+      ],
+      "hint": "What is reaching his eyes at midnight?"
+    },
+    {
+      "id": "clock",
+      "label": "the body clock",
+      "colour": "purple",
+      "synonyms": [
+        "clock",
+        "body clock",
+        "rhythm",
+        "daytime",
+        "thinks it is day",
+        "thinks its day",
+        "still day",
+        "circadian"
+      ],
+      "hint": "What does the brain use to decide whether it is day or night?"
+    },
+    {
+      "id": "signal",
+      "label": "sleep signal held back",
+      "colour": "purple",
+      "synonyms": [
+        "melatonin",
+        "sleep signal",
+        "sleepy signal",
+        "hormone",
+        "held back",
+        "blocked",
+        "delayed",
+        "not sleepy",
+        "wired"
+      ],
+      "hint": "What chemical message gets delayed?"
+    },
+    {
+      "id": "sleep",
+      "label": "less sleep → foggy brain",
+      "colour": "amber",
+      "synonyms": [
+        "less sleep",
+        "not enough sleep",
+        "tired",
+        "foggy",
+        "sleepy in class",
+        "can't focus",
+        "cannot focus",
+        "yawning",
+        "short on sleep"
+      ],
+      "hint": "What is the cost the next morning?"
+    },
+    {
+      "id": "reset",
+      "label": "dark evenings reset it",
+      "colour": "teal",
+      "synonyms": [
+        "camping",
+        "no screens",
+        "dark",
+        "dim",
+        "firelight",
+        "natural light",
+        "sunrise",
+        "reset",
+        "resets",
+        "without screens"
+      ],
+      "hint": "Why does the camping weekend work so quickly?"
+    }
+  ],
+  "transfer": {
+    "context": "Nadia flies from California to Spain. For the first three nights she is wide awake at 2 a.m. and exhausted by lunchtime, then it fades.",
+    "illustration": "plane",
+    "options": [
+      "Spanish beds are different.",
+      "Her body clock is still set to California time; daylight in Spain slowly re-sets it over a few days.",
+      "Airplane food kept her awake.",
+      "She is nervous about the trip."
+    ],
+    "answer": 1,
+    "retryHint": "Something is telling her brain the wrong time of day — which of Theo's clues is about that?",
+    "retryClue": 4,
+    "explanation": "Nadia's clock still says 'afternoon' when it is 2 a.m. in Spain, so her sleep signal is held back — the same mismatch as Theo's late screen, but caused by travel. Morning daylight in Spain nudges the clock a little each day until it matches, which is why it fades."
+  },
+  "takeaway": "Your brain has a clock, and light is how it tells the time. Bright light late holds back the sleep signal; dim evenings and morning daylight keep the clock on time."
+}

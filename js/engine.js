@@ -31,7 +31,7 @@ export const engine = {
       read: [], links: {},
       leadFirstPick: null, lead: null, bestClue: null, boardRevised: false,
       sketch: null, sketchMode: null, secondDir: null,
-      lab: { primary: null, secondary: 0, intensitiesTried: [] },
+      lab: { primary: null, secondary: null, intensitiesTried: [] },
       explain: { attempts: [], found: [] },
       transfer: { tries: [] },
       score: null
@@ -45,6 +45,8 @@ export const engine = {
   go(screenId, { push = true } = {}) {
     const next = document.getElementById(screenId);
     if (!next) { console.error("No screen", screenId); return; }
+    const prev = this.handlers[this.current];
+    if (prev && prev.leave && this.current !== screenId) prev.leave(this);
     document.querySelectorAll("main > section").forEach((s) => { s.hidden = s.id !== screenId; });
     this.current = screenId;
     if (this.state) this.state.screen = screenId;
@@ -182,7 +184,7 @@ export function openDialog(dlg) {
 }
 
 // Browser Back: step back where allowed, otherwise stay put.
-window.addEventListener("popstate", () => {
+if (typeof window !== "undefined") window.addEventListener("popstate", () => {
   const target = BACK_TO[engine.current];
   if (target && engine.state) engine.go(target, { push: false });
   else history.pushState({ screen: engine.current }, "", "#" + engine.current);

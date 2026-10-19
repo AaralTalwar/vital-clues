@@ -141,6 +141,19 @@ function openPinChooser(clueId, hypId) {
   openDialog(dlg);
 }
 
+// The hint for a wrong pin. An explicit mismatchHint wins; otherwise compose one from
+// the clue's "shows" sentence and the hypothesis's "flaw" sentence (both authored in the case file).
+export function hintFor(c, clue, link) {
+  const explicit = (c.mismatchHints || []).find((h) => h.clue === clue.id && h.hyp === link.hyp && h.label === link.label);
+  if (explicit) return explicit.hint;
+  const hyp = c.hypotheses.find((h) => h.id === link.hyp);
+  const shows = clue.shows ? `Clue ${clue.id} shows ${clue.shows}` : `Look at clue ${clue.id} again`;
+  if (hyp.best && link.label === "doesntFit") return `${shows} — that is exactly what hypothesis ${hyp.id} predicts, so this clue supports it.`;
+  if (!hyp.best && link.label === "supports") return `${shows}. ${hyp.flaw || `That does not actually point to hypothesis ${hyp.id}.`}`;
+  if (!hyp.best && link.label === "doesntFit") return `${shows}. Hypothesis ${hyp.id} is not the best idea here, but this clue is not the evidence against it — check the clue that is.`;
+  return `${shows}. Does it really point where you pinned it?`;
+}
+
 // ---------- S4 board check + lead ----------
 
 function renderCheck() {
@@ -154,8 +167,7 @@ function renderCheck() {
   for (const clue of c.clues) {
     const link = st.links[clue.id];
     if (!pinIsCorrect(c, clue.id, link)) {
-      const hint = c.mismatchHints.find((h) => h.clue === clue.id && h.hyp === link.hyp && h.label === link.label);
-      mismatch = { clue, link, hint: hint ? hint.hint : "Look at that clue again — does it really point where you pinned it?" };
+      mismatch = { clue, link, hint: hintFor(c, clue, link) };
       break;
     }
   }

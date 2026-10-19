@@ -1,0 +1,45 @@
+{
+  "id": "sleep-clock",
+  "name": "Brain & sleep clock",
+  "colour": "purple",
+  "inputs": {
+    "primary":   { "key": "S", "label": "Bright screen time before bed", "min": 0, "max": 4, "step": 0.5, "unit": "h", "ticks": ["none", "2 h", "4 h"] },
+    "secondary": { "key": "N", "label": "Nights in a row", "min": 1, "max": 7, "step": 1, "default": 1, "unit": "nights", "ticks": ["1 night", "4 nights", "a week"] }
+  },
+  "outputs": [
+    { "key": "M", "label": "Sleep signal (melatonin)", "unit": "% of normal", "colour": "purple", "decimals": 0 },
+    { "key": "F", "label": "Time to fall asleep", "unit": "min", "colour": "blue", "decimals": 0 },
+    { "key": "A", "label": "Morning alertness", "unit": "0–10", "colour": "amber", "decimals": 1 }
+  ],
+  "rules": {
+    "M": "clamp(100 - 15 * S, 30, 100)",
+    "F": "15 + 12 * S",
+    "A": "clamp(9 - 0.9 * S - 0.3 * (N - 1) * S, 1, 10)"
+  },
+  "chart": { "x": "S", "y": "F", "xLabel": "bright screen time before bed (h)", "yLabel": "minutes to fall asleep", "yMin": 0, "yMax": 70 },
+  "overlay": {
+    "base": "head",
+    "caption": "light into the eyes tells the brain it is still daytime",
+    "parts": [
+      { "shape": "brain", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "M", "min": 30, "max": 100 } },
+      { "shape": "eye", "colour": "#16213E" },
+      { "shape": "screen", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 4 } },
+      { "shape": "moon", "colour": "#F4A300", "anim": { "type": "glow", "output": "M", "min": 30, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the brain's night-time sleep signal dropping when bright light reaches the eyes late",
+      "Shows falling asleep taking longer as a result",
+      "Shows the effect piling up over several nights"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Include caffeine, noise, stress, naps or what time school starts",
+      "Diagnose anything; everyone has nights like this"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If you often can't sleep or feel exhausted every day, that's worth talking about with an adult you trust."
+  },
+  "sources": ["NIH News in Health: 'Tired? Blame your body clock'", "CK-12 Life Science: nervous system and endocrine system"]
+}

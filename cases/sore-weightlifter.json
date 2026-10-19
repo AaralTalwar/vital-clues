@@ -1,0 +1,241 @@
+{
+  "id": "sore-weightlifter",
+  "version": 1,
+  "title": "The Sore Weightlifter",
+  "system": "Muscles & repair",
+  "model": "muscle-repair",
+  "colour": "amber",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Marcus",
+    "age": 16
+  },
+  "briefing": "Marcus, 16, did his first real leg workout on Monday. Monday night he felt fine. Wednesday he could barely walk down the stairs. By Saturday the soreness was gone — and the following Monday the same workout felt easier.",
+  "question": "Why did the pain arrive late, leave slowly, and make him stronger?",
+  "illustration": "weights",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Fine on Monday night",
+      "icon": "clock",
+      "colour": "purple",
+      "text": "Right after the workout his legs felt tired but not sore. He slept well.",
+      "shows": "that the soreness is not the workout itself but something that builds afterwards",
+      "visual": null,
+      "pointsTo": "delay"
+    },
+    {
+      "id": 2,
+      "title": "Worst on Wednesday",
+      "icon": "muscles",
+      "colour": "coral",
+      "text": "Two days later: stiff, tender to the touch, and stairs are a struggle. Rest makes it ache less, movement warms it up.",
+      "shows": "soreness peaking about two days after the effort",
+      "visual": {
+        "type": "bars",
+        "from": 1,
+        "to": 8,
+        "unit": "soreness 0–10, Monday night → Wednesday"
+      },
+      "pointsTo": "tears"
+    },
+    {
+      "id": 3,
+      "title": "Gone by Saturday",
+      "icon": "sun",
+      "colour": "teal",
+      "text": "Five days on, the soreness has faded completely and his legs feel normal.",
+      "shows": "repair finishing over several days",
+      "visual": null,
+      "pointsTo": "repair"
+    },
+    {
+      "id": 4,
+      "title": "Easier the next week",
+      "icon": "weights",
+      "colour": "amber",
+      "text": "Same weights, same sets, the following Monday — and it feels noticeably easier, with much less soreness afterwards.",
+      "shows": "the muscle ending up slightly stronger than before",
+      "visual": null,
+      "pointsTo": "stronger"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "He injured his legs and should not have trained.",
+      "flaw": "An injury hurts right away and gets worse with use; this arrived two days later, faded on its own, and left him stronger."
+    },
+    {
+      "id": "B",
+      "text": "Hard work made tiny tears in his muscle fibres; the repair process over several days causes the delayed soreness and rebuilds the fibres slightly stronger.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "He has a build-up of 'lactic acid' from the workout.",
+      "flaw": "The burning during exercise clears within about an hour; it cannot explain soreness that starts the next day and peaks two days later."
+    },
+    {
+      "id": "D",
+      "text": "He is just unfit and will always feel this way.",
+      "flaw": "If nothing changed, the second Monday would feel exactly the same — but it was easier."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        2
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "S",
+    "prompt": "Starting on workout day and going through the week, how does Marcus's soreness change from day 0 to day 7?",
+    "expectedShape": "rises-then-levels",
+    "second": {
+      "question": "By the end of the week, how does his strength compare with before the workout?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 2,
+    "secondary": 8
+  },
+  "concepts": [
+    {
+      "id": "tears",
+      "label": "tiny tears in the fibres",
+      "colour": "coral",
+      "synonyms": [
+        "tears",
+        "tear",
+        "micro tears",
+        "microtears",
+        "damage",
+        "damaged",
+        "fibres",
+        "fibers",
+        "broke down",
+        "break down"
+      ],
+      "hint": "What did the hard work do to the muscle at a tiny scale?"
+    },
+    {
+      "id": "delay",
+      "label": "soreness comes later",
+      "colour": "purple",
+      "synonyms": [
+        "later",
+        "next day",
+        "two days",
+        "day after",
+        "delayed",
+        "delay",
+        "not right away",
+        "takes time"
+      ],
+      "hint": "When did the soreness show up, compared with the workout?"
+    },
+    {
+      "id": "repair",
+      "label": "repair over days",
+      "colour": "teal",
+      "synonyms": [
+        "repair",
+        "repairs",
+        "repairing",
+        "heal",
+        "heals",
+        "healing",
+        "rebuild",
+        "rebuilds",
+        "rebuilding",
+        "recover",
+        "recovery",
+        "recovers"
+      ],
+      "hint": "What is the body doing during the sore days?"
+    },
+    {
+      "id": "stronger",
+      "label": "rebuilt stronger",
+      "colour": "amber",
+      "synonyms": [
+        "stronger",
+        "strength",
+        "adapts",
+        "adapt",
+        "adaptation",
+        "easier",
+        "grow",
+        "grows",
+        "bigger",
+        "builds muscle"
+      ],
+      "hint": "Why did the second Monday feel different?"
+    },
+    {
+      "id": "rest",
+      "label": "rest lets it happen",
+      "colour": "blue",
+      "synonyms": [
+        "rest",
+        "rest days",
+        "resting",
+        "sleep",
+        "time off",
+        "days off",
+        "recovery days",
+        "between workouts"
+      ],
+      "hint": "What does the repair need that a workout cannot give?"
+    }
+  ],
+  "transfer": {
+    "context": "Jade starts a new dance class on Tuesday. On Thursday her calves are too sore to go up on her toes; by the next week's class she manages the whole routine.",
+    "illustration": "dancer",
+    "options": [
+      "She pulled a muscle and should quit the class.",
+      "New movements made tiny tears in her calf muscles; repairing them caused the delayed soreness and left them a little stronger for next week.",
+      "The dance floor was too hard.",
+      "Her shoes were the wrong size."
+    ],
+    "answer": 1,
+    "retryHint": "Fine on the day, sore two days later, better the next week — which of Marcus's clues is that pattern?",
+    "retryClue": 2,
+    "explanation": "Jade's calves did new work, which tore fibres at a tiny scale. The repair took a few days (the Thursday soreness) and rebuilt them a little stronger — which is why the following week's routine was within reach. Same timeline as Marcus's legs."
+  },
+  "takeaway": "Muscles get stronger by being repaired. Hard work causes tiny tears; the repair takes days, hurts a little in the middle, and finishes slightly stronger than before — which is why rest days are part of training."
+}

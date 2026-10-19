@@ -1,0 +1,47 @@
+{
+  "id": "stress-response",
+  "name": "Adrenaline & the alarm system",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "X", "label": "How big the moment feels", "min": 0, "max": 10, "step": 1, "ticks": ["chilling at home", "class presentation", "solo on stage"] },
+    "secondary": { "key": "R", "label": "Minutes after it's over", "min": 0, "max": 20, "step": 2, "default": 0, "unit": "min", "ticks": ["still on", "10 min", "20 min"] }
+  },
+  "outputs": [
+    { "key": "A", "label": "Adrenaline", "unit": "% above calm", "colour": "coral", "decimals": 0 },
+    { "key": "H", "label": "Heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 },
+    { "key": "W", "label": "Sweaty palms", "colour": "blue", "bands": [{ "upTo": 29, "text": "dry" }, { "upTo": 59, "text": "a little" }, { "text": "yes" }] },
+    { "key": "Y", "label": "Mouth", "colour": "amber", "bands": [{ "upTo": 39, "text": "normal" }, { "text": "dry" }] }
+  ],
+  "rules": {
+    "A": "10 * X * pow(0.5, R / 5)",
+    "H": "68 + 5.5 * X * pow(0.5, R / 5)",
+    "W": "10 * X * pow(0.5, R / 5)",
+    "Y": "10 * X * pow(0.5, R / 5)"
+  },
+  "chart": { "x": "X", "y": "H", "xLabel": "how big the moment feels", "yLabel": "heart rate (beats/min)", "yMin": 50, "yMax": 130 },
+  "overlay": {
+    "base": "torso",
+    "caption": "brain spots a challenge → adrenaline → heart, sweat, mouth all change at once",
+    "parts": [
+      { "shape": "bloodstream", "colour": "#E4572E", "anim": { "type": "glow", "output": "A", "min": 0, "max": 100 } },
+      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } },
+      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "W", "min": 0, "max": 100 } },
+      { "shape": "thirst", "colour": "#F4A300", "anim": { "type": "light", "output": "Y", "threshold": 40 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows one signal (adrenaline) changing several body systems at the same time",
+      "Shows the response scaling with how big the moment feels, not with any real danger",
+      "Shows everything settling back within minutes once the moment passes (halving every 5 minutes)"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Say anything about anxiety, panic or any condition; this is the everyday pre-performance response",
+      "Model what happens with long-lasting stress"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Nerves before a big moment are normal and pass. If worry gets in the way of everyday life, talk with an adult you trust."
+  },
+  "sources": ["CK-12 Life Science: endocrine system, adrenal glands", "NIH News in Health: the stress response (student overview)"]
+}

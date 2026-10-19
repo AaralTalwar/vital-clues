@@ -1,0 +1,234 @@
+{
+  "id": "skipped-breakfast",
+  "version": 1,
+  "title": "The Skipped Breakfast",
+  "system": "Digestion & fuel",
+  "model": "fuel-sugar",
+  "colour": "amber",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Lena",
+    "age": 14
+  },
+  "briefing": "Lena, 14, overslept and ran out the door without eating. By third period her stomach is growling, she can't concentrate on the quiz, and she feels a bit shaky. After a sandwich at lunch she feels completely normal within half an hour.",
+  "question": "What ran out — and why did the brain notice before the stomach did?",
+  "illustration": "plate",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Nothing since dinner",
+      "icon": "clock",
+      "colour": "purple",
+      "text": "Dinner was at 7 p.m. Third period is 10:30 a.m. That is more than fifteen hours without food.",
+      "shows": "a very long gap since the last meal",
+      "visual": {
+        "type": "bars",
+        "from": 2,
+        "to": 15.5,
+        "unit": "hours since eating, normal morning → today"
+      },
+      "pointsTo": "time"
+    },
+    {
+      "id": 2,
+      "title": "Can't concentrate",
+      "icon": "brain",
+      "colour": "amber",
+      "text": "She reads the same quiz question three times. Her hands feel a little shaky and she is irritable.",
+      "shows": "the brain and muscles short of fuel",
+      "visual": null,
+      "pointsTo": "brain"
+    },
+    {
+      "id": 3,
+      "title": "Growling stomach",
+      "icon": "stomach",
+      "colour": "coral",
+      "text": "Loud enough that the person next to her hears it. She says she is 'starving'.",
+      "shows": "the stomach's hunger signal",
+      "visual": null,
+      "pointsTo": "hunger"
+    },
+    {
+      "id": 4,
+      "title": "Sandwich fixes it",
+      "icon": "plate",
+      "colour": "teal",
+      "text": "Thirty minutes after lunch the shakiness is gone and she is cracking jokes again.",
+      "shows": "that food restored things within half an hour",
+      "visual": null,
+      "pointsTo": "refuel"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "She is coming down with a cold.",
+      "flaw": "A cold does not switch off thirty minutes after a sandwich, and it would not come with a growling stomach."
+    },
+    {
+      "id": "B",
+      "text": "After fifteen hours without food, the fuel her brain and muscles run on is running low; eating refills it.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "She is nervous about the quiz.",
+      "flaw": "Quiz nerves end when the quiz ends, not when lunch arrives — and they do not make your stomach growl."
+    },
+    {
+      "id": "D",
+      "text": "The classroom is too warm.",
+      "flaw": "A warm room makes you drowsy and sweaty, not shaky and hungry, and the lunchroom is no cooler."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "G",
+    "prompt": "Lena skipped breakfast. As the hours pass since her last meal — from just after eating to six hours later — what happens to the fuel in her blood?",
+    "expectedShape": "falls",
+    "second": {
+      "question": "And how often her stomach rumbles?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 4,
+    "secondary": 0
+  },
+  "concepts": [
+    {
+      "id": "fuel",
+      "label": "fuel from food",
+      "colour": "amber",
+      "synonyms": [
+        "fuel",
+        "energy",
+        "sugar",
+        "glucose",
+        "food",
+        "calories",
+        "nutrients"
+      ],
+      "hint": "What does the body get from a meal?"
+    },
+    {
+      "id": "time",
+      "label": "long gap since eating",
+      "colour": "purple",
+      "synonyms": [
+        "hours",
+        "long time",
+        "since dinner",
+        "no breakfast",
+        "skipped",
+        "didn't eat",
+        "did not eat",
+        "without food",
+        "haven't eaten"
+      ],
+      "hint": "How long had it been?"
+    },
+    {
+      "id": "brain",
+      "label": "brain runs low first",
+      "colour": "blue",
+      "synonyms": [
+        "brain",
+        "concentrate",
+        "concentration",
+        "focus",
+        "shaky",
+        "thinking",
+        "muscles"
+      ],
+      "hint": "Which organ noticed first, and how?"
+    },
+    {
+      "id": "hunger",
+      "label": "hunger signal",
+      "colour": "coral",
+      "synonyms": [
+        "hungry",
+        "hunger",
+        "stomach",
+        "growling",
+        "growl",
+        "rumbles",
+        "rumbling",
+        "starving"
+      ],
+      "hint": "How does the body ask for more?"
+    },
+    {
+      "id": "refuel",
+      "label": "eating refills it",
+      "colour": "teal",
+      "synonyms": [
+        "ate",
+        "eating",
+        "lunch",
+        "sandwich",
+        "refuel",
+        "refill",
+        "better",
+        "normal again",
+        "fixed"
+      ],
+      "hint": "What happened after lunch?"
+    }
+  ],
+  "transfer": {
+    "context": "Omar runs a cross-country race in the afternoon without eating since early morning. In the last mile his legs feel like jelly and he can't think straight.",
+    "illustration": "runner",
+    "options": [
+      "His shoes are too tight.",
+      "His muscles and brain are running out of fuel after hours without food and a long effort.",
+      "He is allergic to grass.",
+      "He is nervous about losing."
+    ],
+    "answer": 1,
+    "retryHint": "Jelly legs and fuzzy thinking — which of Lena's clues was almost the same?",
+    "retryClue": 2,
+    "explanation": "Omar's muscles have been burning fuel fast for miles, and he had not topped up since early morning. Low fuel shows up in the brain (can't think straight) and the muscles (jelly legs) — the same two places it showed up in Lena, only faster because of the running."
+  },
+  "takeaway": "Food is fuel. Your brain and muscles burn it all the time, so a long gap without eating shows up as fuzzy thinking and shakiness before anything else — and a meal fixes it fast."
+}

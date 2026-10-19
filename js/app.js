@@ -7,6 +7,7 @@ import * as predict from "./predict.js";
 import * as lab from "./lab.js";
 import { check, firstMissing } from "./explain.js";
 import { compute } from "./score.js";
+import * as progress from "./progress.js";
 
 // ---------- boot ----------
 
@@ -43,6 +44,9 @@ async function boot() {
 function renderLibrary() {
   const grid = document.getElementById("case-grid");
   clear(grid);
+  const done = progress.completed();
+  const count = engine.library.filter((x) => x.available).length;
+  document.getElementById("lib-count").textContent = `${Object.keys(done).length} of ${count} cases closed`;
   for (const item of engine.library) {
     const card = el("button", { class: "case-card", type: "button", "data-colour": item.colour });
     card.disabled = !item.available;
@@ -50,15 +54,21 @@ function renderLibrary() {
     const body = el("div");
     body.appendChild(el("h3", {}, item.title));
     body.appendChild(el("div", { class: "muted small" }, `${item.system} · about ${item.minutes} min`));
-    body.appendChild(el("span", { class: item.available ? "badge badge-pending" : "badge badge-soon" }, item.available ? "Review pending" : "Coming soon"));
+    const badges = el("div", { class: "badges" });
+    badges.appendChild(el("span", { class: item.reviewed ? "badge badge-reviewed" : "badge badge-pending" }, item.reviewed ? "Teacher reviewed" : "Review pending"));
+    if (done[item.id]) badges.appendChild(el("span", { class: "badge badge-done" }, `✓ Closed · best ${done[item.id].best}`));
+    body.appendChild(badges);
     card.append(swatch, body);
     card.addEventListener("click", () => startCase(item.id));
     grid.appendChild(card);
   }
   document.getElementById("surprise").onclick = () => {
     const playable = engine.library.filter((x) => x.available);
-    startCase(playable[Math.floor(Math.random() * playable.length)].id);
+    const unplayed = playable.filter((x) => !done[x.id]);
+    const pool = unplayed.length ? unplayed : playable;
+    startCase(pool[Math.floor(Math.random() * pool.length)].id);
   };
+  document.getElementById("lib-clear").onclick = () => { progress.clearAll(); renderLibrary(); engine.toast("Progress on this device cleared."); };
 }
 
 async function startCase(caseId) {
@@ -264,6 +274,7 @@ function renderClosed() {
   const c = engine.caseFile, st = engine.state, m = engine.model;
   const score = compute(c, st);
   st.score = score;
+  progress.record(c.id, score.total);
   const ring = document.getElementById("score-ring");
   ring.style.setProperty("--pct", score.total);
   ring.querySelector("div").textContent = String(score.total);

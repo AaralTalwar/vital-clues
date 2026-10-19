@@ -1,0 +1,129 @@
+{
+  "id": "hearing",
+  "name": "Ears & hearing",
+  "colour": "purple",
+  "inputs": {
+    "primary": {
+      "key": "V",
+      "label": "Loudness",
+      "min": 60,
+      "max": 110,
+      "step": 5,
+      "unit": "dB",
+      "ticks": [
+        "60 · talking",
+        "85 · traffic",
+        "110 · concert"
+      ]
+    },
+    "secondary": {
+      "key": "T",
+      "label": "Time listening",
+      "min": 0,
+      "max": 180,
+      "step": 15,
+      "default": 60,
+      "unit": "min",
+      "ticks": [
+        "0",
+        "90 min",
+        "3 h"
+      ]
+    }
+  },
+  "outputs": [
+    {
+      "key": "L",
+      "label": "Sound energy reaching the ear",
+      "unit": "× talking level",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "F",
+      "label": "Hair-cell fatigue",
+      "unit": "0–10",
+      "colour": "purple",
+      "decimals": 1
+    },
+    {
+      "key": "R",
+      "label": "Ringing afterwards",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 2.9,
+          "text": "none"
+        },
+        {
+          "upTo": 6.9,
+          "text": "a little, fades"
+        },
+        {
+          "text": "yes, hours"
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "L": "round(pow(10, (V - 60) / 10))",
+    "F": "clamp(pow(10, (V - 95) / 10) * T / 60 * 3, 0, 10)",
+    "R": "clamp(pow(10, (V - 95) / 10) * T / 60 * 3, 0, 10)"
+  },
+  "chart": {
+    "x": "V",
+    "y": "F",
+    "xLabel": "loudness (dB)",
+    "yLabel": "hair-cell fatigue (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
+  "overlay": {
+    "base": "head",
+    "caption": "sound waves → tiny hair cells bend → too much bending = ringing",
+    "parts": [
+      {
+        "shape": "soundWaves",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "count",
+          "output": "L",
+          "min": 0,
+          "max": 1000
+        }
+      },
+      {
+        "shape": "ear",
+        "colour": "#6C4AB6"
+      },
+      {
+        "shape": "hairCells",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "bend",
+          "output": "F",
+          "min": 0,
+          "max": 10
+        }
+      }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows that every 10 dB is ten times the sound energy, not a little more",
+      "Shows the tiny hair cells in the inner ear tiring with loudness and time — barely at all below about 85 dB, then steeply",
+      "Shows ringing as the sign that they were pushed too far"
+    ],
+    "doesnt": [
+      "Measure any real person or any real headphones",
+      "Model permanent hearing damage; it stops at temporary ringing",
+      "Replace a hearing test"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Ringing that lasts more than a day, or hearing that seems muffled, is a reason to tell an adult."
+  },
+  "sources": [
+    "NIH NIDCD: Noise-Induced Hearing Loss (student pages)",
+    "CK-12 Physical Science: sound and the decibel scale"
+  ]
+}

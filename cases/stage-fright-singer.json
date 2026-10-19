@@ -1,0 +1,241 @@
+{
+  "id": "stage-fright-singer",
+  "version": 1,
+  "title": "The Stage-Fright Singer",
+  "system": "Adrenaline & the alarm system",
+  "model": "stress-response",
+  "colour": "coral",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Ava",
+    "age": 15
+  },
+  "briefing": "Ava, 15, is about to sing a solo at the school concert. Standing in the wings her heart is racing, her palms are damp, her mouth is dry and her hands shake slightly. She has not moved a muscle. Ten minutes after the song ends she feels completely calm.",
+  "question": "Why does a body that is standing still act like it is sprinting — and then switch off?",
+  "illustration": "microphone",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Racing heart, standing still",
+      "icon": "heart",
+      "colour": "coral",
+      "text": "Pulse about 120 while standing perfectly still backstage. Her resting pulse is usually about 70.",
+      "shows": "a heart racing with no physical effort to explain it",
+      "visual": {
+        "type": "bars",
+        "from": 70,
+        "to": 120,
+        "unit": "beats/min, normal → backstage"
+      },
+      "pointsTo": "heart"
+    },
+    {
+      "id": 2,
+      "title": "Damp palms, dry mouth",
+      "icon": "drop",
+      "colour": "blue",
+      "text": "Her palms are sweaty but her mouth is dry — two opposite things happening at the same moment.",
+      "shows": "several different body systems changing at once",
+      "visual": null,
+      "pointsTo": "many"
+    },
+    {
+      "id": 3,
+      "title": "The thought, not the room",
+      "icon": "brain",
+      "colour": "purple",
+      "text": "The room is cool and quiet. It started the moment the teacher said 'you're next' — before anything physical happened.",
+      "shows": "that a thought, not the surroundings, set it off",
+      "visual": null,
+      "pointsTo": "brain"
+    },
+    {
+      "id": 4,
+      "title": "Calm in ten minutes",
+      "icon": "clock",
+      "colour": "teal",
+      "text": "Ten minutes after the last note: pulse back near 75, hands steady, mouth normal.",
+      "shows": "everything settling together once the moment passed",
+      "visual": null,
+      "pointsTo": "fade"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "She has been running around backstage.",
+      "flaw": "She was standing still — and exercise would not give her a dry mouth or make everything switch off in ten minutes."
+    },
+    {
+      "id": "B",
+      "text": "Her brain judged the solo as a big moment and released adrenaline, which gets the whole body ready to act at once — heart, sweat, mouth — and fades within minutes when the moment passes.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "The stage lights are making her hot.",
+      "flaw": "Heat makes the whole body sweat, not just the palms, and it does not dry your mouth or start at the words 'you're next' in a cool room."
+    },
+    {
+      "id": "D",
+      "text": "She is coming down with something.",
+      "flaw": "An illness does not arrive at 'you're next' and leave ten minutes after the song."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        2
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "H",
+    "prompt": "As a moment feels bigger — from relaxing at home, to a class presentation, to a solo on stage — what happens to Ava's heart rate while she stands still?",
+    "expectedShape": "rises",
+    "second": {
+      "question": "And her sweaty palms?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 9,
+    "secondary": 0
+  },
+  "concepts": [
+    {
+      "id": "brain",
+      "label": "the brain judges the moment",
+      "colour": "purple",
+      "synonyms": [
+        "brain",
+        "thought",
+        "thinks",
+        "judged",
+        "nervous",
+        "nerves",
+        "scared",
+        "worried",
+        "big moment",
+        "pressure"
+      ],
+      "hint": "What set it off — the room, or something in her head?"
+    },
+    {
+      "id": "adrenaline",
+      "label": "adrenaline is released",
+      "colour": "coral",
+      "synonyms": [
+        "adrenaline",
+        "adrenalin",
+        "epinephrine",
+        "hormone",
+        "chemical",
+        "fight or flight",
+        "fight-or-flight",
+        "alarm"
+      ],
+      "hint": "What chemical message carries the alarm?"
+    },
+    {
+      "id": "heart",
+      "label": "heart speeds up",
+      "colour": "coral",
+      "synonyms": [
+        "heart",
+        "heart rate",
+        "pulse",
+        "racing",
+        "pounding",
+        "heartbeat",
+        "blood"
+      ],
+      "hint": "Which organ reacted first and most obviously?"
+    },
+    {
+      "id": "many",
+      "label": "many systems at once",
+      "colour": "blue",
+      "synonyms": [
+        "at once",
+        "same time",
+        "all over",
+        "whole body",
+        "sweat",
+        "sweaty",
+        "palms",
+        "dry mouth",
+        "shaking",
+        "shaky"
+      ],
+      "hint": "How many different things changed together?"
+    },
+    {
+      "id": "fade",
+      "label": "fades when it's over",
+      "colour": "teal",
+      "synonyms": [
+        "fade",
+        "fades",
+        "faded",
+        "calm",
+        "calmed",
+        "wears off",
+        "wore off",
+        "goes away",
+        "went away",
+        "settles",
+        "over",
+        "afterwards"
+      ],
+      "hint": "What happened once the song was finished?"
+    }
+  ],
+  "transfer": {
+    "context": "Eli is waiting to take a driving test. Sitting in the parked car he notices his heart thumping, his hands clammy on the wheel and a dry mouth.",
+    "illustration": "car",
+    "options": [
+      "The car's heater is on too high.",
+      "His brain has judged the test as a big moment and released adrenaline, so his heart, sweat glands and mouth all respond at once.",
+      "He had too much breakfast.",
+      "He pulled a muscle getting into the car."
+    ],
+    "answer": 1,
+    "retryHint": "Sitting still but the body is revving — which of Ava's clues says the trigger was a thought?",
+    "retryClue": 3,
+    "explanation": "Eli has not moved, but his brain has decided the test matters, and adrenaline does the rest: faster heart, clammy hands, dry mouth. It is the same alarm system as Ava's, and like hers it will fade within minutes of the test ending."
+  },
+  "takeaway": "Your brain has an alarm system. When it judges a moment as big, one chemical — adrenaline — changes heart, sweat and mouth all at once to get you ready, and it fades within minutes when the moment passes."
+}

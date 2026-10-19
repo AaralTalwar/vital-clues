@@ -1,0 +1,43 @@
+{
+  "id": "muscle-repair",
+  "name": "Muscles & repair",
+  "colour": "amber",
+  "inputs": {
+    "primary":   { "key": "D", "label": "Days since the hard workout", "min": 0, "max": 7, "step": 1, "unit": "days", "ticks": ["workout day", "day 3", "day 7"] },
+    "secondary": { "key": "L", "label": "How hard the workout was", "min": 1, "max": 10, "step": 1, "default": 8, "ticks": ["light", "medium", "all-out"] }
+  },
+  "outputs": [
+    { "key": "S", "label": "Soreness", "unit": "0–10", "colour": "coral", "decimals": 1 },
+    { "key": "R", "label": "Repair under way", "unit": "% done", "colour": "teal", "decimals": 0 },
+    { "key": "P", "label": "Strength vs before", "unit": "%", "colour": "amber", "decimals": 0 }
+  ],
+  "rules": {
+    "S": "clamp(L * 0.9 * (D * pow(0.5, D / 1.4)) * 1.6, 0, 10)",
+    "R": "clamp(100 * (1 - pow(0.5, D / 1.5)), 0, 100)",
+    "P": "clamp(100 - 0.6 * L * pow(0.5, D / 1.2) + 0.4 * L * (1 - pow(0.5, D / 1.5)), 85, 110)"
+  },
+  "chart": { "x": "D", "y": "S", "xLabel": "days after the workout", "yLabel": "soreness (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "arm",
+    "caption": "tiny tears → repair crews → slightly stronger fibres",
+    "parts": [
+      { "shape": "musclesArm", "colour": "#F4A300", "anim": { "type": "shift", "output": "S", "min": 0, "max": 10, "from": "#F4A300", "to": "#E4572E" } },
+      { "shape": "fibres", "colour": "#1B998B", "anim": { "type": "count", "output": "R", "min": 0, "max": 100 } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows soreness peaking a day or two after a hard effort, then fading",
+      "Shows repair work running in the background for about a week",
+      "Shows strength dipping first and then ending slightly higher than before"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Tell the difference between normal soreness and an injury",
+      "Say how anyone should train or what to eat"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Normal soreness is dull and fades in a few days. Sharp pain, swelling or pain that gets worse is a reason to stop and tell a coach or adult."
+  },
+  "sources": ["CK-12 Life Science: muscular system", "NIH News in Health: exercise and muscle (student overview)"]
+}

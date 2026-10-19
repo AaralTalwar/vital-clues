@@ -1,0 +1,44 @@
+{
+  "id": "fuel-sugar",
+  "name": "Digestion & fuel",
+  "colour": "amber",
+  "inputs": {
+    "primary":   { "key": "h", "label": "Hours since the last meal", "min": 0, "max": 6, "step": 0.5, "unit": "h", "ticks": ["just ate", "3 h", "6 h"] },
+    "secondary": { "key": "B", "label": "Breakfast eaten", "min": 0, "max": 2, "step": 1, "default": 0, "ticks": ["none", "a snack", "a full meal"] }
+  },
+  "outputs": [
+    { "key": "G", "label": "Fuel in the blood", "unit": "% of comfortable", "colour": "amber", "decimals": 0 },
+    { "key": "E", "label": "Energy for the brain", "colour": "purple", "bands": [{ "upTo": 69.9, "text": "running low" }, { "upTo": 89.9, "text": "dipping" }, { "text": "steady" }] },
+    { "key": "R", "label": "Stomach rumbles", "unit": "per hour", "colour": "coral", "decimals": 0 }
+  ],
+  "rules": {
+    "G": "clamp(70 + 20 * B - 6 * h + 10 * B * max(0, 3 - h) / 3, 50, 110)",
+    "E": "clamp(70 + 20 * B - 6 * h + 10 * B * max(0, 3 - h) / 3, 50, 110)",
+    "R": "round(clamp(2 * h - 2 * B, 0, 12))"
+  },
+  "chart": { "x": "h", "y": "G", "xLabel": "hours since the last meal", "yLabel": "fuel in the blood (% of comfortable)", "yMin": 40, "yMax": 115 },
+  "overlay": {
+    "base": "torso",
+    "caption": "food → stomach → fuel in the blood → brain and muscles",
+    "parts": [
+      { "shape": "bloodstream", "colour": "#F4A300", "anim": { "type": "glow", "output": "G", "min": 50, "max": 110 } },
+      { "shape": "stomach", "colour": "#E4572E", "anim": { "type": "shiver", "output": "R" } },
+      { "shape": "core", "colour": "#F4A300", "opacity": 0.0 }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows the fuel the brain and muscles use drifting down the longer it has been since a meal",
+      "Shows a meal in the morning holding it up through the school morning",
+      "Shows the stomach's hunger signals growing as fuel drops"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Model any medical condition or say what anyone should eat",
+      "Include what kind of food, exercise, or sleep"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Feeling shaky, dizzy or unwell at school is a reason to tell a teacher or the school nurse."
+  },
+  "sources": ["CK-12 Life Science: digestive system", "NIH News in Health: how the body uses food for energy (student overview)"]
+}

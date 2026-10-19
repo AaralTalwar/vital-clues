@@ -1,0 +1,45 @@
+{
+  "id": "temperature",
+  "name": "Skin & temperature",
+  "colour": "coral",
+  "inputs": {
+    "primary":   { "key": "C", "label": "How cold the water is", "min": 0, "max": 10, "step": 1, "ticks": ["warm bath", "cool pool", "cold lake"] },
+    "secondary": { "key": "M", "label": "Minutes wrapped in a towel", "min": 0, "max": 10, "step": 1, "default": 0, "unit": "min", "ticks": ["still in water", "5 min", "10 min"] }
+  },
+  "outputs": [
+    { "key": "T", "label": "Water temperature", "unit": "°F", "colour": "blue", "decimals": 0 },
+    { "key": "V", "label": "Shivering", "unit": "0–10", "colour": "amber", "decimals": 0 },
+    { "key": "F", "label": "Blood flow to skin", "colour": "coral", "bands": [{ "upTo": 55, "text": "low" }, { "upTo": 80, "text": "reduced" }, { "text": "normal" }] },
+    { "key": "K", "label": "Core temperature", "colour": "teal", "text": "steady" }
+  ],
+  "rules": {
+    "T": "85 - 3.5 * C",
+    "V": "round(clamp(10 * (70 - (85 - 3.5 * C)) / 20, 0, 10) * pow(0.5, M / 2))",
+    "F": "100 - 60 * max(0, (75 - (85 - 3.5 * C)) / 25)"
+  },
+  "chart": { "x": "C", "y": "V", "xLabel": "colder water →", "yLabel": "shivering (0–10)", "yMin": 0, "yMax": 10 },
+  "overlay": {
+    "base": "torso",
+    "caption": "cold takes heat → shiver to make heat → keep blood near the core",
+    "parts": [
+      { "shape": "skin", "colour": "#E4572E", "anim": { "type": "fade", "output": "F", "min": 40, "max": 100, "from": "#C9D3E6", "to": "#E4572E" } },
+      { "shape": "core", "colour": "#E4572E" },
+      { "shape": "shiverMarks", "colour": "#F4A300", "anim": { "type": "shiver", "output": "V" } }
+    ]
+  },
+  "limits": {
+    "does": [
+      "Shows shivering starting once the water is cold enough and growing as it gets colder",
+      "Shows blood flow to the skin dropping so warm blood stays near the organs",
+      "Shows shivering fading once wrapped up (halving every 2 minutes)"
+    ],
+    "doesnt": [
+      "Measure any real person — the numbers are illustrative teaching values",
+      "Show core temperature changing: it is displayed as steady because the body guards it",
+      "Model dangerous cold; the model stops well short of it"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "If someone can't stop shivering or seems confused in the cold, get an adult right away."
+  },
+  "sources": ["CK-12 Life Science: integumentary system and homeostasis", "Any middle-school life-science text: thermoregulation"]
+}

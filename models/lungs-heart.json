@@ -4,7 +4,7 @@
   "colour": "teal",
   "inputs": {
     "primary":   { "key": "I", "label": "Exercise intensity", "min": 0, "max": 10, "step": 1, "ticks": ["rest", "jog", "sprint"] },
-    "secondary": { "key": "R", "label": "Seconds after stopping", "min": 0, "max": 120, "step": 5, "optional": true }
+    "secondary": { "key": "R", "label": "Seconds after stopping", "min": 0, "max": 120, "step": 10, "default": 0, "unit": "s", "ticks": ["still going", "1 min", "2 min"] }
   },
   "outputs": [
     { "key": "B", "label": "Breathing rate", "unit": "breaths/min", "colour": "teal",  "decimals": 0 },
@@ -12,18 +12,25 @@
     { "key": "D", "label": "Oxygen demand",  "unit": "× rest",      "colour": "amber", "decimals": 1 }
   ],
   "rules": {
-    "B": "12 + 3.8 * I",
-    "H": "65 + 12.5 * I",
-    "D": "1 + 0.9 * I",
-    "recovery": { "applyTo": ["B", "H"], "input": "R", "halfLifeSeconds": 30, "restValues": { "B": 12, "H": 65 } }
+    "B": "12 + 3.8 * I * pow(0.5, R / 30)",
+    "H": "65 + 12.5 * I * pow(0.5, R / 30)",
+    "D": "1 + 0.9 * I * pow(0.5, R / 30)"
   },
   "chart": { "x": "I", "y": "B", "xLabel": "exercise intensity", "yLabel": "breaths / min", "yMin": 0, "yMax": 60 },
-  "overlay": "torso-lungs-heart",
+  "overlay": {
+    "base": "torso",
+    "caption": "lungs → heart → legs",
+    "parts": [
+      { "shape": "legs",  "colour": "#F4A300", "anim": { "type": "glow", "output": "D", "min": 1, "max": 10 } },
+      { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "B" } },
+      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } }
+    ]
+  },
   "limits": {
     "does": [
       "Shows that breathing and heart rate rise together as effort rises",
       "Shows that oxygen demand from the muscles drives both",
-      "Shows both settling back toward rest after the work stops"
+      "Shows both settling back toward rest after the work stops (halving every 30 seconds)"
     ],
     "doesnt": [
       "Measure any real person — the numbers are illustrative teaching values",

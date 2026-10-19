@@ -1,0 +1,240 @@
+{
+  "id": "ringing-ears",
+  "version": 1,
+  "title": "The Ringing Ears",
+  "system": "Ears & hearing",
+  "model": "hearing",
+  "colour": "purple",
+  "minutes": 8,
+  "reviewed": null,
+  "character": {
+    "name": "Zoe",
+    "age": 16
+  },
+  "briefing": "Zoe, 16, spends three hours in the front row at a concert. On the way home her ears are ringing and voices sound muffled, as if through a pillow. By the next afternoon her hearing is normal again. Her friend, who stood at the back with earplugs in, is fine.",
+  "question": "What did the sound do inside her ear — and why did it come back?",
+  "illustration": "headphones",
+  "clues": [
+    {
+      "id": 1,
+      "title": "Front row, three hours",
+      "icon": "soundwave",
+      "colour": "amber",
+      "text": "The sound meter app on her phone read about 110 dB by the speakers. Normal conversation is about 60 dB.",
+      "shows": "a huge amount of sound energy for a long time",
+      "visual": {
+        "type": "bars",
+        "from": 60,
+        "to": 110,
+        "unit": "dB, talking → front row"
+      },
+      "pointsTo": "energy"
+    },
+    {
+      "id": 2,
+      "title": "Ringing and muffled",
+      "icon": "ear",
+      "colour": "purple",
+      "text": "A steady high ring in both ears, and voices in the car sound distant and muffled.",
+      "shows": "the hearing cells sending a false signal and a weaker real one",
+      "visual": null,
+      "pointsTo": "cells"
+    },
+    {
+      "id": 3,
+      "title": "Back to normal by afternoon",
+      "icon": "clock",
+      "colour": "teal",
+      "text": "The ringing fades overnight; by the next afternoon voices sound sharp again.",
+      "shows": "that the cells recovered this time",
+      "visual": null,
+      "pointsTo": "recover"
+    },
+    {
+      "id": 4,
+      "title": "Earplugs at the back",
+      "icon": "shield",
+      "colour": "blue",
+      "text": "Her friend stood far from the speakers with earplugs in: no ringing, no muffling.",
+      "shows": "that less sound energy reaching the ear means no effect",
+      "visual": null,
+      "pointsTo": "protect"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "A",
+      "text": "She has water stuck in her ears.",
+      "flaw": "Water would feel wet and shift when she tilts her head; it does not ring, and it would not depend on how loud the concert was."
+    },
+    {
+      "id": "B",
+      "text": "Loud sound bent the tiny hair cells in her inner ear too hard for too long; they tired and sent a false 'ringing' signal while hearing less of the real one, then recovered overnight.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "She shouted along too much and strained her ears.",
+      "flaw": "Shouting strains the throat, not the ears — and her friend sang along just as loudly without any ringing."
+    },
+    {
+      "id": "D",
+      "text": "The ringing is just in her imagination after the excitement.",
+      "flaw": "Imagination does not make real voices sound muffled, and it does not vanish for the friend who wore earplugs."
+    }
+  ],
+  "evidence": {
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        4
+      ]
+    }
+  },
+  "mismatchHints": [],
+  "prediction": {
+    "output": "F",
+    "prompt": "Zoe listens for one hour. As the loudness rises — from conversation level up to front-row concert level — what happens to how tired her inner-ear hair cells get?",
+    "expectedShape": "flat-then-rises",
+    "second": {
+      "question": "If she listens twice as long at the same loudness, what happens to the fatigue?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
+  },
+  "labDefaults": {
+    "primary": 105,
+    "secondary": 60
+  },
+  "concepts": [
+    {
+      "id": "energy",
+      "label": "loud = far more energy",
+      "colour": "amber",
+      "synonyms": [
+        "loud",
+        "loudness",
+        "decibels",
+        "db",
+        "energy",
+        "sound waves",
+        "volume",
+        "too loud",
+        "ten times"
+      ],
+      "hint": "What does 110 dB mean compared with 60?"
+    },
+    {
+      "id": "cells",
+      "label": "hair cells in the inner ear",
+      "colour": "purple",
+      "synonyms": [
+        "hair cells",
+        "hairs",
+        "tiny hairs",
+        "inner ear",
+        "cochlea",
+        "cells",
+        "ear drum",
+        "eardrum"
+      ],
+      "hint": "What inside the ear actually turns sound into a signal?"
+    },
+    {
+      "id": "fatigue",
+      "label": "bent too hard, they tire",
+      "colour": "coral",
+      "synonyms": [
+        "bent",
+        "bend",
+        "tired",
+        "fatigue",
+        "fatigued",
+        "overworked",
+        "damaged",
+        "stressed",
+        "worn out",
+        "too hard"
+      ],
+      "hint": "What happens to those cells under three hours of loud sound?"
+    },
+    {
+      "id": "ringing",
+      "label": "false signal = ringing",
+      "colour": "blue",
+      "synonyms": [
+        "ringing",
+        "ring",
+        "false signal",
+        "muffled",
+        "tinnitus",
+        "buzzing",
+        "distant",
+        "can't hear",
+        "cannot hear"
+      ],
+      "hint": "What do tired hair cells send to the brain?"
+    },
+    {
+      "id": "recover",
+      "label": "recovered this time",
+      "colour": "teal",
+      "synonyms": [
+        "recover",
+        "recovered",
+        "recovery",
+        "overnight",
+        "next day",
+        "back to normal",
+        "healed",
+        "rest",
+        "this time",
+        "temporary"
+      ],
+      "hint": "Why was her hearing normal the next afternoon — and what does 'this time' hint at?"
+    }
+  ],
+  "transfer": {
+    "context": "Tariq uses earbuds at full volume for his whole two-hour commute every day. Lately he turns the TV up louder than anyone else in the house.",
+    "illustration": "earbuds",
+    "options": [
+      "The TV speakers are wearing out.",
+      "Hours of loud sound every day are tiring his inner-ear hair cells faster than they can recover, so quieter sounds are getting harder to hear.",
+      "He is distracted by his phone.",
+      "His ears are blocked with wax."
+    ],
+    "answer": 1,
+    "retryHint": "Loud, for a long time, every day — which of Zoe's clues was about the dose of sound?",
+    "retryClue": 1,
+    "explanation": "Zoe's hair cells got one big dose and had a day to recover. Tariq's get a big dose every day with no rest in between, so the fatigue does not clear — and the first sign is needing everything louder. Volume and time both count, and so do breaks."
+  },
+  "takeaway": "Hearing runs on tiny hair cells that bend with sound. Loud sound bends them too hard; ringing afterwards is their complaint. Give them a break and they recover — this time. Volume, time and rest all matter."
+}
