@@ -1,46 +1,297 @@
 {
   "id": "tooth-acid",
-  "name": "Teeth & bacteria",
+  "version": 2,
+  "name": "Ethan's teeth: acid attacks and repair",
   "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "N", "label": "Separate sugary sips per day", "min": 0, "max": 20, "step": 1, "ticks": ["none", "10 sips", "20 sips"] },
-    "secondary": { "key": "B", "label": "Times brushed per day", "min": 0, "max": 3, "step": 1, "default": 2, "ticks": ["0", "1–2", "3"] }
+  "parameters": [
+    {
+      "key": "N",
+      "label": "Separate sips a day",
+      "role": "primary",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 12,
+      "ticks": [
+        "none",
+        "10",
+        "20"
+      ],
+      "explain": "Each sugary sip starts a fresh acid attack that saliva takes about 20 minutes to clear.",
+      "basis": "source",
+      "cite": "sa-dental"
+    },
+    {
+      "key": "Sg",
+      "label": "Sugar in the bottle",
+      "role": "bubble",
+      "min": 20,
+      "max": 80,
+      "step": 20,
+      "default": 40,
+      "unit": "g",
+      "options": [
+        {
+          "value": 20,
+          "label": "half"
+        },
+        {
+          "value": 40,
+          "label": "usual bottle"
+        },
+        {
+          "value": 80,
+          "label": "double"
+        }
+      ],
+      "explain": "Test the 'it's the amount of sugar' idea: doubling the sugar makes each attack only a little longer — how often matters far more.",
+      "basis": "choice"
+    },
+    {
+      "key": "Fl",
+      "label": "Fluoride toothpaste",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 2,
+      "options": [
+        {
+          "value": 0,
+          "label": "none"
+        },
+        {
+          "value": 1,
+          "label": "once a day"
+        },
+        {
+          "value": 2,
+          "label": "twice a day"
+        }
+      ],
+      "explain": "Fluoride helps enamel put back the minerals acid takes out — but it doesn't stop the acid.",
+      "basis": "source",
+      "cite": "nidcr-fluoride"
+    },
+    {
+      "key": "sal",
+      "label": "Saliva",
+      "role": "factor",
+      "min": 1,
+      "max": 2,
+      "step": 0.5,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "normal"
+        },
+        {
+          "value": 1.5,
+          "label": "a bit dry"
+        },
+        {
+          "value": 2,
+          "label": "dry mouth"
+        }
+      ],
+      "explain": "Saliva washes acid away; a dry mouth takes about twice as long to clear it.",
+      "basis": "source",
+      "cite": "sa-dental"
+    },
+    {
+      "key": "win",
+      "label": "Hours he spreads the sips over",
+      "role": "factor",
+      "min": 0.5,
+      "max": 8,
+      "step": 0.5,
+      "default": 4,
+      "unit": "h",
+      "explain": "Sips closer together than 20 minutes overlap, so acid never clears in between.",
+      "basis": "choice"
+    }
+  ],
+  "constants": {
+    "day": 960
   },
   "outputs": [
-    { "key": "A", "label": "Minutes of acid attack per day", "unit": "min", "colour": "coral", "decimals": 0 },
-    { "key": "F", "label": "Acid-free time for repair (of 8 waking hours)", "unit": "min", "colour": "teal", "decimals": 0 },
-    { "key": "R", "label": "Enamel", "colour": "purple", "bands": [{ "upTo": 60, "text": "repairs fully between sips" }, { "upTo": 150, "text": "struggling to keep up" }, { "text": "losing ground" }] },
-    { "key": "G", "label": "Sugar arrivals", "colour": "amber", "hidden": true }
+    {
+      "key": "A",
+      "label": "Acid attack",
+      "unit": "min/day",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "G",
+      "label": "Acid attacks started",
+      "unit": "per day",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "Fr",
+      "label": "Repair time",
+      "unit": "min of the waking day",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "Bl",
+      "label": "Enamel",
+      "colour": "amber",
+      "bands": [
+        {
+          "upTo": 0,
+          "text": "losing minerals — soft spots can form"
+        },
+        {
+          "upTo": 5,
+          "text": "just about even"
+        },
+        {
+          "text": "repairing"
+        }
+      ]
+    }
   ],
   "rules": {
-    "A": "20 * N * (1 - 0.15 * B)",
-    "F": "clamp(480 - 20 * N * (1 - 0.15 * B), 0, 480)",
-    "R": "20 * N * (1 - 0.15 * B)",
-    "G": "N"
+    "A": "min(N * 20 * sal * (0.8 + 0.2 * Sg / 40), win * 60 + 20 * sal * (0.8 + 0.2 * Sg / 40))",
+    "G": "N",
+    "Fr": "max(0, day - min(N * 20 * sal * (0.8 + 0.2 * Sg / 40), win * 60 + 20 * sal * (0.8 + 0.2 * Sg / 40)))",
+    "Bl": "10 * max(0, day - min(N * 20 * sal * (0.8 + 0.2 * Sg / 40), win * 60 + 20 * sal * (0.8 + 0.2 * Sg / 40))) / day * (1 + 0.25 * Fl) - min(N * 20 * sal * (0.8 + 0.2 * Sg / 40), win * 60 + 20 * sal * (0.8 + 0.2 * Sg / 40)) / 15"
   },
-  "chart": { "x": "N", "y": "A", "xLabel": "separate sugary sips per day", "yLabel": "minutes of acid per day", "yMin": 0, "yMax": 420 },
+  "chart": {
+    "x": "N",
+    "y": "A",
+    "xLabel": "separate sugary sips per day",
+    "yLabel": "minutes of acid per day",
+    "yMin": 0,
+    "yMax": 300
+  },
   "overlay": {
     "base": "head",
-    "caption": "sugar → mouth bacteria make acid → acid softens enamel · saliva repairs it between sips",
+    "caption": "sugar → mouth bacteria make acid → acid softens enamel · saliva and fluoride repair it between sips",
     "parts": [
-      { "shape": "tooth", "colour": "#F7F9FD" },
-      { "shape": "enamelSpots", "colour": "#9A6200", "anim": { "type": "count", "output": "A", "min": 0, "max": 400 } },
-      { "shape": "germs", "colour": "#1B998B", "anim": { "type": "count", "output": "G", "min": 0, "max": 20 } }
+      {
+        "shape": "tooth",
+        "colour": "#F7F9FD"
+      },
+      {
+        "shape": "enamelSpots",
+        "colour": "#9A6200",
+        "anim": {
+          "type": "count",
+          "output": "A",
+          "min": 0,
+          "max": 300
+        }
+      },
+      {
+        "shape": "germs",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "count",
+          "output": "G",
+          "min": 0,
+          "max": 20
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Every time Ethan sips sweet tea, bacteria on his teeth turn the sugar into acid, and the acid pulls minerals out of the enamel. Saliva takes about 20 minutes to wash the acid away; then saliva and fluoride put minerals back. Sipping all afternoon keeps restarting the attack, so his teeth hardly get repair time. His sister drinks the same tea in one go — one attack, then hours of repair.",
+    "rules": [
+      "Each separate sip starts about 20 minutes of acid.",
+      "Sips closer together than that overlap, so the acid never clears.",
+      "More sugar makes each attack only a little longer.",
+      "A dry mouth makes each attack last longer.",
+      "Fluoride speeds up repair, but can't stop all-afternoon acid."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Bacteria use sugars to make acids that eat away at the enamel; saliva and fluoride help enamel repair itself.",
+        "cite": "nidcr-process"
+      },
+      {
+        "fact": "Frequent sugary snacks or drinks mean repeated acid attacks win the tug-of-war, and the tooth loses minerals.",
+        "cite": "nidcr-process"
+      },
+      {
+        "fact": "Saliva takes about 20 minutes to clear acid, and a dry mouth doubles that time.",
+        "cite": "sa-dental"
+      },
+      {
+        "fact": "Fluoride helps reverse early decay by replacing lost minerals; fluoride toothpaste significantly reduces decay.",
+        "cite": "nidcr-fluoride"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Doubling the sugar makes each attack 20% longer",
+        "why": "How often sugar arrives matters more than how much; the exact size is our estimate."
+      },
+      {
+        "what": "Acid time can't be longer than the sipping window plus one attack",
+        "why": "Sips that overlap don't add extra acid on top of acid that's already there."
+      },
+      {
+        "what": "The enamel balance compares repair time (boosted up to 50% by fluoride) with acid time",
+        "why": "A teaching scale for the tug-of-war the NIDCR describes; real enamel changes are slower and harder to measure."
+      },
+      {
+        "what": "A 16-hour waking day",
+        "why": "Saliva flow drops during sleep, so we count only waking hours."
+      }
+    ],
+    "illustrative": [
+      "Ethan's 12 sips over 4 hours and his usual bottle of tea are made up for a fictional story."
+    ]
+  },
+  "citations": [
+    {
+      "id": "nidcr-process",
+      "title": "The Tooth Decay Process",
+      "publisher": "National Institute of Dental and Craniofacial Research (NIH)",
+      "year": "",
+      "url": "https://nidcr.nih.gov/health-info/tooth-decay/more-info/tooth-decay-process",
+      "verified": "2026-10-19",
+      "supports": "Bacteria use sugars and starches to make acids that eat away at enamel; saliva minerals and fluoride help enamel repair itself; teeth lose and regain minerals all day; frequent sugary snacks let acid attacks win the tug-of-war."
+    },
+    {
+      "id": "nidcr-fluoride",
+      "title": "Ask the Expert: Why is fluoride good for dental health?",
+      "publisher": "National Institute of Dental and Craniofacial Research (NIH)",
+      "year": "",
+      "url": "https://www.nidcr.nih.gov/health-info/fluoride/ask-expert-why-fluoride-good-dental-health",
+      "verified": "2026-10-19",
+      "supports": "Enamel can repair itself using minerals from saliva and fluoride; fluoride reverses early tooth decay by replacing and preventing the loss of minerals; fluoride toothpaste significantly reduces tooth decay."
+    },
+    {
+      "id": "sa-dental",
+      "title": "Tooth friendly eating",
+      "publisher": "SA Dental Service (Government of South Australia)",
+      "year": "2014",
+      "url": "https://www.dental.sa.gov.au/assets/downloads/Care-for-older-people-toolkit/Tooth_friendly_eating-V2.pdf",
+      "verified": "2026-10-19",
+      "supports": "Bacteria convert sugars into acid; saliva takes about 20 minutes to clear the acid, and a dry mouth doubles this time; frequent snacking or sugary drinks expose teeth to continuous acid attack."
+    }
+  ],
   "limits": {
     "does": [
       "Shows each sugary sip starting about 20 minutes of acid",
       "Shows that splitting the same sugar into more sips means far more acid time",
-      "Shows brushing lowering the bacteria that make the acid"
+      "Shows saliva and fluoride repairing enamel between attacks"
     ],
     "doesnt": [
       "Measure any real person — the numbers are illustrative teaching values",
-      "Include fluoride, the type of food, or how saliva differs between people",
+      "Include the type of food, starches or how well someone brushes",
       "Tell anyone how to look after their teeth — that's a dentist's job"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Tooth pain or sensitivity is a reason to tell an adult so a dentist can take a look."
-  },
-  "sources": ["NIH National Institute of Dental and Craniofacial Research: tooth decay (student pages)", "CK-12 Life Science: digestive system — the mouth and teeth"]
+  }
 }

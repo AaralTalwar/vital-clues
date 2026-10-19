@@ -1,33 +1,334 @@
 {
   "id": "muscle-pump",
-  "name": "Legs, veins & the muscle pump",
+  "version": 2,
+  "name": "Kofi's legs, veins and the muscle pump",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "m", "label": "Minutes standing still", "min": 0, "max": 40, "step": 5, "unit": "min", "ticks": ["0", "20 min", "40 min"] },
-    "secondary": { "key": "w", "label": "Leg movement", "min": 0, "max": 2, "step": 1, "default": 0, "ticks": ["locked knees", "shifting weight", "marching on the spot"] }
+  "parameters": [
+    {
+      "key": "m",
+      "label": "Minutes standing perfectly still",
+      "role": "primary",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "default": 30,
+      "unit": "min",
+      "ticks": [
+        "0",
+        "20 min",
+        "40 min"
+      ],
+      "explain": "Standing up shifts several hundred millilitres of blood down into the legs within minutes, and standing still for a long time adds more.",
+      "basis": "source",
+      "cite": "duke-orthostatic"
+    },
+    {
+      "key": "w",
+      "label": "Leg movement",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "knees locked"
+        },
+        {
+          "value": 1,
+          "label": "wiggling toes, bending knees"
+        },
+        {
+          "value": 2,
+          "label": "marching"
+        }
+      ],
+      "explain": "The twist dial: each time leg muscles tighten, they squeeze the veins and push blood back up toward the heart. Moving legs make standing easier, not harder.",
+      "basis": "source",
+      "cite": "cleveland-veins"
+    },
+    {
+      "key": "march",
+      "label": "Minutes of marching earlier",
+      "role": "bubble",
+      "min": 0,
+      "max": 60,
+      "step": 10,
+      "default": 60,
+      "unit": "min",
+      "explain": "Test the 'worn out from marching' idea: earlier marching makes his legs a bit tired, but that tiredness fades while he stands — it doesn't add to the blood in his legs.",
+      "basis": "choice"
+    },
+    {
+      "key": "airT",
+      "label": "Air temperature",
+      "role": "bubble",
+      "min": 40,
+      "max": 95,
+      "step": 5,
+      "default": 55,
+      "unit": "°F",
+      "explain": "Test the 'the sun did it' idea: being too hot can make people faint, and heat adds to the pooling. But Kofi's morning was cool and cloudy.",
+      "basis": "source",
+      "cite": "nhs-fainting"
+    },
+    {
+      "key": "Hrest",
+      "label": "His resting heart rate",
+      "role": "factor",
+      "min": 50,
+      "max": 90,
+      "step": 5,
+      "default": 65,
+      "unit": "beats/min",
+      "explain": "Most people rest at 60–100 beats a minute; active teenagers can be lower.",
+      "basis": "source",
+      "cite": "aha-target"
+    },
+    {
+      "key": "ht",
+      "label": "His height",
+      "role": "factor",
+      "min": 150,
+      "max": 190,
+      "step": 5,
+      "default": 175,
+      "unit": "cm",
+      "explain": "A taller person has a longer column of blood above their feet, so a little more blood sinks into the legs.",
+      "basis": "choice"
+    }
+  ],
+  "constants": {
+    "fast": 500,
+    "slow": 300
   },
   "outputs": [
-    { "key": "P", "label": "Extra blood pooled in legs", "unit": "%", "colour": "purple", "decimals": 0 },
-    { "key": "B", "label": "Blood flow to the brain", "unit": "% of normal", "colour": "teal", "decimals": 0 },
-    { "key": "H", "label": "Heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 },
-    { "key": "F", "label": "How he feels", "colour": "amber", "bands": [{ "upTo": 9.9, "text": "fine" }, { "upTo": 17.9, "text": "a bit woozy" }, { "text": "light-headed — sit down" }] }
+    {
+      "key": "P",
+      "label": "Extra blood pooled in legs",
+      "unit": "mL",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "H",
+      "label": "Heart rate",
+      "unit": "beats/min",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "B",
+      "label": "Blood flow to the brain",
+      "unit": "% of normal",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "F",
+      "label": "How he feels",
+      "colour": "amber",
+      "bands": [
+        {
+          "upTo": 92,
+          "text": "light-headed — sit down"
+        },
+        {
+          "upTo": 95,
+          "text": "a bit woozy"
+        },
+        {
+          "text": "fine"
+        }
+      ]
+    },
+    {
+      "key": "Ti",
+      "label": "Leg tiredness from marching",
+      "unit": "0–10",
+      "colour": "blue",
+      "decimals": 0
+    }
   ],
   "rules": {
-    "P": "clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)",
-    "B": "100 - 0.8 * clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)",
-    "H": "70 + 0.8 * clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)",
-    "F": "clamp(25 * (1 - pow(0.5, m / 8)) * (1 - 0.45 * w), 0, 30)"
+    "P": "(fast * (1 - pow(0.5, m / 1.5)) + slow * (1 - pow(0.5, m / 15))) * (ht / 175) * (1 - 0.3 * w) * (1 + 0.008 * max(0, airT - 65))",
+    "H": "Hrest + 0.02 * (fast * (1 - pow(0.5, m / 1.5)) + slow * (1 - pow(0.5, m / 15))) * (ht / 175) * (1 - 0.3 * w) * (1 + 0.008 * max(0, airT - 65)) + 0.3 * max(0, airT - 70)",
+    "B": "100 - 0.04 * max(0, (fast * (1 - pow(0.5, m / 1.5)) + slow * (1 - pow(0.5, m / 15))) * (ht / 175) * (1 - 0.3 * w) * (1 + 0.008 * max(0, airT - 65)) - 550)",
+    "F": "100 - 0.04 * max(0, (fast * (1 - pow(0.5, m / 1.5)) + slow * (1 - pow(0.5, m / 15))) * (ht / 175) * (1 - 0.3 * w) * (1 + 0.008 * max(0, airT - 65)) - 550)",
+    "Ti": "round(10 * (march / 60) * pow(0.5, m / 10))"
   },
-  "chart": { "x": "m", "y": "P", "xLabel": "minutes standing still", "yLabel": "extra blood pooled in legs (%)", "yMin": 0, "yMax": 30 },
+  "chart": {
+    "x": "m",
+    "y": "P",
+    "xLabel": "minutes standing still",
+    "yLabel": "extra blood pooled in legs (mL)",
+    "yMin": 0,
+    "yMax": 1000
+  },
   "overlay": {
     "base": "torso",
-    "caption": "standing still → blood pools in the legs → less reaches the brain; moving legs pump it back",
+    "caption": "standing still → blood pools in the legs → less reaches the brain; moving legs squeeze it back up",
     "parts": [
-      { "shape": "legVeins", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "P", "min": 0, "max": 25 } },
-      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } },
-      { "shape": "brainGlow", "colour": "#1B998B", "anim": { "type": "glow", "output": "B", "min": 78, "max": 100 } }
+      {
+        "shape": "legVeins",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "P",
+          "min": 0,
+          "max": 800
+        }
+      },
+      {
+        "shape": "heart",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "beat",
+          "output": "H"
+        }
+      },
+      {
+        "shape": "brainGlow",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "glow",
+          "output": "B",
+          "min": 88,
+          "max": 100
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "When Kofi stands up, gravity pulls several hundred millilitres of blood down into his leg veins. Marching, his calf muscles squeezed those veins with every step and pushed blood back up to his heart. Standing at attention with knees locked, nothing squeezes, so blood collects in his legs, a little less returns to his heart, and less reaches his brain — until he feels woozy and his vision greys.",
+    "rules": [
+      "Standing pools about 500 mL of blood in the legs within a few minutes; standing still for a long time adds more.",
+      "Moving leg muscles squeeze the veins and cut the pooling; locked knees don't.",
+      "The more blood pooled, the faster the heart beats to make up for it.",
+      "Past a point, the brain gets a little less blood and he feels light-headed.",
+      "Earlier marching doesn't add to the pooling; heat adds a bit."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Calf muscles squeeze the deep veins in the calf to push blood upward toward the heart with each step, and one-way valves keep it flowing the right way.",
+        "cite": "cleveland-veins"
+      },
+      {
+        "fact": "Between 300 and 800 mL of blood pools in the legs on standing; a normal heart-rate rise on standing is about 10 beats a minute.",
+        "cite": "duke-orthostatic"
+      },
+      {
+        "fact": "On standing, about 800 mL of blood moves into the veins of the pelvis and legs; most of it within 10 seconds, and pooling is complete within three to five minutes.",
+        "cite": "jnnp-pooling"
+      },
+      {
+        "fact": "Fainting can happen after standing in one place for too long; raising the feet above heart level helps someone who has fainted.",
+        "cite": "medline-fainting"
+      },
+      {
+        "fact": "Being too hot can cause fainting; if you feel faint, lie down with your legs raised or sit with your head low between your knees.",
+        "cite": "nhs-fainting"
+      },
+      {
+        "fact": "Crossing the legs and tensing leg muscles while standing raised the heart's output and blood pressure in people who faint easily.",
+        "cite": "jap-legcross"
+      }
+    ],
+    "choice": [
+      {
+        "what": "500 mL pools quickly and up to 300 mL more builds over half an hour",
+        "why": "The fast part matches the 300–800 mL range; the slow part stands for fluid seeping into leg tissue, which matches his puffy ankles. The exact amount varies a lot."
+      },
+      {
+        "what": "Each step of leg movement cuts pooling by 30%",
+        "why": "Moving muscles clearly help; we chose a size that makes the difference easy to see."
+      },
+      {
+        "what": "Brain blood flow falls only once pooling passes about 550 mL",
+        "why": "The body copes at first by speeding up the heart; light-headedness comes when that isn't enough. That fits woozy at 30 minutes, grey vision near 40."
+      },
+      {
+        "what": "Taller people pool slightly more",
+        "why": "A longer column of blood above the feet means more pressure in the leg veins."
+      },
+      {
+        "what": "Marching tiredness fades by half every 10 minutes and doesn't change pooling",
+        "why": "This lets you test the 'he was worn out' idea: the tiredness is gone by the time he feels faint."
+      }
+    ],
+    "illustrative": [
+      "Kofi is fictional; his height, resting pulse and the brain-flow percentages are teaching values."
+    ],
+    "studying": "Why some people faint after standing still for a while and others never do is still being researched."
+  },
+  "citations": [
+    {
+      "id": "cleveland-veins",
+      "title": "Veins",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/body/23360-veins",
+      "verified": "2026-10-19",
+      "supports": "Veins in the legs contain one-way valves that keep blood flowing the right way; leg muscles help blood defy gravity and move upward, as calf muscles squeeze the deep veins of the calf with each step."
+    },
+    {
+      "id": "duke-orthostatic",
+      "title": "DukeMoves TipSheet: Orthostatic Hypotension",
+      "publisher": "Duke University",
+      "year": "",
+      "url": "https://www.safety.duke.edu/sites/default/files/DukeMoves-TipSheet-Orthostatic-Hypotension.pdf",
+      "verified": "2026-10-19",
+      "supports": "Between 300 and 800 mL of blood pools in the legs on standing; a normal heart-rate increase with standing is about 10 beats per minute."
+    },
+    {
+      "id": "jnnp-pooling",
+      "title": "Acetylcholinesterase inhibition in the treatment of hypotension (J Neurol Neurosurg Psychiatry 74:1187)",
+      "publisher": "BMJ Journals (R. Schondorf)",
+      "year": "",
+      "url": "https://jnnp.bmj.com/content/74/9/1187",
+      "verified": "2026-10-19",
+      "supports": "Standing translocates about 800 mL of blood from the chest veins to the veins of the buttocks, pelvis and legs; the bulk pools within 10 seconds and pooling is complete in three to five minutes; heart rate normally rises."
+    },
+    {
+      "id": "medline-fainting",
+      "title": "Fainting",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/003092.htm",
+      "verified": "2026-10-19",
+      "supports": "Fainting may occur after standing in one place for too long; if someone faints, raise their feet above heart level and keep them lying down for 10 to 15 minutes."
+    },
+    {
+      "id": "nhs-fainting",
+      "title": "Fainting",
+      "publisher": "NHS",
+      "year": "",
+      "url": "https://www.nhs.uk/conditions/fainting/",
+      "verified": "2026-10-19",
+      "supports": "Causes of fainting include being too hot and standing up too quickly; if you feel faint, lie down with your legs raised, or sit with your head low between your knees."
+    },
+    {
+      "id": "jap-legcross",
+      "title": "Hemodynamic effects of leg crossing and skeletal muscle tensing during free standing in patients with vasovagal syncope (J Appl Physiol 98:584)",
+      "publisher": "University of Minnesota Experts (abstract)",
+      "year": "2005",
+      "url": "https://experts.umn.edu/en/publications/hemodynamic-effects-of-leg-crossing-and-skeletal-muscle-tensing-d/",
+      "verified": "2026-10-19",
+      "supports": "In 88 patients, leg crossing while standing raised cardiac output by 9.5% and mean arterial pressure by 3.3%; adding muscle tensing raised them further (pressure +7.8%)."
+    },
+    {
+      "id": "aha-target",
+      "title": "Target Heart Rates Chart",
+      "publisher": "American Heart Association",
+      "year": "",
+      "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates",
+      "verified": "2026-10-19",
+      "supports": "A resting heart rate of 60–100 beats a minute is normal for most adults and very active people can be as low as 40; maximum heart rate is about 220 minus your age."
+    }
+  ],
   "limits": {
     "does": [
       "Shows blood pooling in the legs the longer someone stands perfectly still",
@@ -35,12 +336,11 @@
       "Shows less blood reaching the brain when more of it sits in the legs"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include heat, hunger, water or anyone's health",
+      "Measure any real person — Kofi is fictional",
+      "Include hunger, water or anyone's health",
       "Model fainting itself; it stops at feeling light-headed"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If you feel light-headed while standing, sit or crouch down straight away and tell an adult."
-  },
-  "sources": ["CK-12 Life Science: circulatory system, veins and valves", "NIH NHLBI: how the heart and blood vessels work (student overview)"]
+  }
 }

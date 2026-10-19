@@ -1,159 +1,135 @@
 {
   "id": "heat-standing",
-  "name": "Heat, water & blood flow",
-  "colour": "coral",
-  "inputs": {
-    "primary": {
-      "key": "m",
-      "label": "Minutes standing still",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "unit": "min",
-      "ticks": [
-        "0",
-        "10 min",
-        "20 min"
-      ]
-    },
-    "secondary": {
-      "key": "H",
-      "label": "Heat",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "default": 8,
-      "ticks": [
-        "cool fall day",
-        "warm",
-        "July heat"
-      ]
-    }
-  },
-  "outputs": [
+  "version": 2,
+  "name": "Keisha's water and blood flow at band camp",
+  "colour": "blue",
+  "parameters": [
     {
-      "key": "P",
-      "label": "Blood pooled in the legs",
-      "unit": "% extra",
-      "colour": "purple",
-      "decimals": 0,
-      "hidden": true
+      "key": "m", "label": "Minutes standing still", "role": "primary", "min": 0, "max": 20, "step": 1, "default": 12, "unit": "min",
+      "ticks": ["0", "10 min", "20 min"],
+      "explain": "Standing for too long, without moving the legs, is a common cause of heat-related dizziness and fainting.",
+      "basis": "source", "cite": "niosh-heat-illness"
     },
     {
-      "key": "R",
-      "label": "Blood getting back to the heart",
-      "unit": "% of normal",
-      "colour": "coral",
-      "decimals": 0
+      "key": "W", "label": "Water drunk in the last hour", "role": "bubble", "min": 0, "max": 4, "step": 1, "default": 0, "unit": "cups",
+      "explain": "Health workers in the heat are told to drink about a cup every 15–20 minutes — that's 3–4 cups an hour.",
+      "basis": "source", "cite": "niosh-heat-recs"
     },
     {
-      "key": "Q",
-      "label": "Heart rate",
-      "unit": "beats/min",
-      "colour": "coral",
-      "decimals": 0
+      "key": "tb", "label": "Minutes since the last water break", "role": "bubble", "min": 0, "max": 120, "step": 10, "default": 60, "unit": "min",
+      "explain": "Sweat keeps leaving the body the whole time, so the water missing from the blood grows the longer it has been since a drink.",
+      "basis": "choice"
     },
     {
-      "key": "W",
-      "label": "Sweat lost",
-      "unit": "cups/hour",
-      "colour": "blue",
-      "decimals": 1
+      "key": "L", "label": "What the legs are doing", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "knees locked, still" }, { "value": 1, "label": "shifting weight" }, { "value": 2, "label": "marching in place" }],
+      "explain": "Tensing or moving the leg muscles squeezes blood back up toward the heart and brain.",
+      "basis": "source", "cite": "kidshealth-fainting"
     },
     {
-      "key": "F",
-      "label": "How the head feels",
-      "colour": "purple",
-      "bands": [
-        {
-          "upTo": 69.9,
-          "text": "light-headed — sit down"
-        },
-        {
-          "upTo": 84.9,
-          "text": "a bit woozy"
-        },
-        {
-          "text": "fine"
-        }
-      ]
+      "key": "Ta", "label": "Air temperature", "role": "bubble", "min": 60, "max": 105, "step": 5, "default": 95, "unit": "°F",
+      "explain": "Getting too hot is a common cause of fainting: heat makes you sweat more and sends extra blood to the skin to cool off.",
+      "basis": "source", "cite": "kidshealth-fainting"
+    },
+    {
+      "key": "mass", "label": "Body weight", "role": "factor", "min": 40, "max": 80, "step": 5, "default": 55, "unit": "kg",
+      "explain": "The same amount of sweat is a bigger share of a smaller body's water.",
+      "basis": "choice"
+    },
+    {
+      "key": "U", "label": "Uniform", "role": "factor", "min": 0, "max": 1, "step": 1, "default": 1,
+      "options": [{ "value": 0, "label": "T-shirt and shorts" }, { "value": 1, "label": "heavy band uniform" }],
+      "explain": "Heavy clothing traps heat, so the body has to sweat more to stay cool.",
+      "basis": "source", "cite": "niosh-heat-illness"
+    },
+    {
+      "key": "acc", "label": "Days of band camp so far", "role": "factor", "min": 1, "max": 7, "step": 1, "default": 2, "unit": "days",
+      "explain": "Bodies get used to heat over several days. Not being used to the heat makes heat-related fainting more likely.",
+      "basis": "source", "cite": "niosh-heat-illness"
     }
   ],
+  "constants": { "cup": 0.24 },
+  "outputs": [
+    { "key": "R", "label": "Blood getting back to the heart", "unit": "% of normal", "colour": "coral", "decimals": 0 },
+    { "key": "F", "label": "How her head feels", "colour": "purple", "bands": [{ "upTo": 74, "text": "light-headed — sit down" }, { "upTo": 82, "text": "a bit woozy" }, { "text": "fine" }] },
+    { "key": "Q", "label": "Heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 },
+    { "key": "S", "label": "Sweat rate", "unit": "litres/hour", "colour": "blue", "decimals": 1 },
+    { "key": "Dh", "label": "Water missing", "unit": "% of body weight", "colour": "blue", "decimals": 1 },
+    { "key": "P", "label": "Blood held in the legs", "unit": "% extra", "colour": "purple", "decimals": 0, "hidden": true }
+  ],
   "rules": {
-    "P": "clamp(m * (1.2 + 0.15 * H), 0, 60)",
-    "R": "100 - clamp(m * (1.2 + 0.15 * H), 0, 60)",
-    "Q": "75 + 1.2 * clamp(m * (1.2 + 0.15 * H), 0, 60) + 2 * H",
-    "W": "0.2 + 0.3 * H",
-    "F": "100 - clamp(m * (1.2 + 0.15 * H), 0, 60)"
+    "S": "clamp(0.2 + 0.035 * (Ta - 70) + 0.25 * U, 0.1, 2)",
+    "Dh": "100 * max(0, clamp(0.2 + 0.035 * (Ta - 70) + 0.25 * U, 0.1, 2) * tb / 60 - cup * W) / mass",
+    "P": "(8 + 0.25 * max(0, Ta - 70) * (1 - 0.08 * (acc - 1))) * (1 - 0.45 * L) * (1 - pow(0.5, m / 6))",
+    "R": "100 - 2.2 * (8 + 0.25 * max(0, Ta - 70) * (1 - 0.08 * (acc - 1))) * (1 - 0.45 * L) * (1 - pow(0.5, m / 6)) - 3 * 100 * max(0, clamp(0.2 + 0.035 * (Ta - 70) + 0.25 * U, 0.1, 2) * tb / 60 - cup * W) / mass",
+    "F": "100 - 2.2 * (8 + 0.25 * max(0, Ta - 70) * (1 - 0.08 * (acc - 1))) * (1 - 0.45 * L) * (1 - pow(0.5, m / 6)) - 3 * 100 * max(0, clamp(0.2 + 0.035 * (Ta - 70) + 0.25 * U, 0.1, 2) * tb / 60 - cup * W) / mass",
+    "Q": "75 + 1.2 * (2.2 * (8 + 0.25 * max(0, Ta - 70) * (1 - 0.08 * (acc - 1))) * (1 - 0.45 * L) * (1 - pow(0.5, m / 6)) + 3 * 100 * max(0, clamp(0.2 + 0.035 * (Ta - 70) + 0.25 * U, 0.1, 2) * tb / 60 - cup * W) / mass)"
   },
-  "chart": {
-    "x": "m",
-    "y": "R",
-    "xLabel": "minutes standing still",
-    "yLabel": "blood getting back to the heart (%)",
-    "yMin": 40,
-    "yMax": 100
-  },
+  "chart": { "x": "m", "y": "R", "xLabel": "minutes standing still", "yLabel": "blood getting back to the heart (%)", "yMin": 50, "yMax": 100 },
   "overlay": {
     "base": "torso",
-    "caption": "sweat out ↑ · blood pools in still legs ↓ · less reaches the head",
+    "caption": "sweat out → less water in the blood · standing still → blood stays in the legs",
     "parts": [
-      {
-        "shape": "legVeins",
-        "colour": "#6C4AB6",
-        "anim": {
-          "type": "glow",
-          "output": "P",
-          "min": 0,
-          "max": 60
-        }
-      },
-      {
-        "shape": "drops",
-        "colour": "#2E86DE",
-        "anim": {
-          "type": "count",
-          "output": "W",
-          "min": 0,
-          "max": 3.2
-        }
-      },
-      {
-        "shape": "heart",
-        "colour": "#E4572E",
-        "anim": {
-          "type": "beat",
-          "output": "Q"
-        }
-      },
-      {
-        "shape": "brainGlow",
-        "colour": "#6C4AB6",
-        "anim": {
-          "type": "glow",
-          "output": "R",
-          "min": 40,
-          "max": 100
-        }
-      }
+      { "shape": "legVeins", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "P", "min": 0, "max": 15 } },
+      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0, "max": 2 } },
+      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "Q" } },
+      { "shape": "brainGlow", "colour": "#1B998B", "anim": { "type": "glow", "output": "R", "min": 60, "max": 100 } }
     ]
   },
+  "explain": {
+    "summary": "Keisha's brain needs a steady supply of blood. Two things are cutting it down. Hours of sweating in a heavy uniform have taken water out of her blood. And standing perfectly still lets blood settle in her legs, because her leg muscles aren't squeezing it back up. Either alone she can handle — together, after about twelve minutes, she feels light-headed.",
+    "rules": [
+      "Sweat rate climbs with air temperature and a heavy uniform; water drunk since the last break makes up some of it.",
+      "Water missing is the sweat lost since the break, minus what she drank, as a share of her body weight.",
+      "Standing still, blood builds up in the legs over several minutes; heat makes it worse, moving the legs undoes most of it.",
+      "Blood getting back to the heart drops with both the blood in the legs and the water missing; below about 74% she feels light-headed.",
+      "Her heart beats faster to make up for the blood that isn't coming back."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Heat-related fainting or dizziness usually happens when standing for too long; dehydration and not being used to the heat make it more likely.", "cite": "niosh-heat-illness" },
+      { "fact": "Fainting happens when not enough blood gets to the brain. Standing for a very long time, getting too hot, and dehydration (which lowers blood pressure) are common causes; tensing the leg muscles helps blood flow, and lying down helps.", "cite": "kidshealth-fainting" },
+      { "fact": "When working in the heat, drink about 1 cup of water every 15–20 minutes; bodies get used to the heat gradually over several days.", "cite": "niosh-heat-recs" },
+      { "fact": "Signs of dehydration include extreme thirst, dark-coloured urine, urinating less and dizziness; sweating in hot weather causes fluid loss.", "cite": "mayo-dehydration" },
+      { "fact": "Sweat loss can be worked out as the drop in body weight plus the fluid drunk during the activity.", "cite": "ksi-sweat" }
+    ],
+    "choice": [
+      { "what": "Sweat rate is a straight line with temperature above 70 °F, plus extra for a heavy uniform", "why": "Real sweat rates vary a lot between people; this gives about 1.3 litres an hour at 95 °F in uniform — in line with drinking 3–4 cups an hour to keep up." },
+      { "what": "Blood in the legs builds up with a half-time of 6 minutes", "why": "Pooling starts as soon as you stand still and keeps growing for a while; 6 minutes makes the dizziness arrive around the 10–15 minute mark, as in the case." },
+      { "what": "Each 1% of body weight lost as water lowers the blood returning to the heart by 3 points", "why": "Less water in the blood means less blood to send back up. The exact size of this effect differs from person to person; we picked a modest one." },
+      { "what": "The 'light-headed' line is set at 74% of normal", "why": "There is no single cut-off in real bodies. The line is placed so that Keisha's July morning crosses it and an October game does not." },
+      { "what": "Each extra day of camp reduces the heat effect by 8%", "why": "Getting used to the heat takes days; the size of the effect here is a teaching value." }
+    ],
+    "illustrative": [
+      "Keisha's weight (55 kg), the hour since her water break and her two days at camp are made up for a fictional story.",
+      "The 'blood getting back to the heart' percentage is a teaching scale, not something you could measure with a cuff."
+    ]
+  },
+  "citations": [
+    { "id": "niosh-heat-illness", "title": "Heat-related Illnesses", "publisher": "CDC / NIOSH", "year": "", "url": "https://www.cdc.gov/niosh/heat-stress/about/illnesses.html", "verified": "2026-10-19",
+      "supports": "Heat syncope (fainting or dizziness) usually occurs when standing for too long or standing up suddenly; dehydration and lack of acclimatization contribute. Heavy sweating is a sign of heat exhaustion." },
+    { "id": "kidshealth-fainting", "title": "Fainting (Syncope)", "publisher": "Nemours KidsHealth", "year": "", "url": "https://kidshealth.org/en/teens/fainting.html", "verified": "2026-10-19",
+      "supports": "Fainting happens when not enough blood reaches the brain because blood pressure drops; standing a very long time, getting too hot and dehydration are common causes; tensing leg muscles helps blood flow; lie down if possible." },
+    { "id": "niosh-heat-recs", "title": "Heat Stress — Workplace Recommendations", "publisher": "CDC / NIOSH", "year": "", "url": "https://www.cdc.gov/niosh/heat-stress/recommendations/index.html", "verified": "2026-10-19",
+      "supports": "For moderate activity in the heat, drink 1 cup (8 oz) of water every 15–20 minutes; new workers should build up time in the heat gradually over several days (acclimatization)." },
+    { "id": "mayo-dehydration", "title": "Dehydration — Symptoms and causes", "publisher": "Mayo Clinic", "year": "", "url": "https://www.mayoclinic.org/diseases-conditions/dehydration/symptoms-causes/syc-20354086", "verified": "2026-10-19",
+      "supports": "Lists extreme thirst, urinating less, dark-colored urine and dizziness as signs of dehydration; sweating, especially in hot weather, causes fluid loss." },
+    { "id": "ksi-sweat", "title": "Sweat Rate Calculator", "publisher": "Korey Stringer Institute, University of Connecticut", "year": "2024", "url": "https://koreystringer-institute.media.uconn.edu/wp-content/uploads/sites/3814/2024/08/Sweat-Rate-Calculator.pdf", "verified": "2026-10-19",
+      "supports": "Sweat loss = body weight before minus after, plus the fluid drunk; sweat rate is that loss divided by exercise time." }
+  ],
   "limits": {
     "does": [
-      "Shows blood pooling in the legs the longer someone stands completely still",
-      "Shows heat and sweating making it worse",
-      "Shows the heart speeding up to make up for it"
+      "Shows two separate causes — water lost as sweat, and blood held in still legs — adding together",
+      "Shows moving the legs or drinking water each helping, in different ways",
+      "Shows heat and a heavy uniform making both problems worse"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include body size, uniform weight or exactly how much someone drank",
+      "Measure any real person — Keisha is fictional and the percentages are a teaching scale",
+      "Include salt loss, food, sleep, or illness",
       "Model fainting itself; it stops at feeling light-headed"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Feeling light-headed is a signal to sit down, drink water and tell an adult."
-  },
-  "sources": [
-    "CK-12 Life Science: circulatory system",
-    "Any middle-school life-science text: how leg muscles help return blood to the heart"
-  ]
+    "wellbeing": "If you feel light-headed in the heat, sit or lie down, drink water and tell an adult straight away."
+  }
 }

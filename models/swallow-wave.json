@@ -1,45 +1,303 @@
 {
   "id": "swallow-wave",
-  "name": "Throat & swallowing",
-  "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "a", "label": "Body angle", "min": 0, "max": 180, "step": 15, "unit": "°", "ticks": ["standing", "lying flat", "handstand"] },
-    "secondary": { "key": "v", "label": "Size of each sip", "min": 1, "max": 3, "step": 1, "default": 1, "ticks": ["small sip", "mouthful", "big gulp"] }
-  },
+  "version": 2,
+  "name": "Leila's swallow, whichever way up",
+  "colour": "blue",
+  "parameters": [
+    {
+      "key": "a",
+      "label": "Body angle",
+      "role": "primary",
+      "min": 0,
+      "max": 180,
+      "step": 15,
+      "default": 180,
+      "unit": "°",
+      "ticks": [
+        "standing",
+        "lying flat",
+        "handstand"
+      ],
+      "explain": "Tipping over turns gravity from helping, to sideways, to pulling the wrong way.",
+      "basis": "choice"
+    },
+    {
+      "key": "v",
+      "label": "Size of each sip",
+      "role": "bubble",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "small sip"
+        },
+        {
+          "value": 2,
+          "label": "mouthful"
+        },
+        {
+          "value": 3,
+          "label": "big gulp"
+        }
+      ],
+      "explain": "Bigger gulps are harder to squeeze along against gravity.",
+      "basis": "choice"
+    },
+    {
+      "key": "Kt",
+      "label": "How thick the drink is",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "water"
+        },
+        {
+          "value": 1,
+          "label": "thick smoothie"
+        }
+      ],
+      "explain": "Thick drinks take longer to travel down the food tube than thin ones.",
+      "basis": "source",
+      "cite": "dalmazo-2015"
+    },
+    {
+      "key": "Q",
+      "label": "Muscle squeeze",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "on (real body)"
+        },
+        {
+          "value": 0,
+          "label": "off (imaginary)"
+        }
+      ],
+      "explain": "A thought experiment: switch the muscle wave off and see whether gravity alone could get the water there.",
+      "basis": "choice"
+    },
+    {
+      "key": "ht",
+      "label": "Height",
+      "role": "factor",
+      "min": 140,
+      "max": 190,
+      "step": 5,
+      "default": 160,
+      "unit": "cm",
+      "explain": "Taller people have a longer food tube — about 25 cm in an adult.",
+      "basis": "source",
+      "cite": "seer-esophagus"
+    },
+    {
+      "key": "g",
+      "label": "Where she is",
+      "role": "factor",
+      "min": 0,
+      "max": 1,
+      "step": 0.5,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "on Earth"
+        },
+        {
+          "value": 0.5,
+          "label": "on a low-gravity world"
+        },
+        {
+          "value": 0,
+          "label": "on the space station"
+        }
+      ],
+      "explain": "Swallowing doesn't depend on gravity — astronauts eat and drink in orbit.",
+      "basis": "source",
+      "cite": "binghamton-swallow"
+    }
+  ],
   "outputs": [
-    { "key": "S", "label": "Each sip reaching the stomach", "unit": "%", "colour": "coral", "decimals": 0 },
-    { "key": "T", "label": "Time to reach the stomach", "unit": "s", "colour": "purple", "decimals": 1 },
-    { "key": "Q", "label": "Muscle squeeze waves", "unit": "per minute", "colour": "amber", "decimals": 0 },
-    { "key": "G", "label": "Gravity", "colour": "blue", "bands": [{ "upTo": -20, "text": "pulling the wrong way" }, { "upTo": 20, "text": "no help" }, { "text": "helping a little" }] }
+    {
+      "key": "S",
+      "label": "Each sip reaching the stomach",
+      "unit": "%",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "T",
+      "label": "Time to reach the stomach",
+      "unit": "s",
+      "colour": "purple",
+      "decimals": 1
+    },
+    {
+      "key": "Gh",
+      "label": "Gravity's help",
+      "unit": "% (negative = against)",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "Qw",
+      "label": "Squeeze waves",
+      "unit": "per minute",
+      "colour": "coral",
+      "decimals": 0,
+      "hidden": true
+    }
   ],
   "rules": {
-    "S": "clamp(100 - 4 * (v - 1) * a / 180, 80, 100)",
-    "T": "2 + 5 * a / 180",
-    "Q": "12",
-    "G": "100 - a * 200 / 180"
+    "S": "Q * clamp(100 - 3 * (v - 1) * max(0, -g * (1 - 2 * a / 180)), 0, 100) + (1 - Q) * clamp(100 * g * (1 - 2 * a / 180), 0, 100)",
+    "T": "(ht / 170) * (7.6 - 1.5 * g * (1 - 2 * a / 180) + Kt * (0.95 + 0.45 * g * (1 - 2 * a / 180)))",
+    "Gh": "100 * g * (1 - 2 * a / 180)",
+    "Qw": "12 * Q"
   },
-  "chart": { "x": "a", "y": "S", "xLabel": "body angle (standing → upside down)", "yLabel": "% of each sip reaching the stomach", "yMin": 0, "yMax": 110 },
+  "chart": {
+    "x": "a",
+    "y": "S",
+    "xLabel": "body angle (standing → upside down)",
+    "yLabel": "% of each sip reaching the stomach",
+    "yMin": 0,
+    "yMax": 110
+  },
   "overlay": {
     "base": "torso",
     "caption": "rings of muscle squeeze in a wave → food moves the right way, whichever way up you are",
     "parts": [
-      { "shape": "stomach", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 100 } },
-      { "shape": "throat", "colour": "#E4572E", "anim": { "type": "beat", "output": "Q" } }
+      {
+        "shape": "stomach",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "glow",
+          "output": "S",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "throat",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "beat",
+          "output": "Qw"
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Swallowing isn't water falling into Leila's stomach. Once she swallows, rings of muscle along her 25-cm food tube squeeze one after another, pushing the water ahead of them — like toothpaste squeezed along a tube. Gravity only helps a little when she's upright. So upside down the water still arrives; it just takes a few seconds longer, especially for thick drinks.",
+    "rules": [
+      "The muscle wave delivers the sip whichever way up she is.",
+      "Gravity's help goes from full (standing) to none (lying) to working against her (handstand).",
+      "Each sip takes about 6 seconds upright and a few seconds longer lying down or upside down; thick drinks take longer.",
+      "Big gulps upside down lose a little; with the squeeze switched off, only gravity would work — and upside down it would fail."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Once you begin swallowing it becomes automatic; peristalsis pushes food down the esophagus — the muscle behind the food squeezes while the muscle ahead relaxes.",
+        "cite": "niddk-digestive"
+      },
+      {
+        "fact": "Swallowing does not depend on gravity: people swallow lying down and astronauts eat and drink in orbit; on Earth gravity gives only subtle help.",
+        "cite": "binghamton-swallow"
+      },
+      {
+        "fact": "In a study, food took longer to travel down the esophagus lying down than sitting; sitting, a thick paste took about 7.5 s and a liquid about 6.1 s.",
+        "cite": "dalmazo-2015"
+      },
+      {
+        "fact": "The esophagus is a muscular tube about 25 cm (10 inches) long.",
+        "cite": "seer-esophagus"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Upside-down times are extended from the lying-down numbers",
+        "why": "The study measured sitting and lying, not handstands; we continued the same trend."
+      },
+      {
+        "what": "Tilt changes gravity's help in a straight line",
+        "why": "Real help follows the angle more smoothly; a straight line keeps the dial simple."
+      },
+      {
+        "what": "The food tube is scaled with height",
+        "why": "Tube length roughly follows body size; 25 cm is the adult figure."
+      },
+      {
+        "what": "Switching the squeeze off is imaginary",
+        "why": "It lets you test hypothesis C: if gravity did the work, upside-down sips would never arrive."
+      }
+    ],
+    "illustrative": [
+      "Leila's height, her sip sizes and the small loss for big upside-down gulps are made up for a fictional story."
+    ]
+  },
+  "citations": [
+    {
+      "id": "niddk-digestive",
+      "title": "Your Digestive System & How It Works",
+      "publisher": "NIDDK (NIH)",
+      "year": "",
+      "url": "https://www.niddk.nih.gov/health-information/digestive-diseases/digestive-system-how-it-works",
+      "verified": "2026-10-19",
+      "supports": "Once you begin swallowing the process becomes automatic; peristalsis pushes food down the esophagus to the stomach — the muscle behind the food squeezes while the muscle ahead relaxes."
+    },
+    {
+      "id": "binghamton-swallow",
+      "title": "Spaceflight could change how astronauts swallow, eat and drink in subtle ways",
+      "publisher": "Binghamton University (The Conversation)",
+      "year": "2026",
+      "url": "https://www.binghamton.edu/news/story/6386/spaceflight-could-change-how-astronauts-swallow-eat-and-drink-in-subtle-ways-binghamton-expert-explains",
+      "verified": "2026-10-19",
+      "supports": "A swallowing researcher explains that swallowing does not depend on gravity — people swallow lying down and astronauts eat and drink in orbit; on Earth gravity gives only subtle assistance; each swallow uses more than 30 muscles."
+    },
+    {
+      "id": "dalmazo-2015",
+      "title": "Effect of swallowed bolus viscosity and body position on esophageal transit, contraction and perception of transit (Arquivos de Gastroenterologia)",
+      "publisher": "SciELO",
+      "year": "2015",
+      "url": "https://scielo.br/j/ag/a/CMmxSJthQjW8DkD6CSvxZgx/?lang=en",
+      "verified": "2026-10-19",
+      "supports": "Esophageal transit was longer lying down (supine) than sitting; sitting, a thick paste took longer than a liquid (about 7.5 s vs 6.1 s); lying down both took about 8 s."
+    },
+    {
+      "id": "seer-esophagus",
+      "title": "Anatomy of the Esophagus",
+      "publisher": "National Cancer Institute SEER Training",
+      "year": "",
+      "url": "https://www.training.seer.cancer.gov/ugi/anatomy/esophagus.html",
+      "verified": "2026-10-19",
+      "supports": "The esophagus is a muscular tube about ten inches (25 cm) long running from the throat to the stomach."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows swallowing working at any body angle because muscles do the pushing",
-      "Shows gravity helping a little when upright, so liquid arrives a bit sooner",
-      "Shows bigger gulps being slightly harder to manage upside down"
+      "Shows that the muscle wave, not gravity, delivers each sip",
+      "Shows gravity helping, then hindering, as she tips over",
+      "Shows thick drinks travelling more slowly"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include choking, breathing, or how the airway is protected",
-      "Suggest anyone should practise drinking upside down"
+      "Measure any real person — Leila is fictional",
+      "Model choking or anything going the wrong way",
+      "Show the separate muscles of the throat"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Eat and drink sitting up in everyday life; if swallowing ever hurts or feels stuck, tell an adult."
-  },
-  "sources": ["CK-12 Life Science: digestive system, the esophagus", "NASA: how astronauts eat and drink in space (student page)"]
+  }
 }

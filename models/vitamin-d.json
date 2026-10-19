@@ -1,45 +1,118 @@
 {
   "id": "vitamin-d",
-  "name": "Skin, sunlight & bones",
+  "version": 2,
+  "name": "Mira's sunlight, vitamin D and calcium",
   "colour": "amber",
-  "inputs": {
-    "primary":   { "key": "O", "label": "Hours outdoors in daylight each week", "min": 0, "max": 10, "step": 0.5, "unit": "h/week", "ticks": ["none", "5 h", "10 h"] },
-    "secondary": { "key": "S", "label": "Season", "min": 0, "max": 2, "step": 1, "default": 0, "ticks": ["winter", "spring", "summer"] }
-  },
+  "parameters": [
+    {
+      "key": "O", "label": "Hours outdoors in daylight each week", "role": "primary", "min": 0, "max": 10, "step": 0.5, "default": 3, "unit": "h/week",
+      "ticks": ["none", "5 h", "10 h"],
+      "explain": "Skin makes vitamin D when sunlight's UVB falls on it. In summer, 5–30 minutes on bare skin a couple of times a week is usually enough.",
+      "basis": "source", "cite": "ods-vitd-hp"
+    },
+    {
+      "key": "Se", "label": "Season", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "winter" }, { "value": 1, "label": "spring / autumn" }, { "value": 2, "label": "summer" }],
+      "explain": "Between October and early March, sunlight in northern countries is too weak for skin to make enough vitamin D.",
+      "basis": "source", "cite": "nhs-vitd"
+    },
+    {
+      "key": "g", "label": "Glasses of milk a day", "role": "bubble", "min": 0, "max": 5, "step": 1, "default": 3, "unit": "glasses",
+      "explain": "Tests the 'just drink more milk' idea. Each cup has about 300 mg of calcium — but how much gets in depends on vitamin D.",
+      "basis": "source", "cite": "ods-ca-hp"
+    },
+    {
+      "key": "sk", "label": "Skin uncovered outdoors", "role": "factor", "min": 0.5, "max": 1.5, "step": 0.5, "default": 0.5,
+      "options": [{ "value": 0.5, "label": "face and hands (winter coat)" }, { "value": 1, "label": "plus arms" }, { "value": 1.5, "label": "plus legs" }],
+      "explain": "Covered skin makes no vitamin D — clothes, sunscreen and even window glass block the UVB.",
+      "basis": "source", "cite": "ods-vitd-consumer"
+    },
+    {
+      "key": "fort", "label": "Milk has added vitamin D", "role": "factor", "min": 0, "max": 1, "step": 1, "default": 1,
+      "options": [{ "value": 1, "label": "yes (almost all US milk)" }, { "value": 0, "label": "no" }],
+      "explain": "Almost all US milk has about 120 IU of vitamin D added per cup — helpful, but three glasses is still less than a teen needs.",
+      "basis": "source", "cite": "ods-vitd-consumer"
+    }
+  ],
+  "constants": { "need": 600, "otherVitD": 40, "otherCa": 250, "caPerCup": 300, "vitDPerCup": 120 },
   "outputs": [
-    { "key": "V", "label": "Vitamin D made", "unit": "% of what the body needs", "colour": "amber", "decimals": 0 },
-    { "key": "C", "label": "Calcium taken in from food", "unit": "% of what's eaten", "colour": "teal", "decimals": 0 },
-    { "key": "B", "label": "Bones are", "colour": "purple", "bands": [{ "upTo": 39, "text": "short of building material" }, { "upTo": 79, "text": "getting some" }, { "text": "well supplied" }] }
+    { "key": "Vs", "label": "Vitamin D made by her skin", "unit": "IU a day", "colour": "amber", "decimals": 0 },
+    { "key": "Vp", "label": "Vitamin D from sun and food", "unit": "% of daily need", "colour": "amber", "decimals": 0 },
+    { "key": "A", "label": "Share of calcium her gut absorbs", "unit": "%", "colour": "coral", "decimals": 0 },
+    { "key": "Ca", "label": "Calcium absorbed", "unit": "mg a day", "colour": "coral", "decimals": 0 },
+    { "key": "B", "label": "Bones are", "colour": "blue", "bands": [{ "upTo": 250, "text": "short of calcium" }, { "upTo": 370, "text": "a bit short" }, { "text": "getting enough" }] }
   ],
   "rules": {
-    "V": "clamp(15 + O * (4 + 8 * S), 0, 150)",
-    "C": "clamp(10 + 0.25 * clamp(15 + O * (4 + 8 * S), 0, 150), 10, 40)",
-    "B": "clamp(15 + O * (4 + 8 * S), 0, 150)"
+    "Vs": "O * (20 + 130 * Se + 60 * Se * (Se - 1)) * sk",
+    "Vp": "100 * (O * (20 + 130 * Se + 60 * Se * (Se - 1)) * sk + vitDPerCup * g * fort + otherVitD) / need",
+    "A": "100 * (0.10 + 0.20 * clamp((O * (20 + 130 * Se + 60 * Se * (Se - 1)) * sk + vitDPerCup * g * fort + otherVitD) / need, 0, 1))",
+    "Ca": "(caPerCup * g + otherCa) * (0.10 + 0.20 * clamp((O * (20 + 130 * Se + 60 * Se * (Se - 1)) * sk + vitDPerCup * g * fort + otherVitD) / need, 0, 1))",
+    "B": "(caPerCup * g + otherCa) * (0.10 + 0.20 * clamp((O * (20 + 130 * Se + 60 * Se * (Se - 1)) * sk + vitDPerCup * g * fort + otherVitD) / need, 0, 1))"
   },
-  "chart": { "x": "O", "y": "V", "xLabel": "hours outdoors per week", "yLabel": "vitamin D made (% of need)", "yMin": 0, "yMax": 150 },
+  "chart": { "x": "O", "y": "Vs", "xLabel": "hours outdoors per week", "yLabel": "vitamin D made by skin (IU/day)", "yMin": 0, "yMax": 1500 },
   "overlay": {
     "base": "torso",
     "caption": "sunlight on skin → vitamin D → gut takes in calcium → bones",
     "parts": [
       { "shape": "sun", "colour": "#F4A300" },
-      { "shape": "skin", "colour": "#F4A300", "anim": { "type": "glow", "output": "V", "min": 15, "max": 150 } },
-      { "shape": "stomach", "colour": "#E4572E" },
-      { "shape": "legs", "colour": "#8FA3C7", "anim": { "type": "glow", "output": "C", "min": 10, "max": 40 } }
+      { "shape": "skin", "colour": "#F4A300", "anim": { "type": "glow", "output": "Vs", "min": 0, "max": 600 } },
+      { "shape": "stomach", "colour": "#E4572E", "anim": { "type": "glow", "output": "A", "min": 10, "max": 30 } },
+      { "shape": "legs", "colour": "#8FA3C7", "anim": { "type": "glow", "output": "Ca", "min": 100, "max": 400 } }
     ]
   },
+  "explain": {
+    "summary": "Bones are built from calcium, which Mira gets from milk. But her gut can only take much calcium in when there is enough vitamin D, and most vitamin D is made by skin in sunlight. In winter, with a coat on and almost no daylight, her skin makes very little — so much of her milk's calcium passes straight through, even though she drinks plenty.",
+    "rules": [
+      "Her skin makes vitamin D in proportion to hours outdoors, how much skin is uncovered and how strong the season's sunlight is.",
+      "Winter sunlight makes almost none; summer sunlight makes a lot.",
+      "Her daily vitamin D is sun plus food (fortified milk adds about 120 IU a cup); a teen needs about 600 IU.",
+      "With enough vitamin D the gut absorbs about 30% of calcium; with too little, much less.",
+      "Calcium absorbed = calcium eaten × the share absorbed."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Vitamin D helps the body absorb calcium, one of the main building blocks of bone. Teens aged 14–18 need 15 mcg (600 IU) a day; a cup of fortified milk has about 3 mcg (120 IU), and almost all US milk is fortified. Clothing, sunscreen, clouds and window glass reduce how much vitamin D skin makes.", "cite": "ods-vitd-consumer" },
+      { "fact": "About 5–30 minutes of sun on exposed skin, especially between 10 a.m. and 4 p.m., daily or at least twice a week, usually leads to enough vitamin D; season and time of day change this.", "cite": "ods-vitd-hp" },
+      { "fact": "Between October and early March people in the UK don't make enough vitamin D from sunlight; from late March to September most people can make all they need.", "cite": "nhs-vitd" },
+      { "fact": "A cup of milk has about 276–299 mg of calcium; about 30% of calcium from dairy is absorbed, and vitamin D is required for that absorption.", "cite": "ods-ca-hp" },
+      { "fact": "Teens aged 14–18 need 1,300 mg of calcium a day.", "cite": "ods-ca-consumer" }
+    ],
+    "choice": [
+      { "what": "Vitamin D made per outdoor hour: about 20 (winter), 150 (spring/autumn) and 400 (summer) IU a day for each weekly hour of face-and-hands-sized skin", "why": "Picked so a little summer sun covers the daily need, as the sources say, while winter sun makes almost none." },
+      { "what": "Calcium absorption goes from 10% (very low vitamin D) up to 30% (enough)", "why": "Sources give about 30% with enough vitamin D and say less is absorbed without it; 10% is our estimate for the low end." },
+      { "what": "Other food adds 250 mg of calcium and 40 IU of vitamin D a day", "why": "A rough allowance for the rest of her diet." },
+      { "what": "'Getting enough' means absorbing about 370–390 mg of calcium a day", "why": "That is roughly 30% of the 1,300 mg teens are advised to eat." }
+    ],
+    "illustrative": [
+      "Mira is fictional; her 3 hours outside, 3 glasses of milk and winter coat are made up for the story.",
+      "The location of 'northern country' winter sunlight is general; real amounts depend on latitude, cloud and skin colour."
+    ]
+  },
+  "citations": [
+    { "id": "ods-vitd-consumer", "title": "Vitamin D — Fact Sheet for Consumers", "publisher": "NIH Office of Dietary Supplements", "year": "", "url": "https://ods.od.nih.gov/factsheets/VitaminD-Consumer/", "verified": "2026-10-19",
+      "supports": "Vitamin D helps the body absorb calcium; ages 14–18 need 15 mcg (600 IU) a day; fortified milk has about 3 mcg (120 IU) per cup and almost all US milk is fortified; clothing, sunscreen, clouds, dark skin and window glass reduce skin production." },
+    { "id": "ods-vitd-hp", "title": "Vitamin D — Fact Sheet for Health Professionals", "publisher": "NIH Office of Dietary Supplements", "year": "", "url": "https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/", "verified": "2026-10-19",
+      "supports": "Season, time of day, cloud cover, smog, skin melanin and sunscreen affect vitamin D synthesis; about 5–30 minutes of sun (10 a.m.–4 p.m.) daily or twice a week usually suffices; vitamin D promotes calcium absorption in the gut." },
+    { "id": "nhs-vitd", "title": "Vitamin D", "publisher": "NHS (UK)", "year": "", "url": "https://www.nhs.uk/conditions/vitamins-and-minerals/vitamin-d/", "verified": "2026-10-19",
+      "supports": "From late March to September most people can make all the vitamin D they need from sunlight; between October and early March we do not make enough from sunlight; vitamin D helps regulate calcium." },
+    { "id": "ods-ca-hp", "title": "Calcium — Fact Sheet for Health Professionals", "publisher": "NIH Office of Dietary Supplements", "year": "", "url": "https://ods.od.nih.gov/factsheets/Calcium-HealthProfessional/", "verified": "2026-10-19",
+      "supports": "One cup of nonfat milk has 299 mg of calcium (whole milk 276 mg); about 30% of calcium from dairy and fortified foods is absorbed; vitamin D is required for active calcium absorption in the gut." },
+    { "id": "ods-ca-consumer", "title": "Calcium — Fact Sheet for Consumers", "publisher": "NIH Office of Dietary Supplements", "year": "", "url": "https://ods.od.nih.gov/factsheets/Calcium-Consumer/", "verified": "2026-10-19",
+      "supports": "Recommended calcium for ages 14–18 is 1,300 mg a day; milk, yogurt and cheese are the main food sources; vitamin D helps the body absorb calcium." }
+  ],
   "limits": {
     "does": [
-      "Shows skin making vitamin D when daylight reaches it, much less in winter",
-      "Shows vitamin D helping the gut take calcium in from food",
-      "Shows that milk's calcium is only useful once it is absorbed"
+      "Shows skin making vitamin D in daylight, and very little in winter",
+      "Shows vitamin D controlling how much of the milk's calcium is absorbed",
+      "Lets you test whether more milk alone fixes the problem"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Account for skin tone, sunscreen, clothing, latitude or vitamin D in food",
-      "Say how much sun anyone should get — too much sun burns skin (see The Sunburned Lifeguard)"
+      "Measure any real person — Mira is fictional and the numbers are illustrative",
+      "Include skin tone, latitude in detail, or exercise, which also builds bone",
+      "Tell anyone how much sun, milk or supplement they should have"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Questions about what your own body needs are worth asking a parent or school nurse."
-  },
-  "sources": ["NIH Office of Dietary Supplements: Vitamin D fact sheet for consumers", "CK-12 Life Science: skeletal system and nutrition"]
+    "wellbeing": "Questions about your own diet or bones are best taken to a parent, school nurse or doctor."
+  }
 }

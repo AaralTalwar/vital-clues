@@ -1,43 +1,332 @@
 {
   "id": "afterimage",
-  "name": "Eyes & colour",
+  "version": 2,
+  "name": "Hana's tired colour cells",
   "colour": "teal",
-  "inputs": {
-    "primary":   { "key": "s", "label": "Seconds staring at red", "min": 0, "max": 60, "step": 5, "unit": "s", "ticks": ["0 s", "30 s", "60 s"] },
-    "secondary": { "key": "b", "label": "How vivid the red is", "min": 1, "max": 3, "step": 1, "default": 3, "ticks": ["dull", "medium", "vivid"] }
+  "parameters": [
+    {
+      "key": "s",
+      "label": "Seconds staring at the red",
+      "role": "primary",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 120,
+      "unit": "s",
+      "ticks": [
+        "0 s",
+        "1 min",
+        "2 min"
+      ],
+      "explain": "The longer the cone cells see one colour, the more they adapt — and the stronger the afterimage.",
+      "basis": "source",
+      "cite": "app-afterimage"
+    },
+    {
+      "key": "t",
+      "label": "Seconds since she looked at the wall",
+      "role": "bubble",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "default": 0,
+      "unit": "s",
+      "ticks": [
+        "looks up",
+        "20 s",
+        "40 s"
+      ],
+      "explain": "Away from the red, the tired cones slowly return to normal and the ghost fades.",
+      "basis": "source",
+      "cite": "brainfacts-aftereffects"
+    },
+    {
+      "key": "Cs",
+      "label": "Colour she stares at",
+      "role": "bubble",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "red"
+        },
+        {
+          "value": 1,
+          "label": "green"
+        },
+        {
+          "value": 2,
+          "label": "blue"
+        },
+        {
+          "value": 3,
+          "label": "yellow"
+        }
+      ],
+      "explain": "The twist: the ghost is always the opposite colour of what she stared at. It's made by her eyes and brain, not by anything on the wall.",
+      "basis": "source",
+      "cite": "allaboutvision-afterimage"
+    },
+    {
+      "key": "Fx",
+      "label": "Her eyes while staring",
+      "role": "bubble",
+      "min": 0.15,
+      "max": 1,
+      "step": 0.85,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "fixed on one spot"
+        },
+        {
+          "value": 0.15,
+          "label": "wandering around"
+        }
+      ],
+      "explain": "Wandering eyes spread the red over different cells, so no cells get as tired and the ghost is weak and blurry.",
+      "basis": "choice"
+    },
+    {
+      "key": "b",
+      "label": "How vivid the red is",
+      "role": "factor",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 3,
+      "ticks": [
+        "dull",
+        "medium",
+        "vivid"
+      ],
+      "explain": "Stronger, higher-contrast colours tire the cones more.",
+      "basis": "source",
+      "cite": "app-afterimage"
+    },
+    {
+      "key": "Wb",
+      "label": "What she looks at afterwards",
+      "role": "factor",
+      "min": 0.25,
+      "max": 1,
+      "step": 0.05,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "white wall"
+        },
+        {
+          "value": 0.6,
+          "label": "grey wall"
+        },
+        {
+          "value": 0.25,
+          "label": "dark board"
+        }
+      ],
+      "explain": "On a white surface the fresh cones respond strongly, so the opposite colour stands out most.",
+      "basis": "source",
+      "cite": "brainfacts-aftereffects"
+    }
+  ],
+  "constants": {
+    "half": 15
   },
   "outputs": [
-    { "key": "F", "label": "Red-sensing cells tired", "unit": "%", "colour": "coral", "decimals": 0 },
-    { "key": "G", "label": "Green afterimage strength", "unit": "0–10", "colour": "teal", "decimals": 1 },
-    { "key": "D", "label": "How long it lasts", "unit": "s", "colour": "purple", "decimals": 0 }
+    {
+      "key": "F",
+      "label": "Cones for that colour tired",
+      "unit": "%",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "G",
+      "label": "Ghost strength",
+      "unit": "0–10",
+      "colour": "teal",
+      "decimals": 1
+    },
+    {
+      "key": "D",
+      "label": "How long the ghost lasts",
+      "unit": "s",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "C",
+      "label": "Ghost colour",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 0.5,
+          "text": "green"
+        },
+        {
+          "upTo": 1.5,
+          "text": "reddish-pink"
+        },
+        {
+          "upTo": 2.5,
+          "text": "yellow"
+        },
+        {
+          "text": "blue"
+        }
+      ]
+    }
   ],
   "rules": {
-    "F": "clamp(100 * (1 - pow(0.5, s / 15)) * b / 3, 0, 100)",
-    "G": "clamp(10 * (1 - pow(0.5, s / 15)) * b / 3, 0, 10)",
-    "D": "0.25 * clamp(100 * (1 - pow(0.5, s / 15)) * b / 3, 0, 100)"
+    "F": "100 * (1 - pow(0.5, s * Fx / half)) * b / 3",
+    "G": "10 * (1 - pow(0.5, s * Fx / half)) * b / 3 * Wb * pow(0.5, t / (2 + 4 * (1 - pow(0.5, s * Fx / half)) * b / 3))",
+    "D": "max(0, (2 + 4 * (1 - pow(0.5, s * Fx / half)) * b / 3) * 50 * (pow(max(10 * (1 - pow(0.5, s * Fx / half)) * b / 3 * Wb, 1), 0.02) - 1) / 0.693)",
+    "C": "Cs"
   },
-  "chart": { "x": "s", "y": "G", "xLabel": "seconds staring at red", "yLabel": "green afterimage strength (0–10)", "yMin": 0, "yMax": 10 },
+  "chart": {
+    "x": "s",
+    "y": "G",
+    "xLabel": "seconds staring at the red",
+    "yLabel": "ghost strength (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
   "overlay": {
     "base": "head",
-    "caption": "staring at red → red-sensing cells tire → white looks green until they recover",
+    "caption": "staring at red → red-sensing cones tire → on white, the fresh cones win → a green ghost that follows her eyes",
     "parts": [
-      { "shape": "iris", "colour": "#E4572E", "anim": { "type": "shift", "output": "G", "min": 0, "max": 10, "from": "#E4572E", "to": "#1B998B" } },
-      { "shape": "brainGlow", "colour": "#1B998B", "anim": { "type": "glow", "output": "G", "min": 0, "max": 10 } }
+      {
+        "shape": "iris",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "shift",
+          "output": "G",
+          "min": 0,
+          "max": 10,
+          "from": "#E4572E",
+          "to": "#1B998B"
+        }
+      },
+      {
+        "shape": "brainGlow",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "glow",
+          "output": "G",
+          "min": 0,
+          "max": 10
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Hana's eyes have cone cells that sense red, green and blue light, and her brain turns their signals into colour. Two minutes of bright red tired her red-sensing cones. On the white wall, the fresh green-sensing cones answer more strongly than the tired red ones, so her brain sees green — a colour that isn't there. As the tired cones recover, the ghost fades in about twenty seconds.",
+    "rules": [
+      "Tiredness builds up the longer she stares, halving the gap to fully tired every 15 seconds.",
+      "Vivid colour and eyes held still make the cones more tired.",
+      "The ghost is the opposite colour: red → green, green → reddish-pink, blue → yellow, yellow → blue.",
+      "After she looks away the ghost halves every 2–6 seconds (slower after a long stare) and is brightest on white."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Light bleaches cone cells; staring at red tires the red cones while the green cones stay fresh, so on a white background the green cones respond more and the afterimage is the complementary colour. After long exposure it takes a little while for the cones to return to normal.",
+        "cite": "brainfacts-aftereffects"
+      },
+      {
+        "fact": "Cones exposed to the same colour for too long get fatigued and other cones take over; the colour of a negative afterimage is the complementary colour, and it can be seen for several seconds.",
+        "cite": "allaboutvision-afterimage"
+      },
+      {
+        "fact": "The longer and stronger the adapting image, the larger the effect on the after-image; the chance of an after-image increases with adaptation time, and higher-contrast colours make adaptation easier.",
+        "cite": "app-afterimage"
+      },
+      {
+        "fact": "Photoreceptors in the retina turn light into electrical signals that travel through the optic nerve to the brain, which turns them into the images we see.",
+        "cite": "nei-eyes"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Cone tiredness builds with a 15-second half-time",
+        "why": "Chosen so a 20–30 second stare (as in common demos) gives a clear ghost and two minutes gives nearly the maximum."
+      },
+      {
+        "what": "The ghost fades with a half-time of 2–6 seconds, longer after a longer stare",
+        "why": "Matches Hana's clue (about 20 seconds after two minutes) and the sources' 'several seconds'."
+      },
+      {
+        "what": "'Lasts' means until the ghost drops below strength 1, worked out with a close approximation of a logarithm",
+        "why": "The model tool has no log function, so we use the standard power approximation."
+      },
+      {
+        "what": "Wandering eyes cut tiredness to about 15%",
+        "why": "Moving the image around spreads the load over many cells; the exact amount varies."
+      }
+    ],
+    "illustrative": [
+      "Hana is fictional; the 0–10 ghost strength scale is made up.",
+      "Real afterimage colours are close to, but not exactly, the opposite colour, and differ a little between people."
+    ],
+    "studying": "Scientists still debate how much of an afterimage comes from tired cones in the eye and how much from adaptation further along in the brain."
+  },
+  "citations": [
+    {
+      "id": "brainfacts-aftereffects",
+      "title": "Aftereffects",
+      "publisher": "BrainFacts.org (Society for Neuroscience)",
+      "year": "2018",
+      "url": "https://www.brainfacts.org/thinking-sensing-and-behaving/vision/2018/aftereffects-091018",
+      "verified": "2026-10-19",
+      "supports": "Light bleaches cones; the red cones get tired while the green cones are still fresh; negative afterimages show the complementary colour; on a white background the green cones respond more; after long exposure cones take a while to return to normal."
+    },
+    {
+      "id": "allaboutvision-afterimage",
+      "title": "How afterimages play tricks on your eyes",
+      "publisher": "All About Vision",
+      "year": "2026",
+      "url": "https://allaboutvision.com/resources/human-interest/afterimage",
+      "verified": "2026-10-19",
+      "supports": "Cones exposed to the same colour for too long get tired (fatigued) and other cones take over; a negative afterimage is the complementary colour, e.g. a red apple leaves a green afterimage; it may be seen for several seconds."
+    },
+    {
+      "id": "app-afterimage",
+      "title": "Research article on after-image formation, DOI 10.3758/s13414-022-02570-8",
+      "publisher": "Attention, Perception, & Psychophysics (Springer)",
+      "year": "2022",
+      "url": "https://link.springer.com/10.3758/s13414-022-02570-8",
+      "verified": "2026-10-19",
+      "supports": "The probability of after-image formation increases with adaptation duration; the longer and the stronger the adapter, the larger the effect on the after-image; higher-contrast colours facilitate adaptation."
+    },
+    {
+      "id": "nei-eyes",
+      "title": "How the Eyes Work",
+      "publisher": "NIH National Eye Institute",
+      "year": "",
+      "url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/how-eyes-work",
+      "verified": "2026-10-19",
+      "supports": "Photoreceptors turn light into electrical signals, which travel from the retina through the optic nerve to the brain; the brain turns the signals into the images you see."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows colour-sensing cells tiring the longer they stare at one colour",
-      "Shows the afterimage being the opposite colour and growing stronger with longer staring",
-      "Shows the effect fading as the cells recover"
+      "Shows colour-sensing cells tiring the longer and harder they work",
+      "Shows the ghost is always the opposite colour, made inside the eye and brain",
+      "Shows the ghost fading as the cells recover"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Cover colour blindness or how colour is processed in the brain in detail",
+      "Measure any real person — Hana is fictional and the numbers are illustrative",
+      "Cover colour blindness or the brain's colour processing in detail",
       "Suggest staring at bright lights or the sun — never do that"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Afterimages from paint or paper fade in seconds. If spots in your vision don't fade, tell an adult."
-  },
-  "sources": ["NIH National Eye Institute: how the eyes work (student pages)", "CK-12 Life Science: senses, the eye and colour vision"]
+  }
 }

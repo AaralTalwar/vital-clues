@@ -1,52 +1,141 @@
 {
   "id": "altitude-water",
-  "name": "Altitude + water",
+  "version": 2,
+  "name": "Elena's oxygen and water on a mountain hike",
   "colour": "blue",
-  "inputs": {
-    "primary":   { "key": "K", "label": "Altitude", "min": 0, "max": 12, "step": 1, "unit": "× 1,000 ft", "ticks": ["sea level", "6,000 ft", "12,000 ft"] },
-    "secondary": { "key": "W", "label": "Water drunk", "min": 0, "max": 3, "step": 0.5, "default": 0.5, "unit": "cups/hour", "ticks": ["none", "1.5 cups/h", "3 cups/h"] }
-  },
-  "constants": { "t": 4 },
+  "parameters": [
+    {
+      "key": "K", "label": "Altitude", "role": "primary", "min": 0, "max": 12, "step": 1, "default": 11, "unit": "× 1,000 ft",
+      "ticks": ["sea level", "6,000 ft", "12,000 ft"],
+      "explain": "Air pressure falls as you go up, so each breath holds less oxygen. Altitude sickness usually starts above about 8,000 feet.",
+      "basis": "source", "cite": "nasa-atmos"
+    },
+    {
+      "key": "pace", "label": "Hiking pace", "role": "bubble", "min": 0, "max": 10, "step": 1, "default": 5,
+      "ticks": ["resting", "steady", "fast"],
+      "explain": "Working harder means more sweat and faster breathing — and every breath out carries water away.",
+      "basis": "choice"
+    },
+    {
+      "key": "days", "label": "Days spent at altitude first", "role": "bubble", "min": 0, "max": 7, "step": 1, "default": 0, "unit": "days",
+      "explain": "Bodies adjust to thin air over days. Going up gradually is the most important way to avoid altitude sickness.",
+      "basis": "source", "cite": "medline-altitude"
+    },
+    {
+      "key": "W", "label": "Water drunk", "role": "bubble", "min": 0, "max": 4, "step": 0.5, "default": 0.5, "unit": "cups/hour",
+      "explain": "Drinking replaces what sweat and breathing take out. In the heat, a cup every 15–20 minutes is the usual advice.",
+      "basis": "source", "cite": "niosh-heat-recs"
+    },
+    {
+      "key": "t", "label": "Hours hiking", "role": "bubble", "min": 1, "max": 8, "step": 1, "default": 4, "unit": "h",
+      "explain": "Water loss adds up hour after hour if drinking doesn't keep up.",
+      "basis": "source", "cite": "ksi-sweat"
+    },
+    {
+      "key": "Hrest", "label": "Resting heart rate at home", "role": "factor", "min": 50, "max": 90, "step": 5, "default": 70, "unit": "beats/min",
+      "explain": "Most people rest at 60–100 beats a minute; fitter people are often lower.",
+      "basis": "source", "cite": "aha-target"
+    },
+    {
+      "key": "mass", "label": "Body weight", "role": "factor", "min": 40, "max": 80, "step": 5, "default": 55, "unit": "kg",
+      "explain": "The same water loss is a bigger share of a smaller body.",
+      "basis": "choice"
+    },
+    {
+      "key": "Ta", "label": "Air temperature", "role": "factor", "min": 40, "max": 95, "step": 5, "default": 75, "unit": "°F",
+      "explain": "Sun and warm air make you sweat more.",
+      "basis": "source", "cite": "mayo-dehydration"
+    }
+  ],
+  "constants": { "cup": 0.24 },
   "outputs": [
     { "key": "O", "label": "Oxygen in each breath", "unit": "% of sea level", "colour": "blue", "decimals": 0 },
-    { "key": "B", "label": "Breathing at rest", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
-    { "key": "S", "label": "Water lost (sweat + breath)", "unit": "cups/hour", "colour": "coral", "decimals": 1 },
-    { "key": "L", "label": "Body water after 4 h", "unit": "% of normal", "colour": "blue", "decimals": 0 },
-    { "key": "P", "label": "Pee", "colour": "amber", "bands": [{ "upTo": 89.9, "text": "very little, dark" }, { "upTo": 96.9, "text": "less" }, { "text": "normal" }] },
-    { "key": "T", "label": "Thirst signal", "colour": "amber", "bands": [{ "upTo": 94.9, "text": "ON" }, { "text": "off" }] }
+    { "key": "Hs", "label": "Heart rate sitting down", "unit": "beats/min", "colour": "coral", "decimals": 0 },
+    { "key": "Bs", "label": "Breathing sitting down", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
+    { "key": "S", "label": "Water lost (sweat + breath)", "unit": "litres/hour", "colour": "blue", "decimals": 2 },
+    { "key": "L", "label": "Body water", "unit": "% of normal", "colour": "blue", "decimals": 0 },
+    { "key": "P", "label": "Pee", "colour": "blue", "bands": [{ "upTo": 93, "text": "very little, dark" }, { "upTo": 97, "text": "less" }, { "text": "normal" }] },
+    { "key": "T", "label": "Thirst signal", "colour": "amber", "bands": [{ "upTo": 97, "text": "ON" }, { "text": "off" }] }
   ],
   "rules": {
-    "O": "100 - 3.3 * K",
-    "B": "12 + 1.0 * K",
-    "S": "0.6 + 0.08 * K",
-    "L": "clamp(100 - 7 * (0.6 + 0.08 * K - W) * t, 70, 100)",
-    "P": "clamp(100 - 7 * (0.6 + 0.08 * K - W) * t, 70, 100)",
-    "T": "clamp(100 - 7 * (0.6 + 0.08 * K - W) * t, 70, 100)"
+    "O": "100 * pow((518.6 - 3.56 * K) / 518.6, 5.256)",
+    "Hs": "Hrest + 0.75 * (100 - 100 * pow((518.6 - 3.56 * K) / 518.6, 5.256)) * pow(0.5, days / 3)",
+    "Bs": "14 + 0.15 * (100 - 100 * pow((518.6 - 3.56 * K) / 518.6, 5.256)) * pow(0.5, days / 3)",
+    "S": "clamp(0.1 + 0.04 * pace + 0.008 * (Ta - 60), 0.05, 1.5) + (0.02 + 0.002 * (100 - 100 * pow((518.6 - 3.56 * K) / 518.6, 5.256))) * (1 + 0.1 * pace)",
+    "L": "clamp(100 - 100 * max(0, (clamp(0.1 + 0.04 * pace + 0.008 * (Ta - 60), 0.05, 1.5) + (0.02 + 0.002 * (100 - 100 * pow((518.6 - 3.56 * K) / 518.6, 5.256))) * (1 + 0.1 * pace) - cup * W) * t) / (0.6 * mass), 80, 100)",
+    "P": "clamp(100 - 100 * max(0, (clamp(0.1 + 0.04 * pace + 0.008 * (Ta - 60), 0.05, 1.5) + (0.02 + 0.002 * (100 - 100 * pow((518.6 - 3.56 * K) / 518.6, 5.256))) * (1 + 0.1 * pace) - cup * W) * t) / (0.6 * mass), 80, 100)",
+    "T": "clamp(100 - 100 * max(0, (clamp(0.1 + 0.04 * pace + 0.008 * (Ta - 60), 0.05, 1.5) + (0.02 + 0.002 * (100 - 100 * pow((518.6 - 3.56 * K) / 518.6, 5.256))) * (1 + 0.1 * pace) - cup * W) * t) / (0.6 * mass), 80, 100)"
   },
-  "chart": { "x": "K", "y": "L", "xLabel": "altitude (thousands of feet)", "yLabel": "body water after 4 h (% of normal)", "yMin": 60, "yMax": 105 },
+  "chart": { "x": "K", "y": "L", "xLabel": "altitude (thousands of feet)", "yLabel": "body water (% of normal)", "yMin": 85, "yMax": 101 },
   "overlay": {
     "base": "torso",
-    "caption": "thin air → breathe harder · dry air + sweat → water out faster than it comes in",
+    "caption": "thin air → less oxygen per breath → breathe & pump harder · sweat + dry breath → water lost",
     "parts": [
       { "shape": "mountain", "colour": "#2E86DE" },
-      { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "B" } },
-      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0.4, "max": 1.6 } },
-      { "shape": "thirst", "colour": "#E4572E", "anim": { "type": "light", "output": "L", "below": 94.9 } }
+      { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "Bs" } },
+      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "Hs" } },
+      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0, "max": 1 } },
+      { "shape": "thirst", "colour": "#E4572E", "anim": { "type": "light", "output": "L", "below": 97 } }
     ]
   },
+  "explain": {
+    "summary": "Elena has two problems at once. High up, the air pressure is lower, so each breath brings in less oxygen — her heart and lungs speed up even while she sits. Separately, sweating in the sun and breathing hard in dry mountain air take water out of her body faster than one small bottle can replace. Water helps the headache; only going down fixes the thin air.",
+    "rules": [
+      "Air pressure — and the oxygen in each breath — falls with altitude, using NASA's standard-atmosphere formula.",
+      "Her sitting heart rate and breathing rise to make up for the missing oxygen; after a few days at altitude this extra effort shrinks.",
+      "Water lost each hour = sweat (more with pace and heat) + water breathed out (more with thinner air and faster breathing).",
+      "Body water falls by the water lost minus the water drunk, over the hours of the hike.",
+      "As body water drops, pee gets darker and scarcer and thirst switches on."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "In the lower atmosphere, temperature T (°F) = 59 − 0.00356 × altitude (ft), and pressure = 2116 × [(T + 459.7) / 518.6]^5.256 pounds per square foot.", "cite": "nasa-atmos" },
+      { "fact": "Altitude sickness comes from lower air pressure and oxygen, usually above about 8,000 feet; a rapid pulse, shortness of breath with effort and headache are common; going up gradually is the most important prevention, and drinking plenty of fluids is advised.", "cite": "medline-altitude" },
+      { "fact": "Signs of dehydration include extreme thirst, urinating less, dark-coloured urine and dizziness; sweating in hot weather causes fluid loss.", "cite": "mayo-dehydration" },
+      { "fact": "For activity in the heat, drink about 1 cup of water every 15–20 minutes.", "cite": "niosh-heat-recs" },
+      { "fact": "Sweat loss = drop in body weight plus fluid drunk; dividing by time gives sweat rate.", "cite": "ksi-sweat" },
+      { "fact": "Most people's resting heart rate is 60–100 beats a minute.", "cite": "aha-target" }
+    ],
+    "choice": [
+      { "what": "Oxygen per breath is shown as a share of sea-level air pressure", "why": "The air is still about 21% oxygen at altitude; what drops is the pressure, so each breath holds fewer oxygen molecules." },
+      { "what": "Sitting heart rate rises 0.75 beats for each 1% less oxygen", "why": "Chosen so Elena goes from 70 at home to about 95 at 11,000 ft, matching the clue. Real increases vary between people." },
+      { "what": "The extra heart and breathing effort halves every 3 days at altitude", "why": "Bodies adjust over days to weeks; 3 days is a teaching value." },
+      { "what": "Water breathed out grows with thinner air and faster breathing", "why": "Each breath out carries water vapour; faster breathing in dry mountain air loses more. The amounts are estimates." },
+      { "what": "Body water is shown as a share of the water in a body (about 60% of body weight)", "why": "Keeps the numbers easy to compare; pee and thirst bands are teaching lines." }
+    ],
+    "illustrative": [
+      "Elena's weight, her half-cup an hour and the four-hour climb are made up for a fictional story.",
+      "Her sitting breathing rate and the size of the water-loss terms are estimates, not measurements."
+    ],
+    "studying": "Why some people get altitude sickness much more easily than others is still being studied."
+  },
+  "citations": [
+    { "id": "nasa-atmos", "title": "Earth Atmosphere Model — Imperial Units", "publisher": "NASA Glenn Research Center", "year": "", "url": "https://www.grc.nasa.gov/www/k-12/airplane/atmos.html", "verified": "2026-10-19",
+      "supports": "Troposphere equations in English units: T = 59 − 0.00356·h (°F, h in feet) and p = 2116 · [(T + 459.7)/518.6]^5.256 (pounds per square foot)." },
+    { "id": "medline-altitude", "title": "High altitude illness", "publisher": "MedlinePlus (U.S. National Library of Medicine)", "year": "", "url": "https://medlineplus.gov/ency/article/000133.htm", "verified": "2026-10-19",
+      "supports": "Caused by reduced air pressure and lower oxygen at high altitude, usually above 8,000 ft; symptoms include headache, rapid pulse and shortness of breath with exertion; gradual ascent is the most important prevention; drink plenty of fluids." },
+    { "id": "mayo-dehydration", "title": "Dehydration — Symptoms and causes", "publisher": "Mayo Clinic", "year": "", "url": "https://www.mayoclinic.org/diseases-conditions/dehydration/symptoms-causes/syc-20354086", "verified": "2026-10-19",
+      "supports": "Lists extreme thirst, urinating less, dark-colored urine and dizziness as signs; sweating, especially in hot weather, causes fluid loss." },
+    { "id": "niosh-heat-recs", "title": "Heat Stress — Workplace Recommendations", "publisher": "CDC / NIOSH", "year": "", "url": "https://www.cdc.gov/niosh/heat-stress/recommendations/index.html", "verified": "2026-10-19",
+      "supports": "For moderate activity in the heat lasting under 2 hours, drink 1 cup (8 oz) of water every 15–20 minutes." },
+    { "id": "ksi-sweat", "title": "Sweat Rate Calculator", "publisher": "Korey Stringer Institute, University of Connecticut", "year": "2024", "url": "https://koreystringer-institute.media.uconn.edu/wp-content/uploads/sites/3814/2024/08/Sweat-Rate-Calculator.pdf", "verified": "2026-10-19",
+      "supports": "Sweat loss equals body weight before minus after, plus fluid drunk; sweat rate is that loss divided by exercise time." },
+    { "id": "aha-target", "title": "Target Heart Rates Chart", "publisher": "American Heart Association", "year": "", "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates", "verified": "2026-10-19",
+      "supports": "A resting heart rate between 60 and 100 beats per minute is normal for most adults; athletes or very active people can be as low as 40." }
+  ],
   "limits": {
     "does": [
-      "Shows less oxygen in each breath higher up, and faster breathing to make up for it",
-      "Shows more water lost at altitude, from sweating and from breathing hard in dry air",
-      "Shows that drinking more fixes the water problem but not the oxygen problem"
+      "Shows air pressure — and so oxygen per breath — falling with altitude, from a standard NASA formula",
+      "Shows the heart and lungs working harder at rest high up, and settling after days of adjusting",
+      "Shows water loss from sweat and breathing adding up over a hike, and drinking making up for it"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include the days-long adjustment to altitude, food, or temperature",
-      "Model altitude sickness or anything dangerous"
+      "Measure any real person — Elena is fictional and the numbers are estimates",
+      "Model altitude sickness itself, or say who will get it",
+      "Include food, salt, wind or cold"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "A headache, feeling sick or being very short of breath on a mountain is a reason to rest, drink water and tell an adult."
-  },
-  "sources": ["CK-12 Life Science: respiratory system and homeostasis", "NOAA / NASA: how air pressure changes with altitude (student pages)"]
+    "wellbeing": "A headache, sick feeling or unusual breathlessness on a mountain is a reason to stop, drink water and tell an adult — going down is the real fix."
+  }
 }

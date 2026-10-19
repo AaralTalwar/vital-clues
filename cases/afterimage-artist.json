@@ -9,60 +9,208 @@
   "level": "difficult",
   "twist": "Hana sees a colour that isn't there at all. The green isn't on the wall or in her eye — it's made by tired red-sensing cells, and it shows up as the opposite colour.",
   "reviewed": null,
-  "character": { "name": "Hana", "age": 13 },
+  "character": {
+    "name": "Hana",
+    "age": 13
+  },
   "briefing": "Hana, 13, spends two minutes carefully filling in a big bright-red heart on a poster for the school fair. When she looks up at the white classroom wall, she sees a ghostly green heart of exactly the same shape. It fades after about twenty seconds.",
   "question": "Where did a green heart come from, when nothing green was there?",
   "illustration": "eye",
   "clues": [
-    { "id": 1, "title": "Two minutes of red", "icon": "eye", "colour": "coral",
+    {
+      "id": 1,
+      "title": "Two minutes of red",
+      "icon": "eye",
+      "colour": "coral",
       "text": "She stared at the vivid red paint for two whole minutes without looking away. Her eyes were fixed on one spot the whole time.",
-      "shows": "her red-sensing cells working hard for a long time", "visual": null, "pointsTo": "tired" },
-    { "id": 2, "title": "A green ghost on the wall", "icon": "brain", "colour": "teal",
+      "shows": "her red-sensing cells working hard for a long time",
+      "visual": null,
+      "pointsTo": "tired"
+    },
+    {
+      "id": 2,
+      "title": "A green ghost on the wall",
+      "icon": "brain",
+      "colour": "teal",
       "text": "On the plain white wall she sees a green heart, exactly the shape of the red one. It moves wherever she looks.",
-      "shows": "a colour appearing that isn't actually there", "visual": null, "pointsTo": "opposite" },
-    { "id": 3, "title": "Fades in twenty seconds", "icon": "clock", "colour": "purple",
+      "shows": "a colour appearing that isn't actually there",
+      "visual": null,
+      "pointsTo": "opposite"
+    },
+    {
+      "id": 3,
+      "title": "Fades in twenty seconds",
+      "icon": "clock",
+      "colour": "purple",
       "text": "She blinks a few times and the green heart fades away within about twenty seconds. Her eyes feel completely normal.",
-      "shows": "the tired cells recovering quickly", "visual": { "type": "bars", "from": 10, "to": 0, "unit": "green ghost strength, 0 s → 20 s later" }, "pointsTo": "recover" },
-    { "id": 4, "title": "Her friend tries it", "icon": "body", "colour": "blue",
+      "shows": "the tired cells recovering quickly",
+      "visual": {
+        "type": "bars",
+        "from": 10,
+        "to": 0,
+        "unit": "green ghost strength, 0 s → 20 s later"
+      },
+      "pointsTo": "recover"
+    },
+    {
+      "id": 4,
+      "title": "Her friend tries it",
+      "icon": "body",
+      "colour": "blue",
       "text": "Her friend stares at the red heart and sees a green ghost too. Then they try a blue square — and both see a yellow ghost.",
-      "shows": "it happening to everyone's eyes, always in the opposite colour", "visual": null, "pointsTo": "cells" }
+      "shows": "it happening to everyone's eyes, always in the opposite colour",
+      "visual": null,
+      "pointsTo": "cells"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "Some green paint splashed into her eye.", "flaw": "Paint in the eye wouldn't fade in twenty seconds, and her friend saw the same green ghost without touching any paint." },
-    { "id": "B", "text": "The red-sensing cells in her eyes got tired from staring, so when she looks at white the other colour cells 'win' and her brain sees the opposite colour — green — until the tired cells recover.", "best": true },
-    { "id": "C", "text": "There's a faint green stain on the wall.", "flaw": "The green heart moved wherever she looked, and a blue square gave a yellow ghost — a stain can't follow your eyes or change colour." },
-    { "id": "D", "text": "Her eyes are damaged from staring too hard.", "flaw": "Damage wouldn't vanish in twenty seconds, and her friend's eyes did exactly the same thing." }
+    {
+      "id": "A",
+      "text": "Some green paint splashed into her eye.",
+      "flaw": "Paint in the eye wouldn't fade in twenty seconds, and her friend saw the same green ghost without touching any paint."
+    },
+    {
+      "id": "B",
+      "text": "The red-sensing cells in her eyes got tired from staring, so when she looks at white the other colour cells 'win' and her brain sees the opposite colour — green — until the tired cells recover.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "There's a faint green stain on the wall.",
+      "flaw": "The green heart moved wherever she looked, and a blue square gave a yellow ghost — a stain can't follow your eyes or change colour."
+    },
+    {
+      "id": "D",
+      "text": "Her eyes are damaged from staring too hard.",
+      "flaw": "Damage wouldn't vanish in twenty seconds, and her friend's eyes did exactly the same thing."
+    }
   ],
   "evidence": {
-    "A": { "supports": [], "doesntFit": [3, 4] },
-    "B": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "C": { "supports": [2], "doesntFit": [3, 4] },
-    "D": { "supports": [], "doesntFit": [3, 4] }
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [
+        2
+      ],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "G",
-    "prompt": "The longer Hana stares at the vivid red paint — from 0 to 60 seconds — what happens to how strong the green afterimage is?",
+    "prompt": "The longer Hana stares at the vivid red paint — from 0 up to 120 seconds (two minutes) — what happens to how strong the green afterimage is?",
     "expectedShape": "rises",
-    "second": { "question": "If she stared at bright green paint instead, what colour would the ghost be?", "options": ["reddish-pink", "green", "no colour"], "answer": "reddish-pink" }
+    "second": {
+      "question": "If she stared at bright green paint instead, what colour would the ghost be?",
+      "options": [
+        "reddish-pink",
+        "green",
+        "no colour"
+      ],
+      "answer": "reddish-pink"
+    }
   },
-  "labDefaults": { "primary": 30, "secondary": 3 },
+  "labDefaults": {
+    "primary": 120
+  },
   "concepts": [
-    { "id": "cells", "label": "colour-sensing cells", "colour": "teal",
-      "synonyms": ["cells", "cell", "cones", "cone", "sensors", "receptors"],
-      "hint": "What in the eye actually detects colour?" },
-    { "id": "tired", "label": "the cells get tired", "colour": "coral",
-      "synonyms": ["tired", "tire", "tires", "fatigue", "fatigued", "worn out", "used up", "overworked"],
-      "hint": "What did two minutes of red do to those cells?" },
-    { "id": "opposite", "label": "the opposite colour", "colour": "purple",
-      "synonyms": ["opposite", "opposites", "complementary", "other colour", "other color", "reverse"],
-      "hint": "Why green after red, and yellow after blue?" },
-    { "id": "brain", "label": "the brain builds the colour", "colour": "blue",
-      "synonyms": ["brain", "signal", "signals", "message", "messages"],
-      "hint": "Where does the 'green' actually get made?" },
-    { "id": "recover", "label": "recovers in seconds", "colour": "amber",
-      "synonyms": ["recover", "recovers", "recovered", "recovery", "fades", "faded", "fade", "back to normal"],
-      "hint": "Why did the ghost go away?" }
+    {
+      "id": "cells",
+      "label": "colour-sensing cells",
+      "colour": "teal",
+      "synonyms": [
+        "cells",
+        "cell",
+        "cones",
+        "cone",
+        "sensors",
+        "receptors"
+      ],
+      "hint": "What in the eye actually detects colour?"
+    },
+    {
+      "id": "tired",
+      "label": "the cells get tired",
+      "colour": "coral",
+      "synonyms": [
+        "tired",
+        "tire",
+        "tires",
+        "fatigue",
+        "fatigued",
+        "worn out",
+        "used up",
+        "overworked"
+      ],
+      "hint": "What did two minutes of red do to those cells?"
+    },
+    {
+      "id": "opposite",
+      "label": "the opposite colour",
+      "colour": "purple",
+      "synonyms": [
+        "opposite",
+        "opposites",
+        "complementary",
+        "other colour",
+        "other color",
+        "reverse"
+      ],
+      "hint": "Why green after red, and yellow after blue?"
+    },
+    {
+      "id": "brain",
+      "label": "the brain builds the colour",
+      "colour": "blue",
+      "synonyms": [
+        "brain",
+        "signal",
+        "signals",
+        "message",
+        "messages"
+      ],
+      "hint": "Where does the 'green' actually get made?"
+    },
+    {
+      "id": "recover",
+      "label": "recovers in seconds",
+      "colour": "amber",
+      "synonyms": [
+        "recover",
+        "recovers",
+        "recovered",
+        "recovery",
+        "fades",
+        "faded",
+        "fade",
+        "back to normal"
+      ],
+      "hint": "Why did the ghost go away?"
+    }
   ],
   "transfer": {
     "context": "Tomás stares at a bright yellow sticky note on his desk for a minute. When he looks at a blank white page, he sees a bluish square.",

@@ -8,60 +8,209 @@
   "minutes": 8,
   "level": "easy",
   "reviewed": null,
-  "character": { "name": "Mateo", "age": 12 },
+  "character": {
+    "name": "Mateo",
+    "age": 12
+  },
   "briefing": "Mateo, 12, skids off his skateboard and scrapes his knee. It bleeds for a few minutes, then stops on its own. A dark crust covers it for a week, and when the crust falls off there is new pink skin underneath.",
   "question": "How did Mateo's knee stop the bleeding and fix itself?",
   "illustration": "bandage",
   "clues": [
-    { "id": 1, "title": "Slowing by itself", "icon": "drop", "colour": "coral",
+    {
+      "id": 1,
+      "title": "Slowing by itself",
+      "icon": "drop",
+      "colour": "coral",
       "text": "The knee bled steadily for the first minute, then slowed and stopped after about five minutes. Nobody pressed on it.",
-      "shows": "the bleeding switching off by itself within minutes", "visual": { "type": "bars", "from": 100, "to": 5, "unit": "% bleeding, first minute → 5 minutes" }, "pointsTo": "stops" },
-    { "id": 2, "title": "Sticky and dark", "icon": "bandage", "colour": "purple",
+      "shows": "the bleeding switching off by itself within minutes",
+      "visual": {
+        "type": "bars",
+        "from": 100,
+        "to": 5,
+        "unit": "% bleeding, first minute → 5 minutes"
+      },
+      "pointsTo": "stops"
+    },
+    {
+      "id": 2,
+      "title": "Sticky and dark",
+      "icon": "bandage",
+      "colour": "purple",
       "text": "Before it was even dry, the blood on the scrape turned sticky and dark red, like jelly. The edges looked glued together.",
-      "shows": "blood thickening into a jelly-like plug", "visual": null, "pointsTo": "clot" },
-    { "id": 3, "title": "Under the bandage too", "icon": "bandage", "colour": "teal",
+      "shows": "blood thickening into a jelly-like plug",
+      "visual": null,
+      "pointsTo": "clot"
+    },
+    {
+      "id": 3,
+      "title": "Under the bandage too",
+      "icon": "bandage",
+      "colour": "teal",
       "text": "His mom put a bandage on right away. It still stopped in about five minutes, even though no air could reach it.",
-      "shows": "the plug forming even with no air to dry the blood", "visual": null, "pointsTo": "platelets" },
-    { "id": 4, "title": "New skin under the scab", "icon": "skin", "colour": "amber",
+      "shows": "the plug forming even with no air to dry the blood",
+      "visual": null,
+      "pointsTo": "platelets"
+    },
+    {
+      "id": 4,
+      "title": "New skin under the scab",
+      "icon": "skin",
+      "colour": "amber",
       "text": "A dark crust stayed on for a week. When it fell off there was new pink skin underneath.",
-      "shows": "the scab protecting the knee while new skin grew", "visual": null, "pointsTo": "skin" }
+      "shows": "the scab protecting the knee while new skin grew",
+      "visual": null,
+      "pointsTo": "skin"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "Air dries the blood until it stops, like paint drying.", "flaw": "Paint takes hours to dry and needs air — but the bleeding stopped just as fast under a bandage where no air could reach it." },
-    { "id": "B", "text": "The scrape was not deep enough to really bleed.", "flaw": "It did bleed, steadily, for several minutes — then something switched it off by itself." },
-    { "id": "C", "text": "Tiny cell pieces in his blood called platelets rushed to the scrape and stuck together, building a mesh that plugged the leak; the plug dried into a scab that protects the knee while new skin grows underneath.", "best": true },
-    { "id": "D", "text": "His knee is infected.", "flaw": "An infection builds up over days and gets worse; this bleeding stopped in minutes and the knee healed cleanly within a week." }
+    {
+      "id": "A",
+      "text": "Air dries the blood until it stops, like paint drying.",
+      "flaw": "Paint takes hours to dry and needs air — but the bleeding stopped just as fast under a bandage where no air could reach it."
+    },
+    {
+      "id": "B",
+      "text": "The scrape was not deep enough to really bleed.",
+      "flaw": "It did bleed, steadily, for several minutes — then something switched it off by itself."
+    },
+    {
+      "id": "C",
+      "text": "Tiny cell pieces in his blood called platelets rushed to the scrape and stuck together, building a mesh that plugged the leak; the plug dried into a scab that protects the knee while new skin grows underneath.",
+      "best": true
+    },
+    {
+      "id": "D",
+      "text": "His knee is infected.",
+      "flaw": "An infection builds up over days and gets worse; this bleeding stopped in minutes and the knee healed cleanly within a week."
+    }
   ],
   "evidence": {
-    "A": { "supports": [], "doesntFit": [3] },
-    "B": { "supports": [], "doesntFit": [1] },
-    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "D": { "supports": [], "doesntFit": [1, 4] }
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        1
+      ]
+    },
+    "C": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "B",
     "prompt": "After Mateo scrapes his knee, what happens to how much it bleeds over the next ten minutes?",
     "expectedShape": "falls",
-    "second": { "question": "And the strength of the clot over those minutes?", "options": ["up", "same", "down"], "answer": "up" }
+    "second": {
+      "question": "And the strength of the clot over those minutes?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
   },
-  "labDefaults": { "primary": 3, "secondary": 2 },
+  "labDefaults": {
+    "primary": 3
+  },
   "concepts": [
-    { "id": "platelets", "label": "platelets", "colour": "purple",
-      "synonyms": ["platelets", "platelet", "cell pieces", "tiny cells", "blood cells"],
-      "hint": "What tiny pieces in the blood rush to the scrape?" },
-    { "id": "clot", "label": "they stick and plug the leak", "colour": "coral",
-      "synonyms": ["clot", "clots", "clotting", "plug", "plugs", "mesh", "jelly", "sticky", "stick together"],
-      "hint": "What do those pieces build at the scrape?" },
-    { "id": "stops", "label": "bleeding stops", "colour": "teal",
-      "synonyms": ["stop", "stops", "stopped", "stopping", "slowed", "slows", "seals", "sealed"],
-      "hint": "What happened to the bleeding after a few minutes?" },
-    { "id": "scab", "label": "the scab protects", "colour": "amber",
-      "synonyms": ["scab", "scabs", "crust", "protects", "protect", "covers", "guard"],
-      "hint": "What did the plug turn into, and what is it for?" },
-    { "id": "skin", "label": "new skin grows", "colour": "blue",
-      "synonyms": ["skin", "new skin", "heal", "heals", "healed", "healing", "grows back", "regrow", "regrows"],
-      "hint": "What was under the crust when it fell off?" }
+    {
+      "id": "platelets",
+      "label": "platelets",
+      "colour": "purple",
+      "synonyms": [
+        "platelets",
+        "platelet",
+        "cell pieces",
+        "tiny cells",
+        "blood cells"
+      ],
+      "hint": "What tiny pieces in the blood rush to the scrape?"
+    },
+    {
+      "id": "clot",
+      "label": "they stick and plug the leak",
+      "colour": "coral",
+      "synonyms": [
+        "clot",
+        "clots",
+        "clotting",
+        "plug",
+        "plugs",
+        "mesh",
+        "jelly",
+        "sticky",
+        "stick together"
+      ],
+      "hint": "What do those pieces build at the scrape?"
+    },
+    {
+      "id": "stops",
+      "label": "bleeding stops",
+      "colour": "teal",
+      "synonyms": [
+        "stop",
+        "stops",
+        "stopped",
+        "stopping",
+        "slowed",
+        "slows",
+        "seals",
+        "sealed"
+      ],
+      "hint": "What happened to the bleeding after a few minutes?"
+    },
+    {
+      "id": "scab",
+      "label": "the scab protects",
+      "colour": "amber",
+      "synonyms": [
+        "scab",
+        "scabs",
+        "crust",
+        "protects",
+        "protect",
+        "covers",
+        "guard"
+      ],
+      "hint": "What did the plug turn into, and what is it for?"
+    },
+    {
+      "id": "skin",
+      "label": "new skin grows",
+      "colour": "blue",
+      "synonyms": [
+        "skin",
+        "new skin",
+        "heal",
+        "heals",
+        "healed",
+        "healing",
+        "grows back",
+        "regrow",
+        "regrows"
+      ],
+      "hint": "What was under the crust when it fell off?"
+    }
   ],
   "transfer": {
     "context": "Ana cuts her finger on the edge of a sheet of paper. It bleeds a little, then stops after a couple of minutes, and a thin dark line forms along the cut.",

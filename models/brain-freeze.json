@@ -1,30 +1,261 @@
 {
   "id": "brain-freeze",
-  "name": "Nerves & cold",
+  "version": 2,
+  "name": "Tomás's brain freeze",
   "colour": "blue",
-  "inputs": {
-    "primary":   { "key": "G", "label": "How fast he gulps", "min": 0, "max": 10, "step": 1, "ticks": ["slow sips", "normal", "huge gulps"] },
-    "secondary": { "key": "S", "label": "Seconds after the gulp", "min": 0, "max": 60, "step": 5, "default": 0, "unit": "s", "ticks": ["right away", "30 s", "1 min"] }
+  "parameters": [
+    {
+      "key": "G",
+      "label": "How fast he gulps",
+      "role": "primary",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 8,
+      "ticks": [
+        "slow sips",
+        "sips",
+        "huge gulps"
+      ],
+      "explain": "Cold that hits the roof of the mouth fast brings on brain freeze; slow sips usually don't.",
+      "basis": "source",
+      "cite": "marshfield-freeze"
+    },
+    {
+      "key": "S",
+      "label": "Seconds after the gulp",
+      "role": "bubble",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 5,
+      "unit": "s",
+      "explain": "Brain freeze lasts from a few seconds to a few minutes and switches off by itself.",
+      "basis": "source",
+      "cite": "marshfield-freeze"
+    },
+    {
+      "key": "W",
+      "label": "Warm tongue on the roof of his mouth",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "no"
+        },
+        {
+          "value": 1,
+          "label": "yes"
+        }
+      ],
+      "explain": "Test the tongue trick: pressing a warm tongue on the roof of the mouth warms it back up, so the ache fades faster.",
+      "basis": "source",
+      "cite": "marshfield-freeze"
+    },
+    {
+      "key": "Td",
+      "label": "Drink temperature",
+      "role": "factor",
+      "min": 20,
+      "max": 50,
+      "step": 1,
+      "default": 25,
+      "unit": "°F",
+      "explain": "A colder drink cools the roof of the mouth more.",
+      "basis": "choice"
+    },
+    {
+      "key": "sens",
+      "label": "How sensitive he is",
+      "role": "factor",
+      "min": 0.7,
+      "max": 1.3,
+      "step": 0.3,
+      "default": 1.3,
+      "options": [
+        {
+          "value": 0.7,
+          "label": "hardly ever"
+        },
+        {
+          "value": 1,
+          "label": "sometimes"
+        },
+        {
+          "value": 1.3,
+          "label": "easily"
+        }
+      ],
+      "explain": "Some people get brain freeze easily, others hardly ever.",
+      "basis": "choice"
+    }
+  ],
+  "constants": {
+    "body": 98.6
   },
   "outputs": [
-    { "key": "T", "label": "Roof of the mouth cooled by", "unit": "°F", "colour": "blue", "decimals": 0 },
-    { "key": "P", "label": "Forehead ache", "unit": "0–10", "colour": "coral", "decimals": 1 },
-    { "key": "V", "label": "Blood vessels in the roof of the mouth", "colour": "purple", "bands": [{ "upTo": 0.4, "text": "normal" }, { "upTo": 3.9, "text": "squeezing" }, { "text": "squeezed, then rushing open" }] }
+    {
+      "key": "T",
+      "label": "Roof-of-mouth cooling",
+      "unit": "°F",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "P",
+      "label": "Forehead ache",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
+      "key": "Bt",
+      "label": "Brain temperature",
+      "colour": "purple",
+      "text": "about 98.6°F — steady"
+    },
+    {
+      "key": "Fl",
+      "label": "Ache",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 1,
+          "text": "none"
+        },
+        {
+          "upTo": 5,
+          "text": "mild"
+        },
+        {
+          "text": "sharp"
+        }
+      ]
+    }
   ],
   "rules": {
-    "T": "2 * G * pow(0.5, S / 10)",
-    "P": "clamp(1.2 * (G - 2), 0, 10) * pow(0.5, S / 10)",
-    "V": "clamp(1.2 * (G - 2), 0, 10) * pow(0.5, S / 10)"
+    "T": "(G / 10) * (body - Td) * 0.35",
+    "P": "clamp(sens * max(0, (G / 10) * (body - Td) * 0.35 - 4) / 1.6, 0, 10) * pow(0.5, S / (12 - 7 * W))",
+    "Fl": "clamp(sens * max(0, (G / 10) * (body - Td) * 0.35 - 4) / 1.6, 0, 10) * pow(0.5, S / (12 - 7 * W))"
   },
-  "chart": { "x": "G", "y": "P", "xLabel": "how fast he gulps", "yLabel": "forehead ache (0–10)", "yMin": 0, "yMax": 10 },
+  "chart": {
+    "x": "G",
+    "y": "P",
+    "xLabel": "how fast he gulps",
+    "yLabel": "forehead ache (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
   "overlay": {
     "base": "head",
     "caption": "cold on the roof of the mouth → vessels squeeze then rush open → nerves send pain felt in the forehead",
     "parts": [
-      { "shape": "snow", "colour": "#2E86DE", "anim": { "type": "count", "output": "T", "min": 0, "max": 20 } },
-      { "shape": "brain", "colour": "#E4572E", "anim": { "type": "glow", "output": "P", "min": 0, "max": 10 } }
+      {
+        "shape": "snow",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "count",
+          "output": "T",
+          "min": 0,
+          "max": 20
+        }
+      },
+      {
+        "shape": "brain",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "glow",
+          "output": "P",
+          "min": 0,
+          "max": 10
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "When Tomás gulps a cold smoothie, the cold hits the roof of his mouth fast. Small blood vessels there tighten and then rush open, and a big face nerve passes the signal on — his brain feels it as an ache in his forehead, even though nothing touched it. His brain doesn't actually get colder. The ache fades within seconds, faster if he warms the roof of his mouth with his tongue.",
+    "rules": [
+      "Faster gulps and colder drinks cool the roof of the mouth more.",
+      "Below a small amount of cooling there's no ache — that's why slow sips are fine.",
+      "The ache halves about every 12 seconds; a warm tongue makes it fade about twice as fast.",
+      "His brain stays at body temperature the whole time."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Cold on the roof of the mouth makes small blood vessels tighten then rapidly open; nerve signals through the trigeminal nerve are felt as pain in the head.",
+        "cite": "harvard-freeze"
+      },
+      {
+        "fact": "Brain freeze lasts from a few seconds to a few minutes; pressing the tongue on the roof of the mouth can stop it; eating cold foods slowly may avoid it.",
+        "cite": "marshfield-freeze"
+      },
+      {
+        "fact": "It usually lasts under two minutes and is not harmful.",
+        "cite": "harvard-freeze"
+      },
+      {
+        "fact": "Normal body temperature is about 98.6°F (37°C).",
+        "cite": "mp-bodytemp"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Roof-of-mouth cooling = gulp speed × (98.6 − drink temperature) × 0.35",
+        "why": "A simple way to show faster gulps and colder drinks both cool the palate more; the 0.35 is a teaching value."
+      },
+      {
+        "what": "No ache until the palate cools by more than 4°F",
+        "why": "Shows clue 2: slow sips never hurt."
+      },
+      {
+        "what": "The ache halves every 12 seconds, every 5 seconds with a warm tongue",
+        "why": "Matches clue 4 (gone in about half a minute) and clue 3 (the tongue makes it fade faster)."
+      },
+      {
+        "what": "Drink temperature and sensitivity are adjustable",
+        "why": "Lets you see why his friend gets the same thing from ice cream, and why some people rarely get it."
+      }
+    ],
+    "illustrative": [
+      "Tomás's gulp speed, his 25°F smoothie and the 0–10 ache scale are made up for a fictional story."
+    ],
+    "studying": "Scientists still debate exactly what causes brain freeze. The leading idea is blood vessels in the roof of the mouth tightening and then rushing open, but it is hard to study because each one is over so quickly."
+  },
+  "citations": [
+    {
+      "id": "harvard-freeze",
+      "title": "What happens during a brain freeze, and is it harmful?",
+      "publisher": "Harvard Health Publishing",
+      "year": "",
+      "url": "https://www.health.harvard.edu/pain/what-happens-during-a-brain-freeze-and-is-it-harmful",
+      "verified": "2026-10-19",
+      "supports": "The cause is debated; the leading idea is that cold on the roof of the mouth makes small blood vessels tighten then rapidly open, and nerve signals via the trigeminal nerve are felt as pain in the head (referred pain); it usually lasts under two minutes; eat very cold foods slowly."
+    },
+    {
+      "id": "marshfield-freeze",
+      "title": "Brain freeze",
+      "publisher": "Marshfield Clinic Health System (Shine365)",
+      "year": "",
+      "url": "https://shine365.marshfieldclinic.org/wellness/brain-freeze/",
+      "verified": "2026-10-19",
+      "supports": "Brain freeze is a cold-induced headache lasting a few seconds to a few minutes; blood vessels in the roof of the mouth narrow; pressing your tongue on the roof of your mouth can stop it; eating and drinking cold foods slowly may avoid it."
+    },
+    {
+      "id": "mp-bodytemp",
+      "title": "Body temperature norms",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/001982.htm",
+      "verified": "2026-10-19",
+      "supports": "Average normal body temperature is generally accepted as 98.6°F (37°C); normal can range from about 97°F to 99°F."
+    }
+  ],
   "limits": {
     "does": [
       "Shows the ache growing with how much cold hits the roof of the mouth, and how fast",
@@ -38,6 +269,5 @@
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Headaches that come without anything cold, or don't go away, are a reason to tell an adult."
-  },
-  "sources": ["NIH News in Health: how the body senses cold and pain (student overview)", "CK-12 Life Science: nervous system"]
+  }
 }

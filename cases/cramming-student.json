@@ -8,60 +8,212 @@
   "minutes": 9,
   "level": "moderate",
   "reviewed": null,
-  "character": { "name": "Ines", "age": 15 },
+  "character": {
+    "name": "Ines",
+    "age": 15
+  },
   "briefing": "Ines, 15, and her twin brother study the same 40 Spanish words for the same two hours in total. Ines does it all the night before the quiz; her brother does 20 minutes each evening for six days. Both ace the quiz the next morning — but a week later he remembers most of the words, and she remembers few.",
   "question": "Same words, same time — why did one twin's memory last and the other's fade?",
   "illustration": "book",
   "clues": [
-    { "id": 1, "title": "Same total time", "icon": "clock", "colour": "purple",
+    {
+      "id": 1,
+      "title": "Same total time",
+      "icon": "clock",
+      "colour": "purple",
       "text": "Both studied the same 40 words for two hours in total. Ines did it in one evening; her brother did 20 minutes each evening for six days.",
-      "shows": "the same amount of practice, split up differently", "visual": null, "pointsTo": "spread" },
-    { "id": 2, "title": "Both aced day one", "icon": "book", "colour": "teal",
+      "shows": "the same amount of practice, split up differently",
+      "visual": null,
+      "pointsTo": "spread"
+    },
+    {
+      "id": 2,
+      "title": "Both aced day one",
+      "icon": "book",
+      "colour": "teal",
       "text": "On the quiz the next morning, they both scored over 90%. Ines had clearly learned the words.",
-      "shows": "cramming working fine in the short term", "visual": null, "pointsTo": "recall" },
-    { "id": 3, "title": "A week later", "icon": "brain", "colour": "amber",
+      "shows": "cramming working fine in the short term",
+      "visual": null,
+      "pointsTo": "recall"
+    },
+    {
+      "id": 3,
+      "title": "A week later",
+      "icon": "brain",
+      "colour": "amber",
       "text": "On a surprise quiz a week later, her brother remembers 34 of the words. Ines remembers 12.",
-      "shows": "the crammed memories fading much faster", "visual": { "type": "bars", "from": 12, "to": 34, "unit": "words remembered a week later, Ines → brother" }, "pointsTo": "fade" },
-    { "id": 4, "title": "Her turn to spread it out", "icon": "book", "colour": "blue",
+      "shows": "the crammed memories fading much faster",
+      "visual": {
+        "type": "bars",
+        "from": 12,
+        "to": 34,
+        "unit": "words remembered a week later, Ines → brother"
+      },
+      "pointsTo": "fade"
+    },
+    {
+      "id": 4,
+      "title": "Her turn to spread it out",
+      "icon": "book",
+      "colour": "blue",
       "text": "For the next unit Ines also does 20 minutes a day. A week later she remembers almost as many words as her brother.",
-      "shows": "the same person remembering far more once she spread out her practice", "visual": null, "pointsTo": "stronger" }
+      "shows": "the same person remembering far more once she spread out her practice",
+      "visual": null,
+      "pointsTo": "stronger"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "Ines is just worse at languages than her brother.", "flaw": "They scored the same on the next-morning quiz, and when Ines spread out her next unit she remembered almost as much as he did." },
-    { "id": "B", "text": "Spreading practice over several days, with sleep in between, makes the brain pull each word back up again and again; each recall after a gap makes the memory stronger and longer-lasting. Cramming fills a short-term memory that fades fast.", "best": true },
-    { "id": "C", "text": "Ines got distracted by her phone while studying.", "flaw": "She aced the next-morning quiz, so she did learn the words — the difference only showed up a week later." },
-    { "id": "D", "text": "Studying at night is worse than studying in the day.", "flaw": "Her brother studied in the evenings too; what differed was spreading it over six days, not the time of day." }
+    {
+      "id": "A",
+      "text": "Ines is just worse at languages than her brother.",
+      "flaw": "They scored the same on the next-morning quiz, and when Ines spread out her next unit she remembered almost as much as he did."
+    },
+    {
+      "id": "B",
+      "text": "Spreading practice over several days, with sleep in between, makes the brain pull each word back up again and again; each recall after a gap makes the memory stronger and longer-lasting. Cramming fills a short-term memory that fades fast.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "Ines got distracted by her phone while studying.",
+      "flaw": "She aced the next-morning quiz, so she did learn the words — the difference only showed up a week later."
+    },
+    {
+      "id": "D",
+      "text": "Studying at night is worse than studying in the day.",
+      "flaw": "Her brother studied in the evenings too; what differed was spreading it over six days, not the time of day."
+    }
   ],
   "evidence": {
-    "A": { "supports": [3], "doesntFit": [2, 4] },
-    "B": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "C": { "supports": [], "doesntFit": [2] },
-    "D": { "supports": [], "doesntFit": [1] }
+    "A": {
+      "supports": [
+        3
+      ],
+      "doesntFit": [
+        2,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        2
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        1
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "R",
     "prompt": "Ines studies for two hours in total. If she spreads those two hours over more and more days — from one night to a whole week — what happens to how many words she remembers a week later?",
     "expectedShape": "rises",
-    "second": { "question": "And her score on a quiz the very next morning after she finishes?", "options": ["up", "same", "down"], "answer": "same" }
+    "second": {
+      "question": "And her score on a quiz the very next morning after she finishes — does spreading it out change that much?",
+      "options": [
+        "much higher",
+        "about the same",
+        "much lower"
+      ],
+      "answer": "about the same"
+    }
   },
-  "labDefaults": { "primary": 1, "secondary": 2 },
+  "labDefaults": {
+    "primary": 1
+  },
   "concepts": [
-    { "id": "spread", "label": "practice spread over days", "colour": "purple",
-      "synonyms": ["spread", "spaced", "spacing", "split", "each day", "every day", "several days"],
-      "hint": "What did her brother do differently with the same two hours?" },
-    { "id": "recall", "label": "pulling it back up", "colour": "teal",
-      "synonyms": ["recall", "recalling", "remember again", "pull back", "pulling back", "testing", "test yourself", "retrieve"],
-      "hint": "What does the brain have to do each time you come back to the words after a gap?" },
-    { "id": "sleep", "label": "sleep in between", "colour": "amber",
-      "synonyms": ["sleep", "sleeps", "slept", "nights", "overnight", "night's sleep"],
-      "hint": "What happens between each of her brother's sessions?" },
-    { "id": "stronger", "label": "memory gets stronger", "colour": "blue",
-      "synonyms": ["stronger", "strengthens", "strengthen", "sticks", "stick", "long-lasting", "long term", "long-term", "lasts"],
-      "hint": "What does each gap-and-recall do to the memory?" },
-    { "id": "fade", "label": "crammed memories fade", "colour": "coral",
-      "synonyms": ["fade", "fades", "faded", "forget", "forgets", "forgot", "forgotten", "short-term", "short term"],
-      "hint": "What happened to Ines's words over the week?" }
+    {
+      "id": "spread",
+      "label": "practice spread over days",
+      "colour": "purple",
+      "synonyms": [
+        "spread",
+        "spaced",
+        "spacing",
+        "split",
+        "each day",
+        "every day",
+        "several days"
+      ],
+      "hint": "What did her brother do differently with the same two hours?"
+    },
+    {
+      "id": "recall",
+      "label": "pulling it back up",
+      "colour": "teal",
+      "synonyms": [
+        "recall",
+        "recalling",
+        "remember again",
+        "pull back",
+        "pulling back",
+        "testing",
+        "test yourself",
+        "retrieve"
+      ],
+      "hint": "What does the brain have to do each time you come back to the words after a gap?"
+    },
+    {
+      "id": "sleep",
+      "label": "sleep in between",
+      "colour": "amber",
+      "synonyms": [
+        "sleep",
+        "sleeps",
+        "slept",
+        "nights",
+        "overnight",
+        "night's sleep"
+      ],
+      "hint": "What happens between each of her brother's sessions?"
+    },
+    {
+      "id": "stronger",
+      "label": "memory gets stronger",
+      "colour": "blue",
+      "synonyms": [
+        "stronger",
+        "strengthens",
+        "strengthen",
+        "sticks",
+        "stick",
+        "long-lasting",
+        "long term",
+        "long-term",
+        "lasts"
+      ],
+      "hint": "What does each gap-and-recall do to the memory?"
+    },
+    {
+      "id": "fade",
+      "label": "crammed memories fade",
+      "colour": "coral",
+      "synonyms": [
+        "fade",
+        "fades",
+        "faded",
+        "forget",
+        "forgets",
+        "forgot",
+        "forgotten",
+        "short-term",
+        "short term"
+      ],
+      "hint": "What happened to Ines's words over the week?"
+    }
   ],
   "transfer": {
     "context": "Ollie learns a piano piece by practising 15 minutes a day for two weeks. His friend practises the same piece for 3½ hours the day before the recital. Both play well at the recital; a month later Ollie can still play it and his friend can't.",

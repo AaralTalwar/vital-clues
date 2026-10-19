@@ -1,43 +1,322 @@
 {
   "id": "blink-rate",
-  "name": "Eyes & tears",
+  "version": 2,
+  "name": "Ravi's blinking and tear film",
   "colour": "blue",
-  "inputs": {
-    "primary":   { "key": "F", "label": "Minutes of focused screen time", "min": 0, "max": 60, "step": 5, "unit": "min", "ticks": ["start", "30 min", "1 h"] },
-    "secondary": { "key": "B", "label": "Look-away breaks per hour", "min": 0, "max": 3, "step": 1, "default": 0, "ticks": ["none", "1 an hour", "every 20 min"] }
-  },
+  "parameters": [
+    {
+      "key": "c",
+      "label": "How hard he's concentrating",
+      "role": "primary",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 9,
+      "ticks": [
+        "chatting",
+        "watching",
+        "boss fight"
+      ],
+      "explain": "Concentrating on a screen cuts blinking from about 15 a minute to about 5–7.",
+      "basis": "source",
+      "cite": "aao-screens"
+    },
+    {
+      "key": "brk",
+      "label": "Look-away breaks",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "none"
+        },
+        {
+          "value": 1,
+          "label": "20-20-20 breaks"
+        }
+      ],
+      "explain": "The 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds.",
+      "basis": "source",
+      "cite": "aoa-cvs"
+    },
+    {
+      "key": "br",
+      "label": "Screen brightness",
+      "role": "bubble",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 7,
+      "explain": "Test the 'screen light is burning his eyes' idea: experts have found no evidence screen light damages eyes — and here it changes the light, not the dryness.",
+      "basis": "source",
+      "cite": "aao-bluelight"
+    },
+    {
+      "key": "b0",
+      "label": "His usual blink rate",
+      "role": "factor",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 15,
+      "unit": "per min",
+      "explain": "Most people blink about 15 times a minute when they're not concentrating.",
+      "basis": "source",
+      "cite": "aao-screens"
+    },
+    {
+      "key": "air",
+      "label": "Room air",
+      "role": "factor",
+      "min": 0.8,
+      "max": 1.3,
+      "step": 0.1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.8,
+          "label": "humid"
+        },
+        {
+          "value": 1,
+          "label": "normal"
+        },
+        {
+          "value": 1.3,
+          "label": "dry (heater or AC)"
+        }
+      ],
+      "explain": "Dry air — from heating, air conditioning or wind — dries the eyes faster.",
+      "basis": "source",
+      "cite": "mp-dryeye"
+    },
+    {
+      "key": "mins",
+      "label": "Minutes played",
+      "role": "factor",
+      "min": 10,
+      "max": 180,
+      "step": 10,
+      "default": 120,
+      "unit": "min",
+      "explain": "The longer the stretch without breaks, the more the eye surface dries.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
-    { "key": "K", "label": "Blinks per minute", "unit": "per min", "colour": "blue", "decimals": 0 },
-    { "key": "D", "label": "Eye dryness", "unit": "0–10", "colour": "coral", "decimals": 1 },
-    { "key": "E", "label": "Eyes feel", "colour": "teal", "bands": [{ "upTo": 3, "text": "comfortable" }, { "upTo": 6, "text": "a bit dry" }, { "text": "stinging" }] }
+    {
+      "key": "K",
+      "label": "Blinks",
+      "unit": "per min",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "g",
+      "label": "Gap between blinks",
+      "unit": "s",
+      "colour": "purple",
+      "decimals": 1
+    },
+    {
+      "key": "D",
+      "label": "Eye dryness",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
+      "key": "E",
+      "label": "Eyes feel",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 3,
+          "text": "comfortable"
+        },
+        {
+          "upTo": 5.5,
+          "text": "a bit dry"
+        },
+        {
+          "text": "stinging, gritty"
+        }
+      ]
+    },
+    {
+      "key": "Wt",
+      "label": "Watering afterwards",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 5.5,
+          "text": "unlikely"
+        },
+        {
+          "text": "likely — catch-up tears"
+        }
+      ]
+    },
+    {
+      "key": "Lt",
+      "label": "Light from the screen",
+      "unit": "% of max",
+      "colour": "amber",
+      "decimals": 0
+    }
   ],
   "rules": {
-    "K": "15 - 9 * (1 - pow(0.5, F / 4))",
-    "D": "clamp(9 * (1 - pow(0.5, F / 4)) * F / 54 * (1 - 0.25 * B), 0, 10)",
-    "E": "clamp(9 * (1 - pow(0.5, F / 4)) * F / 54 * (1 - 0.25 * B), 0, 10)"
+    "K": "b0 * (1 - 0.6 * c / 10)",
+    "g": "60 / (b0 * (1 - 0.6 * c / 10))",
+    "D": "clamp(1.3 * max(0, 60 / (b0 * (1 - 0.6 * c / 10)) - 4) * air * (1 - pow(0.5, mins / 20)) * (1 - 0.6 * brk), 0, 10)",
+    "E": "clamp(1.3 * max(0, 60 / (b0 * (1 - 0.6 * c / 10)) - 4) * air * (1 - pow(0.5, mins / 20)) * (1 - 0.6 * brk), 0, 10)",
+    "Wt": "clamp(1.3 * max(0, 60 / (b0 * (1 - 0.6 * c / 10)) - 4) * air * (1 - pow(0.5, mins / 20)) * (1 - 0.6 * brk), 0, 10)",
+    "Lt": "10 * br"
   },
-  "chart": { "x": "F", "y": "K", "xLabel": "minutes of focused screen time", "yLabel": "blinks per minute", "yMin": 0, "yMax": 18 },
+  "chart": {
+    "x": "c",
+    "y": "K",
+    "xLabel": "how hard he's concentrating",
+    "yLabel": "blinks per minute",
+    "yMin": 0,
+    "yMax": 20
+  },
   "overlay": {
     "base": "head",
-    "caption": "focus → fewer blinks → tear film dries → eyes sting",
+    "caption": "concentrating → fewer blinks → tear film dries → eyes sting → catch-up tears",
     "parts": [
-      { "shape": "iris", "colour": "#2E86DE" },
-      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "K", "min": 0, "max": 15 } }
+      {
+        "shape": "screen",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "glow",
+          "output": "Lt",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "iris",
+        "colour": "#2E86DE"
+      },
+      {
+        "shape": "drops",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "count",
+          "output": "K",
+          "min": 0,
+          "max": 15
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Every blink spreads a thin film of tears over Ravi's eyes. When he concentrates on a game he blinks far less — about a third as often — so the film dries between blinks and his eyes sting and feel gritty. When he finally looks away, his eyes make extra tears to catch up. Breaks every 20 minutes keep the film topped up.",
+    "rules": [
+      "Concentrating cuts his blink rate by up to 60%.",
+      "Longer gaps between blinks let the tear film dry out.",
+      "Dry room air and longer stretches without breaks make it drier.",
+      "20-20-20 breaks cut the dryness a lot.",
+      "Screen brightness changes the light, not the dryness."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "People normally blink about 15 times a minute, but only about 5–7 times a minute while using screens.",
+        "cite": "aao-screens"
+      },
+      {
+        "fact": "Blinking keeps the front of the eye moist; the 20-20-20 rule is a 20-second look at something 20 feet away every 20 minutes.",
+        "cite": "aoa-cvs"
+      },
+      {
+        "fact": "There's no scientific evidence that blue light from devices damages the eye; blinking less is what causes strain and dry eyes.",
+        "cite": "aao-bluelight"
+      },
+      {
+        "fact": "Tears moisten the eye; dry environments make dry eye worse; symptoms include burning, redness and a gritty feeling.",
+        "cite": "mp-dryeye"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Concentration cuts blinking by up to 60%",
+        "why": "Takes 15 a minute down to about 6–7 at full concentration, inside the 5–7 range the AAO gives."
+      },
+      {
+        "what": "Dryness starts when blinks are more than 4 seconds apart",
+        "why": "A teaching threshold. The real time a tear film lasts differs from person to person."
+      },
+      {
+        "what": "Breaks cut dryness by 60%",
+        "why": "Breaks help a lot but don't remove all dryness; the exact amount is our estimate."
+      },
+      {
+        "what": "Watering afterwards appears when dryness is high",
+        "why": "Clue 3's sudden watering is the eye making extra tears to catch up; we show it as likely or unlikely, not as an amount."
+      }
+    ],
+    "illustrative": [
+      "Ravi's two-hour game, his usual 15 blinks a minute and the 'normal' room air are made up for a fictional story.",
+      "The 0–10 dryness scale is a teaching scale."
+    ]
+  },
+  "citations": [
+    {
+      "id": "aao-screens",
+      "title": "Computers, Digital Devices and Eye Strain",
+      "publisher": "American Academy of Ophthalmology",
+      "year": "",
+      "url": "https://www.aao.org/eye-health/tips-prevention/computer-usage",
+      "verified": "2026-10-19",
+      "supports": "People normally blink about 15 times a minute but only about 5–7 times a minute on screens; eyes can become dry and tear or sting; blinking moistens the eye; a humidifier helps in a dry, warm room."
+    },
+    {
+      "id": "aoa-cvs",
+      "title": "Computer vision syndrome (digital eye strain)",
+      "publisher": "American Optometric Association",
+      "year": "",
+      "url": "https://www.aoa.org/healthy-eyes/eye-and-vision-conditions/computer-vision-syndrome",
+      "verified": "2026-10-19",
+      "supports": "Recommends the 20-20-20 rule — a 20-second break to look at something 20 feet away every 20 minutes; blinking keeps the front of the eye moist; dry eyes are a common symptom."
+    },
+    {
+      "id": "aao-bluelight",
+      "title": "Should You Be Worried About Blue Light?",
+      "publisher": "American Academy of Ophthalmology",
+      "year": "",
+      "url": "https://www.aao.org/eye-health/tips-prevention/should-you-be-worried-about-blue-light",
+      "verified": "2026-10-19",
+      "supports": "There is no scientific evidence that blue light from digital devices damages the eye; most people blink less at screens, causing eye strain and dry eyes."
+    },
+    {
+      "id": "mp-dryeye",
+      "title": "Dry eye syndrome",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/000426.htm",
+      "verified": "2026-10-19",
+      "supports": "Tears moisten the eyes and wash away particles; a dry environment (wind, air conditioning) contributes; symptoms include burning, redness and a gritty feeling; blinking more often helps."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows blinking dropping sharply in the first minutes of concentrating",
-      "Shows the thin film of tears on the eye drying out the longer blinks stay rare",
-      "Shows short look-away breaks letting the tear film recover"
+      "Shows blinking dropping as concentration rises",
+      "Shows the tear film drying between blinks",
+      "Shows breaks and room air changing the dryness"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include screen brightness, room air or how close the screen is",
-      "Say anything about eyesight or glasses"
+      "Measure any real person's eyes",
+      "Include glasses, contact lenses or long-term dry eye",
+      "Show eye damage — screens don't cause it"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Eyes that stay red, sore or blurry after resting are a reason to tell an adult."
-  },
-  "sources": ["NIH National Eye Institute: tips for eye health and screen use (student overview)", "CK-12 Life Science: the eye"]
+  }
 }

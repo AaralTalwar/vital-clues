@@ -1,44 +1,285 @@
 {
   "id": "fuel-sugar",
-  "name": "Digestion & fuel",
+  "version": 2,
+  "name": "Lena's fuel between meals",
   "colour": "amber",
-  "inputs": {
-    "primary":   { "key": "h", "label": "Hours since the last meal", "min": 0, "max": 6, "step": 0.5, "unit": "h", "ticks": ["just ate", "3 h", "6 h"] },
-    "secondary": { "key": "B", "label": "Breakfast eaten", "min": 0, "max": 2, "step": 1, "default": 0, "ticks": ["none", "a snack", "a full meal"] }
-  },
+  "parameters": [
+    {
+      "key": "h",
+      "label": "Hours since her last meal",
+      "role": "primary",
+      "min": 3,
+      "max": 16,
+      "step": 0.5,
+      "default": 15.5,
+      "unit": "h",
+      "ticks": [
+        "3 h",
+        "9 h",
+        "16 h"
+      ],
+      "explain": "Between meals the body lives on fuel it stored after the last one.",
+      "basis": "source",
+      "cite": "cc-glycogen"
+    },
+    {
+      "key": "ate",
+      "label": "Breakfast",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 0.5,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "none"
+        },
+        {
+          "value": 0.5,
+          "label": "a small snack"
+        },
+        {
+          "value": 1,
+          "label": "a full breakfast"
+        }
+      ],
+      "explain": "Eating refills the store and resets the clock.",
+      "basis": "choice"
+    },
+    {
+      "key": "act",
+      "label": "Morning activity",
+      "role": "factor",
+      "min": 1,
+      "max": 1.6,
+      "step": 0.3,
+      "default": 1.3,
+      "options": [
+        {
+          "value": 1,
+          "label": "sat on the bus"
+        },
+        {
+          "value": 1.3,
+          "label": "walked to school"
+        },
+        {
+          "value": 1.6,
+          "label": "PE class"
+        }
+      ],
+      "explain": "Moving around uses fuel faster.",
+      "basis": "choice"
+    },
+    {
+      "key": "dinner",
+      "label": "Dinner last night",
+      "role": "factor",
+      "min": 0.8,
+      "max": 1.2,
+      "step": 0.2,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.8,
+          "label": "small"
+        },
+        {
+          "value": 1,
+          "label": "normal"
+        },
+        {
+          "value": 1.2,
+          "label": "big"
+        }
+      ],
+      "explain": "A bigger dinner fills the store more.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
-    { "key": "G", "label": "Fuel in the blood", "unit": "% of comfortable", "colour": "amber", "decimals": 0 },
-    { "key": "E", "label": "Energy for the brain", "colour": "purple", "bands": [{ "upTo": 69.9, "text": "running low" }, { "upTo": 89.9, "text": "dipping" }, { "text": "steady" }] },
-    { "key": "R", "label": "Stomach rumbles", "unit": "per hour", "colour": "coral", "decimals": 0 }
+    {
+      "key": "L",
+      "label": "Fuel stored in her liver",
+      "unit": "% full",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "G",
+      "label": "Blood sugar",
+      "unit": "mg/dL",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "Gh",
+      "label": "Hunger signal (ghrelin)",
+      "unit": "0–10",
+      "colour": "purple",
+      "decimals": 1
+    },
+    {
+      "key": "E",
+      "label": "Fuel for focus",
+      "colour": "blue",
+      "bands": [
+        {
+          "upTo": 79.9,
+          "text": "running low"
+        },
+        {
+          "upTo": 87.9,
+          "text": "dipping"
+        },
+        {
+          "text": "steady"
+        }
+      ]
+    }
   ],
   "rules": {
-    "G": "clamp(70 + 20 * B - 6 * h + 10 * B * max(0, 3 - h) / 3, 50, 110)",
-    "E": "clamp(70 + 20 * B - 6 * h + 10 * B * max(0, 3 - h) / 3, 50, 110)",
-    "R": "round(clamp(2 * h - 2 * B, 0, 12))"
+    "L": "min(100, 100 * dinner * pow(0.5, max(0, (h - (h - 3.5) * ate) - 3) * act / 7))",
+    "G": "70 + 25 * pow(min(100, 100 * dinner * pow(0.5, max(0, (h - (h - 3.5) * ate) - 3) * act / 7)) / 100, 0.5)",
+    "Gh": "10 * (1 - pow(0.5, (h - (h - 3.5) * ate) / 4))",
+    "E": "70 + 25 * pow(min(100, 100 * dinner * pow(0.5, max(0, (h - (h - 3.5) * ate) - 3) * act / 7)) / 100, 0.5)"
   },
-  "chart": { "x": "h", "y": "G", "xLabel": "hours since the last meal", "yLabel": "fuel in the blood (% of comfortable)", "yMin": 40, "yMax": 115 },
+  "chart": {
+    "x": "h",
+    "y": "L",
+    "xLabel": "hours since her last meal",
+    "yLabel": "liver fuel store (% full)",
+    "yMin": 0,
+    "yMax": 105
+  },
   "overlay": {
     "base": "torso",
-    "caption": "food → stomach → fuel in the blood → brain and muscles",
+    "caption": "food → stored in the liver → sugar released into the blood → brain and muscles",
     "parts": [
-      { "shape": "bloodstream", "colour": "#F4A300", "anim": { "type": "glow", "output": "G", "min": 50, "max": 110 } },
-      { "shape": "stomach", "colour": "#E4572E", "anim": { "type": "shiver", "output": "R" } },
-      { "shape": "core", "colour": "#F4A300", "opacity": 0.0 }
+      {
+        "shape": "bloodstream",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "G",
+          "min": 70,
+          "max": 95
+        }
+      },
+      {
+        "shape": "stomach",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "shiver",
+          "output": "Gh"
+        }
+      },
+      {
+        "shape": "core",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "L",
+          "min": 0,
+          "max": 100
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "After dinner, Lena's liver stored spare fuel as glycogen. Overnight and through the morning it slowly turns that store back into sugar to keep her blood sugar in the normal range. Fifteen hours later the store is running low, her blood sugar has drifted toward the bottom of normal, and her stomach's hunger hormone is high. Breakfast or lunch refills the store.",
+    "rules": [
+      "The liver's fuel store halves about every 7 hours without food (faster if she's active).",
+      "Blood sugar stays in the normal range but drifts down as the store empties.",
+      "The hunger hormone ghrelin rises the longer her stomach is empty.",
+      "Eating resets the clock and refills the store."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Glycogen is stored mainly in the liver and muscles; when blood sugar drops, the liver turns glycogen back into glucose.",
+        "cite": "cc-glycogen"
+      },
+      {
+        "fact": "After 12 to 24 hours without food, liver glycogen is almost used up.",
+        "cite": "cc-glycogen"
+      },
+      {
+        "fact": "A fasting blood sugar of 70 to 99 mg/dL is normal.",
+        "cite": "mp-glucose"
+      },
+      {
+        "fact": "Ghrelin, the hunger hormone, rises when the stomach is empty, peaks before meals and falls after eating.",
+        "cite": "cc-ghrelin"
+      }
+    ],
+    "choice": [
+      {
+        "what": "The liver store halves every 7 hours",
+        "why": "This empties most of the store within about a day, matching 'almost used up after 12–24 hours'."
+      },
+      {
+        "what": "Blood sugar drifts from about 95 to 70 as the store empties",
+        "why": "In healthy people blood sugar stays in the normal range while fasting; we show a gentle drift, not a crash."
+      },
+      {
+        "what": "Activity and dinner size scale the store",
+        "why": "More activity uses fuel faster and a bigger dinner stores more; the exact amounts vary between people."
+      },
+      {
+        "what": "A full breakfast counts as eating 3.5 hours ago",
+        "why": "Breakfast at 7 a.m. is 3.5 hours before third period."
+      }
+    ],
+    "illustrative": [
+      "Lena's 15.5-hour gap, her walk to school and her normal dinner are made up for a fictional story.",
+      "The 0–10 hunger signal scale is a teaching scale."
+    ],
+    "studying": "How much a long gap without food affects concentration differs between people and is still being studied."
+  },
+  "citations": [
+    {
+      "id": "cc-glycogen",
+      "title": "Glycogen",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/articles/23509-glycogen",
+      "verified": "2026-10-19",
+      "supports": "Glycogen is stored mainly in the liver and muscles; when blood sugar drops, glucagon makes liver glycogen turn back into glucose; after 12 to 24 hours of fasting liver glycogen is almost used up."
+    },
+    {
+      "id": "mp-glucose",
+      "title": "Blood sugar test - blood",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/003482.htm",
+      "verified": "2026-10-19",
+      "supports": "A fasting blood sugar (no food for at least 8 hours) of 70 to 99 mg/dL is considered normal; carbohydrates break down quickly into glucose and raise blood sugar."
+    },
+    {
+      "id": "cc-ghrelin",
+      "title": "Ghrelin",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/body/22804-ghrelin",
+      "verified": "2026-10-19",
+      "supports": "Ghrelin levels rise when the stomach is empty and between meals, are highest right before mealtimes, and fall after eating."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows the fuel the brain and muscles use drifting down the longer it has been since a meal",
-      "Shows a meal in the morning holding it up through the school morning",
-      "Shows the stomach's hunger signals growing as fuel drops"
+      "Shows the liver's fuel store emptying between meals",
+      "Shows blood sugar held in the normal range, drifting lower as the store runs down",
+      "Shows the hunger signal rising and a meal resetting everything"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Model any medical condition or say what anyone should eat",
-      "Include what kind of food, exercise, or sleep"
+      "Measure any real person or model any medical condition",
+      "Say what anyone should eat",
+      "Include exercise during the morning beyond the activity setting"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Feeling shaky, dizzy or unwell at school is a reason to tell a teacher or the school nurse."
-  },
-  "sources": ["CK-12 Life Science: digestive system", "NIH News in Health: how the body uses food for energy (student overview)"]
+  }
 }

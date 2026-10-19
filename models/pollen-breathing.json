@@ -1,148 +1,135 @@
 {
   "id": "pollen-breathing",
-  "name": "Pollen & breathing",
+  "version": 2,
+  "name": "Sofia's immune system and breathing on a pollen day",
   "colour": "teal",
-  "inputs": {
-    "primary": {
-      "key": "G",
-      "label": "Pollen in the air",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "ticks": [
-        "none",
-        "medium",
-        "very high"
-      ]
-    },
-    "secondary": {
-      "key": "P",
-      "label": "Pace",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "default": 8,
-      "ticks": [
-        "walking",
-        "jogging",
-        "racing"
-      ]
-    }
-  },
-  "outputs": [
+  "parameters": [
     {
-      "key": "B",
-      "label": "Breathing rate",
-      "unit": "breaths/min",
-      "colour": "teal",
-      "decimals": 0
+      "key": "G", "label": "Pollen count", "role": "primary", "min": 0, "max": 10, "step": 1, "default": 8,
+      "ticks": ["none", "medium", "very high"],
+      "explain": "How much pollen is floating in the air today, on a simple 0–10 scale like a weather app's pollen bar.",
+      "basis": "choice"
     },
     {
-      "key": "N",
-      "label": "Pollen breathed in",
-      "unit": "units/min",
-      "colour": "amber",
-      "decimals": 0
+      "key": "P", "label": "Pace", "role": "bubble", "min": 0, "max": 10, "step": 1, "default": 8,
+      "ticks": ["walking", "jogging", "racing"],
+      "explain": "We breathe about 12 litres of air a minute at rest and up to about 100 litres during hard exercise — and the pollen comes in with the air.",
+      "basis": "source", "cite": "elf-exercise"
     },
     {
-      "key": "A",
-      "label": "Alarm chemical",
-      "unit": "% above calm",
-      "colour": "coral",
-      "decimals": 0,
-      "hidden": true
+      "key": "D", "label": "Minutes running", "role": "bubble", "min": 5, "max": 90, "step": 5, "default": 40, "unit": "min",
+      "explain": "The longer she breathes pollen-filled air, the more pollen her immune system has to react to.",
+      "basis": "choice"
     },
     {
-      "key": "S",
-      "label": "Sneezes",
-      "unit": "per hour",
-      "colour": "coral",
-      "decimals": 0
+      "key": "loc", "label": "Where she runs", "role": "bubble", "min": 0.02, "max": 1, "step": 0.98, "default": 1,
+      "options": [{ "value": 1, "label": "park trail" }, { "value": 0.02, "label": "indoor treadmill, windows shut" }],
+      "explain": "Keeping windows closed during pollen season keeps most pollen out of the air you breathe.",
+      "basis": "source", "cite": "cc-rhinitis"
     },
     {
-      "key": "E",
-      "label": "Eyes",
-      "colour": "blue",
-      "bands": [
-        {
-          "upTo": 24.9,
-          "text": "fine"
-        },
-        {
-          "upTo": 59.9,
-          "text": "itchy"
-        },
-        {
-          "text": "itchy & watery"
-        }
-      ]
+      "key": "wx", "label": "Weather", "role": "bubble", "min": 0.3, "max": 1.5, "step": 0.1, "default": 1,
+      "options": [{ "value": 0.3, "label": "after rain" }, { "value": 1, "label": "normal" }, { "value": 1.5, "label": "hot, dry and windy" }],
+      "explain": "Hot, dry, windy days put more pollen in the air; rain washes most of it to the ground.",
+      "basis": "source", "cite": "medline-hayfever"
+    },
+    {
+      "key": "glasses", "label": "Sunglasses", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "none" }, { "value": 1, "label": "wraparound sunglasses" }],
+      "explain": "A hat and sunglasses help keep pollen out of the eyes. They protect the eyes, not the nose.",
+      "basis": "source", "cite": "cc-rhinitis"
+    },
+    {
+      "key": "sens", "label": "How strongly her immune system reacts", "role": "factor", "min": 0, "max": 10, "step": 1, "default": 7,
+      "ticks": ["not allergic", "mild", "strong"],
+      "explain": "In an allergy the immune system treats pollen as an intruder. People differ a lot in how strongly — some don't react at all.",
+      "basis": "source", "cite": "cc-rhinitis"
+    },
+    {
+      "key": "Brest", "label": "Breathing at rest", "role": "factor", "min": 12, "max": 16, "step": 1, "default": 14, "unit": "breaths/min",
+      "explain": "Most people take 12–16 breaths a minute at rest.",
+      "basis": "source", "cite": "hopkins-vitals"
     }
   ],
+  "outputs": [
+    { "key": "B", "label": "Breathing rate", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
+    { "key": "V", "label": "Air breathed in", "unit": "litres/min", "colour": "teal", "decimals": 0 },
+    { "key": "N", "label": "Pollen breathed in", "unit": "units/min", "colour": "amber", "decimals": 0 },
+    { "key": "S", "label": "Sneezes", "unit": "per hour", "colour": "coral", "decimals": 0 },
+    { "key": "E", "label": "Eyes", "colour": "blue", "bands": [{ "upTo": 3, "text": "fine" }, { "upTo": 6, "text": "itchy" }, { "text": "itchy & watery" }] },
+    { "key": "H", "label": "Alarm chemical (histamine)", "unit": "% above calm", "colour": "coral", "decimals": 0 }
+  ],
   "rules": {
-    "B": "12 + 3.6 * P",
-    "N": "G * (8 + 6 * P) / 10",
-    "A": "clamp(1.8 * G * (8 + 6 * P) / 10, 0, 100)",
-    "S": "round(clamp(G * (8 + 6 * P) / 40, 0, 16))",
-    "E": "clamp(1.8 * G * (8 + 6 * P) / 10, 0, 100)"
+    "B": "Brest + (55 - Brest) * pow(P / 10, 1.3)",
+    "V": "0.8 * Brest + (100 - 0.8 * Brest) * pow(P / 10, 1.3)",
+    "N": "G * loc * wx * (0.8 * Brest + (100 - 0.8 * Brest) * pow(P / 10, 1.3)) / 10",
+    "S": "round(clamp(sens * G * loc * wx * (0.8 * Brest + (100 - 0.8 * Brest) * pow(P / 10, 1.3)) / 10 / 18, 0, 40))",
+    "E": "clamp(sens * G * loc * wx * (1 - 0.6 * glasses) / 6, 0, 10)",
+    "H": "clamp(sens * G * loc * wx * (0.8 * Brest + (100 - 0.8 * Brest) * pow(P / 10, 1.3)) / 10 * D / 350, 0, 100)"
   },
-  "chart": {
-    "x": "G",
-    "y": "S",
-    "xLabel": "pollen in the air",
-    "yLabel": "sneezes per hour",
-    "yMin": 0,
-    "yMax": 16
-  },
+  "chart": { "x": "G", "y": "S", "xLabel": "pollen count", "yLabel": "sneezes per hour", "yMin": 0, "yMax": 40 },
   "overlay": {
     "base": "head",
-    "caption": "more pollen in the air × more air breathed = a bigger alarm",
+    "caption": "more pollen in the air × more air breathed in → more for the immune system to react to",
     "parts": [
-      {
-        "shape": "pollen",
-        "colour": "#F4A300",
-        "anim": {
-          "type": "count",
-          "output": "N",
-          "min": 0,
-          "max": 68
-        }
-      },
-      {
-        "shape": "eye",
-        "colour": "#2E86DE",
-        "anim": {
-          "type": "glow",
-          "output": "A",
-          "min": 0,
-          "max": 100
-        }
-      },
-      {
-        "shape": "nose",
-        "colour": "#E4572E",
-        "anim": {
-          "type": "breathe",
-          "output": "B"
-        }
-      }
+      { "shape": "pollen", "colour": "#F4A300", "anim": { "type": "count", "output": "N", "min": 0, "max": 80 } },
+      { "shape": "nose", "colour": "#E4572E", "anim": { "type": "breathe", "output": "B" } },
+      { "shape": "eye", "colour": "#2E86DE", "anim": { "type": "glow", "output": "E", "min": 0, "max": 10 } }
     ]
   },
+  "explain": {
+    "summary": "Sofia's immune system mistakes pollen for an intruder and releases histamine, which makes her sneeze and her eyes stream. Running hard doesn't cause the allergy — but it makes her breathe several times more air each minute, so far more pollen reaches her nose. Indoors with the windows shut, the same hard breathing brings in almost no pollen, so nothing happens.",
+    "rules": [
+      "Air breathed in rises from about 11 litres a minute at rest to about 100 at racing pace.",
+      "Pollen breathed in = pollen in the air where she is × air breathed in.",
+      "Sneezing grows with the pollen breathed in and with how strongly her immune system reacts.",
+      "Itchy eyes depend on pollen in the air touching the eyes, not on breathing — sunglasses help them, not her nose.",
+      "Histamine builds up with the total pollen breathed over the run."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "We breathe about 15 times a minute (12 litres of air) at rest, and up to about 40–60 times a minute (100 litres) during exercise.", "cite": "elf-exercise" },
+      { "fact": "In hay fever the immune system treats the allergen as an intruder and releases chemicals into the blood; histamine is the main one. Sneezing, a runny nose and itchy, watery eyes are common.", "cite": "cc-rhinitis" },
+      { "fact": "Closing windows during pollen season and wearing a hat and sunglasses help keep pollen away from the nose and eyes.", "cite": "cc-rhinitis" },
+      { "fact": "Hot, dry, windy days are more likely to have a lot of pollen in the air; on cool, damp, rainy days most pollen is washed to the ground. Staying indoors with air-conditioning helps during pollen season.", "cite": "medline-hayfever" },
+      { "fact": "Normal breathing at rest is 12–16 breaths a minute.", "cite": "hopkins-vitals" }
+    ],
+    "choice": [
+      { "what": "Pollen count is a 0–10 scale", "why": "Real counts are grains per cubic metre and differ by plant; a simple scale keeps the focus on the mechanism." },
+      { "what": "Air breathed in curves up with pace (power 1.3)", "why": "Breathing climbs more steeply at hard effort; this matches about 12 litres at rest and 100 at racing pace." },
+      { "what": "A shut indoor room has 2% of the outdoor pollen", "why": "Closed windows keep most pollen out; the exact amount depends on the building, so this is a teaching value." },
+      { "what": "Sneezing is proportional to pollen breathed in", "why": "More pollen landing in the nose means more immune cells triggered; real reactions level off at very high doses." },
+      { "what": "Sunglasses cut eye exposure by 60%", "why": "They block much of the pollen-laden air from the eyes but not all of it; the size is illustrative." }
+    ],
+    "illustrative": [
+      "Sofia's reaction strength (7 out of 10), her 40-minute run and the sneezes-per-hour numbers are made up for a fictional story.",
+      "The histamine percentage is a teaching scale."
+    ],
+    "studying": "Why some people's immune systems react to pollen and others' don't is still being studied."
+  },
+  "citations": [
+    { "id": "elf-exercise", "title": "Your lungs and exercise", "publisher": "European Lung Foundation", "year": "", "url": "https://europeanlung.org/en/information-hub/keeping-lungs-healthy/your-lungs-and-exercise", "verified": "2026-10-19",
+      "supports": "We breathe about 15 times a minute (12 litres of air) at rest and up to about 40–60 times a minute (100 litres) during exercise." },
+    { "id": "cc-rhinitis", "title": "Allergic Rhinitis (Hay Fever)", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/diseases/8622-allergic-rhinitis-hay-fever", "verified": "2026-10-19",
+      "supports": "The immune system thinks the allergen is intruding and releases natural chemicals, histamine being the main one; sneezing, runny nose and itchy, watery eyes are common; close windows when pollen counts are higher; wear a hat and sunglasses to protect the eyes." },
+    { "id": "medline-hayfever", "title": "Allergic rhinitis", "publisher": "MedlinePlus (U.S. National Library of Medicine)", "year": "", "url": "https://medlineplus.gov/ency/article/000813.htm", "verified": "2026-10-19",
+      "supports": "Hay fever is an allergic reaction to pollen; hot, dry, windy days are more likely to have a lot of pollen in the air, while rain washes most of it to the ground; stay indoors where it is air-conditioned during pollen season if possible." },
+    { "id": "hopkins-vitals", "title": "Vital Signs (Body Temperature, Pulse Rate, Respiration Rate, Blood Pressure)", "publisher": "Johns Hopkins Medicine", "year": "", "url": "https://www.hopkinsmedicine.org/health/conditions-and-diseases/vital-signs-body-temperature-pulse-rate-respiration-rate-blood-pressure", "verified": "2026-10-19",
+      "supports": "Normal respiration rates for an adult at rest range from 12 to 16 breaths per minute." }
+  ],
   "limits": {
     "does": [
-      "Shows pollen breathed in = pollen in the air × air breathed per minute",
-      "Shows the immune alarm and sneezing scaling with that dose",
-      "Shows hard breathing doing nothing when there's no pollen"
+      "Shows the allergy (immune system) and the breathing (lungs) as two separate parts that multiply together",
+      "Shows why the same hard run causes no symptoms indoors",
+      "Shows eyes and nose responding to different things"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Say whether anyone has an allergy or what to do about it",
-      "Include asthma or serious reactions"
+      "Measure any real person — Sofia is fictional and the numbers are a teaching scale",
+      "Say whether anyone has an allergy, or what to do about one",
+      "Include asthma, pollution, or different kinds of pollen"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Wheezing, chest tightness or trouble breathing during exercise is a reason to stop and tell an adult right away."
-  },
-  "sources": [
-    "CK-12 Life Science: immune and respiratory systems",
-    "NIH News in Health: seasonal allergies (student overview)"
-  ]
+    "wellbeing": "Sneezing is harmless, but wheezing, chest tightness or trouble breathing during exercise is a reason to stop and tell an adult."
+  }
 }

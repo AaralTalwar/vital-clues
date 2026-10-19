@@ -9,60 +9,202 @@
   "level": "difficult",
   "twist": "Everyone assumes the hour of marching wore him out. The opposite is true: marching kept his leg muscles pumping blood back up, and standing perfectly still was the hard part.",
   "reviewed": null,
-  "character": { "name": "Kofi", "age": 15 },
+  "character": {
+    "name": "Kofi",
+    "age": 15
+  },
   "briefing": "Kofi, 15, marched and played the drum with the school band for an hour on a cool morning without any trouble. Then the band stood at attention, knees locked, for a 40-minute flag ceremony. Near the end he felt light-headed and his vision went grey at the edges.",
   "question": "Why was standing still harder on Kofi's body than marching?",
   "illustration": "flag",
   "clues": [
-    { "id": 1, "title": "Fine while marching", "icon": "drum", "colour": "amber",
+    {
+      "id": 1,
+      "title": "Fine while marching",
+      "icon": "drum",
+      "colour": "amber",
       "text": "He marched and drummed for a full hour earlier with no problems at all. It was a cool, cloudy morning.",
-      "shows": "moving his legs keeping him fine for much longer", "visual": null, "pointsTo": "muscles" },
-    { "id": 2, "title": "Grey vision after 30 still minutes", "icon": "eye", "colour": "teal",
+      "shows": "moving his legs keeping him fine for much longer",
+      "visual": null,
+      "pointsTo": "muscles"
+    },
+    {
+      "id": 2,
+      "title": "Grey vision after 30 still minutes",
+      "icon": "eye",
+      "colour": "teal",
       "text": "After about thirty minutes standing perfectly still, he felt woozy and his vision greyed at the edges.",
-      "shows": "less blood reaching his brain while he stood still", "visual": null, "pointsTo": "brain" },
-    { "id": 3, "title": "Heavy, puffy legs", "icon": "leg", "colour": "purple",
+      "shows": "less blood reaching his brain while he stood still",
+      "visual": null,
+      "pointsTo": "brain"
+    },
+    {
+      "id": 3,
+      "title": "Heavy, puffy legs",
+      "icon": "leg",
+      "colour": "purple",
       "text": "His socks left deep marks around his ankles and his legs felt heavy and full.",
-      "shows": "blood and fluid collecting low in his legs", "visual": null, "pointsTo": "pool" },
-    { "id": 4, "title": "Sitting fixed it fast", "icon": "heart", "colour": "coral",
+      "shows": "blood and fluid collecting low in his legs",
+      "visual": null,
+      "pointsTo": "pool"
+    },
+    {
+      "id": 4,
+      "title": "Sitting fixed it fast",
+      "icon": "heart",
+      "colour": "coral",
       "text": "He sat down with his head low and felt normal within a minute. The band director told everyone else to wiggle their toes and bend their knees.",
-      "shows": "helping blood get back to the heart fixing it quickly", "visual": null, "pointsTo": "heart" }
+      "shows": "helping blood get back to the heart fixing it quickly",
+      "visual": null,
+      "pointsTo": "heart"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "He was worn out from the hour of marching earlier.", "flaw": "If marching had worn him out he'd have struggled while marching — instead he was fine until he stood still, and a minute's sit-down fixed it." },
-    { "id": "B", "text": "The sun made him overheat.", "flaw": "It was a cool, cloudy morning, and overheating doesn't explain heavy, puffy legs or why bending your knees helps." },
-    { "id": "C", "text": "He was nervous about the ceremony.", "flaw": "Nerves don't make ankles puffy, and they aren't fixed by wiggling your toes." },
-    { "id": "D", "text": "Standing still lets gravity pool blood in his legs; without leg muscles squeezing the veins, less blood gets back to his heart and up to his brain. Marching works those muscles, so it's easier.", "best": true }
+    {
+      "id": "A",
+      "text": "He was worn out from the hour of marching earlier.",
+      "flaw": "If marching had worn him out he'd have struggled while marching — instead he was fine until he stood still, and a minute's sit-down fixed it."
+    },
+    {
+      "id": "B",
+      "text": "The sun made him overheat.",
+      "flaw": "It was a cool, cloudy morning, and overheating doesn't explain heavy, puffy legs or why bending your knees helps."
+    },
+    {
+      "id": "C",
+      "text": "He was nervous about the ceremony.",
+      "flaw": "Nerves don't make ankles puffy, and they aren't fixed by wiggling your toes."
+    },
+    {
+      "id": "D",
+      "text": "Standing still lets gravity pool blood in his legs; without leg muscles squeezing the veins, less blood gets back to his heart and up to his brain. Marching works those muscles, so it's easier.",
+      "best": true
+    }
   ],
   "evidence": {
-    "A": { "supports": [2], "doesntFit": [1, 4] },
-    "B": { "supports": [], "doesntFit": [1, 3] },
-    "C": { "supports": [], "doesntFit": [3, 4] },
-    "D": { "supports": [1, 2, 3, 4], "doesntFit": [] }
+    "A": {
+      "supports": [
+        2
+      ],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        3
+      ]
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "D": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "P",
     "prompt": "As Kofi stands perfectly still for longer — from 0 to 40 minutes — what happens to the amount of blood pooling in his legs?",
     "expectedShape": "rises",
-    "second": { "question": "If he shifts his weight and wiggles his toes, does the pooling go up or down?", "options": ["up", "same", "down"], "answer": "down" }
+    "second": {
+      "question": "If he shifts his weight and wiggles his toes, does the pooling go up or down?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
   },
-  "labDefaults": { "primary": 30, "secondary": 0 },
+  "labDefaults": {
+    "primary": 30
+  },
   "concepts": [
-    { "id": "pool", "label": "blood pools in the legs", "colour": "purple",
-      "synonyms": ["pool", "pools", "pooling", "pooled", "collects", "collected", "settles"],
-      "hint": "Where does the blood go when he stands perfectly still?" },
-    { "id": "muscles", "label": "leg muscles pump it back", "colour": "amber",
-      "synonyms": ["muscles", "muscle", "squeeze", "squeezing", "pump", "pumps", "pumping", "marching"],
-      "hint": "What did marching do that standing still didn't?" },
-    { "id": "brain", "label": "less reaches the brain", "colour": "teal",
-      "synonyms": ["brain", "head", "light-headed", "dizzy", "woozy"],
-      "hint": "Why did his vision go grey?" },
-    { "id": "still", "label": "standing still", "colour": "blue",
-      "synonyms": ["still", "standing still", "not moving", "locked knees", "didn't move", "did not move"],
-      "hint": "What was different about the ceremony?" },
-    { "id": "heart", "label": "back to the heart", "colour": "coral",
-      "synonyms": ["heart", "back to the heart", "return", "returns", "veins", "vein"],
-      "hint": "Where does the blood need to get back to?" }
+    {
+      "id": "pool",
+      "label": "blood pools in the legs",
+      "colour": "purple",
+      "synonyms": [
+        "pool",
+        "pools",
+        "pooling",
+        "pooled",
+        "collects",
+        "collected",
+        "settles"
+      ],
+      "hint": "Where does the blood go when he stands perfectly still?"
+    },
+    {
+      "id": "muscles",
+      "label": "leg muscles pump it back",
+      "colour": "amber",
+      "synonyms": [
+        "muscles",
+        "muscle",
+        "squeeze",
+        "squeezing",
+        "pump",
+        "pumps",
+        "pumping",
+        "marching"
+      ],
+      "hint": "What did marching do that standing still didn't?"
+    },
+    {
+      "id": "brain",
+      "label": "less reaches the brain",
+      "colour": "teal",
+      "synonyms": [
+        "brain",
+        "head",
+        "light-headed",
+        "dizzy",
+        "woozy"
+      ],
+      "hint": "Why did his vision go grey?"
+    },
+    {
+      "id": "still",
+      "label": "standing still",
+      "colour": "blue",
+      "synonyms": [
+        "still",
+        "standing still",
+        "not moving",
+        "locked knees",
+        "didn't move",
+        "did not move"
+      ],
+      "hint": "What was different about the ceremony?"
+    },
+    {
+      "id": "heart",
+      "label": "back to the heart",
+      "colour": "coral",
+      "synonyms": [
+        "heart",
+        "back to the heart",
+        "return",
+        "returns",
+        "veins",
+        "vein"
+      ],
+      "hint": "Where does the blood need to get back to?"
+    }
   ],
   "transfer": {
     "context": "Ana, 16, volunteers at a museum ticket desk, standing still for hours. By evening her ankles are puffy and she feels woozy — but on days she walks the galleries as a guide, she feels fine.",

@@ -1,42 +1,112 @@
 {
   "id": "hearing",
-  "name": "Ears & hearing",
+  "version": 2,
+  "name": "Zoe's ears at a concert",
   "colour": "purple",
-  "inputs": {
-    "primary": {
+  "parameters": [
+    {
       "key": "V",
-      "label": "Loudness",
+      "label": "Loudness at the speakers",
+      "role": "primary",
       "min": 60,
       "max": 110,
       "step": 5,
+      "default": 105,
       "unit": "dB",
       "ticks": [
         "60 · talking",
         "85 · traffic",
         "110 · concert"
-      ]
+      ],
+      "explain": "Concerts are about 94–110 dBA. Every 10 dB is ten times more sound energy.",
+      "basis": "source",
+      "cite": "nidcd-nihl"
     },
-    "secondary": {
+    {
       "key": "T",
       "label": "Time listening",
+      "role": "bubble",
       "min": 0,
       "max": 180,
       "step": 15,
-      "default": 60,
+      "default": 180,
       "unit": "min",
       "ticks": [
         "0",
         "90 min",
         "3 h"
-      ]
+      ],
+      "explain": "The safe time halves for every 3 dB louder — so time and loudness both count.",
+      "basis": "source",
+      "cite": "niosh-noise"
+    },
+    {
+      "key": "plugs",
+      "label": "Earplugs",
+      "role": "factor",
+      "min": 0,
+      "max": 20,
+      "step": 20,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "none"
+        },
+        {
+          "value": 20,
+          "label": "foam earplugs"
+        }
+      ],
+      "explain": "Earplugs block part of the sound before it reaches the ear.",
+      "basis": "choice"
+    },
+    {
+      "key": "dist",
+      "label": "Where she stands",
+      "role": "factor",
+      "min": 0,
+      "max": 12,
+      "step": 6,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "front row"
+        },
+        {
+          "value": 6,
+          "label": "middle"
+        },
+        {
+          "value": 12,
+          "label": "back"
+        }
+      ],
+      "explain": "Sound spreads out as it travels, so it is quieter further from the speakers.",
+      "basis": "choice"
     }
-  },
+  ],
   "outputs": [
     {
-      "key": "L",
-      "label": "Sound energy reaching the ear",
-      "unit": "× talking level",
+      "key": "Ve",
+      "label": "Sound at her ears",
+      "unit": "dB",
       "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "L",
+      "label": "Sound energy",
+      "unit": "× talking",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "D",
+      "label": "Noise dose",
+      "unit": "% of daily safe amount",
+      "colour": "coral",
       "decimals": 0
     },
     {
@@ -60,27 +130,29 @@
           "text": "a little, fades"
         },
         {
-          "text": "yes, hours"
+          "text": "yes, up to 1–2 days"
         }
       ]
     }
   ],
   "rules": {
-    "L": "round(pow(10, (V - 60) / 10))",
-    "F": "clamp(pow(10, (V - 95) / 10) * T / 60 * 3, 0, 10)",
-    "R": "clamp(pow(10, (V - 95) / 10) * T / 60 * 3, 0, 10)"
+    "Ve": "V - plugs - dist",
+    "L": "round(pow(10, (V - plugs - dist - 60) / 10))",
+    "D": "100 * T / (480 * pow(2, (85 - (V - plugs - dist)) / 3))",
+    "F": "10 * (1 - pow(0.5, 100 * T / (480 * pow(2, (85 - (V - plugs - dist)) / 3)) / 100))",
+    "R": "10 * (1 - pow(0.5, 100 * T / (480 * pow(2, (85 - (V - plugs - dist)) / 3)) / 100))"
   },
   "chart": {
     "x": "V",
     "y": "F",
-    "xLabel": "loudness (dB)",
+    "xLabel": "loudness at the speakers (dB)",
     "yLabel": "hair-cell fatigue (0–10)",
     "yMin": 0,
     "yMax": 10
   },
   "overlay": {
     "base": "head",
-    "caption": "sound waves → tiny hair cells bend → too much bending = ringing",
+    "caption": "sound waves → tiny hair cells bend → too much for too long = ringing",
     "parts": [
       {
         "shape": "soundWaves",
@@ -89,7 +161,7 @@
           "type": "count",
           "output": "L",
           "min": 0,
-          "max": 1000
+          "max": 100000
         }
       },
       {
@@ -108,11 +180,82 @@
       }
     ]
   },
+  "explain": {
+    "summary": "Tiny hair cells inside Zoe's inner ear bend when sound reaches them. Very loud sound, for a long time, wears them out: they send a false ringing signal and hear real sounds less well. This model counts Zoe's 'noise dose' using the rule health scientists use for safe noise — every 3 dB louder halves the safe time — then turns the dose into hair-cell fatigue.",
+    "rules": [
+      "Sound at her ears = loudness at the speakers − what earplugs and distance take away.",
+      "The safe time at 85 dB is 8 hours; every 3 dB louder cuts the safe time in half.",
+      "Noise dose = time listening ÷ safe time, as a percentage.",
+      "Hair-cell fatigue climbs as the dose climbs: a 100% dose gives about 5 out of 10."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "The recommended limit is 85 dBA averaged over 8 hours, and for every 3 dBA louder the safe time should be halved.",
+        "cite": "niosh-noise"
+      },
+      {
+        "fact": "Long or repeated sounds at or above 85 dBA can cause hearing loss, and concerts are about 94–110 dBA.",
+        "cite": "nidcd-nihl"
+      },
+      {
+        "fact": "Most noise-induced hearing loss comes from damage to the hair cells in the inner ear.",
+        "cite": "nidcd-nihl"
+      },
+      {
+        "fact": "Loud noise can cause a temporary hearing loss that disappears 16 to 48 hours later; earplugs help at loud events.",
+        "cite": "nidcd-nihl"
+      }
+    ],
+    "choice": [
+      {
+        "what": "A workplace noise rule is used for a concert",
+        "why": "It is the clearest published rule for how loudness and time add up. It was written for adults at work, so treat it as a guide."
+      },
+      {
+        "what": "Fatigue = 10 × (1 − 0.5^(dose ÷ 100))",
+        "why": "We needed a 0–10 scale that rises with the dose and levels off. The 0–10 'fatigue' is our teaching scale, not a medical measurement."
+      },
+      {
+        "what": "Foam earplugs take off 20 dB",
+        "why": "Earplugs vary with the type and how well they are put in; 20 dB is a middle value."
+      },
+      {
+        "what": "Each step further back takes off 6 dB",
+        "why": "Sound gets quieter as it spreads out from a speaker; we used one step size for 'middle' and 'back'."
+      }
+    ],
+    "illustrative": [
+      "Zoe's three hours, her front-row spot and the 105 dB reading are made up for a fictional concert.",
+      "The fatigue numbers and ringing bands are a teaching scale."
+    ]
+  },
+  "citations": [
+    {
+      "id": "niosh-noise",
+      "title": "Noise-Induced Hearing Loss",
+      "publisher": "CDC / NIOSH",
+      "year": "",
+      "url": "https://www.cdc.gov/niosh/noise/about/noise.html",
+      "verified": "2026-10-19",
+      "supports": "NIOSH's recommended exposure limit is 85 dBA averaged over an 8-hour day; for each 3 dBA increase the safe time should be cut in half (the exchange rate)."
+    },
+    {
+      "id": "nidcd-nihl",
+      "title": "Noise-Induced Hearing Loss",
+      "publisher": "NIH National Institute on Deafness and Other Communication Disorders",
+      "year": "",
+      "url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "verified": "2026-10-19",
+      "supports": "Long or repeated sounds at or above 85 dBA can cause hearing loss; concerts are about 94–110 dBA; damage to inner-ear hair cells causes most noise-induced loss; temporary loss can disappear 16 to 48 hours later; wear earplugs at loud events."
+    }
+  ],
   "limits": {
     "does": [
       "Shows that every 10 dB is ten times the sound energy, not a little more",
-      "Shows the tiny hair cells in the inner ear tiring with loudness and time — barely at all below about 85 dB, then steeply",
-      "Shows ringing as the sign that they were pushed too far"
+      "Shows loudness and time adding up to a noise dose",
+      "Shows earplugs and distance lowering the dose"
     ],
     "doesnt": [
       "Measure any real person or any real headphones",
@@ -121,9 +264,5 @@
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Ringing that lasts more than a day, or hearing that seems muffled, is a reason to tell an adult."
-  },
-  "sources": [
-    "NIH NIDCD: Noise-Induced Hearing Loss (student pages)",
-    "CK-12 Physical Science: sound and the decibel scale"
-  ]
+  }
 }

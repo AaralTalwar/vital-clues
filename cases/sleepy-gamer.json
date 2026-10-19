@@ -35,8 +35,8 @@
       "shows": "the brain not yet in night mode even though he is tired",
       "visual": {
         "type": "bars",
-        "from": 15,
-        "to": 60,
+        "from": 10,
+        "to": 55,
         "unit": "minutes to fall asleep, camping → gaming nights"
       },
       "pointsTo": "signal"
@@ -132,8 +132,7 @@
     }
   },
   "labDefaults": {
-    "primary": 3,
-    "secondary": 1
+    "primary": 3
   },
   "concepts": [
     {

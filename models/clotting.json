@@ -1,43 +1,252 @@
 {
   "id": "clotting",
-  "name": "Blood & healing",
+  "version": 2,
+  "name": "Mateo's scrape plugging itself",
   "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "M", "label": "Minutes since the scrape", "min": 0, "max": 10, "step": 1, "unit": "min", "ticks": ["scrape", "5 min", "10 min"] },
-    "secondary": { "key": "A", "label": "Size of the scrape", "min": 1, "max": 3, "step": 1, "default": 2, "ticks": ["small", "medium", "large"] }
-  },
+  "parameters": [
+    {
+      "key": "M",
+      "label": "Minutes since the scrape",
+      "role": "primary",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "unit": "min",
+      "ticks": [
+        "scrape",
+        "5 min",
+        "10 min"
+      ],
+      "explain": "Platelets start sticking at once, so bleeding falls minute by minute.",
+      "basis": "source",
+      "cite": "kh-scab"
+    },
+    {
+      "key": "A",
+      "label": "Size of the scrape",
+      "role": "bubble",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "options": [
+        {
+          "value": 1,
+          "label": "small"
+        },
+        {
+          "value": 2,
+          "label": "medium"
+        },
+        {
+          "value": 3,
+          "label": "large"
+        }
+      ],
+      "explain": "A bigger scrape has more broken vessels to plug, so it takes longer to stop.",
+      "basis": "choice"
+    },
+    {
+      "key": "plt",
+      "label": "Platelets in his blood",
+      "role": "factor",
+      "min": 150,
+      "max": 400,
+      "step": 25,
+      "default": 250,
+      "unit": "thousand/µL",
+      "explain": "Normal is 150,000–400,000 per microliter. Fewer platelets make bleeding take longer to stop.",
+      "basis": "source",
+      "cite": "mp-platelets"
+    },
+    {
+      "key": "press",
+      "label": "Pressing on it",
+      "role": "factor",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "no"
+        },
+        {
+          "value": 1,
+          "label": "yes, firmly"
+        }
+      ],
+      "explain": "Pressing squeezes the broken vessels while the plug forms.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
-    { "key": "B", "label": "Bleeding", "unit": "% of the first minute", "colour": "coral", "decimals": 0 },
-    { "key": "C", "label": "Clot strength", "unit": "%", "colour": "purple", "decimals": 0 },
-    { "key": "S", "label": "The scrape is", "colour": "teal", "bands": [{ "upTo": 10, "text": "stopped" }, { "upTo": 50, "text": "slowing" }, { "text": "bleeding" }] }
+    {
+      "key": "B",
+      "label": "Bleeding",
+      "unit": "% of the first minute",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "C",
+      "label": "Plug strength",
+      "unit": "%",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "S",
+      "label": "The scrape is",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 4.9,
+          "text": "stopped"
+        },
+        {
+          "upTo": 30,
+          "text": "slowing"
+        },
+        {
+          "text": "bleeding"
+        }
+      ]
+    },
+    {
+      "key": "H",
+      "label": "Half the bleeding gone every",
+      "unit": "min",
+      "colour": "purple",
+      "decimals": 1
+    }
   ],
   "rules": {
-    "B": "100 * pow(0.5, M / (1 + 0.5 * A))",
-    "C": "100 * (1 - pow(0.5, M / (1 + 0.5 * A)))",
-    "S": "100 * pow(0.5, M / (1 + 0.5 * A))"
+    "B": "100 * pow(0.5, M / (0.58 * A * (250 / plt) * (1 - 0.4 * press)))",
+    "C": "100 - 100 * pow(0.5, M / (0.58 * A * (250 / plt) * (1 - 0.4 * press)))",
+    "S": "100 * pow(0.5, M / (0.58 * A * (250 / plt) * (1 - 0.4 * press)))",
+    "H": "0.58 * A * (250 / plt) * (1 - 0.4 * press)"
   },
-  "chart": { "x": "M", "y": "B", "xLabel": "minutes since the scrape", "yLabel": "bleeding (% of the first minute)", "yMin": 0, "yMax": 105 },
+  "chart": {
+    "x": "M",
+    "y": "B",
+    "xLabel": "minutes since the scrape",
+    "yLabel": "bleeding (% of the first minute)",
+    "yMin": 0,
+    "yMax": 105
+  },
   "overlay": {
-    "base": "arm",
-    "caption": "cut → platelets stick → a mesh plugs the leak → scab guards new skin",
+    "base": "torso",
+    "caption": "platelets stick → fibrin threads → plug → scab → new skin underneath",
     "parts": [
-      { "shape": "drops", "colour": "#E4572E", "anim": { "type": "count", "output": "B", "min": 0, "max": 100 } },
-      { "shape": "clot", "colour": "#A33A17", "anim": { "type": "glow", "output": "C", "min": 0, "max": 100 } }
+      {
+        "shape": "drops",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "count",
+          "output": "B",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "clot",
+        "colour": "#A33A17",
+        "anim": {
+          "type": "glow",
+          "output": "C",
+          "min": 0,
+          "max": 100
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "When Mateo scrapes his knee, tiny pieces in his blood called platelets rush to the broken vessels and stick together like glue. Thread-like fibrin holds them in a plug, so the bleeding slows minute by minute and stops on its own — even under a bandage. The plug dries into a scab while new skin grows underneath.",
+    "rules": [
+      "Bleeding halves every so many minutes as the plug builds.",
+      "A bigger scrape takes longer to halve; fewer platelets take longer too.",
+      "Pressing on it makes the bleeding stop sooner.",
+      "Plug strength rises as the bleeding falls."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Bleeding from small skin vessels normally stops within 1 to 9 minutes; low platelet counts make it take longer.",
+        "cite": "mp-bleeding"
+      },
+      {
+        "fact": "Platelets help blood clot; a normal count is 150,000 to 400,000 per microliter.",
+        "cite": "mp-platelets"
+      },
+      {
+        "fact": "Platelets stick together to make a clot held by thread-like fibrin; it dries into a scab, new skin grows underneath, and the scab falls off after a week or two.",
+        "cite": "kh-scab"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Bleeding halves at a steady rate",
+        "why": "A halving curve fits 'fast at first, then slower' and stops within the 1–9 minute range for the default scrape."
+      },
+      {
+        "what": "Platelet count scales the time directly",
+        "why": "Fewer platelets means a slower plug; the real relationship is more complicated."
+      },
+      {
+        "what": "Pressing cuts the time by 40%",
+        "why": "Pressing helps; the exact amount varies, so we picked a clear but modest effect."
+      }
+    ],
+    "illustrative": [
+      "Mateo's scrape size, his platelet count (250,000) and the 5-minute stop are made up for a fictional story.",
+      "Bleeding is shown as a percentage of the first minute, not in millilitres."
+    ]
+  },
+  "citations": [
+    {
+      "id": "mp-bleeding",
+      "title": "Bleeding time",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/003656.htm",
+      "verified": "2026-10-19",
+      "supports": "Bleeding time measures how fast small blood vessels in the skin stop bleeding; bleeding normally stops within 1 to 9 minutes; low platelet counts can make it take longer."
+    },
+    {
+      "id": "mp-platelets",
+      "title": "Platelet count",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/003647.htm",
+      "verified": "2026-10-19",
+      "supports": "Platelets are particles in the blood that help it clot; a normal count is 150,000 to 400,000 per microliter."
+    },
+    {
+      "id": "kh-scab",
+      "title": "What's a Scab?",
+      "publisher": "Nemours KidsHealth",
+      "year": "",
+      "url": "https://kidshealth.org/en/kids/scab.html",
+      "verified": "2026-10-19",
+      "supports": "Platelets stick together like glue to make a clot, held together by thread-like fibrin; the dried clot becomes a scab; new skin cells grow underneath; the scab falls off after a week or two."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows bleeding slowing and stopping as a clot builds over minutes",
-      "Shows a bigger scrape taking longer to plug",
-      "Shows clot strength rising as bleeding falls"
+      "Shows bleeding slowing and stopping on its own as a plug forms",
+      "Shows bigger scrapes taking longer and pressing helping",
+      "Shows that the plug needs platelets, not air"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Show the days-long regrowth of skin under the scab",
-      "Cover deep cuts or anything that needs an adult's help"
+      "Measure any real cut or anyone's real platelet count",
+      "Include germs, cleaning a wound or how deep a cut is",
+      "Show the week of healing under the scab"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "A cut that keeps bleeding after you press on it for a few minutes is a reason to get an adult."
-  },
-  "sources": ["NIH NHLBI: blood and platelets (student overview)", "CK-12 Life Science: circulatory system and blood"]
+    "wellbeing": "A cut that won't stop bleeding after you press on it for 10 minutes, or one that is deep, is a reason to tell an adult right away."
+  }
 }

@@ -1,43 +1,119 @@
 {
   "id": "taste-genes",
-  "name": "Tongue & bitter taste",
+  "version": 2,
+  "name": "Imani's bitter-taste genes",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "c", "label": "How bitter the food is", "min": 0, "max": 10, "step": 1, "ticks": ["cucumber", "broccoli", "raw Brussels sprouts"] },
-    "secondary": { "key": "g", "label": "Inherited bitter sensitivity", "min": 0, "max": 2, "step": 1, "default": 2, "ticks": ["low", "medium", "high"] }
-  },
+  "parameters": [
+    {
+      "key": "c", "label": "How much bitter compound is in the food", "role": "primary", "min": 0, "max": 10, "step": 1, "default": 7,
+      "ticks": ["cucumber", "broccoli", "raw Brussels sprouts"],
+      "explain": "Broccoli and Brussels sprouts contain bitter-tasting compounds; some foods have hardly any. This is a 0–10 teaching scale.",
+      "basis": "illustrative"
+    },
+    {
+      "key": "g", "label": "Her bitter-taste gene (TAS2R38)", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 2,
+      "options": [{ "value": 0, "label": "non-taster" }, { "value": 1, "label": "medium taster" }, { "value": 2, "label": "supertaster" }],
+      "explain": "The twist dial: different versions of one gene, TAS2R38, help explain why the same food tastes much more bitter to some people. Switch Imani to her brother's version and see.",
+      "basis": "source", "cite": "ajcn-tas2r38"
+    },
+    {
+      "key": "salt", "label": "Salt on the broccoli", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "none" }, { "value": 1, "label": "a pinch" }, { "value": 2, "label": "salty" }],
+      "explain": "Salt suppresses bitterness more than it suppresses other tastes — one reason food tastes better with a little salt.",
+      "basis": "source", "cite": "nature-salt"
+    },
+    {
+      "key": "nose", "label": "Her nose", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "clear" }, { "value": 1, "label": "blocked by a cold" }],
+      "explain": "Test the 'she has a cold' idea: a blocked nose makes food taste bland because flavour needs smell — but the tongue's bitter taste is still there.",
+      "basis": "source", "cite": "nidcd-taste"
+    },
+    {
+      "key": "buds", "label": "Taste buds compared with average", "role": "factor", "min": 0.8, "max": 1.2, "step": 0.2, "default": 1,
+      "options": [{ "value": 0.8, "label": "fewer" }, { "value": 1, "label": "average" }, { "value": 1.2, "label": "more" }],
+      "explain": "Supertasters may have more, or stronger, taste buds as well as sensitive receptors.",
+      "basis": "source", "cite": "cleveland-supertaster"
+    },
+    {
+      "key": "cook", "label": "How the broccoli was cooked", "role": "factor", "min": 0, "max": 2, "step": 1, "default": 1,
+      "options": [{ "value": 0, "label": "raw" }, { "value": 1, "label": "steamed" }, { "value": 2, "label": "boiled a long time" }],
+      "explain": "Test the 'cooked badly' idea: cooking changes the food a little for everyone at the table — it can't explain why only Imani finds it harsh.",
+      "basis": "illustrative"
+    }
+  ],
   "outputs": [
     { "key": "B", "label": "Bitterness she tastes", "unit": "0–10", "colour": "purple", "decimals": 1 },
     { "key": "T", "label": "Bitter receptors firing", "unit": "%", "colour": "coral", "decimals": 0 },
-    { "key": "W", "label": "Wants another bite", "colour": "teal", "bands": [{ "upTo": 3.9, "text": "yes" }, { "upTo": 6.9, "text": "maybe" }, { "text": "no thanks" }] }
+    { "key": "F", "label": "Flavour from smell", "unit": "0–10", "colour": "teal", "decimals": 1 },
+    { "key": "W", "label": "Wants another bite", "colour": "amber", "bands": [{ "upTo": 3, "text": "yes" }, { "upTo": 5.5, "text": "maybe" }, { "text": "no thanks" }] }
   ],
   "rules": {
-    "B": "clamp(c * (0.3 + 0.45 * g), 0, 10)",
-    "T": "clamp(10 * c * (0.3 + 0.45 * g), 0, 100)",
-    "W": "clamp(c * (0.3 + 0.45 * g), 0, 10)"
+    "T": "clamp(10 * c * (0.25 + 0.375 * g) * buds * (1 - 0.12 * cook), 0, 100)",
+    "B": "clamp(c * (0.25 + 0.375 * g) * buds * (1 - 0.12 * cook) * (1 - 0.22 * salt), 0, 10)",
+    "F": "8 * (1 - 0.8 * nose) * (1 - 0.1 * cook)",
+    "W": "clamp(c * (0.25 + 0.375 * g) * buds * (1 - 0.12 * cook) * (1 - 0.22 * salt), 0, 10)"
   },
-  "chart": { "x": "c", "y": "B", "xLabel": "how bitter the food is", "yLabel": "bitterness tasted (0–10)", "yMin": 0, "yMax": 10 },
+  "chart": { "x": "c", "y": "B", "xLabel": "bitter compound in the food", "yLabel": "bitterness she tastes (0–10)", "yMin": 0, "yMax": 10 },
   "overlay": {
     "base": "head",
-    "caption": "bitter chemical → tongue receptors → stronger signal if you inherited more of them",
+    "caption": "bitter compound → receptors on the tongue → a stronger signal if you inherited sensitive receptors",
     "parts": [
       { "shape": "tongue", "colour": "#E4572E" },
-      { "shape": "tasteBuds", "colour": "#6C4AB6", "anim": { "type": "count", "output": "T", "min": 0, "max": 100 } }
+      { "shape": "tasteBuds", "colour": "#6C4AB6", "anim": { "type": "count", "output": "T", "min": 0, "max": 100 } },
+      { "shape": "nose", "colour": "#1B998B", "anim": { "type": "glow", "output": "F", "min": 0, "max": 8 } }
     ]
   },
+  "explain": {
+    "summary": "Bitter taste starts when bitter compounds in food fit into bitter-taste receptors on the tongue. People inherit different versions of one receptor gene, TAS2R38, so the same broccoli sends a strong bitter signal in some people and a weak one in others. Imani has a sensitive version; her brother doesn't. Salt can dim bitterness, and a blocked nose dulls flavour but not bitterness.",
+    "rules": [
+      "Bitterness rises with the amount of bitter compound in the food.",
+      "How strongly it rises depends on the version of the bitter-taste gene: non-taster, medium or supertaster.",
+      "More taste buds make the signal a little stronger.",
+      "Salt turns bitterness down.",
+      "A blocked nose lowers flavour from smell, but not the tongue's bitter taste."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Different versions (alleles) of the bitter-receptor gene TAS2R38 are partly responsible for differences in how bitter people find things; people with more of the sensitive receptor rated a bitter test chemical as more intense.", "cite": "ajcn-tas2r38" },
+      { "fact": "About 25% of people in the U.S. are 'supertasters' of the bitter test chemical PROP, linked to the TAS2R38 gene; supertasters may have more or stronger taste buds, and they are born, not made.", "cite": "cleveland-supertaster" },
+      { "fact": "Salt enhances flavour by suppressing bitterness: in experiments, salt suppressed bitterness much more than sweetness.", "cite": "nature-salt" },
+      { "fact": "Taste cells detect at least five basic tastes, including bitter. Flavour is taste combined with a food's aroma, so a stuffed-up nose from a cold makes food taste bland.", "cite": "nidcd-taste" }
+    ],
+    "choice": [
+      { "what": "Three gene groups (non-taster, medium, supertaster)", "why": "Real sensitivity is a range; three groups make the comparison between Imani and her brother clear. Supertasters are given 4 times the bitter signal of non-tasters." },
+      { "what": "Salt cuts bitterness by up to about 45%", "why": "Salt clearly suppresses bitterness; the exact amount depends on how much salt and which bitter compound." },
+      { "what": "Taste-bud number has a small effect (±20%)", "why": "Researchers still debate how much the number of taste buds matters compared with the receptor genes." },
+      { "what": "A blocked nose only changes smell-based flavour", "why": "Bitter is one of the tongue's basic tastes, so it is still detected when the nose is blocked." }
+    ],
+    "illustrative": [
+      "The 0–10 'bitter compound' and bitterness scales are teaching scales, not measurements.",
+      "How much cooking changes the bitter compounds is a made-up size: the point is that it changes the food for everyone at the table, not just for Imani."
+    ],
+    "studying": "Scientists are still working out how all the different bitter-receptor genes (there are many besides TAS2R38) combine to shape what each person likes to eat."
+  },
+  "citations": [
+    { "id": "ajcn-tas2r38", "title": "Human bitter perception correlates with bitter receptor messenger RNA expression in taste cells (Am J Clin Nutr)", "publisher": "PubMed", "year": "2013", "url": "https://pubmed.ncbi.nlm.nih.gov/24025627/", "verified": "2026-10-19",
+      "supports": "Abstract: alleles of the TAS2R38 gene are responsible in part for variation in bitter taste perception; receptor expression varied widely and correlated with ratings of PROP bitterness and with diet." },
+    { "id": "cleveland-supertaster", "title": "What It Means To Be a Supertaster", "publisher": "Cleveland Clinic", "year": "", "url": "https://health.clevelandclinic.org/what-it-means-to-be-a-supertaster", "verified": "2026-10-19",
+      "supports": "About 25% of people in the U.S. are PROP supertasters; this is due to the TAS2R38 gene; supertasters may have more or stronger taste buds; supertasters are born, not made; many vegetables taste bitter." },
+    { "id": "nature-salt", "title": "Salt enhances flavour by suppressing bitterness (Nature 387, 563)", "publisher": "Nature", "year": "1997", "url": "https://www.nature.com/articles/42388", "verified": "2026-10-19",
+      "supports": "Breslin & Beauchamp: salts potentiate flavour through selective suppression of bitterness; the bitterness of urea was suppressed much more by salt than the sweetness of sucrose." },
+    { "id": "nidcd-taste", "title": "Taste Disorders", "publisher": "NIH National Institute on Deafness and Other Communication Disorders", "year": "", "url": "https://www.nidcd.nih.gov/health/taste-disorders", "verified": "2026-10-19",
+      "supports": "Taste cells respond to at least five basic tastes including bitter; taste combines with aroma to make flavour; when your nose is stuffed up by a cold or flu, food can taste bland." }
+  ],
   "limits": {
     "does": [
-      "Shows the same bitter chemical tasting stronger to someone with more sensitive bitter receptors",
-      "Shows bitterness tasted rising with how bitter the food is",
-      "Shows sensitivity as something inherited, set by genes"
+      "Shows the same food sending a different bitter signal depending on inherited taste genes",
+      "Shows that salt dims bitterness and a blocked nose dims flavour, not bitterness",
+      "Shows why cooking can't explain a difference between two people eating the same food"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include smell, cooking, habits or how taste changes with age",
-      "Say anything about what anyone should eat"
+      "Measure anyone's own taste genes — Imani is fictional",
+      "Include the many other bitter-taste genes, or how habits and culture shape what we like",
+      "Say anything about health or what anyone should eat"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If a food suddenly tastes very strange or you lose your sense of taste, tell an adult."
-  },
-  "sources": ["NIH News in Health: how taste works (student overview)", "CK-12 Life Science: senses, taste and inherited traits"]
+    "wellbeing": "If food suddenly starts tasting very different or strange to you, mention it to an adult."
+  }
 }

@@ -119,7 +119,7 @@
   "mismatchHints": [],
   "prediction": {
     "output": "F",
-    "prompt": "Zoe listens for one hour. As the loudness rises — from conversation level up to front-row concert level — what happens to how tired her inner-ear hair cells get?",
+    "prompt": "Zoe listens for three hours. As the loudness rises — from conversation level up to front-row concert level — what happens to how tired her inner-ear hair cells get?",
     "expectedShape": "flat-then-rises",
     "second": {
       "question": "If she listens twice as long at the same loudness, what happens to the fatigue?",
@@ -132,8 +132,7 @@
     }
   },
   "labDefaults": {
-    "primary": 105,
-    "secondary": 60
+    "primary": 105
   },
   "concepts": [
     {

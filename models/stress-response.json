@@ -1,47 +1,322 @@
 {
   "id": "stress-response",
-  "name": "Adrenaline & the alarm system",
+  "version": 2,
+  "name": "Ava's alarm system before a solo",
   "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "X", "label": "How big the moment feels", "min": 0, "max": 10, "step": 1, "ticks": ["chilling at home", "class presentation", "solo on stage"] },
-    "secondary": { "key": "R", "label": "Minutes after it's over", "min": 0, "max": 20, "step": 2, "default": 0, "unit": "min", "ticks": ["still on", "10 min", "20 min"] }
-  },
+  "parameters": [
+    {
+      "key": "X",
+      "label": "How big the moment feels",
+      "role": "primary",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 9,
+      "ticks": [
+        "chilling at home",
+        "class presentation",
+        "solo on stage"
+      ],
+      "explain": "The brain's alarm reacts to how important a moment seems, not to any real danger.",
+      "basis": "source",
+      "cite": "cleveland-adrenaline"
+    },
+    {
+      "key": "R",
+      "label": "Minutes after the song",
+      "role": "bubble",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 0,
+      "unit": "min",
+      "explain": "Once the moment passes, the body's calming system brakes the alarm and everything settles.",
+      "basis": "source",
+      "cite": "harvard-stress"
+    },
+    {
+      "key": "Pn",
+      "label": "Solos she has sung before",
+      "role": "bubble",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 1,
+      "explain": "Facing a worrying situation again and again gradually makes the alarm smaller.",
+      "basis": "source",
+      "cite": "nhs-fears"
+    },
+    {
+      "key": "L",
+      "label": "Stage-light heat",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0,
+          "label": "cool stage"
+        },
+        {
+          "value": 1,
+          "label": "warm lights"
+        },
+        {
+          "value": 2,
+          "label": "very hot lights"
+        }
+      ],
+      "explain": "Test the 'hot lights' idea: heat adds a little sweat and a few heartbeats, but no dry mouth and no shaking.",
+      "basis": "choice"
+    },
+    {
+      "key": "age",
+      "label": "Age",
+      "role": "factor",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "default": 15,
+      "unit": "years",
+      "explain": "Maximum heart rate drops slowly with age (about 220 minus age), which limits how high it can climb.",
+      "basis": "source",
+      "cite": "aha-target"
+    },
+    {
+      "key": "Hrest",
+      "label": "Resting heart rate",
+      "role": "factor",
+      "min": 50,
+      "max": 90,
+      "step": 5,
+      "default": 70,
+      "unit": "beats/min",
+      "explain": "Most people rest at 60–100 beats a minute; very active people can be lower.",
+      "basis": "source",
+      "cite": "aha-target"
+    }
+  ],
   "outputs": [
-    { "key": "A", "label": "Adrenaline", "unit": "% above calm", "colour": "coral", "decimals": 0 },
-    { "key": "H", "label": "Heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 },
-    { "key": "W", "label": "Sweaty palms", "colour": "blue", "bands": [{ "upTo": 29, "text": "dry" }, { "upTo": 59, "text": "a little" }, { "text": "yes" }] },
-    { "key": "Y", "label": "Mouth", "colour": "amber", "bands": [{ "upTo": 39, "text": "normal" }, { "text": "dry" }] }
+    {
+      "key": "A",
+      "label": "Adrenaline",
+      "unit": "% above calm",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "H",
+      "label": "Heart rate",
+      "unit": "beats/min",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "W",
+      "label": "Sweaty palms",
+      "colour": "blue",
+      "bands": [
+        {
+          "upTo": 29,
+          "text": "dry"
+        },
+        {
+          "upTo": 59,
+          "text": "a little damp"
+        },
+        {
+          "text": "damp"
+        }
+      ]
+    },
+    {
+      "key": "Y",
+      "label": "Mouth",
+      "colour": "amber",
+      "bands": [
+        {
+          "upTo": 39,
+          "text": "normal"
+        },
+        {
+          "text": "dry"
+        }
+      ]
+    },
+    {
+      "key": "S",
+      "label": "Shaky hands",
+      "unit": "0–10",
+      "colour": "purple",
+      "decimals": 0
+    }
   ],
   "rules": {
-    "A": "10 * X * pow(0.5, R / 5)",
-    "H": "68 + 5.5 * X * pow(0.5, R / 5)",
-    "W": "10 * X * pow(0.5, R / 5)",
-    "Y": "10 * X * pow(0.5, R / 5)"
+    "A": "100 * (X / 10) * (1 - 0.5 * Pn / (Pn + 5)) * pow(0.5, R / 3)",
+    "H": "Hrest + (220 - age - Hrest) * 0.45 * (X / 10) * (1 - 0.5 * Pn / (Pn + 5)) * pow(0.5, R / 3) + 3 * L",
+    "W": "100 * (X / 10) * (1 - 0.5 * Pn / (Pn + 5)) * pow(0.5, R / 3) + 10 * L",
+    "Y": "100 * (X / 10) * (1 - 0.5 * Pn / (Pn + 5)) * pow(0.5, R / 3)",
+    "S": "round(10 * clamp(((X / 10) * (1 - 0.5 * Pn / (Pn + 5)) * pow(0.5, R / 3) - 0.3) / 0.6, 0, 1))"
   },
-  "chart": { "x": "X", "y": "H", "xLabel": "how big the moment feels", "yLabel": "heart rate (beats/min)", "yMin": 50, "yMax": 130 },
+  "chart": {
+    "x": "X",
+    "y": "H",
+    "xLabel": "how big the moment feels",
+    "yLabel": "heart rate (beats/min)",
+    "yMin": 50,
+    "yMax": 140
+  },
   "overlay": {
     "base": "torso",
-    "caption": "brain spots a challenge → adrenaline → heart, sweat, mouth all change at once",
+    "caption": "brain spots a big moment → adrenaline → heart, sweat, mouth and hands all change at once",
     "parts": [
-      { "shape": "bloodstream", "colour": "#E4572E", "anim": { "type": "glow", "output": "A", "min": 0, "max": 100 } },
-      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } },
-      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "W", "min": 0, "max": 100 } },
-      { "shape": "thirst", "colour": "#F4A300", "anim": { "type": "light", "output": "Y", "threshold": 40 } }
+      {
+        "shape": "bloodstream",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "glow",
+          "output": "A",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "heart",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "beat",
+          "output": "H"
+        }
+      },
+      {
+        "shape": "drops",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "count",
+          "output": "W",
+          "min": 0,
+          "max": 110
+        }
+      },
+      {
+        "shape": "thirst",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "light",
+          "output": "Y",
+          "threshold": 40
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "When Ava's brain decides the solo is a big moment, it sounds an alarm: the adrenal glands release adrenaline. That one chemical makes her heart beat faster, her palms sweat and her hands tremble — all at once, while she stands perfectly still. After the song the body's calming system brakes the alarm, and every sign fades together within minutes. Singing solos more often makes the alarm smaller.",
+    "rules": [
+      "The bigger the moment feels, the more adrenaline is released.",
+      "Adrenaline raises heart rate toward her maximum (about 220 − age) — up to nearly half the gap from resting.",
+      "The same adrenaline brings sweaty palms, a dry mouth and, at high levels, shaky hands.",
+      "After the moment passes, adrenaline halves about every 3 minutes.",
+      "Each solo she has sung before makes the alarm a little smaller."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Adrenaline is released when you are suddenly scared or stressed; your heart beats faster and you breathe faster.",
+        "cite": "cleveland-adrenaline"
+      },
+      {
+        "fact": "Adrenaline makes the heart beat faster, muscles tense and sweat appear, and these changes happen before we are even aware of them.",
+        "cite": "harvard-stress"
+      },
+      {
+        "fact": "After the moment passes, the body's calming (parasympathetic) system brakes the stress response.",
+        "cite": "harvard-stress"
+      },
+      {
+        "fact": "Stress hormones such as adrenaline can cause a faster heartbeat, sweating and shaking; slowly building up time in worrying situations gradually reduces anxiety.",
+        "cite": "nhs-fears"
+      },
+      {
+        "fact": "A resting heart rate of 60–100 is normal for most people, and maximum heart rate is about 220 minus age.",
+        "cite": "aha-target"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Adrenaline halves every 3 minutes",
+        "why": "This matches clue 4 (pulse back near 75 about ten minutes after). Real hormones fade at different speeds."
+      },
+      {
+        "what": "The alarm shrinks by up to half with practice",
+        "why": "Practice helps, but the exact amount varies a lot from person to person."
+      },
+      {
+        "what": "A dry mouth is tied to the same adrenaline level",
+        "why": "The alarm slows digestion, including saliva; we treat it as switching on above a set level."
+      },
+      {
+        "what": "Stage lights add only a few beats and some sweat",
+        "why": "Heat raises sweating and heart rate a little, but doesn't cause dry mouth or shaking — that's what the dial lets you test."
+      }
+    ],
+    "illustrative": [
+      "Ava's resting pulse of 70, her 120 backstage and the 0–10 scales are made up for a fictional character."
+    ],
+    "studying": "Exactly why practice shrinks the alarm so much for some people and less for others is still being studied."
+  },
+  "citations": [
+    {
+      "id": "cleveland-adrenaline",
+      "title": "Adrenaline",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/body/23038-adrenaline",
+      "verified": "2026-10-19",
+      "supports": "Adrenaline is released when you are suddenly scared or stressed; your heart beats faster, you breathe faster and digestion slows so muscles get more blood."
+    },
+    {
+      "id": "harvard-stress",
+      "title": "Understanding the stress response",
+      "publisher": "Harvard Health Publishing",
+      "year": "",
+      "url": "https://www.health.harvard.edu/staying-healthy/understanding-the-stress-response",
+      "verified": "2026-10-19",
+      "supports": "Adrenaline (epinephrine) from the adrenal glands makes the heart beat faster, breathing quicken, muscles tense and sweat appear, and releases blood sugar from storage; it happens before we are aware; the parasympathetic system calms the body after."
+    },
+    {
+      "id": "nhs-fears",
+      "title": "Overcoming fears",
+      "publisher": "NHS",
+      "year": "",
+      "url": "https://www.nhs.uk/conditions/stress-anxiety-depression/overcoming-fears/",
+      "verified": "2026-10-19",
+      "supports": "When anxious or scared the body releases stress hormones such as adrenaline and cortisol, causing a faster heartbeat, sweating and shaking; slowly building up time in worrying situations gradually reduces anxiety."
+    },
+    {
+      "id": "aha-target",
+      "title": "Target Heart Rates Chart",
+      "publisher": "American Heart Association",
+      "year": "",
+      "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates",
+      "verified": "2026-10-19",
+      "supports": "A resting heart rate of 60–100 beats a minute is normal for most adults and very active people can be as low as 40; maximum heart rate is about 220 minus your age; vigorous activity is about 70–85% of maximum."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows one signal (adrenaline) changing several body systems at the same time",
-      "Shows the response scaling with how big the moment feels, not with any real danger",
-      "Shows everything settling back within minutes once the moment passes (halving every 5 minutes)"
+      "Shows one chemical changing heart, sweat, mouth and hands at the same time",
+      "Shows the response growing with how big the moment feels, and fading after",
+      "Shows practice making the alarm smaller"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Say anything about anxiety, panic or any condition; this is the everyday pre-performance response",
-      "Model what happens with long-lasting stress"
+      "Measure any real person — Ava is fictional",
+      "Say anything about anxiety conditions; this is the everyday pre-performance response",
+      "Model long-lasting stress"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Nerves before a big moment are normal and pass. If worry gets in the way of everyday life, talk with an adult you trust."
-  },
-  "sources": ["CK-12 Life Science: endocrine system, adrenal glands", "NIH News in Health: the stress response (student overview)"]
+  }
 }

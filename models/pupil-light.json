@@ -1,46 +1,267 @@
 {
   "id": "pupil-light",
-  "name": "Eyes & light",
+  "version": 2,
+  "name": "Hana's pupils adjusting to light",
   "colour": "blue",
-  "inputs": {
-    "primary":   { "key": "L", "label": "Light around her", "min": 0, "max": 10, "step": 1, "ticks": ["dim room", "cloudy day", "bright beach"] },
-    "secondary": { "key": "S", "label": "Seconds after stepping out of the sun", "min": 0, "max": 10, "step": 1, "default": 10, "unit": "s", "ticks": ["just stepped in", "5 s", "10 s"] }
-  },
+  "parameters": [
+    {
+      "key": "L",
+      "label": "Light around her",
+      "role": "primary",
+      "min": 0.5,
+      "max": 10,
+      "step": 0.5,
+      "default": 1,
+      "ticks": [
+        "dim room",
+        "cloudy day",
+        "bright beach"
+      ],
+      "explain": "Brighter surroundings send more light toward the eye, so the pupils squeeze smaller.",
+      "basis": "source",
+      "cite": "nei-eye"
+    },
+    {
+      "key": "S",
+      "label": "Seconds after stepping inside",
+      "role": "bubble",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 10,
+      "unit": "s",
+      "ticks": [
+        "just stepped in",
+        "5 s",
+        "10 s"
+      ],
+      "explain": "Pupils shrink fast in bright light but widen again more slowly — over several seconds.",
+      "basis": "source",
+      "cite": "ncbi-pupil"
+    },
+    {
+      "key": "glasses",
+      "label": "Sunglasses",
+      "role": "factor",
+      "min": 0.15,
+      "max": 1,
+      "step": 0.05,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "none"
+        },
+        {
+          "value": 0.5,
+          "label": "light tint"
+        },
+        {
+          "value": 0.15,
+          "label": "dark"
+        }
+      ],
+      "explain": "Tinted lenses block part of the light before it reaches the pupil.",
+      "basis": "choice"
+    },
+    {
+      "key": "shade",
+      "label": "Shade",
+      "role": "factor",
+      "min": 0.3,
+      "max": 1,
+      "step": 0.7,
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "open sun"
+        },
+        {
+          "value": 0.3,
+          "label": "under an umbrella"
+        }
+      ],
+      "explain": "Under an umbrella less light reaches her eyes.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
-    { "key": "P", "label": "Pupil width", "unit": "mm", "colour": "blue", "decimals": 1 },
-    { "key": "E", "label": "Light reaching the back of the eye", "unit": "units", "colour": "amber", "decimals": 0 },
-    { "key": "R", "label": "Reading the page", "colour": "teal", "bands": [{ "upTo": 5.9, "text": "too dark — squinting" }, { "text": "comfortable" }] },
-    { "key": "K", "label": "Outside light", "colour": "amber", "hidden": true }
+    {
+      "key": "P",
+      "label": "Pupil width",
+      "unit": "mm",
+      "colour": "blue",
+      "decimals": 1
+    },
+    {
+      "key": "E",
+      "label": "Light reaching the back of the eye",
+      "unit": "units",
+      "colour": "amber",
+      "decimals": 1
+    },
+    {
+      "key": "R",
+      "label": "Reading the page",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 1.4,
+          "text": "too dark"
+        },
+        {
+          "upTo": 10,
+          "text": "comfortable"
+        },
+        {
+          "text": "glaring"
+        }
+      ]
+    },
+    {
+      "key": "K",
+      "label": "Light at her eyes",
+      "unit": "of 10",
+      "colour": "amber",
+      "decimals": 1,
+      "hidden": true
+    }
   ],
   "rules": {
-    "P": "8 / (1 + 0.3 * L) + (2 - 8 / (1 + 0.3 * L)) * pow(0.5, S)",
-    "E": "(L + 1) * pow(8 / (1 + 0.3 * L) + (2 - 8 / (1 + 0.3 * L)) * pow(0.5, S), 2) / 4",
-    "R": "(L + 1) * pow(8 / (1 + 0.3 * L) + (2 - 8 / (1 + 0.3 * L)) * pow(0.5, S), 2) / 4",
-    "K": "L"
+    "P": "((2.5 + 4.5 / (1 + pow((L * glasses * shade) / 3, 1.6))) + ((2.5 + 4.5 / (1 + pow(10 * glasses * shade / 3, 1.6))) - (2.5 + 4.5 / (1 + pow((L * glasses * shade) / 3, 1.6)))) * pow(0.5, S / 1.5))",
+    "E": "(L * glasses * shade) * pow(((2.5 + 4.5 / (1 + pow((L * glasses * shade) / 3, 1.6))) + ((2.5 + 4.5 / (1 + pow(10 * glasses * shade / 3, 1.6))) - (2.5 + 4.5 / (1 + pow((L * glasses * shade) / 3, 1.6)))) * pow(0.5, S / 1.5)), 2) / 16",
+    "R": "(L * glasses * shade) * pow(((2.5 + 4.5 / (1 + pow((L * glasses * shade) / 3, 1.6))) + ((2.5 + 4.5 / (1 + pow(10 * glasses * shade / 3, 1.6))) - (2.5 + 4.5 / (1 + pow((L * glasses * shade) / 3, 1.6)))) * pow(0.5, S / 1.5)), 2) / 16",
+    "K": "(L * glasses * shade)"
   },
-  "chart": { "x": "L", "y": "P", "xLabel": "light around her", "yLabel": "pupil width (mm)", "yMin": 0, "yMax": 9 },
+  "chart": {
+    "x": "L",
+    "y": "P",
+    "xLabel": "light around her",
+    "yLabel": "pupil width (mm)",
+    "yMin": 0,
+    "yMax": 9
+  },
   "overlay": {
     "base": "head",
-    "caption": "bright light → iris squeezes the pupil small · dim light → pupil opens wide",
+    "caption": "bright light → iris muscles squeeze the pupil → less light gets in",
     "parts": [
-      { "shape": "sun", "colour": "#F4A300", "anim": { "type": "glow", "output": "K", "min": 0, "max": 10 } },
-      { "shape": "iris", "colour": "#2E86DE" },
-      { "shape": "pupil", "colour": "#16213E", "anim": { "type": "scale", "output": "P", "min": 2, "max": 8, "from": 0.3, "to": 1.25 } }
+      {
+        "shape": "sun",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "K",
+          "min": 0,
+          "max": 10
+        }
+      },
+      {
+        "shape": "iris",
+        "colour": "#6C4AB6"
+      },
+      {
+        "shape": "pupil",
+        "colour": "#16213E",
+        "anim": {
+          "type": "scale",
+          "output": "P",
+          "min": 2,
+          "max": 8,
+          "from": 0.3,
+          "to": 1.25
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Light gets into Hana's eye through the pupil, the black opening in the middle. Her iris — the coloured ring — has tiny muscles that squeeze the pupil small in bright light and open it wide in dim light. That evens out how much light reaches the back of her eye, so she can read on a bright beach and in a dim café. Squeezing is quick; widening again takes several seconds.",
+    "rules": [
+      "Pupils are about 2–4 mm in bright light and 4–8 mm in dim light.",
+      "Light let in depends on the pupil's area — width × width — so a small change in width makes a big difference.",
+      "After stepping into the dim café, her pupils widen over several seconds.",
+      "Sunglasses and shade lower the light, so the pupils open wider."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Light enters the eye through the pupil, and the iris controls how much light the pupil lets in.",
+        "cite": "nei-eye"
+      },
+      {
+        "fact": "The iris changes pupil size with tiny muscles; pupils are about 2–4 mm in bright light and 4–8 mm in dim light.",
+        "cite": "cc-pupils"
+      },
+      {
+        "fact": "Light makes the pupils constrict first; they widen again slowly several seconds later.",
+        "cite": "ncbi-pupil"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Brightness is a 0–10 scale, not lux",
+        "why": "Real outdoor light can be hundreds of times brighter than indoor light; a simple scale keeps the focus on the pupil."
+      },
+      {
+        "what": "Pupil width follows a smooth curve from 7 mm to 2.5 mm",
+        "why": "This stays inside the published ranges; the exact curve differs between people."
+      },
+      {
+        "what": "Light let in = brightness × pupil area",
+        "why": "The amount of light through an opening depends on its area, and a circle's area depends on width squared."
+      },
+      {
+        "what": "Widening halves the gap every 1.5 seconds",
+        "why": "Widening takes several seconds; 1.5 s is a teaching value."
+      }
+    ],
+    "illustrative": [
+      "Hana's beach and café brightness, and the sunglasses and umbrella amounts, are made up for a fictional story.",
+      "'Light reaching the back of the eye' is in teaching units."
+    ]
+  },
+  "citations": [
+    {
+      "id": "nei-eye",
+      "title": "How the Eyes Work",
+      "publisher": "NIH National Eye Institute",
+      "year": "",
+      "url": "https://www.nei.nih.gov/learn-about-eye-health/healthy-vision/how-eyes-work",
+      "verified": "2026-10-19",
+      "supports": "Light enters the eye through the pupil; the iris controls how much light the pupil lets in; the retina at the back of the eye turns light into signals."
+    },
+    {
+      "id": "cc-pupils",
+      "title": "Dilated Pupils",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/symptoms/22238-dilated-pupils",
+      "verified": "2026-10-19",
+      "supports": "Normal pupils are 2 to 4 mm in bright light and 4 to 8 mm in dim light; the iris controls pupil size with tiny muscles."
+    },
+    {
+      "id": "ncbi-pupil",
+      "title": "The Pupils (Clinical Methods, 3rd edition)",
+      "publisher": "NCBI Bookshelf (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://www.ncbi.nlm.nih.gov/books/NBK381/",
+      "verified": "2026-10-19",
+      "supports": "Normal adult pupils are 2 to 4 mm across in bright light and 4 to 8 mm in the dark; light makes them constrict first, and they re-widen slowly several seconds later."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows pupils shrinking as the light gets brighter and widening as it dims",
-      "Shows the light reaching the back of the eye staying much steadier than the light outside",
-      "Shows pupils finishing their change within a few seconds"
+      "Shows pupils shrinking in bright light and widening in dim light",
+      "Shows the pupil evening out how much light reaches the back of the eye",
+      "Shows that widening again takes several seconds"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include the slower adjustment of the light-sensing cells themselves (see The Dark Cinema)",
-      "Say anything about eye health"
+      "Measure any real person's eyes",
+      "Use real light units (lux) or include eye problems",
+      "Say anything about safe sun exposure for the eyes"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Never look straight at the sun, even with small pupils — and tell an adult if bright light ever hurts your eyes."
-  },
-  "sources": ["NIH National Eye Institute: How the eyes work (student pages)", "CK-12 Life Science: the eye and vision"]
+    "wellbeing": "Never look straight at the sun. Eye pain or sudden changes in vision are a reason to tell an adult."
+  }
 }

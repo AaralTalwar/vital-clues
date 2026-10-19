@@ -1,44 +1,146 @@
 {
   "id": "noise-sleep",
-  "name": "Loud sound & short sleep",
+  "version": 2,
+  "name": "Hana's ears and sleep after a concert",
   "colour": "purple",
-  "inputs": {
-    "primary": {
+  "parameters": [
+    {
       "key": "V",
-      "label": "Loudness",
+      "label": "Loudness by the speakers",
+      "role": "primary",
       "min": 70,
       "max": 110,
       "step": 5,
+      "default": 105,
       "unit": "dB",
       "ticks": [
         "70 · busy café",
         "90 · traffic",
         "110 · concert"
-      ]
+      ],
+      "explain": "Concerts reach 94–110 dBA. Sounds at or below 70 are unlikely to harm hearing; long exposure above 85 can.",
+      "basis": "source",
+      "cite": "nidcd-nihl"
     },
-    "secondary": {
+    {
+      "key": "Th",
+      "label": "Hours at the concert",
+      "role": "bubble",
+      "min": 0.5,
+      "max": 4,
+      "step": 0.5,
+      "default": 3,
+      "unit": "h",
+      "explain": "For every 3 dB louder, the safe time halves — so time and loudness work together.",
+      "basis": "source",
+      "cite": "niosh-noise"
+    },
+    {
+      "key": "Dd",
+      "label": "Distance from the speakers",
+      "role": "bubble",
+      "min": 0,
+      "max": 3,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "front row (2 m)"
+        },
+        {
+          "value": 1,
+          "label": "4 m"
+        },
+        {
+          "value": 2,
+          "label": "8 m"
+        },
+        {
+          "value": 3,
+          "label": "back of the hall (16 m)"
+        }
+      ],
+      "explain": "Each doubling of distance cuts the level by about 6 dB.",
+      "basis": "source",
+      "cite": "manchester-isl"
+    },
+    {
+      "key": "E",
+      "label": "Earplugs",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "none"
+        },
+        {
+          "value": 1,
+          "label": "foam earplugs"
+        }
+      ],
+      "explain": "Earplugs block part of the sound before it reaches the inner ear.",
+      "basis": "choice"
+    },
+    {
       "key": "S",
       "label": "Hours of sleep",
+      "role": "bubble",
       "min": 3,
-      "max": 9,
+      "max": 10,
       "step": 0.5,
-      "default": 5,
+      "default": 5.5,
       "unit": "h",
-      "ticks": [
-        "3 h",
-        "6 h",
-        "9 h"
-      ]
+      "explain": "Short sleep makes it harder to focus, react and learn the next day.",
+      "basis": "source",
+      "cite": "nhlbi-sleep"
+    },
+    {
+      "key": "N",
+      "label": "Short nights in a row",
+      "role": "bubble",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "explain": "Missed sleep adds up over several nights.",
+      "basis": "choice"
+    },
+    {
+      "key": "need",
+      "label": "Sleep she needs",
+      "role": "factor",
+      "min": 8,
+      "max": 10,
+      "step": 0.5,
+      "default": 9,
+      "unit": "h",
+      "explain": "Teens need about 8–10 hours a night.",
+      "basis": "source",
+      "cite": "cdc-sleep-teens"
+    },
+    {
+      "key": "Aw",
+      "label": "Hours awake at class time",
+      "role": "factor",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 2,
+      "unit": "h",
+      "explain": "The longer she's been up on little sleep, the harder it is to stay sharp.",
+      "basis": "choice"
     }
-  },
-  "constants": {
-    "T": 180
-  },
+  ],
   "outputs": [
     {
       "key": "L",
-      "label": "Sound energy",
-      "unit": "× talking level",
+      "label": "Sound dose",
+      "unit": "% of a safe day",
       "colour": "amber",
       "decimals": 0
     },
@@ -63,9 +165,16 @@
           "text": "a little"
         },
         {
-          "text": "yes"
+          "text": "yes, and muffled"
         }
       ]
+    },
+    {
+      "key": "Bk",
+      "label": "Hearing back to normal in about",
+      "unit": "h",
+      "colour": "purple",
+      "decimals": 0
     },
     {
       "key": "A",
@@ -76,10 +185,11 @@
     }
   ],
   "rules": {
-    "L": "round(pow(10, (V - 60) / 10))",
-    "F": "clamp(pow(10, (V - 95) / 10) * T / 60, 0, 10)",
-    "R": "clamp(pow(10, (V - 95) / 10) * T / 60, 0, 10)",
-    "A": "clamp(10 - 1.4 * (8 - S), 1, 10)"
+    "L": "(100 * Th * pow(2, ((V - 6 * Dd - 20 * E) - 85) / 3) / 8)",
+    "F": "clamp(10 * (1 - pow(0.5, (100 * Th * pow(2, ((V - 6 * Dd - 20 * E) - 85) / 3) / 8) / 400)), 0, 10)",
+    "R": "clamp(10 * (1 - pow(0.5, (100 * Th * pow(2, ((V - 6 * Dd - 20 * E) - 85) / 3) / 8) / 400)), 0, 10)",
+    "Bk": "16 + 3.2 * clamp(10 * (1 - pow(0.5, (100 * Th * pow(2, ((V - 6 * Dd - 20 * E) - 85) / 3) / 8) / 400)), 0, 10)",
+    "A": "clamp(10 - 8 * max(0, 1 - S / need) * (1 + 0.25 * (N - 1)) - 0.25 * max(0, Aw - 3), 1, 10)"
   },
   "chart": {
     "x": "V",
@@ -100,7 +210,7 @@
           "type": "count",
           "output": "L",
           "min": 0,
-          "max": 10000
+          "max": 2000
         }
       },
       {
@@ -129,22 +239,123 @@
       }
     ]
   },
+  "explain": {
+    "summary": "Hana has two separate problems. Her ears: three hours at about 105 dB is many times a safe day's sound dose, so the tiny hair cells in her inner ear are worn out — that's the ringing and muffled hearing, which usually clears in 16–48 hours. Her brain: five and a half hours of sleep, when teens need 8–10, leaves her unable to focus. Leila's earplugs fixed the first problem, but not the second.",
+    "rules": [
+      "Sound dose = time at the concert compared with the safe time for that loudness (85 dB for 8 hours; half the time for every 3 dB louder).",
+      "Moving back halves the energy reaching you: about 6 dB less per doubling of distance. Earplugs block more.",
+      "Hair cells tire more as the dose climbs; tired hair cells ring and hear less, and recover over about 16–48 hours.",
+      "Focus falls with every hour of sleep she's short of what she needs."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Sounds at or below 70 dBA are unlikely to harm hearing; long or repeated exposure at 85 dBA and above can; concerts reach 94–110 dBA.",
+        "cite": "nidcd-nihl"
+      },
+      {
+        "fact": "A temporary hearing loss after loud noise can disappear 16 to 48 hours later; damaged hair cells don't grow back.",
+        "cite": "nidcd-nihl"
+      },
+      {
+        "fact": "The recommended limit is 85 dBA over 8 hours, and every 3 dB louder halves the allowed time (100 dBA: 15 minutes).",
+        "cite": "niosh-noise"
+      },
+      {
+        "fact": "Doubling your distance from a sound source lowers the level by about 6 dB.",
+        "cite": "manchester-isl"
+      },
+      {
+        "fact": "Teens need 8 to 10 hours of sleep; sleep-deficient people react more slowly and have trouble focusing.",
+        "cite": "cdc-sleep-teens"
+      },
+      {
+        "fact": "Sleep deficiency causes problems with learning, focusing and reacting.",
+        "cite": "nhlbi-sleep"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Earplugs block 20 dB",
+        "why": "Real earplugs vary — the label's noise reduction rating tells you how much; 20 dB is a typical teaching value."
+      },
+      {
+        "what": "Fatigue rises toward 10 as the dose climbs past a few hundred percent",
+        "why": "There's no single number linking dose to how tired hair cells get; the curve shows 'more dose, more fatigue'."
+      },
+      {
+        "what": "A workplace limit is used for a concert",
+        "why": "Workplace limits were made for adults over a working day; they're used here as a yardstick, not a rule."
+      },
+      {
+        "what": "Recovery time grows with fatigue inside the 16–48 hour range",
+        "why": "The real recovery time varies from person to person."
+      }
+    ],
+    "illustrative": [
+      "Hana's 105 dB, three hours, 5.5 hours of sleep and the 0–10 scales are made up for a fictional story."
+    ]
+  },
+  "citations": [
+    {
+      "id": "nidcd-nihl",
+      "title": "Noise-Induced Hearing Loss",
+      "publisher": "NIDCD (NIH)",
+      "year": "",
+      "url": "https://www.nidcd.nih.gov/health/noise-induced-hearing-loss",
+      "verified": "2026-10-19",
+      "supports": "Sounds at or below 70 dBA are unlikely to harm hearing; long or repeated exposure at 85 dBA and above can; concerts reach 94–110 dBA; a temporary hearing loss can disappear 16 to 48 hours later; damaged inner-ear hair cells don't grow back; wear earplugs at loud events."
+    },
+    {
+      "id": "niosh-noise",
+      "title": "Understanding Noise Exposure Limits: Occupational vs. General Environmental Noise",
+      "publisher": "CDC NIOSH",
+      "year": "2016",
+      "url": "https://cdc.gov/niosh/bulletin/2016/noise.html",
+      "verified": "2026-10-19",
+      "supports": "NIOSH's recommended limit is 85 dBA averaged over 8 hours; for every 3 dB louder the allowed time halves (88 dBA 4 h, 94 dBA 1 h, 100 dBA 15 min)."
+    },
+    {
+      "id": "manchester-isl",
+      "title": "Basic Acoustics: the inverse square law",
+      "publisher": "University of Manchester",
+      "year": "",
+      "url": "https://personalpages.manchester.ac.uk/staff/richard.baker/BasicAcoustics/4_inverse_square_law.html",
+      "verified": "2026-10-19",
+      "supports": "Where the inverse square law holds, each doubling of distance from a sound source lowers the sound intensity level by 6 dB."
+    },
+    {
+      "id": "cdc-sleep-teens",
+      "title": "Sleep in Middle and High School Students",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://archive.cdc.gov/www_cdc_gov/healthyschools/features/students-sleep.htm",
+      "verified": "2026-10-19",
+      "supports": "Teens aged 13–18 should get 8 to 10 hours of sleep per 24 hours (American Academy of Sleep Medicine); about 7 in 10 high schoolers don't get enough on school nights; short sleep is linked to attention problems."
+    },
+    {
+      "id": "nhlbi-sleep",
+      "title": "Sleep Deprivation and Deficiency: How Sleep Affects Your Health",
+      "publisher": "NHLBI (NIH)",
+      "year": "",
+      "url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/health-effects",
+      "verified": "2026-10-19",
+      "supports": "During sleep the brain forms pathways to learn and remember; sleep-deficient people react more slowly, make more mistakes and have trouble focusing; ongoing sleep deficiency can weaken the body's defence against common infections."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows hair-cell fatigue rising steeply with loudness over a three-hour concert",
-      "Shows morning focus falling with each hour of sleep lost",
-      "Shows the two as separate effects: earplugs don't fix sleep, and sleep doesn't fix ringing"
+      "Shows loudness and time together setting the sound dose",
+      "Shows distance and earplugs cutting the dose",
+      "Shows short sleep hurting focus separately from hearing"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Model permanent hearing damage; it stops at temporary ringing",
-      "Include caffeine, naps or how interesting the class is"
+      "Measure any real person or any real concert",
+      "Model permanent hearing loss",
+      "Replace a hearing test"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Ringing that lasts more than a day, or feeling exhausted every day, is worth telling an adult about."
-  },
-  "sources": [
-    "NIH NIDCD: Noise-Induced Hearing Loss (student pages)",
-    "CK-12 Life Science: nervous system and sleep"
-  ]
+    "wellbeing": "Ringing that lasts more than a day, or hearing that stays muffled, is a reason to tell an adult."
+  }
 }

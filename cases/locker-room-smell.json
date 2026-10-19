@@ -8,60 +8,213 @@
   "minutes": 8,
   "level": "moderate",
   "reviewed": null,
-  "character": { "name": "Jordan", "age": 13 },
+  "character": {
+    "name": "Jordan",
+    "age": 13
+  },
   "briefing": "Jordan, 13, walks into the team locker room after a hot practice and nearly gags at the smell. Ten minutes later he's laughing with teammates and can't smell a thing. Then his friend walks in late and shouts, “How can you guys stand it in here?”",
   "question": "Did the smell go away — or did Jordan's nose stop telling him about it?",
   "illustration": "sneaker",
   "clues": [
-    { "id": 1, "title": "Awful at the door", "icon": "nose", "colour": "coral",
+    {
+      "id": 1,
+      "title": "Awful at the door",
+      "icon": "nose",
+      "colour": "coral",
       "text": "The moment he opens the door the smell hits him hard. He pulls his shirt over his nose.",
-      "shows": "a strong new smell being noticed straight away", "visual": null, "pointsTo": "receptors" },
-    { "id": 2, "title": "Gone in ten minutes", "icon": "clock", "colour": "purple",
+      "shows": "a strong new smell being noticed straight away",
+      "visual": null,
+      "pointsTo": "receptors"
+    },
+    {
+      "id": 2,
+      "title": "Gone in ten minutes",
+      "icon": "clock",
+      "colour": "purple",
       "text": "Ten minutes later he honestly can't smell anything. He even forgets it was bad.",
-      "shows": "how strongly he notices the smell dropping over time", "visual": { "type": "bars", "from": 70, "to": 16, "unit": "% noticed, at the door → 10 min" }, "pointsTo": "adapt" },
-    { "id": 3, "title": "The late friend", "icon": "body", "colour": "amber",
+      "shows": "how strongly he notices the smell dropping over time",
+      "visual": {
+        "type": "bars",
+        "from": 70,
+        "to": 16,
+        "unit": "% noticed, at the door → 10 min"
+      },
+      "pointsTo": "adapt"
+    },
+    {
+      "id": 3,
+      "title": "The late friend",
+      "icon": "body",
+      "colour": "amber",
       "text": "His friend arrives fifteen minutes late and is disgusted. Nobody has opened a window or cleaned anything.",
-      "shows": "that the smell is still in the air at full strength", "visual": null, "pointsTo": "air" },
-    { "id": 4, "title": "Back in after a break", "icon": "sneaker", "colour": "teal",
+      "shows": "that the smell is still in the air at full strength",
+      "visual": null,
+      "pointsTo": "air"
+    },
+    {
+      "id": 4,
+      "title": "Back in after a break",
+      "icon": "sneaker",
+      "colour": "teal",
       "text": "Jordan steps outside for five minutes to grab his water bottle. When he walks back in, the smell hits him again.",
-      "shows": "noticing coming back after a break from the smell", "visual": null, "pointsTo": "reset" }
+      "shows": "noticing coming back after a break from the smell",
+      "visual": null,
+      "pointsTo": "reset"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "The smell faded away on its own, or someone aired out the room.", "flaw": "His friend smelled it at full strength fifteen minutes later, and nobody opened a window — the smell was still there." },
-    { "id": "B", "text": "Jordan just stopped paying attention because he was busy talking.", "flaw": "Coming back from outside, he was still busy and still not trying to notice — yet the smell hit him again. Something in his nose had reset." },
-    { "id": "C", "text": "Smell receptors in his nose fire hard at a new smell but quiet down when it doesn't change, so his brain stops getting the alarm — even though the smell is still in the air.", "best": true },
-    { "id": "D", "text": "The strong smell damaged his nose so it stopped working.", "flaw": "A damaged nose would not recover in five minutes outside — but his sense of smell came straight back." }
+    {
+      "id": "A",
+      "text": "The smell faded away on its own, or someone aired out the room.",
+      "flaw": "His friend smelled it at full strength fifteen minutes later, and nobody opened a window — the smell was still there."
+    },
+    {
+      "id": "B",
+      "text": "Jordan just stopped paying attention because he was busy talking.",
+      "flaw": "Coming back from outside, he was still busy and still not trying to notice — yet the smell hit him again. Something in his nose had reset."
+    },
+    {
+      "id": "C",
+      "text": "Smell receptors in his nose fire hard at a new smell but quiet down when it doesn't change, so his brain stops getting the alarm — even though the smell is still in the air.",
+      "best": true
+    },
+    {
+      "id": "D",
+      "text": "The strong smell damaged his nose so it stopped working.",
+      "flaw": "A damaged nose would not recover in five minutes outside — but his sense of smell came straight back."
+    }
   ],
   "evidence": {
-    "A": { "supports": [2], "doesntFit": [3] },
-    "B": { "supports": [], "doesntFit": [4] },
-    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "D": { "supports": [], "doesntFit": [4] }
+    "A": {
+      "supports": [
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    },
+    "C": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "N",
     "prompt": "Jordan stays in the locker room for twenty minutes. How strongly does he notice the smell as the minutes go by?",
     "expectedShape": "falls",
-    "second": { "question": "And the amount of smell actually in the air during those twenty minutes?", "options": ["up", "same", "down"], "answer": "same" }
+    "second": {
+      "question": "And the amount of smell actually in the air during those twenty minutes?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "same"
+    }
   },
-  "labDefaults": { "primary": 10, "secondary": 7 },
+  "labDefaults": {
+    "primary": 10
+  },
   "concepts": [
-    { "id": "receptors", "label": "smell receptors", "colour": "coral",
-      "synonyms": ["receptors", "receptor", "smell cells", "nerve cells", "sensors", "nose cells"],
-      "hint": "What in his nose actually detects the smell?" },
-    { "id": "adapt", "label": "they adapt to a steady smell", "colour": "purple",
-      "synonyms": ["adapt", "adapts", "adapted", "adapting", "used to it", "got used", "get used", "gets used", "tune out", "tuned out", "quiet down", "calm down"],
-      "hint": "What happens to those detectors when the smell doesn't change?" },
-    { "id": "air", "label": "the smell is still there", "colour": "amber",
-      "synonyms": ["air", "still there", "still in the air", "didn't go away", "did not go away", "never left", "never went away"],
-      "hint": "What did the late friend prove about the room?" },
-    { "id": "brain", "label": "the brain stops getting the alarm", "colour": "blue",
-      "synonyms": ["brain", "signal", "signals", "message", "messages", "alarm", "notice", "noticing"],
-      "hint": "Where does the message 'bad smell!' end up?" },
-    { "id": "reset", "label": "a break resets it", "colour": "teal",
-      "synonyms": ["break", "outside", "fresh air", "came back", "comes back", "reset", "resets", "again"],
-      "hint": "Why did the smell hit him again after five minutes outside?" }
+    {
+      "id": "receptors",
+      "label": "smell receptors",
+      "colour": "coral",
+      "synonyms": [
+        "receptors",
+        "receptor",
+        "smell cells",
+        "nerve cells",
+        "sensors",
+        "nose cells"
+      ],
+      "hint": "What in his nose actually detects the smell?"
+    },
+    {
+      "id": "adapt",
+      "label": "they adapt to a steady smell",
+      "colour": "purple",
+      "synonyms": [
+        "adapt",
+        "adapts",
+        "adapted",
+        "adapting",
+        "used to it",
+        "got used",
+        "get used",
+        "gets used",
+        "tune out",
+        "tuned out",
+        "quiet down",
+        "calm down"
+      ],
+      "hint": "What happens to those detectors when the smell doesn't change?"
+    },
+    {
+      "id": "air",
+      "label": "the smell is still there",
+      "colour": "amber",
+      "synonyms": [
+        "air",
+        "still there",
+        "still in the air",
+        "didn't go away",
+        "did not go away",
+        "never left",
+        "never went away"
+      ],
+      "hint": "What did the late friend prove about the room?"
+    },
+    {
+      "id": "brain",
+      "label": "the brain stops getting the alarm",
+      "colour": "blue",
+      "synonyms": [
+        "brain",
+        "signal",
+        "signals",
+        "message",
+        "messages",
+        "alarm",
+        "notice",
+        "noticing"
+      ],
+      "hint": "Where does the message 'bad smell!' end up?"
+    },
+    {
+      "id": "reset",
+      "label": "a break resets it",
+      "colour": "teal",
+      "synonyms": [
+        "break",
+        "outside",
+        "fresh air",
+        "came back",
+        "comes back",
+        "reset",
+        "resets",
+        "again"
+      ],
+      "hint": "Why did the smell hit him again after five minutes outside?"
+    }
   ],
   "transfer": {
     "context": "Hana, 14, puts on perfume before school. By lunch she can't smell it at all and thinks it has worn off — but her friend sitting next to her says she can still smell it clearly.",

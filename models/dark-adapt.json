@@ -1,20 +1,51 @@
 {
   "id": "dark-adapt",
-  "name": "Eyes & the dark",
+  "version": 2,
+  "name": "Sofia's eyes adjusting to a dark theatre",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "M", "label": "Minutes in the dark", "min": 0, "max": 20, "step": 1, "unit": "min", "ticks": ["walk in", "10 min", "20 min"] },
-    "secondary": { "key": "B", "label": "How bright it was before", "min": 0, "max": 10, "step": 1, "default": 10, "ticks": ["dim room", "cloudy day", "sunny lobby"] }
-  },
+  "parameters": [
+    {
+      "key": "M", "label": "Minutes in the dark", "role": "primary", "min": 0, "max": 20, "step": 1, "default": 5, "unit": "min",
+      "ticks": ["walk in", "10 min", "20 min"],
+      "explain": "Full dark adaptation takes about 20–30 minutes: a quick first step in the first few minutes, then a bigger, slower one.",
+      "basis": "source", "cite": "msstate-dark"
+    },
+    {
+      "key": "B", "label": "How bright it was before", "role": "bubble", "min": 0, "max": 10, "step": 1, "default": 10,
+      "ticks": ["dim room", "cloudy day", "sunny lobby"],
+      "explain": "How long the eyes take to adjust depends on how bright the place you came from was.",
+      "basis": "source", "cite": "sciam-dark"
+    },
+    {
+      "key": "u", "label": "Pupils", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 1,
+      "options": [{ "value": 1, "label": "open as normal" }, { "value": 0, "label": "pretend they stay small" }],
+      "explain": "Tests the 'only her pupils' idea. A fully open pupil lets in only about 16 times more light — far too little to explain everything.",
+      "basis": "source", "cite": "conversation-dark"
+    },
+    {
+      "key": "Lm", "label": "Minutes in the sunny lobby", "role": "factor", "min": 1, "max": 30, "step": 1, "default": 10, "unit": "min",
+      "explain": "A longer time in bright light uses up more of the light-sensing pigment, so there is more to rebuild.",
+      "basis": "choice"
+    },
+    {
+      "key": "dk", "label": "How dark the theatre is", "role": "factor", "min": 0, "max": 2, "step": 1, "default": 1,
+      "options": [{ "value": 0, "label": "dim" }, { "value": 1, "label": "dark, film playing" }, { "value": 2, "label": "very dark" }],
+      "explain": "The darker the room, the more sensitive the eyes must become before she can see.",
+      "basis": "choice"
+    }
+  ],
+  "constants": { "half": 4, "pupilLog": 1.2, "scale": 28 },
   "outputs": [
-    { "key": "S", "label": "Eye sensitivity in dim light", "unit": "% of fully adjusted", "colour": "teal", "decimals": 0 },
+    { "key": "S", "label": "Eye sensitivity", "unit": "% of fully adjusted", "colour": "purple", "decimals": 0 },
+    { "key": "V", "label": "How much she can see", "unit": "%", "colour": "teal", "decimals": 0 },
     { "key": "P", "label": "Pupil width", "unit": "mm", "colour": "blue", "decimals": 1 },
-    { "key": "V", "label": "What she can see", "colour": "purple", "bands": [{ "upTo": 20, "text": "almost nothing" }, { "upTo": 60, "text": "shapes and steps" }, { "upTo": 85, "text": "seats and faces" }, { "text": "fine details" }] }
+    { "key": "G", "label": "Retina more sensitive since walking in", "unit": "×", "colour": "amber", "decimals": 0 }
   ],
   "rules": {
-    "S": "100 - (5 + 9 * B) * pow(0.5, M / 4)",
-    "P": "8 - 6 * pow(0.5, M * 30)",
-    "V": "100 - (5 + 9 * B) * pow(0.5, M / 4)"
+    "S": "100 * (1 - 0.4 * B * clamp(Lm / 10, 0.3, 1) * pow(0.5, M / half) / 4)",
+    "V": "clamp(100 - scale * (0.4 * B * clamp(Lm / 10, 0.3, 1) * pow(0.5, M / half) + pupilLog * (1 - u * (1 - pow(0.5, M * 30))) + dk - 1), 0, 100)",
+    "P": "2.5 + u * 5 * (1 - pow(0.5, M * 30))",
+    "G": "pow(10, 0.4 * B * clamp(Lm / 10, 0.3, 1) * (1 - pow(0.5, M / half)))"
   },
   "chart": { "x": "M", "y": "S", "xLabel": "minutes in the dark", "yLabel": "sensitivity (% of fully adjusted)", "yMin": 0, "yMax": 105 },
   "overlay": {
@@ -26,19 +57,55 @@
       { "shape": "pupil", "colour": "#16213E", "anim": { "type": "scale", "output": "P", "min": 2, "max": 8, "from": 0.3, "to": 1.25 } }
     ]
   },
+  "explain": {
+    "summary": "Bright light uses up the light-sensing pigment in the cells at the back of the eye. When Sofia walks into the dark theatre, two things happen: her pupils open wide within seconds, letting in more light, and over many minutes her eye cells rebuild their pigment, becoming thousands of times more sensitive. The pupils help a little; the rebuilt pigment does most of the work.",
+    "rules": [
+      "Pupils open from about 2.5 mm to 7.5 mm within seconds of entering the dark.",
+      "The eye's sensitivity starts far below its best and closes the gap by half about every 4 minutes.",
+      "The brighter the lobby and the longer she was in it, the bigger the gap at the start.",
+      "What she can see depends on her sensitivity, her pupils and how dark the theatre is."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "A normal pupil is 2–4 mm wide in bright light and 4–8 mm in dim light; in the dark, pupils get larger to let more light in.", "cite": "cleveland-pupils" },
+      { "fact": "The pupil can only enlarge its area about 16 times, yet we can see across changes in light level of far more than a million times. Cones max out after about five minutes; rods take over after about 10 minutes and do their best after about 20.", "cite": "conversation-dark" },
+      { "fact": "Complete dark adaptation takes about 30 minutes: an early increase over about 7 minutes from the cones, then a much greater one from the rods.", "cite": "msstate-dark" },
+      { "fact": "Dark adaptation usually takes 20–30 minutes to reach its maximum, depends on how bright the previous surroundings were, and works by regenerating the light-sensing pigment (rhodopsin in rods).", "cite": "sciam-dark" }
+    ],
+    "choice": [
+      { "what": "Sensitivity is counted in 'log units' and its gap halves every 4 minutes", "why": "Real dark adaptation has a fast cone step and a slower rod step; one smooth halving curve keeps the main idea and reaches nearly full sensitivity in about 20 minutes." },
+      { "what": "Fully open pupils add 1.2 log units (about 16 times more light)", "why": "This matches the 16-fold change in pupil area." },
+      { "what": "Pupils finish opening in a few seconds", "why": "Sources say the pupil opens almost immediately; we gave it a half-time of 2 seconds." },
+      { "what": "Time in the lobby counts up to 10 minutes", "why": "After that the pigment is treated as fully used up; the real relationship is more gradual." }
+    ],
+    "illustrative": [
+      "Sofia is fictional; the 'how much she can see' percentage is a made-up scale.",
+      "The 4-log-unit starting gap and the ×5,000 retina gain after 15 minutes are picked inside real ranges, not measured."
+    ]
+  },
+  "citations": [
+    { "id": "cleveland-pupils", "title": "Dilated Pupils (Mydriasis)", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/symptoms/22238-dilated-pupils", "verified": "2026-10-19",
+      "supports": "A pupil's normal size is 2–4 mm in bright light and 4–8 mm in dim light; in the dark, pupils get larger to allow more light in." },
+    { "id": "conversation-dark", "title": "How do my eyes adjust to the dark, and how long does it take?", "publisher": "The Conversation", "year": "2019", "url": "https://theconversation.com/how-do-my-eyes-adjust-to-the-dark-and-how-long-does-it-take-124044", "verified": "2026-10-19",
+      "supports": "The pupil can enlarge its area only about 16 times, but we see across light changes of far more than a million times; cones max out after about five minutes, rods take over after about 10 and do their best after about 20." },
+    { "id": "msstate-dark", "title": "Dark adaptation (e-Psych: the eye)", "publisher": "Mississippi State University", "year": "", "url": "https://epsych.msstate.edu/biological/eye/about/19.html", "verified": "2026-10-19",
+      "supports": "Complete dark adaptation takes about 30 minutes: an initial cone increase over about 7 minutes, then a much greater rod increase that is through in about half an hour." },
+    { "id": "sciam-dark", "title": "Why does it take so long for our vision to adjust to a darkened theater?", "publisher": "Scientific American", "year": "", "url": "https://www.scientificamerican.com/article/experts-eyes-adjust-to-darkness/", "verified": "2026-10-19",
+      "supports": "Dark adaptation typically takes 20–30 minutes to reach its maximum, depending on how bright the previous surroundings were; it restores sensitivity by regenerating rhodopsin and the cone pigments." }
+  ],
   "limits": {
     "does": [
-      "Shows pupils opening fully within seconds",
-      "Shows the eye's sensitivity to dim light climbing for many minutes — fastest at first",
-      "Shows that coming in from brighter light means starting further behind"
+      "Shows pupils opening in seconds but giving only a small boost",
+      "Shows the eye's own sensitivity rising over many minutes as pigment is rebuilt",
+      "Shows a brighter lobby making the adjustment take longer"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Separate the cone cells (colour, bright light) from the rod cells (dim light)",
-      "Say anything about problems seeing at night"
+      "Measure any real person — Sofia is fictional and the numbers are illustrative",
+      "Separate the cone step from the rod step, or show colour vision fading in the dark",
+      "Include age, screens, or eye conditions"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If you find it unusually hard to see in dim light, tell an adult."
-  },
-  "sources": ["NIH National Eye Institute: How the eyes work (student pages)", "CK-12 Life Science: vision"]
+    "wellbeing": "If you notice you can't see well in dim light when your friends can, tell an adult — it's worth an eye check."
+  }
 }

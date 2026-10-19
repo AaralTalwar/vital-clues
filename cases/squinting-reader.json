@@ -8,60 +8,212 @@
   "minutes": 8,
   "level": "easy",
   "reviewed": null,
-  "character": { "name": "Hana", "age": 13 },
+  "character": {
+    "name": "Hana",
+    "age": 13
+  },
   "briefing": "Hana, 13, is reading on a bright beach. Her friend notices the black centres of Hana's eyes have shrunk to tiny dots. When Hana walks into the dim beach café, her friend watches them grow wide within a few seconds — and after a moment Hana can read the menu.",
   "question": "Why do the black centres of Hana's eyes keep changing size?",
   "illustration": "sun",
   "clues": [
-    { "id": 1, "title": "Pinpoint pupils", "icon": "eye", "colour": "blue",
+    {
+      "id": 1,
+      "title": "Pinpoint pupils",
+      "icon": "eye",
+      "colour": "blue",
       "text": "On the bright beach, the black centres of Hana's eyes have shrunk to tiny dots. She is squinting at her book.",
-      "shows": "the pupils shrinking in bright light", "visual": { "type": "bars", "from": 6, "to": 2, "unit": "mm pupil width, shade → full sun" }, "pointsTo": "pupil" },
-    { "id": 2, "title": "Wide in the café", "icon": "eye", "colour": "purple",
+      "shows": "the pupils shrinking in bright light",
+      "visual": {
+        "type": "bars",
+        "from": 6,
+        "to": 2,
+        "unit": "mm pupil width, shade → full sun"
+      },
+      "pointsTo": "pupil"
+    },
+    {
+      "id": 2,
+      "title": "Wide in the café",
+      "icon": "eye",
+      "colour": "purple",
       "text": "Inside the dim café, the black centres grow wide within a few seconds. At first the menu looked dark; now she can read it.",
-      "shows": "the pupils opening wider in dim light", "visual": null, "pointsTo": "light" },
-    { "id": 3, "title": "The hand test", "icon": "shield", "colour": "teal",
+      "shows": "the pupils opening wider in dim light",
+      "visual": null,
+      "pointsTo": "light"
+    },
+    {
+      "id": 3,
+      "title": "The hand test",
+      "icon": "shield",
+      "colour": "teal",
       "text": "Her friend covers one of Hana's eyes with a hand for ten seconds. When the hand moves away, that pupil is big, then shrinks within a second.",
-      "shows": "a pupil reacting to light in a second, without Hana deciding anything", "visual": null, "pointsTo": "automatic" },
-    { "id": 4, "title": "Readable in both places", "icon": "sun", "colour": "amber",
-      "text": "After a few seconds Hana can read comfortably in both places. Yet the beach is about ten times brighter than the café.",
-      "shows": "the eye keeping the light that gets inside fairly steady even though the outside light changed a lot", "visual": { "type": "bars", "from": 1, "to": 10, "unit": "brightness, café → beach" }, "pointsTo": "amount" }
+      "shows": "a pupil reacting to light in a second, without Hana deciding anything",
+      "visual": null,
+      "pointsTo": "automatic"
+    },
+    {
+      "id": 4,
+      "title": "Readable in both places",
+      "icon": "sun",
+      "colour": "amber",
+      "text": "After a few seconds Hana can read comfortably in both places, even though the beach is many times brighter than the café.",
+      "shows": "the eye keeping the light that gets inside fairly steady even though the outside light changed a lot",
+      "visual": {
+        "type": "bars",
+        "from": 1,
+        "to": 10,
+        "unit": "brightness on the lab's 0–10 scale: café → beach"
+      },
+      "pointsTo": "amount"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "Her irises — the coloured rings around the pupils — are muscles that squeeze the pupils small in bright light and open them wide in dim light, controlling how much light gets into her eyes.", "best": true },
-    { "id": "B", "text": "Her eyes are getting tired from reading.", "flaw": "Tired eyes don't change every time the light changes, and the pupils changed within seconds of the light — not after a long time reading." },
-    { "id": "C", "text": "The sun is damaging her eyes.", "flaw": "Damage would not undo itself in a few seconds indoors, and a pupil under a hand in the shade does exactly the same thing." },
-    { "id": "D", "text": "She is squinting on purpose to look cool.", "flaw": "Squinting is the eyelids. The pupils changed on their own — even under her friend's hand, where there was nothing to squint at." }
+    {
+      "id": "A",
+      "text": "Her irises — the coloured rings around the pupils — are muscles that squeeze the pupils small in bright light and open them wide in dim light, controlling how much light gets into her eyes.",
+      "best": true
+    },
+    {
+      "id": "B",
+      "text": "Her eyes are getting tired from reading.",
+      "flaw": "Tired eyes don't change every time the light changes, and the pupils changed within seconds of the light — not after a long time reading."
+    },
+    {
+      "id": "C",
+      "text": "The sun is damaging her eyes.",
+      "flaw": "Damage would not undo itself in a few seconds indoors, and a pupil under a hand in the shade does exactly the same thing."
+    },
+    {
+      "id": "D",
+      "text": "She is squinting on purpose to look cool.",
+      "flaw": "Squinting is the eyelids. The pupils changed on their own — even under her friend's hand, where there was nothing to squint at."
+    }
   ],
   "evidence": {
-    "A": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "B": { "supports": [], "doesntFit": [2, 3] },
-    "C": { "supports": [], "doesntFit": [2, 3] },
-    "D": { "supports": [], "doesntFit": [3, 4] }
+    "A": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3,
+        4
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "P",
     "prompt": "As the light around Hana gets brighter — from a dim room to a bright beach — what happens to the width of her pupils?",
     "expectedShape": "falls",
-    "second": { "question": "The beach is about 10× brighter than the café. Does the light reaching the back of her eye also get 10× brighter?", "options": ["yes", "no"], "answer": "no" }
+    "second": {
+      "question": "On the lab's scale the beach is 10 times brighter than the café. Does the light reaching the back of her eye also get 10 times brighter?",
+      "options": [
+        "yes",
+        "no"
+      ],
+      "answer": "no"
+    }
   },
-  "labDefaults": { "primary": 8, "secondary": 10 },
+  "labDefaults": {
+    "primary": 1
+  },
   "concepts": [
-    { "id": "light", "label": "bright or dim light", "colour": "amber",
-      "synonyms": ["light", "bright", "brightness", "sunlight", "dim", "dark"],
-      "hint": "What changed between the beach and the café?" },
-    { "id": "pupil", "label": "the pupil changes size", "colour": "blue",
-      "synonyms": ["pupil", "pupils", "black centre", "black center", "black dot", "black dots"],
-      "hint": "What is the black centre of the eye called?" },
-    { "id": "iris", "label": "the iris muscle", "colour": "purple",
-      "synonyms": ["iris", "irises", "muscle", "muscles", "coloured part", "colored part"],
-      "hint": "What part of the eye squeezes and opens the pupil?" },
-    { "id": "amount", "label": "controls how much light gets in", "colour": "teal",
-      "synonyms": ["amount", "let in", "lets in", "less light in", "more light in", "controls", "control", "protect", "protects"],
-      "hint": "What is the point of changing the pupil's size?" },
-    { "id": "automatic", "label": "automatic and fast", "colour": "coral",
-      "synonyms": ["automatic", "automatically", "by itself", "on its own", "without thinking", "seconds", "quickly", "reflex"],
-      "hint": "Did Hana decide to do it, and how long did it take?" }
+    {
+      "id": "light",
+      "label": "bright or dim light",
+      "colour": "amber",
+      "synonyms": [
+        "light",
+        "bright",
+        "brightness",
+        "sunlight",
+        "dim",
+        "dark"
+      ],
+      "hint": "What changed between the beach and the café?"
+    },
+    {
+      "id": "pupil",
+      "label": "the pupil changes size",
+      "colour": "blue",
+      "synonyms": [
+        "pupil",
+        "pupils",
+        "black centre",
+        "black center",
+        "black dot",
+        "black dots"
+      ],
+      "hint": "What is the black centre of the eye called?"
+    },
+    {
+      "id": "iris",
+      "label": "the iris muscle",
+      "colour": "purple",
+      "synonyms": [
+        "iris",
+        "irises",
+        "muscle",
+        "muscles",
+        "coloured part",
+        "colored part"
+      ],
+      "hint": "What part of the eye squeezes and opens the pupil?"
+    },
+    {
+      "id": "amount",
+      "label": "controls how much light gets in",
+      "colour": "teal",
+      "synonyms": [
+        "amount",
+        "let in",
+        "lets in",
+        "less light in",
+        "more light in",
+        "controls",
+        "control",
+        "protect",
+        "protects"
+      ],
+      "hint": "What is the point of changing the pupil's size?"
+    },
+    {
+      "id": "automatic",
+      "label": "automatic and fast",
+      "colour": "coral",
+      "synonyms": [
+        "automatic",
+        "automatically",
+        "by itself",
+        "on its own",
+        "without thinking",
+        "seconds",
+        "quickly",
+        "reflex"
+      ],
+      "hint": "Did Hana decide to do it, and how long did it take?"
+    }
   ],
   "transfer": {
     "context": "Jamal walks out of a dark movie theatre into a sunny parking lot. For a few seconds everything looks blindingly bright and he squints, then it feels normal.",

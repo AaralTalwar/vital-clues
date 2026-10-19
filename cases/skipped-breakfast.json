@@ -70,7 +70,7 @@
     },
     {
       "id": "B",
-      "text": "After fifteen hours without food, the fuel her brain and muscles run on is running low; eating refills it.",
+      "text": "After fifteen hours without food, the fuel her body stored after dinner is running low and her blood sugar has drifted down; eating refills it.",
       "best": true
     },
     {
@@ -118,11 +118,11 @@
   },
   "mismatchHints": [],
   "prediction": {
-    "output": "G",
-    "prompt": "Lena skipped breakfast. As the hours pass since her last meal — from just after eating to six hours later — what happens to the fuel in her blood?",
+    "output": "L",
+    "prompt": "Lena skipped breakfast. As the hours since her last meal go by — from 3 hours up to 16 hours — what happens to the fuel stored in her liver?",
     "expectedShape": "falls",
     "second": {
-      "question": "And how often her stomach rumbles?",
+      "question": "And her stomach's hunger signal?",
       "options": [
         "up",
         "same",
@@ -132,8 +132,7 @@
     }
   },
   "labDefaults": {
-    "primary": 4,
-    "secondary": 0
+    "primary": 15.5
   },
   "concepts": [
     {

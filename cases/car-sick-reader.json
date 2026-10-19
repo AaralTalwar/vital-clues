@@ -8,60 +8,208 @@
   "minutes": 8,
   "level": "moderate",
   "reviewed": null,
-  "character": { "name": "Isabel", "age": 13 },
+  "character": {
+    "name": "Isabel",
+    "age": 13
+  },
   "briefing": "Isabel, 13, is reading a novel in the back seat on the way to a mountain cabin. On the highway she's fine for an hour, but twenty minutes into the winding road she feels queasy and sweaty. Her brother, staring out the window the whole time, feels great.",
   "question": "Why does reading in a car make some people feel sick — and why does looking out the window help?",
   "illustration": "car",
   "clues": [
-    { "id": 1, "title": "Eyes on the page", "icon": "book", "colour": "blue",
+    {
+      "id": 1,
+      "title": "Eyes on the page",
+      "icon": "book",
+      "colour": "blue",
       "text": "Her eyes are locked on a page that sits perfectly still on her lap. Everything she sees says she isn't moving.",
-      "shows": "her eyes reporting 'we're sitting still'", "visual": null, "pointsTo": "eyes" },
-    { "id": 2, "title": "Fine until the curves", "icon": "car", "colour": "purple",
+      "shows": "her eyes reporting 'we're sitting still'",
+      "visual": null,
+      "pointsTo": "eyes"
+    },
+    {
+      "id": 2,
+      "title": "Fine until the curves",
+      "icon": "car",
+      "colour": "purple",
       "text": "She read for an hour on the straight highway with no problem. The queasiness started on the winding mountain road, where her body sways at every turn.",
-      "shows": "it starting only when her body is swaying through turns", "visual": { "type": "bars", "from": 0, "to": 6, "unit": "queasiness, highway → winding road" }, "pointsTo": "ear" },
-    { "id": 3, "title": "Brother at the window", "icon": "eye", "colour": "teal",
+      "shows": "it starting only when her body is swaying through turns",
+      "visual": {
+        "type": "bars",
+        "from": 1,
+        "to": 6,
+        "unit": "queasiness after 20 min, highway → winding road"
+      },
+      "pointsTo": "ear"
+    },
+    {
+      "id": 3,
+      "title": "Brother at the window",
+      "icon": "eye",
+      "colour": "teal",
       "text": "Her brother, on the same road, watches the trees and curves go by. He feels completely fine.",
-      "shows": "that when the eyes can see the motion too, there's no sickness", "visual": null, "pointsTo": "mismatch" },
-    { "id": 4, "title": "Book down, horizon up", "icon": "mountain", "colour": "amber",
+      "shows": "that when the eyes can see the motion too, there's no sickness",
+      "visual": null,
+      "pointsTo": "mismatch"
+    },
+    {
+      "id": 4,
+      "title": "Book down, horizon up",
+      "icon": "mountain",
+      "colour": "amber",
       "text": "She puts the book away and looks at the mountains ahead. Within ten minutes the queasy feeling fades.",
-      "shows": "the feeling fading once her eyes see the same motion her body feels", "visual": null, "pointsTo": "window" }
+      "shows": "the feeling fading once her eyes see the same motion her body feels",
+      "visual": null,
+      "pointsTo": "window"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "She ate something that disagreed with her before the trip.", "flaw": "Bad food wouldn't wait for the winding road to start, and it wouldn't get better just by looking out the window." },
-    { "id": "B", "text": "Her eyes report 'still' while her inner ear reports 'swaying', so her brain gets mixed signals and responds with queasiness; looking out the window makes them agree.", "best": true },
-    { "id": "C", "text": "Reading for a long time tires her eyes and makes her feel sick.", "flaw": "She read for an hour on the highway without feeling sick — it began only when the road started curving." },
-    { "id": "D", "text": "She is nervous about the cabin trip.", "flaw": "Nerves wouldn't switch on exactly when the road starts curving, or off when she looks at the mountains." }
+    {
+      "id": "A",
+      "text": "She ate something that disagreed with her before the trip.",
+      "flaw": "Bad food wouldn't wait for the winding road to start, and it wouldn't get better just by looking out the window."
+    },
+    {
+      "id": "B",
+      "text": "Her eyes report 'still' while her inner ear reports 'swaying', so her brain gets mixed signals and responds with queasiness; looking out the window makes them agree.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "Reading for a long time tires her eyes and makes her feel sick.",
+      "flaw": "She read for an hour on the highway without feeling sick — it began only when the road started curving."
+    },
+    {
+      "id": "D",
+      "text": "She is nervous about the cabin trip.",
+      "flaw": "Nerves wouldn't switch on exactly when the road starts curving, or off when she looks at the mountains."
+    }
   ],
   "evidence": {
-    "A": { "supports": [], "doesntFit": [2, 4] },
-    "B": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "C": { "supports": [1], "doesntFit": [2] },
-    "D": { "supports": [], "doesntFit": [2] }
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [
+        1
+      ],
+      "doesntFit": [
+        2
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        2
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "Q",
     "prompt": "Isabel keeps reading on the winding road without looking up. As the minutes pass, what happens to how queasy she feels?",
     "expectedShape": "rises",
-    "second": { "question": "If she looks out the window the whole time instead, does the mismatch go up or down?", "options": ["up", "same", "down"], "answer": "down" }
+    "second": {
+      "question": "If she looks out the window the whole time instead, does the mismatch go up or down?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
   },
-  "labDefaults": { "primary": 20, "secondary": 0 },
+  "labDefaults": {
+    "primary": 20
+  },
   "concepts": [
-    { "id": "eyes", "label": "the eyes say 'still'", "colour": "blue",
-      "synonyms": ["eyes", "eye", "seeing", "sees", "vision", "book", "page"],
-      "hint": "What were her eyes telling her brain?" },
-    { "id": "ear", "label": "the inner ear feels motion", "colour": "purple",
-      "synonyms": ["ear", "ears", "inner ear", "balance", "swaying", "turns", "curves"],
-      "hint": "Which part of her body feels the car turning?" },
-    { "id": "mismatch", "label": "the two disagree", "colour": "coral",
-      "synonyms": ["mismatch", "mixed", "disagree", "disagrees", "conflict", "different", "don't match", "do not match", "doesn't match"],
-      "hint": "What happens when two senses report different things?" },
-    { "id": "brain", "label": "the brain gets confused", "colour": "amber",
-      "synonyms": ["brain", "signals", "signal", "confused", "messages"],
-      "hint": "Where do the two reports meet?" },
-    { "id": "window", "label": "looking out fixes it", "colour": "teal",
-      "synonyms": ["window", "horizon", "look out", "looking out", "outside", "mountains", "road ahead"],
-      "hint": "Why was her brother fine, and why did she get better?" }
+    {
+      "id": "eyes",
+      "label": "the eyes say 'still'",
+      "colour": "blue",
+      "synonyms": [
+        "eyes",
+        "eye",
+        "seeing",
+        "sees",
+        "vision",
+        "book",
+        "page"
+      ],
+      "hint": "What were her eyes telling her brain?"
+    },
+    {
+      "id": "ear",
+      "label": "the inner ear feels motion",
+      "colour": "purple",
+      "synonyms": [
+        "ear",
+        "ears",
+        "inner ear",
+        "balance",
+        "swaying",
+        "turns",
+        "curves"
+      ],
+      "hint": "Which part of her body feels the car turning?"
+    },
+    {
+      "id": "mismatch",
+      "label": "the two disagree",
+      "colour": "coral",
+      "synonyms": [
+        "mismatch",
+        "mixed",
+        "disagree",
+        "disagrees",
+        "conflict",
+        "different",
+        "don't match",
+        "do not match",
+        "doesn't match"
+      ],
+      "hint": "What happens when two senses report different things?"
+    },
+    {
+      "id": "brain",
+      "label": "the brain gets confused",
+      "colour": "amber",
+      "synonyms": [
+        "brain",
+        "signals",
+        "signal",
+        "confused",
+        "messages"
+      ],
+      "hint": "Where do the two reports meet?"
+    },
+    {
+      "id": "window",
+      "label": "looking out fixes it",
+      "colour": "teal",
+      "synonyms": [
+        "window",
+        "horizon",
+        "look out",
+        "looking out",
+        "outside",
+        "mountains",
+        "road ahead"
+      ],
+      "hint": "Why was her brother fine, and why did she get better?"
+    }
   ],
   "transfer": {
     "context": "Kofi, 14, sits on the sofa playing a virtual-reality flying game. After ten minutes of swooping through the sky he feels queasy, even though he hasn't moved.",

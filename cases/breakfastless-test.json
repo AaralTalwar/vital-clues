@@ -51,7 +51,7 @@
       "icon": "plate",
       "colour": "amber",
       "text": "Dinner was at 7 p.m. the night before. By the 9 a.m. test that's fourteen hours without food.",
-      "shows": "very little fuel left in his blood",
+      "shows": "his body's stored sugar running low",
       "visual": null,
       "pointsTo": "fuel"
     },
@@ -60,7 +60,7 @@
       "title": "Lunch fixed it — and last month",
       "icon": "clock",
       "colour": "teal",
-      "text": "Thirty minutes after a sandwich at lunch his hands were steady. At last month's final he was just as nervous, but had eaten breakfast, and his hands never shook.",
+      "text": "Thirty minutes after a sandwich at lunch his hands were steady. At last month's final he was just as nervous, but had eaten breakfast, and his hands only trembled a little.",
       "shows": "food made the difference even when the nerves were the same",
       "visual": null,
       "pointsTo": "breakfast"
@@ -70,11 +70,11 @@
     {
       "id": "A",
       "text": "He's nervous, and nerves make hands shake.",
-      "flaw": "Last month he was just as nervous, with just as racing a heart, but his hands stayed steady — nerves alone don't explain today."
+      "flaw": "Last month he was just as nervous, with just as racing a heart, but his hands only trembled a little — nerves alone don't explain today."
     },
     {
       "id": "B",
-      "text": "Both: the test switched on his alarm system (adrenaline — racing heart, sweaty palms, some shaking), and fourteen hours without food left his blood low on fuel, which adds its own shakiness. Together, his hands shook far more than either would cause alone.",
+      "text": "Both: the test switched on his alarm system (adrenaline — racing heart, sweaty palms, some shaking), and after fourteen hours without food his liver's sugar store was nearly empty, so his body released extra hormones to keep his blood sugar steady — adding to the shaking. Together, his hands shook far more than either would cause alone.",
       "best": true
     },
     {
@@ -127,7 +127,7 @@
   "mismatchHints": [],
   "prediction": {
     "output": "T",
-    "prompt": "Jamal hasn't eaten for twelve hours. As the moment feels bigger — from a normal class to the final exam — what happens to how much his hands shake?",
+    "prompt": "Jamal hasn't eaten for fourteen hours. As the moment feels bigger — from a normal class to the final exam — what happens to how much his hands shake?",
     "expectedShape": "rises",
     "second": {
       "question": "With the same nerves, if he had eaten breakfast, what would happen to the shaking?",
@@ -140,8 +140,7 @@
     }
   },
   "labDefaults": {
-    "primary": 9,
-    "secondary": 12
+    "primary": 9
   },
   "concepts": [
     {
@@ -174,7 +173,7 @@
     },
     {
       "id": "fuel",
-      "label": "low fuel in the blood",
+      "label": "fuel store running low",
       "colour": "amber",
       "synonyms": [
         "fuel",
@@ -183,7 +182,7 @@
         "energy",
         "food"
       ],
-      "hint": "What was his blood short of?"
+      "hint": "What was his body running short of?"
     },
     {
       "id": "breakfast",
@@ -223,13 +222,13 @@
     "options": [
       "The piano is out of tune.",
       "She forgot the piece.",
-      "Stage nerves released adrenaline, and skipping lunch left her low on fuel — two causes of trembling added together.",
+      "Stage nerves released adrenaline, and skipping lunch ran down her fuel store so her body added more hormones — two causes of trembling added together.",
       "The stage lights are too hot."
     ],
     "answer": 2,
     "retryHint": "Nerves she's had before, plus something new today — which of Jamal's clues compared two days like that?",
     "retryClue": 4,
-    "explanation": "Yuki has always had recital nerves, but this time she also skipped lunch. Adrenaline from the big moment and low fuel from the empty stomach each cause trembling, and together they add up — the same pairing that shook Jamal's hands."
+    "explanation": "Yuki has always had recital nerves, but this time she also skipped lunch. Adrenaline from the big moment is one push; the extra hormones her body releases to hold blood sugar steady when its fuel store runs low are another. Together they add up — the same pairing that shook Jamal's hands."
   },
-  "takeaway": "Shaky hands can have more than one cause, and causes can add up. Adrenaline from a big moment is one; running low on fuel is another. You can't always switch off nerves, but you can remove the second cause by eating."
+  "takeaway": "Shaky hands can have more than one cause, and causes can add up. Adrenaline from a big moment is one; a body running down its fuel store, which releases extra hormones to keep blood sugar steady, is another. You can't always switch off nerves, but you can remove the second cause by eating."
 }

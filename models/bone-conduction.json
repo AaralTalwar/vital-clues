@@ -1,29 +1,303 @@
 {
   "id": "bone-conduction",
-  "name": "Ears & your own voice",
+  "version": 2,
+  "name": "Malik's voice: through the air and through bone",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "f", "label": "Pitch of the sound", "min": 100, "max": 1000, "step": 100, "unit": "Hz", "ticks": ["low", "middle", "high"] },
-    "secondary": { "key": "o", "label": "Ears", "min": 0, "max": 1, "step": 1, "default": 0, "ticks": ["open", "plugged with fingers"] }
-  },
+  "parameters": [
+    {
+      "key": "f",
+      "label": "Pitch of the sound",
+      "role": "primary",
+      "min": 100,
+      "max": 1000,
+      "step": 50,
+      "default": 300,
+      "unit": "Hz",
+      "ticks": [
+        "low",
+        "middle",
+        "high"
+      ],
+      "explain": "When you speak, the bones and tissues of your head carry your voice straight to your inner ears, and they boost the low, deep pitches most.",
+      "basis": "source",
+      "cite": "popsci-voice"
+    },
+    {
+      "key": "L",
+      "label": "Who is listening",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "Malik, while he talks"
+        },
+        {
+          "value": 1,
+          "label": "a friend, or the recording"
+        }
+      ],
+      "explain": "The twist dial: only the person speaking gets the bone route. Friends and the microphone hear only the sound through the air — the version on the recording.",
+      "basis": "source",
+      "cite": "wonder-voice"
+    },
+    {
+      "key": "plug",
+      "label": "His ears",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "open"
+        },
+        {
+          "value": 1,
+          "label": "plugged with fingers"
+        }
+      ],
+      "explain": "Blocking the ear canal traps the deep sound carried through bone, so his own voice gets louder and boomier — the 'occlusion effect'. Fingers pressed in make a fairly good seal.",
+      "basis": "source",
+      "cite": "hr-occlusion"
+    },
+    {
+      "key": "mic",
+      "label": "Microphone",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0,
+          "label": "studio microphone"
+        },
+        {
+          "value": 1,
+          "label": "phone microphone"
+        }
+      ],
+      "explain": "Test the 'cheap microphone' idea: a phone mic loses a little of the very lowest bass, but the recording still matches what his friends hear.",
+      "basis": "choice"
+    },
+    {
+      "key": "v0",
+      "label": "Main pitch of his speaking voice",
+      "role": "factor",
+      "min": 100,
+      "max": 300,
+      "step": 20,
+      "default": 200,
+      "unit": "Hz",
+      "explain": "A deeper voice has more of its sound in the low pitches that bone boosts most. At 14, Malik's voice is somewhere in the middle and still changing.",
+      "basis": "choice"
+    },
+    {
+      "key": "k",
+      "label": "How strongly his head carries sound",
+      "role": "factor",
+      "min": 0.7,
+      "max": 1.3,
+      "step": 0.1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.7,
+          "label": "less than average"
+        },
+        {
+          "value": 1,
+          "label": "average"
+        },
+        {
+          "value": 1.3,
+          "label": "more than average"
+        }
+      ],
+      "explain": "How much sound travels through bone differs from person to person, so some people notice the difference on recordings more than others.",
+      "basis": "source",
+      "cite": "hr-solving"
+    }
+  ],
   "outputs": [
-    { "key": "B", "label": "Extra loudness through bone", "unit": "0–16", "colour": "purple", "decimals": 1 },
-    { "key": "S", "label": "Your voice sounds to you", "colour": "amber", "bands": [{ "upTo": 3, "text": "about the same" }, { "upTo": 6, "text": "a bit deeper" }, { "text": "much deeper" }] },
-    { "key": "R", "label": "What a recording captures", "colour": "teal", "text": "air route only" }
+    {
+      "key": "B",
+      "label": "Extra loudness through bone",
+      "unit": "dB",
+      "colour": "purple",
+      "decimals": 1
+    },
+    {
+      "key": "S",
+      "label": "His voice sounds, compared with the recording",
+      "colour": "amber",
+      "bands": [
+        {
+          "upTo": 3,
+          "text": "about the same"
+        },
+        {
+          "upTo": 9,
+          "text": "a bit deeper"
+        },
+        {
+          "text": "much deeper"
+        }
+      ]
+    },
+    {
+      "key": "Rec",
+      "label": "Recording matches what friends hear",
+      "unit": "%",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "R",
+      "label": "What a recording captures",
+      "colour": "teal",
+      "text": "air route only"
+    }
   ],
   "rules": {
-    "B": "clamp((10 - 0.009 * f) * (1 + 0.6 * o), 0, 16)",
-    "S": "clamp((10 - 0.009 * f) * (1 + 0.6 * o), 0, 16)"
+    "B": "(1 - L) * k * (8 * pow(f / 100, -0.6) + 25 * plug * seal * clamp((1000 - f) / 750, 0, 1))",
+    "S": "(1 - L) * k * (8 * pow(v0 / 100, -0.6) + 25 * plug * seal * clamp((1000 - v0) / 750, 0, 1))",
+    "Rec": "100 - 6 * mic * clamp((250 - v0) / 150, 0, 1)"
   },
-  "chart": { "x": "f", "y": "B", "xLabel": "pitch (Hz)", "yLabel": "extra loudness through bone (0–16)", "yMin": 0, "yMax": 16 },
+  "chart": {
+    "x": "f",
+    "y": "B",
+    "xLabel": "pitch (Hz)",
+    "yLabel": "extra loudness through bone (dB)",
+    "yMin": 0,
+    "yMax": 40
+  },
   "overlay": {
     "base": "head",
     "caption": "your voice reaches your ears through the air AND through your skull; a recording catches only the air",
     "parts": [
-      { "shape": "sound", "colour": "#F4A300" },
-      { "shape": "ear", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "B", "min": 0, "max": 16 } }
+      {
+        "shape": "sound",
+        "colour": "#F4A300"
+      },
+      {
+        "shape": "bone",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "B",
+          "min": 0,
+          "max": 30
+        }
+      },
+      {
+        "shape": "ear",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "B",
+          "min": 0,
+          "max": 30
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "When Malik talks, his voice reaches his inner ears two ways: through the air, like everyone else hears it, and straight through the bones of his skull. The bone route adds extra deep, low sound, so his voice seems richer to him. A microphone, and his friends, only get the air route. That's why the recording sounds thinner to Malik but exactly right to everyone else.",
+    "rules": [
+      "The bone route adds the most at low pitches and less and less at higher ones.",
+      "Only the speaker hears the bone route; listeners and microphones don't.",
+      "Plugging the ears traps the low bone-carried sound and adds up to about 25 dB below 1,000 Hz.",
+      "A phone mic trims a little of the lowest bass, but not enough to change what friends recognise."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Much of your own voice is conducted through your skull bones, and bone conduction boosts the lower frequencies, so your voice sounds deeper and richer to you; the recording sounds thinner and higher.",
+        "cite": "popsci-voice"
+      },
+      {
+        "fact": "Bones and tissues in your head carry sound waves directly to the cochlea and enhance lower-frequency vibrations; a recording captures what other people are used to hearing.",
+        "cite": "wonder-voice"
+      },
+      {
+        "fact": "Sealing the ear canal increases low-frequency sound from your own voice by roughly 20–30 dB at 250 Hz, and the amount varies from person to person.",
+        "cite": "hr-solving"
+      },
+      {
+        "fact": "The occlusion effect — the boost when the ear is covered — is greatest for frequencies below 1,000 Hz, because sound normally vented from the ear canal is trapped.",
+        "cite": "hr-occlusion"
+      }
+    ],
+    "choice": [
+      {
+        "what": "With open ears, bone adds about 8 dB at 100 Hz, falling to about 2 dB at 1,000 Hz",
+        "why": "Sources agree the boost is biggest at low pitches; the exact sizes vary from person to person."
+      },
+      {
+        "what": "Fingers in the ears add 20 dB at 250 Hz (a sealed ear adds about 25), fading to nothing by 1,000 Hz",
+        "why": "Matches the 20–30 dB measured at 250 Hz and the effect being greatest below 1,000 Hz."
+      },
+      {
+        "what": "A phone mic lowers the match by up to 6%, more for deeper voices",
+        "why": "Phone mics pick up less of the deepest bass; we kept the effect small, because friends say the recording sounds exactly like him."
+      },
+      {
+        "what": "His voice's main pitch is 200 Hz",
+        "why": "A typical value for a teenage voice that is still changing."
+      }
+    ],
+    "illustrative": [
+      "Malik is fictional; the 'match' percentage and the deepness bands are teaching values."
+    ],
+    "studying": "How the brain combines the air and bone routes into the voice we recognise as our own is still being researched."
+  },
+  "citations": [
+    {
+      "id": "popsci-voice",
+      "title": "Why your voice sounds weird on recordings",
+      "publisher": "Popular Science (from The Conversation, by Neel Bhatt, University of Washington)",
+      "year": "2021",
+      "url": "https://www.popsci.com/science/why-your-voice-sounds-weird-on-recordings/",
+      "verified": "2026-10-19",
+      "supports": "When you speak, much of your voice is internally conducted directly through your skull bones; internal bone conduction appears to boost the lower frequencies; the recorded voice can sound thinner and higher pitched."
+    },
+    {
+      "id": "wonder-voice",
+      "title": "Why Does My Voice Sound Different on a Recording?",
+      "publisher": "Wonderopolis (National Center for Families Learning)",
+      "year": "",
+      "url": "https://wonderopolis.org/wonder/why-does-my-voice-sound-different-on-a-recording",
+      "verified": "2026-10-19",
+      "supports": "Most of what we hear comes by air conduction, but head bones and tissues also conduct sound directly to the cochlea and enhance lower-frequency vibrations; a recording is what other people are used to hearing."
+    },
+    {
+      "id": "hr-solving",
+      "title": "Solving the occlusion effect",
+      "publisher": "The Hearing Review (Wayne J. Staab)",
+      "year": "2003",
+      "url": "https://hearingreview.com/hearing-products/accessories/earmolds/solving-the-occlusion-effect",
+      "verified": "2026-10-19",
+      "supports": "When the ear canal is sealed, the occlusion effect boosts low-frequency sound of one's own voice by approximately 25 dB at 250 Hz (about 20–30 dB), varying between individuals."
+    },
+    {
+      "id": "hr-occlusion",
+      "title": "Rethinking hearing aid occlusion",
+      "publisher": "The Hearing Review",
+      "year": "",
+      "url": "https://hearingreview.com/practice-building/practice-management/rethinking-hearing-aid-occlusion",
+      "verified": "2026-10-19",
+      "supports": "The occlusion effect is an increase in bone-conducted sound for frequencies below 1 kHz when the ear is covered, greatest below 1,000 Hz; sound normally vented from the open ear canal is trapped when it is blocked."
+    }
+  ],
   "limits": {
     "does": [
       "Shows your own voice reaching your ears through bone as well as through the air",
@@ -31,12 +305,14 @@
       "Shows plugging your ears making the bone route louder"
     ],
     "doesnt": [
-      "Measure any real person or any real microphone",
-      "Include hearing loss or how the brain processes voices",
+      "Measure any real person or any real microphone — Malik is fictional",
+      "Include hearing problems or how the brain processes voices",
       "Say how anyone's voice should sound"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If your own voice suddenly sounds very loud or echoey to you and it doesn't go away, tell an adult."
   },
-  "sources": ["NIH NIDCD: how do we hear? (student pages)", "CK-12 Physical Science: sound travelling through solids"]
+  "constants": {
+    "seal": 0.8
+  }
 }

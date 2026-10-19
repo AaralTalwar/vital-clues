@@ -41,7 +41,7 @@
       "title": "Practice makes faster",
       "icon": "clock",
       "colour": "amber",
-      "text": "After two weeks of drills, her dive starts about a tenth of a second sooner than before.",
+      "text": "After two weeks of drills, her dive starts a little sooner than before — about six hundredths of a second. That sounds tiny, but in goal it matters.",
       "shows": "that the deciding kind of reaction can be trained",
       "visual": {
         "type": "bars",
@@ -131,8 +131,7 @@
     }
   },
   "labDefaults": {
-    "primary": 20,
-    "secondary": 0
+    "primary": 20
   },
   "concepts": [
     {

@@ -1,49 +1,318 @@
 {
   "id": "heat-fuel",
-  "name": "Heat + muscle fuel",
+  "version": 2,
+  "name": "Ama's water and fuel in a hot final",
   "colour": "amber",
-  "inputs": {
-    "primary":   { "key": "I", "label": "Heat", "min": 0, "max": 10, "step": 1, "ticks": ["cool 70°F", "warm 82°F", "heatwave 95°F"] },
-    "secondary": { "key": "e", "label": "Hours since the last meal", "min": 0, "max": 8, "step": 1, "default": 7, "unit": "h", "ticks": ["just ate", "4 h", "8 h"] }
-  },
+  "parameters": [
+    {
+      "key": "p",
+      "label": "Minutes into the match",
+      "role": "primary",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 90,
+      "unit": "min",
+      "ticks": [
+        "kick-off",
+        "half-time",
+        "full time"
+      ],
+      "explain": "A 90-minute game: water and fuel both run down as it goes on.",
+      "basis": "choice"
+    },
+    {
+      "key": "Ta",
+      "label": "Air temperature",
+      "role": "bubble",
+      "min": 60,
+      "max": 100,
+      "step": 5,
+      "default": 95,
+      "unit": "°F",
+      "explain": "Heat drives sweating; above about 1 litre an hour is common in hot conditions.",
+      "basis": "source",
+      "cite": "sawka-2015"
+    },
+    {
+      "key": "Wd",
+      "label": "Water drunk at half-time",
+      "role": "bubble",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 1,
+      "unit": "cups",
+      "explain": "Each cup (about 240 ml) replaces some of the water sweated out.",
+      "basis": "choice"
+    },
+    {
+      "key": "e",
+      "label": "Hours since her last meal",
+      "role": "bubble",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 7,
+      "unit": "h",
+      "explain": "The liver's sugar store tops up blood sugar for working muscles; it runs down the longer she goes without food.",
+      "basis": "source",
+      "cite": "cleveland-glycogen"
+    },
+    {
+      "key": "Hs",
+      "label": "Half-time snack",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "nothing"
+        },
+        {
+          "value": 1,
+          "label": "orange slices or a sports drink"
+        }
+      ],
+      "explain": "A quick snack at half-time adds fuel for the second half.",
+      "basis": "choice"
+    },
+    {
+      "key": "mass",
+      "label": "Body weight",
+      "role": "factor",
+      "min": 40,
+      "max": 80,
+      "step": 5,
+      "default": 55,
+      "unit": "kg",
+      "explain": "The same sweat loss is a bigger share of a lighter body.",
+      "basis": "choice"
+    },
+    {
+      "key": "pos",
+      "label": "How much her position runs",
+      "role": "factor",
+      "min": 0.8,
+      "max": 1.2,
+      "step": 0.2,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.8,
+          "label": "defender"
+        },
+        {
+          "value": 1,
+          "label": "winger"
+        },
+        {
+          "value": 1.2,
+          "label": "midfielder"
+        }
+      ],
+      "explain": "Midfielders run the most, so they sweat and burn muscle fuel fastest.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
-    { "key": "P", "label": "Sprint power", "unit": "% of fresh", "colour": "amber", "decimals": 0 },
-    { "key": "F", "label": "Fuel in her muscles", "unit": "%", "colour": "coral", "decimals": 0 },
-    { "key": "W", "label": "Body water", "unit": "% of normal", "colour": "blue", "decimals": 0 },
-    { "key": "S", "label": "Water lost so far", "unit": "%", "colour": "blue", "decimals": 0, "hidden": true },
-    { "key": "T", "label": "Thirst signal", "colour": "blue", "bands": [{ "upTo": 94.9, "text": "ON" }, { "text": "off" }] }
+    {
+      "key": "P",
+      "label": "Sprint speed",
+      "unit": "% of fresh",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "F",
+      "label": "Fuel available",
+      "unit": "% of start",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "W",
+      "label": "Body water lost",
+      "unit": "% of body weight",
+      "colour": "blue",
+      "decimals": 1
+    },
+    {
+      "key": "T",
+      "label": "Thirst signal",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 0.99,
+          "text": "off"
+        },
+        {
+          "text": "ON"
+        }
+      ]
+    },
+    {
+      "key": "S",
+      "label": "Sweat lost so far",
+      "unit": "litres",
+      "colour": "blue",
+      "decimals": 1,
+      "hidden": true
+    }
   ],
   "rules": {
-    "W": "clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)",
-    "F": "clamp(100 - 4 * e - (0.25 + 0.03 * I) * p, 20, 100)",
-    "P": "clamp(clamp(100 - 4 * e - (0.25 + 0.03 * I) * p, 20, 100) - 2 * (100 - clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)), 0, 100)",
-    "S": "100 - clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)",
-    "T": "clamp(100 - (0.04 + 0.012 * I) * p, 80, 100)"
+    "P": "100 - 3 * (p / 90) * pos - 0.15 * (100 - clamp(100 - 5 * (e + p / 60) + 12 * Hs * clamp(p - 45, 0, 1), 0, 100)) * (p / 90) - 1.5 * max(0, (100 * max(0, (((0.4 + 0.035 * (Ta - 60)) * pos) * p / 60) - (0.24 * Wd * clamp(p - 45, 0, 1))) / mass) - 1)",
+    "F": "((100 - 45 * (p / 90) * pos) + clamp(100 - 5 * (e + p / 60) + 12 * Hs * clamp(p - 45, 0, 1), 0, 100)) / 2",
+    "W": "(100 * max(0, (((0.4 + 0.035 * (Ta - 60)) * pos) * p / 60) - (0.24 * Wd * clamp(p - 45, 0, 1))) / mass)",
+    "T": "(100 * max(0, (((0.4 + 0.035 * (Ta - 60)) * pos) * p / 60) - (0.24 * Wd * clamp(p - 45, 0, 1))) / mass)",
+    "S": "(((0.4 + 0.035 * (Ta - 60)) * pos) * p / 60)"
   },
-  "chart": { "x": "p", "xMin": 0, "xMax": 90, "xTicks": ["kick-off", "half-time", "full time"], "xNow": 90, "y": "P", "xLabel": "minutes of the match", "yLabel": "sprint power (% of fresh)", "yMin": 0, "yMax": 100 },
-  "overlay": {
-    "base": "torso",
-    "caption": "heat → sweat drains water · hours without food → muscle fuel runs low · both sap sprint power",
-    "parts": [
-      { "shape": "sun", "colour": "#F4A300" },
-      { "shape": "legs", "colour": "#F4A300", "anim": { "type": "glow", "output": "F", "min": 20, "max": 100 } },
-      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0, "max": 15 } },
-      { "shape": "thirst", "colour": "#E4572E", "anim": { "type": "light", "output": "W", "below": 94.9 } }
+  "chart": {
+    "x": "p",
+    "y": "P",
+    "xLabel": "minutes of the match",
+    "yLabel": "sprint speed (% of fresh)",
+    "yMin": 75,
+    "yMax": 102,
+    "xTicks": [
+      "kick-off",
+      "half-time",
+      "full time"
     ]
   },
+  "overlay": {
+    "base": "torso",
+    "caption": "heat → sweat drains water · hours without food → fuel runs low · both slow her sprints",
+    "parts": [
+      {
+        "shape": "sun",
+        "colour": "#F4A300"
+      },
+      {
+        "shape": "legs",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "F",
+          "min": 20,
+          "max": 100
+        }
+      },
+      {
+        "shape": "drops",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "count",
+          "output": "S",
+          "min": 0,
+          "max": 3
+        }
+      },
+      {
+        "shape": "thirst",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "light",
+          "output": "W",
+          "threshold": 1
+        }
+      }
+    ]
+  },
+  "explain": {
+    "summary": "Two tanks ran low at once for Ama. Water: in 95 °F heat she sweats well over a litre an hour, and a few sips at half-time can't keep up — by the end she has lost about 4% of her body weight, and above 2% performance drops in the heat. Fuel: a soccer game uses up a lot of muscle fuel anyway, and seven hours without food left her liver's sugar store low, so the second half got harder still.",
+    "rules": [
+      "Sweat rate rises with heat and with how much her position runs; water drunk at half-time replaces some.",
+      "Water lost is shown as a share of body weight; above about 2% sprinting suffers in the heat.",
+      "Muscle fuel drops during any full game; hours without food also run down the liver's sugar store, and a half-time snack tops it up.",
+      "Sprint speed = fresh speed minus game fatigue, minus the low-fuel effect, minus the dehydration effect."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Sweating rates above 1 litre an hour are common in the heat; losing more than 2% of body weight usually hurts endurance performance in warm conditions but not in cool ones.",
+        "cite": "sawka-2015"
+      },
+      {
+        "fact": "In a soccer game thigh-muscle fuel (glycogen) fell by about 40%, and about half the fibres were nearly empty by the end.",
+        "cite": "krustrup-2006"
+      },
+      {
+        "fact": "Sprints were about 3% slower at the end of a game and about 4% slower after hard spells in the second half.",
+        "cite": "krustrup-2006"
+      },
+      {
+        "fact": "The liver's glycogen store keeps blood sugar steady; it runs down over hours without food, and repeated sprinting drains muscle glycogen quickly.",
+        "cite": "cleveland-glycogen"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Sweat rate rises in a straight line with air temperature",
+        "why": "Real sweat rates also depend on humidity, sun and the person; the line gives about 1.6 L/h at 95 °F."
+      },
+      {
+        "what": "Above 1% water loss, each extra 1% slows sprints by 1.5%",
+        "why": "Studies agree dehydration hurts performance in heat but not on one exact number."
+      },
+      {
+        "what": "Skipping lunch acts through the liver's store, not the muscles",
+        "why": "After a normal breakfast her muscles start full; it's the blood-sugar supply that runs short later."
+      },
+      {
+        "what": "The thirst signal switches on at about 1% water loss",
+        "why": "Thirst usually starts around this level, but varies between people."
+      }
+    ],
+    "illustrative": [
+      "Ama's weight, her single cup of water, the 95 °F heat and the percentages are made up for a fictional story."
+    ]
+  },
+  "citations": [
+    {
+      "id": "sawka-2015",
+      "title": "Hypohydration and Human Performance: Impact of Environment and Physiological Mechanisms (Sports Medicine)",
+      "publisher": "PubMed Central",
+      "year": "2015",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4672008/",
+      "verified": "2026-10-19",
+      "supports": "Sweating rates above 1 litre per hour are common in heat; losing more than 2% of body mass to dehydration usually impairs aerobic performance in warm-hot conditions but not in cool ones, and raises heart rate at a given effort."
+    },
+    {
+      "id": "krustrup-2006",
+      "title": "Muscle and Blood Metabolites during a Soccer Game: Implications for Sprint Performance (Med Sci Sports Exerc)",
+      "publisher": "University of the Faroe Islands research portal",
+      "year": "2006",
+      "url": "https://www.pure.fo/en/publications/muscle-and-blood-metabolites-during-a-soccer-game-implications-fo/",
+      "verified": "2026-10-19",
+      "supports": "During a soccer game thigh-muscle glycogen fell from about 449 to 255 units and about half the fibres were nearly empty; sprints were about 2.8% slower after the game and 3.6% slower after intense second-half periods."
+    },
+    {
+      "id": "cleveland-glycogen",
+      "title": "Glycogen",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/articles/23509-glycogen",
+      "verified": "2026-10-19",
+      "supports": "The liver's glycogen store is mainly used to keep blood sugar steady; after 12–24 hours of fasting liver glycogen is almost used up; muscle glycogen fuels the muscles and repeated sprinting can lower it quickly."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows body water falling faster in hotter weather as the match goes on",
-      "Shows muscle fuel starting lower after a long gap since eating, and running down during play",
-      "Shows sprint power depending on both, so either problem alone hurts and both together hurt most"
+      "Shows water and fuel running down together over a hot game",
+      "Shows that a drink fixes one problem and food the other",
+      "Shows heat, position and body size changing the water loss"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include salt, fitness, what kind of food, or how quickly food is digested",
-      "Say what or when anyone should eat"
+      "Measure any real person — Ama is fictional",
+      "Model heat illness or anything dangerous",
+      "Tell anyone how much to drink or eat"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Feeling dizzy, sick or confused in the heat is a reason to stop, get into the shade, drink and tell a coach or adult."
-  },
-  "sources": ["CK-12 Life Science: homeostasis, digestion and the muscular system", "NIH News in Health: staying safe in the heat (student overview)"]
+  }
 }

@@ -1,44 +1,345 @@
 {
   "id": "sleep-immune",
-  "name": "Sleep + stress + immune defence",
+  "version": 2,
+  "name": "Noah's sleep, stress and the cold going round",
   "colour": "teal",
-  "inputs": {
-    "primary":   { "key": "s", "label": "Hours of sleep each night", "min": 4, "max": 9, "step": 0.5, "unit": "h", "ticks": ["4 h", "6.5 h", "9 h"] },
-    "secondary": { "key": "x", "label": "Stress level", "min": 0, "max": 10, "step": 1, "default": 8, "ticks": ["calm", "busy", "finals week"] }
-  },
+  "parameters": [
+    {
+      "key": "s",
+      "label": "Hours of sleep each night",
+      "role": "primary",
+      "min": 4,
+      "max": 9,
+      "step": 0.5,
+      "default": 5,
+      "unit": "h",
+      "ticks": [
+        "4 h",
+        "6.5 h",
+        "9 h"
+      ],
+      "explain": "People sleeping under 6 hours were about 4 times more likely to catch a cold than those sleeping over 7.",
+      "basis": "source",
+      "cite": "ucsf-prather-2015"
+    },
+    {
+      "key": "n",
+      "label": "Short nights in a row",
+      "role": "bubble",
+      "min": 1,
+      "max": 7,
+      "step": 1,
+      "default": 5,
+      "explain": "Ongoing short sleep weakens the body's defence; one late night does much less.",
+      "basis": "source",
+      "cite": "nhlbi-sleep"
+    },
+    {
+      "key": "q",
+      "label": "Sleep quality",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0,
+          "label": "restless"
+        },
+        {
+          "value": 1,
+          "label": "average"
+        },
+        {
+          "value": 2,
+          "label": "sound"
+        }
+      ],
+      "explain": "Restless, broken sleep rests the body less than the same hours of sound sleep.",
+      "basis": "choice"
+    },
+    {
+      "key": "x",
+      "label": "Stress level",
+      "role": "bubble",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 8,
+      "ticks": [
+        "calm",
+        "busy",
+        "finals"
+      ],
+      "explain": "Exam stress has been measured lowering the activity of immune cells in students.",
+      "basis": "source",
+      "cite": "karger-exam-nk"
+    },
+    {
+      "key": "d",
+      "label": "Weeks the stress lasts",
+      "role": "bubble",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 1,
+      "unit": "weeks",
+      "explain": "Long-lasting stress (a month or more) clearly raises the risk of colds; short stressful spells matter much less.",
+      "basis": "source",
+      "cite": "cmu-cohen-1998"
+    },
+    {
+      "key": "k",
+      "label": "Classmates with colds",
+      "role": "factor",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 12,
+      "explain": "Colds are caused by viruses passed between people — no virus nearby, no cold.",
+      "basis": "source",
+      "cite": "cdc-cold"
+    },
+    {
+      "key": "w",
+      "label": "Hand-washing habit",
+      "role": "factor",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0,
+          "label": "rarely"
+        },
+        {
+          "value": 1,
+          "label": "sometimes"
+        },
+        {
+          "value": 2,
+          "label": "often"
+        }
+      ],
+      "explain": "Hand-washing cuts colds and other breathing illnesses by about 16–21%.",
+      "basis": "source",
+      "cite": "cdc-handwashing"
+    }
+  ],
   "outputs": [
-    { "key": "D", "label": "Immune defence", "unit": "% of full", "colour": "teal", "decimals": 0 },
-    { "key": "C", "label": "Stress hormones", "unit": "% above calm", "colour": "coral", "decimals": 0 },
-    { "key": "R", "label": "Chance the going-around cold gets through", "unit": "%", "colour": "purple", "decimals": 0 }
+    {
+      "key": "D",
+      "label": "Immune defence",
+      "unit": "% of full",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "C",
+      "label": "Stress effect",
+      "unit": "% extra risk",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "Rk",
+      "label": "Chance the cold gets through",
+      "unit": "%",
+      "colour": "purple",
+      "decimals": 0
+    }
   ],
   "rules": {
-    "D": "clamp(100 - 9 * max(0, 8 - s) - 2.5 * x, 20, 100)",
-    "C": "10 * x",
-    "R": "clamp(15 + 0.7 * (100 - clamp(100 - 9 * max(0, 8 - s) - 2.5 * x, 20, 100)), 5, 80)"
+    "D": "100 * pow(((1 + (3.2 * clamp(7 - s, 0, 1) + 0.3 * clamp(6 - s, 0, 1)) * min(1, n / 5) * (1.2 - 0.2 * q)) * (1 + (x / 10) * (0.3 + 0.7 * min(1, d / 4)))), -0.5)",
+    "C": "100 * ((1 + (x / 10) * (0.3 + 0.7 * min(1, d / 4))) - 1)",
+    "Rk": "100 * (0.02 * k * (1 - 0.09 * w)) * ((1 + (3.2 * clamp(7 - s, 0, 1) + 0.3 * clamp(6 - s, 0, 1)) * min(1, n / 5) * (1.2 - 0.2 * q)) * (1 + (x / 10) * (0.3 + 0.7 * min(1, d / 4)))) / (1 - (0.02 * k * (1 - 0.09 * w)) + (0.02 * k * (1 - 0.09 * w)) * ((1 + (3.2 * clamp(7 - s, 0, 1) + 0.3 * clamp(6 - s, 0, 1)) * min(1, n / 5) * (1.2 - 0.2 * q)) * (1 + (x / 10) * (0.3 + 0.7 * min(1, d / 4)))))"
   },
-  "chart": { "x": "s", "y": "D", "xLabel": "hours of sleep each night", "yLabel": "immune defence (% of full)", "yMin": 0, "yMax": 100 },
+  "chart": {
+    "x": "s",
+    "y": "D",
+    "xLabel": "hours of sleep each night",
+    "yLabel": "immune defence (% of full)",
+    "yMin": 0,
+    "yMax": 100
+  },
   "overlay": {
     "base": "torso",
-    "caption": "short sleep + stress hormones → weaker defence → the cold going around gets through",
+    "caption": "short sleep + stress → weaker defence → the cold going around gets through",
     "parts": [
-      { "shape": "core", "colour": "#1B998B", "anim": { "type": "glow", "output": "D", "min": 20, "max": 100 } },
-      { "shape": "brainGlow", "colour": "#E4572E", "anim": { "type": "glow", "output": "C", "min": 0, "max": 100 } },
-      { "shape": "germs", "colour": "#6C4AB6", "anim": { "type": "count", "output": "R", "min": 5, "max": 80 } }
+      {
+        "shape": "core",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "glow",
+          "output": "D",
+          "min": 20,
+          "max": 100
+        }
+      },
+      {
+        "shape": "brainGlow",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "glow",
+          "output": "C",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "germs",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "count",
+          "output": "Rk",
+          "min": 5,
+          "max": 80
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Colds come from viruses passed around Noah's class — he can't catch one if nobody has it. Whether the virus wins depends on his defences. Night after night of short sleep is the biggest factor: under six hours, people are about four times more likely to catch a cold. Stress adds to it: exam stress lowers immune-cell activity, though stress that lasts a month or more matters much more than a single week.",
+    "rules": [
+      "The cold needs a virus: more sick classmates means more chances to catch it; hand-washing cuts that.",
+      "Sleeping under 6–7 hours raises the odds about 4 times, building up over several nights.",
+      "Stress raises the odds too — a little for one stressful week, more for stress lasting a month or more.",
+      "Sleep and stress multiply together, so both at once are worse than either alone."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Colds are caused by viruses, most often rhinoviruses, spread by droplets and contaminated surfaces.",
+        "cite": "cdc-cold"
+      },
+      {
+        "fact": "Volunteers sleeping under 6 hours were 4.2 times, and under 5 hours 4.5 times, more likely to catch a cold from the same virus than those sleeping over 7.",
+        "cite": "ucsf-prather-2015"
+      },
+      {
+        "fact": "Ongoing sleep deficiency can weaken the body's defence against common infections.",
+        "cite": "nhlbi-sleep"
+      },
+      {
+        "fact": "Stressors lasting a month or longer were linked to a much higher risk of colds; short stressful events were not.",
+        "cite": "cmu-cohen-1998"
+      },
+      {
+        "fact": "In medical students, immune (natural killer) cell activity fell between a month before exams and the first day of exams.",
+        "cite": "karger-exam-nk"
+      },
+      {
+        "fact": "Hand-washing reduces colds and other respiratory illnesses by 16–21%.",
+        "cite": "cdc-handwashing"
+      },
+      {
+        "fact": "Teens need 8–10 hours of sleep a night.",
+        "cite": "cdc-sleep-teens"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Short sleep's effect builds over 5 nights",
+        "why": "One late night matters less than a pattern; the study measured people's usual sleep over a week."
+      },
+      {
+        "what": "A single stressful week raises risk only about a third as much as month-long stress",
+        "why": "Long stress is clearly linked to colds; the exam-stress study shows a smaller, short-term effect too."
+      },
+      {
+        "what": "Each classmate with a cold adds about 2% to the starting chance",
+        "why": "A teaching number for 'more virus around, more chances'."
+      },
+      {
+        "what": "Immune defence is shown as one percentage",
+        "why": "The real immune system has many parts; one number shows the direction."
+      }
+    ],
+    "illustrative": [
+      "Noah's five hours, his stress level, the twelve sick classmates and the percentages are made up for a fictional story."
+    ],
+    "studying": "Exactly how sleep and stress change the many parts of the immune system is still being worked out."
+  },
+  "citations": [
+    {
+      "id": "cdc-cold",
+      "title": "About Common Cold",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://www.cdc.gov/common-cold/about/index.html",
+      "verified": "2026-10-19",
+      "supports": "Colds are caused by viruses, most often rhinoviruses; they spread through droplets from coughs and sneezes and contaminated surfaces; colds usually last less than a week."
+    },
+    {
+      "id": "ucsf-prather-2015",
+      "title": "Short Sleepers Are Four Times More Likely to Catch a Cold",
+      "publisher": "UCSF",
+      "year": "2015",
+      "url": "https://www.ucsf.edu/news/2015/08/131411/short-sleepers-are-four-times-more-likely-catch-cold",
+      "verified": "2026-10-19",
+      "supports": "In a study published in Sleep (2015), volunteers given cold virus by nose drops were 4.2 times more likely to catch a cold if they slept under 6 hours, and 4.5 times under 5 hours, than those sleeping over 7; this held after accounting for stress and other factors."
+    },
+    {
+      "id": "nhlbi-sleep",
+      "title": "Sleep Deprivation and Deficiency: How Sleep Affects Your Health",
+      "publisher": "NHLBI (NIH)",
+      "year": "",
+      "url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/health-effects",
+      "verified": "2026-10-19",
+      "supports": "During sleep the brain forms pathways to learn and remember; sleep-deficient people react more slowly, make more mistakes and have trouble focusing; ongoing sleep deficiency can weaken the body's defence against common infections."
+    },
+    {
+      "id": "cmu-cohen-1998",
+      "title": "Types of stressors that increase susceptibility to the common cold in healthy adults (Health Psychology)",
+      "publisher": "Carnegie Mellon University",
+      "year": "1998",
+      "url": "https://www.cmu.edu/dietrich/psychology/stress-immunity-disease-lab/abstracts/pdf/types-of-stressors.pdf",
+      "verified": "2026-10-19",
+      "supports": "Severe stressors lasting a month or longer were linked to a substantial rise in the risk of catching a cold, while severe short stressful events (under a month) were not; there was some sign that longer stressors meant greater risk."
+    },
+    {
+      "id": "karger-exam-nk",
+      "title": "Pillar articles: stress in humans affects natural killer cell function",
+      "publisher": "Karger Research Viewpoints",
+      "year": "2026",
+      "url": "https://researchviewpoints.karger.com/on-research/pillar-articles-stress-in-humans-affects-natural-killer-cell-function/",
+      "verified": "2026-10-19",
+      "supports": "Describes Kiecolt-Glaser and Glaser's study of 75 medical students: natural killer (immune) cell activity fell significantly between a month before final exams and the first day of exams, which the authors called a relatively minor stressor."
+    },
+    {
+      "id": "cdc-handwashing",
+      "title": "Handwashing Facts",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://www.cdc.gov/clean-hands/data-research/facts-stats/index.html",
+      "verified": "2026-10-19",
+      "supports": "Handwashing education reduces respiratory illnesses such as colds in the general population by 16–21%."
+    },
+    {
+      "id": "cdc-sleep-teens",
+      "title": "Sleep in Middle and High School Students",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://archive.cdc.gov/www_cdc_gov/healthyschools/features/students-sleep.htm",
+      "verified": "2026-10-19",
+      "supports": "Teens aged 13–18 should get 8 to 10 hours of sleep per 24 hours (American Academy of Sleep Medicine); about 7 in 10 high schoolers don't get enough on school nights; short sleep is linked to attention problems."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows immune defence dropping with less sleep than about 8 hours",
-      "Shows long-lasting stress lowering immune defence too",
-      "Shows the two together lowering it most, so a cold that's going around is more likely to get through"
+      "Shows a cold needing both a virus and a weakened defence",
+      "Shows short sleep as the biggest single factor",
+      "Shows stress adding to it, more when it lasts longer"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include handwashing, how many germs are around, or anyone's health",
-      "Say that sleep or stress cause colds; colds come from viruses passed between people"
+      "Measure any real person — Noah is fictional",
+      "Predict whether anyone will get sick",
+      "Cover flu, other illnesses or what to do when sick"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If you feel run down for weeks, or stress feels like too much, talk with an adult you trust."
-  },
-  "sources": ["NIH News in Health: sleep and your health; stress and your health (student overviews)", "CK-12 Life Science: immune system"]
+    "wellbeing": "Most colds pass in under a week. If you feel very unwell or it lasts much longer, tell an adult."
+  }
 }

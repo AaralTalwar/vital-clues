@@ -1,44 +1,110 @@
 {
   "id": "balance-spin",
-  "name": "Ears & balance",
+  "version": 2,
+  "name": "Amara's inner ear after spinning",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "N", "label": "Spins on the spinner", "min": 0, "max": 20, "step": 1, "ticks": ["none", "10 spins", "20 spins"] },
-    "secondary": { "key": "S", "label": "Seconds after stopping", "min": 0, "max": 40, "step": 5, "default": 0, "unit": "s", "ticks": ["just stopped", "20 s", "40 s"] }
-  },
+  "parameters": [
+    {
+      "key": "N", "label": "Spins on the spinner", "role": "primary", "min": 0, "max": 20, "step": 1, "default": 10,
+      "ticks": ["none", "10 spins", "20 spins"],
+      "explain": "The longer she spins, the more the fluid in her balance canals gets moving with her — so the bigger the jolt when she suddenly stops.",
+      "basis": "choice"
+    },
+    {
+      "key": "S", "label": "Seconds after stopping", "role": "bubble", "min": 0, "max": 40, "step": 5, "default": 0, "unit": "s",
+      "explain": "After you stop, the fluid in your inner ear keeps moving for a while, so you still feel as if you're spinning.",
+      "basis": "source", "cite": "imperial-dancers"
+    },
+    {
+      "key": "Hs", "label": "Hours since her last snack", "role": "bubble", "min": 0, "max": 6, "step": 1, "default": 1, "unit": "h",
+      "explain": "Tests the 'low blood sugar' idea: change it and watch whether the dizziness changes at all.",
+      "basis": "choice"
+    },
+    {
+      "key": "rps", "label": "Spinner speed", "role": "factor", "min": 0.25, "max": 1, "step": 0.25, "default": 0.5,
+      "options": [{ "value": 0.25, "label": "slow" }, { "value": 0.5, "label": "1 turn every 2 s" }, { "value": 0.75, "label": "fast" }, { "value": 1, "label": "very fast" }],
+      "explain": "A faster spin gives a bigger sudden change when it stops, so the after-spin feeling is stronger.",
+      "basis": "choice"
+    },
+    {
+      "key": "pr", "label": "Spinning practice", "role": "factor", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "none" }, { "value": 1, "label": "some (gymnast)" }, { "value": 2, "label": "lots (ballet dancer)" }],
+      "explain": "In trained ballet dancers, the feeling of spinning after they stop lasts a shorter time than in other people.",
+      "basis": "source", "cite": "imperial-dancers"
+    }
+  ],
+  "constants": { "half": 10 },
   "outputs": [
-    { "key": "F", "label": "Inner-ear fluid still swirling", "unit": "%", "colour": "purple", "decimals": 0 },
+    { "key": "F", "label": "Inner-ear fluid still pushing", "unit": "% of max", "colour": "purple", "decimals": 0 },
     { "key": "D", "label": "Dizziness", "unit": "0–10", "colour": "coral", "decimals": 1 },
-    { "key": "E", "label": "Eyes", "colour": "blue", "bands": [{ "upTo": 1.9, "text": "steady" }, { "upTo": 5.9, "text": "flicking a little" }, { "text": "flicking side to side" }] }
+    { "key": "E", "label": "Eyes", "colour": "blue", "bands": [{ "upTo": 2, "text": "steady" }, { "upTo": 6, "text": "flicking a little" }, { "text": "flicking side to side" }] },
+    { "key": "G", "label": "Fuel in her blood", "unit": "% of comfortable", "colour": "amber", "decimals": 0 }
   ],
   "rules": {
-    "F": "clamp(6 * N, 0, 100) * pow(0.5, S / 8)",
-    "D": "clamp(0.6 * N, 0, 10) * pow(0.5, S / 8)",
-    "E": "clamp(0.6 * N, 0, 10) * pow(0.5, S / 8)"
+    "F": "clamp(60 * (rps / 0.5) * (1 - pow(0.5, N / rps / (half * (1 - 0.25 * pr)))) * pow(0.5, S / (half * (1 - 0.25 * pr))), 0, 100)",
+    "D": "clamp(10.5 * (rps / 0.5) * (1 - pow(0.5, N / rps / (half * (1 - 0.25 * pr)))) * pow(0.5, S / (half * (1 - 0.25 * pr))), 0, 10)",
+    "E": "clamp(10.5 * (rps / 0.5) * (1 - pow(0.5, N / rps / (half * (1 - 0.25 * pr)))) * pow(0.5, S / (half * (1 - 0.25 * pr))), 0, 10)",
+    "G": "clamp(100 - 4 * Hs, 70, 100)"
   },
-  "chart": { "x": "N", "y": "D", "xLabel": "number of spins", "yLabel": "dizziness (0–10)", "yMin": 0, "yMax": 10 },
+  "chart": { "x": "N", "y": "D", "xLabel": "number of spins", "yLabel": "dizziness when she stops (0–10)", "yMin": 0, "yMax": 10 },
   "overlay": {
     "base": "head",
-    "caption": "spinning sets the inner-ear fluid swirling · it keeps going after you stop",
+    "caption": "spinning sets the inner-ear fluid moving · it keeps going after you stop",
     "parts": [
       { "shape": "innerEar", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "F", "min": 0, "max": 100 } },
       { "shape": "swirl", "colour": "#6C4AB6", "anim": { "type": "spin", "output": "D" } },
       { "shape": "eye", "colour": "#16213E", "anim": { "type": "shiver", "output": "D" } }
     ]
   },
+  "explain": {
+    "summary": "Inside each inner ear are three fluid-filled loops. When Amara's head turns, the fluid pushes on tiny hair cells that tell her brain which way she is turning. While she spins, the fluid gets moving with her. When the spinner suddenly stops, the fluid keeps going for a while — so her brain is told she is still turning, the playground seems to spin, and her eyes flick to follow it.",
+    "rules": [
+      "The longer she spins, the bigger the push on her balance sensors when she stops — up to a limit.",
+      "A faster spinner gives a bigger push.",
+      "After she stops, the spinning feeling halves about every 10 seconds; in trained dancers it fades faster.",
+      "Her eyes flick side to side while the feeling is strong.",
+      "How long since she ate changes her fuel, not her dizziness."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "The semicircular canals are fluid-filled loops at right angles to each other. When the head turns, the fluid moves and bends a soft flap (the cupula) sitting on hair cells, which tell the brain the head has turned.", "cite": "nidcd-balance" },
+      { "fact": "After turning around rapidly, the fluid continues to move, which can make you feel like you're still spinning.", "cite": "imperial-dancers" },
+      { "fact": "In trained ballet dancers, both the eye reflexes and the feeling of spinning after a spin lasted a shorter time than in other athletes.", "cite": "imperial-dancers" },
+      { "fact": "Measured in 10 people, the flap in the balance canals springs back with a time constant of about 4 seconds; the brain then stretches the signal out for longer.", "cite": "dai-cupula" }
+    ],
+    "choice": [
+      { "what": "The after-spin feeling halves every 10 seconds", "why": "The cupula itself springs back in about 4 seconds, but the brain stores the turning signal for longer. A 10-second half-life makes the feeling last about half a minute, as people report." },
+      { "what": "Spinning 'charges up' the signal with the same half-life", "why": "During a steady spin the fluid slowly catches up with the head, so a longer spin gives a bigger jolt at the stop, levelling off." },
+      { "what": "Dancer training shortens the half-life by a quarter per level", "why": "The study shows the feeling lasts shorter in dancers but doesn't give a simple number for 13-year-olds." },
+      { "what": "Hunger changes only the fuel number", "why": "This is how the model tests the low-blood-sugar idea; in healthy people a skipped snack doesn't make the world spin." }
+    ],
+    "illustrative": [
+      "Amara is fictional; the 0–10 dizziness scale and the fuel percentage are made-up scales.",
+      "The spinner speeds are typical playground values, not measurements."
+    ],
+    "studying": "Exactly how the brain stores and then lets go of the spinning signal — and how dancers learn to switch the feeling off — is still being researched."
+  },
+  "citations": [
+    { "id": "nidcd-balance", "title": "Balance Disorders", "publisher": "NIH National Institute on Deafness and Other Communication Disorders (NIDCD)", "year": "", "url": "https://www.nidcd.nih.gov/health/balance-disorders", "verified": "2026-10-19",
+      "supports": "The semicircular canals are fluid-filled loops at roughly right angles; when the head turns the fluid moves and the cupula flexes over hair cells, which signal the brain which way the head has turned." },
+    { "id": "imperial-dancers", "title": "Ballet dancers' brains adapt to stop them feeling dizzy", "publisher": "Imperial College London", "year": "2013", "url": "https://www.imperial.ac.uk/news/130786", "verified": "2026-10-19",
+      "supports": "After turning rapidly the fluid continues to move, making you feel you're still spinning; in dancers both the eye reflexes and the perception of spinning lasted a shorter time than in rowers (Cerebral Cortex, 2013)." },
+    { "id": "dai-cupula", "title": "Model-based study of the human cupular time constant (Journal of Vestibular Research)", "publisher": "Icahn School of Medicine at Mount Sinai", "year": "1999", "url": "https://scholars.mssm.edu/en/publications/model-based-study-of-the-human-cupular-time-constant-2/", "verified": "2026-10-19",
+      "supports": "The mean cupular time constant for 10 human subjects was 4.2 ± 0.6 seconds; a separate central 'velocity storage' process in the brain also shapes the response." }
+  ],
   "limits": {
     "does": [
-      "Shows dizziness growing with the number of spins",
-      "Shows it fading by itself in the seconds after stopping",
-      "Shows the eyes flicking while the inner-ear fluid is still moving"
+      "Shows the inner-ear fluid still pushing after the spin stops",
+      "Shows longer and faster spins giving a stronger after-spin feeling",
+      "Lets you test whether hunger could be the cause"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include motion sickness, which is a related but different effect",
-      "Say anything about dizziness that comes without spinning"
+      "Measure any real person — Amara is fictional and the numbers are illustrative",
+      "Model which direction the world seems to spin, or tilting the head",
+      "Cover dizziness that happens without spinning"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Dizziness that comes without spinning, or doesn't go away, is a reason to tell an adult."
-  },
-  "sources": ["NIH NIDCD: Balance and the inner ear (student pages)", "CK-12 Life Science: the ear and balance"]
+  }
 }

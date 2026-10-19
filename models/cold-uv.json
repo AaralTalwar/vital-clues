@@ -1,144 +1,138 @@
 {
   "id": "cold-uv",
-  "name": "Cold & sunlight on snow",
-  "colour": "blue",
-  "inputs": {
-    "primary": {
-      "key": "O",
-      "label": "Hours outside",
-      "min": 0,
-      "max": 6,
-      "step": 0.5,
-      "unit": "h",
-      "ticks": [
-        "none",
-        "3 h",
-        "6 h"
-      ]
-    },
-    "secondary": {
-      "key": "C",
-      "label": "How cold",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "default": 7,
-      "ticks": [
-        "mild",
-        "chilly",
-        "freezing"
-      ]
-    }
-  },
-  "constants": {
-    "uv": 4,
-    "snow": 1.8
-  },
-  "outputs": [
+  "version": 2,
+  "name": "Elif's skin in the cold and the snow-glare",
+  "colour": "coral",
+  "parameters": [
     {
-      "key": "E",
-      "label": "UV energy reaching the face",
-      "unit": "units",
-      "colour": "amber",
-      "decimals": 0
+      "key": "O", "label": "Hours outside", "role": "primary", "min": 0, "max": 6, "step": 0.5, "default": 5, "unit": "h",
+      "ticks": ["none", "3 h", "6 h"],
+      "explain": "Sun damage adds up with time outdoors; the redness shows up hours afterwards.",
+      "basis": "source", "cite": "medline-sunburn"
     },
     {
-      "key": "B",
-      "label": "Face redness that night",
-      "unit": "0–10",
-      "colour": "coral",
-      "decimals": 1
+      "key": "UVI", "label": "UV index", "role": "bubble", "min": 0, "max": 8, "step": 1, "default": 3,
+      "ticks": ["0", "4", "8"],
+      "explain": "The UV index measures how strong the sun's UV is; at 3 or more, skin needs protection.",
+      "basis": "source", "cite": "epa-uvindex"
     },
     {
-      "key": "V",
-      "label": "Shivering now",
-      "unit": "0–10",
-      "colour": "blue",
-      "decimals": 0
+      "key": "snow", "label": "Ground", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 1,
+      "options": [{ "value": 0, "label": "grass" }, { "value": 1, "label": "fresh snow" }],
+      "explain": "Snow reflects up to 80% of the sun's UV, so the rays hit you twice — from above and from below.",
+      "basis": "source", "cite": "scf-winter"
     },
     {
-      "key": "F",
-      "label": "Blood flow to skin",
-      "colour": "purple",
-      "bands": [
-        {
-          "upTo": 55,
-          "text": "low"
-        },
-        {
-          "upTo": 80,
-          "text": "reduced"
-        },
-        {
-          "text": "normal"
-        }
-      ]
+      "key": "cover", "label": "Face protection", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "nothing" }, { "value": 1, "label": "sunscreen" }],
+      "explain": "Sunscreen blocks much of the UV before it reaches the skin cells.",
+      "basis": "choice"
+    },
+    {
+      "key": "T", "label": "Air temperature", "role": "bubble", "min": -10, "max": 50, "step": 5, "default": 20, "unit": "°F",
+      "explain": "The colder the air, the faster it pulls heat from exposed skin.",
+      "basis": "source", "cite": "nws-windchill"
+    },
+    {
+      "key": "wind", "label": "Wind", "role": "bubble", "min": 3, "max": 30, "step": 1, "default": 10, "unit": "mph",
+      "explain": "Wind makes heat leave exposed skin faster — that's what the 'wind chill' temperature measures.",
+      "basis": "source", "cite": "nws-windchill"
+    },
+    {
+      "key": "sk", "label": "How easily her skin burns", "role": "factor", "min": 4, "max": 12, "step": 1, "default": 7,
+      "options": [{ "value": 4, "label": "burns easily" }, { "value": 7, "label": "sometimes burns" }, { "value": 12, "label": "rarely burns" }],
+      "explain": "People's skin differs in how much UV it takes before it burns.",
+      "basis": "choice"
+    },
+    {
+      "key": "cl", "label": "Clothing", "role": "factor", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "jacket, no hat" }, { "value": 1, "label": "coat and hat" }, { "value": 2, "label": "snowsuit and hat" }],
+      "explain": "Warm, covering clothes cut the heat lost from the body, so there is less to make up by shivering.",
+      "basis": "source", "cite": "cc-hypothermia"
     }
   ],
+  "outputs": [
+    { "key": "WC", "label": "Wind chill", "unit": "°F", "colour": "blue", "decimals": 0 },
+    { "key": "V", "label": "Shivering now", "unit": "0–10", "colour": "amber", "decimals": 0 },
+    { "key": "F", "label": "Blood flow to skin", "colour": "coral", "bands": [{ "upTo": 55, "text": "low — pale fingers" }, { "upTo": 80, "text": "reduced" }, { "text": "normal" }] },
+    { "key": "E", "label": "UV reaching her face", "unit": "burn units", "colour": "amber", "decimals": 0 },
+    { "key": "B", "label": "Face redness that night", "unit": "0–10", "colour": "coral", "decimals": 1 }
+  ],
   "rules": {
-    "E": "uv * snow * O",
-    "B": "clamp((uv * snow * O - 12) / 2, 0, 10)",
-    "V": "round(clamp(0.9 * C - 1, 0, 10))",
-    "F": "100 - 6 * C"
+    "WC": "35.74 + 0.6215 * T - 35.75 * pow(wind, 0.16) + 0.4275 * T * pow(wind, 0.16)",
+    "V": "round(clamp((40 - (35.74 + 0.6215 * T - 35.75 * pow(wind, 0.16) + 0.4275 * T * pow(wind, 0.16))) / 5 * (1 - 0.3 * cl) * (1 - pow(0.5, O / 0.5)), 0, 10))",
+    "F": "100 - 6 * clamp((40 - (35.74 + 0.6215 * T - 35.75 * pow(wind, 0.16) + 0.4275 * T * pow(wind, 0.16))) / 5 * (1 - 0.3 * cl) * (1 - pow(0.5, O / 0.5)), 0, 10)",
+    "E": "O * UVI * (1 + 0.8 * snow) * (1 - 0.7 * cover)",
+    "B": "clamp((O * UVI * (1 + 0.8 * snow) * (1 - 0.7 * cover) - sk) / 3, 0, 10)"
   },
-  "chart": {
-    "x": "O",
-    "y": "B",
-    "xLabel": "hours outside",
-    "yLabel": "face redness that night (0–10)",
-    "yMin": 0,
-    "yMax": 10
-  },
+  "chart": { "x": "O", "y": "B", "xLabel": "hours outside", "yLabel": "face redness that night (0–10)", "yMin": 0, "yMax": 10 },
   "overlay": {
     "base": "torso",
-    "caption": "cold: fast response, gone when warm · UV: silent damage, red hours later",
+    "caption": "cold air → shiver and pull blood from the skin (fades indoors) · UV from sky + snow → redness hours later",
     "parts": [
-      {
-        "shape": "snow",
-        "colour": "#8FA3C7"
-      },
-      {
-        "shape": "sun",
-        "colour": "#F4A300"
-      },
-      {
-        "shape": "skin",
-        "colour": "#E4572E",
-        "anim": {
-          "type": "shift",
-          "output": "B",
-          "min": 0,
-          "max": 10,
-          "from": "#F7F9FD",
-          "to": "#E4572E"
-        }
-      },
-      {
-        "shape": "shiverMarks",
-        "colour": "#2E86DE",
-        "anim": {
-          "type": "shiver",
-          "output": "V"
-        }
-      }
+      { "shape": "snow", "colour": "#2E86DE" },
+      { "shape": "sun", "colour": "#F4A300" },
+      { "shape": "skin", "colour": "#E4572E", "anim": { "type": "shift", "output": "B", "min": 0, "max": 10, "from": "#F7F9FD", "to": "#E4572E" } },
+      { "shape": "shiverMarks", "colour": "#F4A300", "anim": { "type": "shiver", "output": "V" } }
     ]
   },
+  "explain": {
+    "summary": "Elif's skin had two separate things happen to it. The freezing, windy air pulled heat out of her fast, so her muscles shivered to make heat and blood was kept away from her skin — all of which fades within minutes by the fire. Meanwhile UV from the sky, doubled by snow reflecting it back up, was damaging her skin cells; that shows up as redness hours later, and peeling days later.",
+    "rules": [
+      "Wind chill uses the National Weather Service formula: colder air and stronger wind take heat faster.",
+      "Shivering grows as the wind chill drops below about 40 °F; warm clothes and a hat reduce it.",
+      "UV reaching her face = hours outside × UV index × the snow boost, minus what sunscreen blocks.",
+      "Redness appears once the UV passes what her skin can take, and grows from there.",
+      "The cold effects end when she warms up; the UV damage has already been done."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Snow reflects up to 80% of the sun's UV light, so the rays hit you twice; UV can burn skin year-round, especially at high altitudes.", "cite": "scf-winter" },
+      { "fact": "The first signs of sunburn may not appear for a few hours; the full effect may take 24 hours; peeling comes several days later; reflections off snow make the sun's rays stronger.", "cite": "medline-sunburn" },
+      { "fact": "The UV Index rates UV strength; at 3 or more, protection is needed.", "cite": "epa-uvindex" },
+      { "fact": "Wind chill is based on the rate of heat loss from exposed skin caused by wind and cold: Wind chill (°F) = 35.74 + 0.6215T − 35.75·V^0.16 + 0.4275T·V^0.16, for T in °F and wind V in mph.", "cite": "nws-windchill" },
+      { "fact": "Cold, wet or windy conditions can make the body lose more heat than it makes; shivering and chattering teeth are early signs.", "cite": "cc-hypothermia" },
+      { "fact": "Shivering is rapid, repeated muscle contractions that release heat to warm us up.", "cite": "conv-shiver" }
+    ],
+    "choice": [
+      { "what": "Snow adds 80% to the UV on her face", "why": "Uses the 'up to 80%' reflection figure; real boosts depend on how fresh the snow is and which way she faces." },
+      { "what": "Shivering grows by 1 point for every 5 °F of wind chill below 40 °F", "why": "Gives strong shivering at a 9 °F wind chill with no hat; the real starting point varies between people." },
+      { "what": "Shivering builds up over the first hour outside", "why": "Bodies cool gradually; after about an hour the shivering is steady." },
+      { "what": "Sunscreen blocks 70% of the UV", "why": "Well-applied sunscreen blocks more, but people usually put on less than the label assumes; this is a teaching value." },
+      { "what": "Narrower skin blood vessels are shown as falling skin blood flow", "why": "Keeping warm blood away from the skin is the body's heat-saving move; the size here is a teaching scale." }
+    ],
+    "illustrative": [
+      "Elif's five hours, the UV index of 3, 20 °F with a 10 mph wind and her 'sometimes burns' skin are made up for a fictional story.",
+      "Burn units and the 0–10 redness and shivering scales are teaching scales."
+    ]
+  },
+  "citations": [
+    { "id": "scf-winter", "title": "Winter Sun Safety", "publisher": "The Skin Cancer Foundation", "year": "", "url": "https://www.skincancer.org/blog/winter-sun-safety/", "verified": "2026-10-19",
+      "supports": "Snow reflects up to 80 percent of the sun's UV light, so the rays hit you twice; UVB can burn and damage skin year-round, especially at high altitudes." },
+    { "id": "medline-sunburn", "title": "Sunburn", "publisher": "MedlinePlus (U.S. National Library of Medicine)", "year": "", "url": "https://medlineplus.gov/ency/article/003227.htm", "verified": "2026-10-19",
+      "supports": "First signs of sunburn may not appear for a few hours and the full effect can take 24 hours or more; peeling follows several days later; reflections off water, sand or snow make the sun's burning rays stronger." },
+    { "id": "epa-uvindex", "title": "UV Index Scale", "publisher": "U.S. EPA", "year": "", "url": "https://www.epa.gov/sunsafety/uv-index-scale-0", "verified": "2026-10-19",
+      "supports": "UV Index 1–2 low (minimal protection); 3–7 moderate to high (protection needed); 8+ very high to extreme (extra protection needed)." },
+    { "id": "nws-windchill", "title": "Wind Chill Chart", "publisher": "National Weather Service (NOAA)", "year": "", "url": "https://www.weather.gov/safety/cold-wind-chill-chart", "verified": "2026-10-19",
+      "supports": "Wind chill is based on the rate of heat loss from exposed skin caused by wind and cold; formula 35.74 + 0.6215T − 35.75(V^0.16) + 0.4275T(V^0.16), valid at or below 50 °F and winds above 3 mph." },
+    { "id": "cc-hypothermia", "title": "Hypothermia (Low Body Temperature)", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/diseases/21164-hypothermia-low-body-temperature", "verified": "2026-10-19",
+      "supports": "Hypothermia happens after exposure to cold, wet or windy conditions that make the body lose more heat than it generates; shivering and chattering teeth are early signs." },
+    { "id": "conv-shiver", "title": "Curious Kids: why do we shiver when we feel cold?", "publisher": "The Conversation", "year": "", "url": "https://theconversation.com/curious-kids-why-do-we-shiver-when-we-feel-cold-222863", "verified": "2026-10-19",
+      "supports": "Shivering is rapid, repeated contraction of muscles; it produces no useful movement but releases heat that helps warm us up." }
+  ],
   "limits": {
     "does": [
-      "Shows UV energy adding up with hours outside, boosted by light bouncing off snow",
-      "Shows redness appearing only after a threshold dose, hours later",
-      "Shows shivering depending on the cold, not on the sunlight"
+      "Shows two separate effects on the same skin, each with its own timing",
+      "Uses the National Weather Service wind chill formula for the cold",
+      "Shows snow boosting UV and sunscreen cutting it"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Account for skin tone, altitude, clouds or time of day",
-      "Show any dangerous cold"
+      "Measure any real person — Elif is fictional and the scales are for teaching",
+      "Model frostbite or dangerous cold",
+      "Account for time of day, altitude, clouds, or skin tone in detail"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Snow reflects sunlight: on bright days a hat and sunscreen help. Tell an adult about blistering or feeling sick."
-  },
-  "sources": [
-    "CK-12 Life Science: integumentary system",
-    "US EPA SunWise: UV Index for students"
-  ]
+    "wellbeing": "Numb, white or hard patches of skin in the cold, or blistering after sun, are reasons to tell an adult straight away."
+  }
 }

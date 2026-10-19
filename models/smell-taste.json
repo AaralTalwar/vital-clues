@@ -1,45 +1,272 @@
 {
   "id": "smell-taste",
-  "name": "Nose & taste",
+  "version": 2,
+  "name": "Keisha's nose, tongue and flavour",
   "colour": "teal",
-  "inputs": {
-    "primary": { "key": "B", "label": "How blocked her nose is", "min": 0, "max": 100, "step": 10, "unit": "%", "ticks": ["clear", "half", "fully blocked"] }
+  "parameters": [
+    {
+      "key": "B",
+      "label": "How blocked her nose is",
+      "role": "primary",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "default": 90,
+      "unit": "%",
+      "ticks": [
+        "clear",
+        "half",
+        "fully blocked"
+      ],
+      "explain": "Chewing sends food smells up a channel at the back of the throat to the nose. A stuffed-up nose blocks that channel.",
+      "basis": "source",
+      "cite": "nidcd-smell"
+    },
+    {
+      "key": "Ar",
+      "label": "How strongly the food smells",
+      "role": "bubble",
+      "min": 2,
+      "max": 10,
+      "step": 4,
+      "default": 6,
+      "options": [
+        {
+          "value": 2,
+          "label": "mild (raw potato)"
+        },
+        {
+          "value": 6,
+          "label": "fruity (strawberry yogurt)"
+        },
+        {
+          "value": 10,
+          "label": "very strong (garlic bread)"
+        }
+      ],
+      "explain": "Strong-smelling foods send more aroma up to the nose, so they lose more flavour when the nose is blocked.",
+      "basis": "choice"
+    },
+    {
+      "key": "Sw",
+      "label": "Sweetness of the food",
+      "role": "factor",
+      "min": 0,
+      "max": 10,
+      "step": 5,
+      "default": 10,
+      "options": [
+        {
+          "value": 0,
+          "label": "not sweet (potato)"
+        },
+        {
+          "value": 5,
+          "label": "a little (apple)"
+        },
+        {
+          "value": 10,
+          "label": "very sweet (yogurt)"
+        }
+      ],
+      "explain": "Sweet is one of the basic tastes the tongue picks up by itself — no nose needed.",
+      "basis": "source",
+      "cite": "nidcd-taste"
+    },
+    {
+      "key": "Sm",
+      "label": "Her usual sense of smell",
+      "role": "factor",
+      "min": 0.7,
+      "max": 1.3,
+      "step": 0.3,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.7,
+          "label": "weaker than most"
+        },
+        {
+          "value": 1,
+          "label": "average"
+        },
+        {
+          "value": 1.3,
+          "label": "sharper than most"
+        }
+      ],
+      "explain": "People's sense of smell differs a little, even when they're healthy.",
+      "basis": "choice"
+    }
+  ],
+  "constants": {
+    "wT": 1,
+    "wA": 4
   },
   "outputs": [
-    { "key": "F", "label": "Flavour she notices", "unit": "% of normal", "colour": "amber", "decimals": 0 },
-    { "key": "S", "label": "Smell reaching her nose", "unit": "% of normal", "colour": "blue", "decimals": 0 },
-    { "key": "T", "label": "Tongue's basic tastes", "unit": "% of normal", "colour": "coral", "decimals": 0 },
-    { "key": "N", "label": "Apple or potato?", "colour": "teal", "bands": [{ "upTo": 29, "text": "can't tell" }, { "upTo": 59, "text": "barely" }, { "text": "easy" }] }
+    {
+      "key": "F",
+      "label": "Flavour she notices",
+      "unit": "% of normal",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "S",
+      "label": "Food smell reaching her nose",
+      "unit": "% of normal",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "T",
+      "label": "Sweetness her tongue detects",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "N",
+      "label": "Apple or potato?",
+      "colour": "purple",
+      "bands": [
+        {
+          "upTo": 14.9,
+          "text": "can't tell"
+        },
+        {
+          "upTo": 34.9,
+          "text": "barely"
+        },
+        {
+          "text": "easy"
+        }
+      ]
+    }
   ],
   "rules": {
-    "F": "25 + 0.75 * (100 - B)",
-    "S": "100 - B",
-    "T": "100",
-    "N": "100 - B"
+    "F": "100 * (wT * Sw / 10 + wA * (Ar / 10) * Sm * (1 - B / 100)) / max(0.01, wT * Sw / 10 + wA * (Ar / 10) * Sm)",
+    "S": "Sm * (100 - B)",
+    "T": "Sw",
+    "N": "10 * Ar * Sm * (1 - B / 100)"
   },
-  "chart": { "x": "B", "y": "F", "xLabel": "how blocked the nose is (%)", "yLabel": "flavour noticed (% of normal)", "yMin": 0, "yMax": 105 },
+  "chart": {
+    "x": "B",
+    "y": "F",
+    "xLabel": "how blocked her nose is (%)",
+    "yLabel": "flavour noticed (% of normal)",
+    "yMin": 0,
+    "yMax": 105
+  },
   "overlay": {
     "base": "head",
-    "caption": "tongue: a few basic tastes · nose: smells from the back of the mouth add everything else",
+    "caption": "tongue: a few basic tastes · nose: food smells from the back of the mouth add everything else",
     "parts": [
-      { "shape": "nose", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 100 } },
-      { "shape": "tongue", "colour": "#E4572E" },
-      { "shape": "tasteBuds", "colour": "#F4A300" }
+      {
+        "shape": "nose",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "glow",
+          "output": "S",
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "shape": "tongue",
+        "colour": "#E4572E"
+      },
+      {
+        "shape": "tasteBuds",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "glow",
+          "output": "T",
+          "min": 0,
+          "max": 10
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Keisha's tongue can only pick up a few basic tastes, like sweet, sour and salty. Everything that makes strawberry taste like strawberry is a smell: when she chews, food smells travel up the back of her throat to her nose. Her cold has blocked that path, so the yogurt is just 'sweet' — until her nose clears.",
+    "rules": [
+      "Flavour = the tongue's basic tastes + food smells reaching the nose.",
+      "The more blocked her nose, the less of the food's smell gets through.",
+      "Strong-smelling foods lose the most flavour when the nose is blocked.",
+      "Sweet, sour and salty come from the tongue, so they stay the same."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Taste cells on the tongue respond to at least five basic tastes: sweet, sour, bitter, salty and umami.",
+        "cite": "nidcd-taste"
+      },
+      {
+        "fact": "Flavour is made when tastes combine with a food's aroma, which reaches the nose through a channel from the roof of the throat.",
+        "cite": "nidcd-taste"
+      },
+      {
+        "fact": "Without smell, foods tend to taste bland and have little flavour.",
+        "cite": "nidcd-smell"
+      },
+      {
+        "fact": "When a cold stuffs up the nose and blocks that channel, smells can't reach the smell cells; many people get their sense of smell back once they recover.",
+        "cite": "nidcd-smell"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Smell counts four times as much as the tongue in flavour",
+        "why": "Scientists agree most of flavour comes from smell but don't give one exact share; 4-to-1 shows 'most' clearly."
+      },
+      {
+        "what": "Smell getting through falls in a straight line as the nose blocks",
+        "why": "Real noses don't block evenly, but a straight line keeps the idea simple."
+      },
+      {
+        "what": "Aroma strength is shown in three steps",
+        "why": "Real foods vary continuously; three examples make the comparison easy."
+      }
+    ],
+    "illustrative": [
+      "Keisha's 90%-blocked nose, the yogurt's sweetness and aroma, and her 'average' sense of smell are made up for a fictional story.",
+      "The 0–10 sweetness scale and the 'apple or potato' score are teaching scales."
+    ]
+  },
+  "citations": [
+    {
+      "id": "nidcd-taste",
+      "title": "Taste Disorders",
+      "publisher": "NIDCD (National Institutes of Health)",
+      "year": "",
+      "url": "https://www.nidcd.nih.gov/health/taste-disorders",
+      "verified": "2026-10-19",
+      "supports": "Taste cells respond to at least five basic tastes (sweet, sour, bitter, salty, umami); flavour forms when tastes combine with a food's aroma, which travels up a channel from the roof of the throat to the nose; a cold or flu that stuffs you up blocks it and you lose much of the enjoyment of flavour."
+    },
+    {
+      "id": "nidcd-smell",
+      "title": "Smell Disorders",
+      "publisher": "NIDCD (National Institutes of Health)",
+      "year": "",
+      "url": "https://www.nidcd.nih.gov/health/smell-disorders",
+      "verified": "2026-10-19",
+      "supports": "Without smell, foods tend to taste bland; chewing releases aromas that reach the smell nerve cells through a channel from the roof of the throat to the nose; if it is blocked, as when stuffed up by a cold, smells can't get through; many people recover smell when the illness ends."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows the flavour you notice falling as the nose gets more blocked",
-      "Shows the tongue's basic tastes — sweet, salty, sour, bitter, savory — staying the same",
-      "Shows that most of what we call flavour depends on smell"
+      "Shows flavour as basic tastes plus smell",
+      "Shows smell getting through less as the nose blocks",
+      "Shows the tongue's sweet taste staying the same"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include texture, temperature or spiciness, which also shape flavour",
-      "Say anything about colds or how to clear a stuffy nose"
+      "Measure any real person's sense of smell or taste",
+      "Include texture, temperature, spiciness or bitter tastes",
+      "Explain long-lasting loss of smell, which has other causes"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If you lose your sense of smell or taste for a long time without a stuffy nose, tell an adult."
-  },
-  "sources": ["NIH NIDCD: Smell and taste (student pages)", "CK-12 Life Science: the senses"]
+  }
 }

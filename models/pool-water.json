@@ -1,0 +1,125 @@
+{
+  "id": "pool-water",
+  "version": 2,
+  "name": "Kenji's water budget in the pool",
+  "colour": "blue",
+  "parameters": [
+    {
+      "key": "t", "label": "Hours of hard swimming", "role": "primary", "min": 0, "max": 3, "step": 0.5, "default": 2, "unit": "h",
+      "ticks": ["start", "1.5 h", "3 h"],
+      "explain": "Swimmers sweat too — studies of in-water training average roughly a third of a litre an hour — so every hour adds to the water he loses.",
+      "basis": "source", "cite": "ph-swim"
+    },
+    {
+      "key": "W", "label": "Water he drinks", "role": "bubble", "min": 0, "max": 4, "step": 0.25, "default": 0.25, "unit": "cups/h",
+      "explain": "Only drinking puts water back. Advice for active people outdoors is 6–12 ounces (about 1–1.5 cups) every 10–15 minutes.",
+      "basis": "source", "cite": "cc-dehydration"
+    },
+    {
+      "key": "Tw", "label": "Pool water temperature", "role": "bubble", "min": 78, "max": 92, "step": 1, "default": 84, "unit": "°F",
+      "explain": "Warmer water cools the body less, so swimmers sweat more: in one study sweat went from about 0.45 to 1.07 litres an hour between a 29 °C and a 33 °C pool.",
+      "basis": "source", "cite": "ph-swim"
+    },
+    {
+      "key": "land", "label": "Where he trains", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "in the pool" }, { "value": 1, "label": "running on land" }],
+      "explain": "The twist dial: on land he would see and feel the sweat. In the pool the same kind of water loss is hidden, so it's easy to think none is happening.",
+      "basis": "choice"
+    },
+    {
+      "key": "e", "label": "How hard the practice is", "role": "factor", "min": 0.7, "max": 1.3, "step": 0.3, "default": 1.3,
+      "options": [{ "value": 0.7, "label": "easy laps" }, { "value": 1, "label": "steady sets" }, { "value": 1.3, "label": "sprints" }],
+      "explain": "Harder swimming makes more body heat, so he sweats more.",
+      "basis": "source", "cite": "ph-swim"
+    },
+    {
+      "key": "m", "label": "His body weight", "role": "factor", "min": 40, "max": 80, "step": 5, "default": 60, "unit": "kg",
+      "explain": "The same amount of lost water is a bigger share of a smaller body.",
+      "basis": "choice"
+    }
+  ],
+  "constants": { "cup": 0.237, "bodyWater": 0.6 },
+  "outputs": [
+    { "key": "S", "label": "Sweat", "unit": "litres/hour", "colour": "coral", "decimals": 2 },
+    { "key": "Lb", "label": "Weight lost", "unit": "pounds", "colour": "purple", "decimals": 1 },
+    { "key": "L", "label": "Body water left", "unit": "% of normal", "colour": "blue", "decimals": 1 },
+    { "key": "Vis", "label": "Sweat he notices", "colour": "coral", "bands": [{ "upTo": 0.01, "text": "none — the pool hides it" }, { "text": "dripping" }] },
+    { "key": "U", "label": "Pee", "unit": "mL/hour", "colour": "amber", "decimals": 0 },
+    { "key": "Th", "label": "Thirst", "colour": "teal", "bands": [{ "upTo": 0.5, "text": "not yet" }, { "upTo": 1, "text": "thirsty" }, { "text": "very thirsty" }] }
+  ],
+  "rules": {
+    "S": "e * ((1 - land) * 0.31 * pow(2.4, (Tw - 84.2) / 7.2) + land * 0.9)",
+    "Lb": "2.2 * (e * ((1 - land) * 0.31 * pow(2.4, (Tw - 84.2) / 7.2) + land * 0.9) - W * cup) * t",
+    "L": "100 * (1 - (e * ((1 - land) * 0.31 * pow(2.4, (Tw - 84.2) / 7.2) + land * 0.9) - W * cup) * t / (bodyWater * m))",
+    "Vis": "land * e * 0.9",
+    "U": "60 * clamp(1 - 100 * (e * ((1 - land) * 0.31 * pow(2.4, (Tw - 84.2) / 7.2) + land * 0.9) - W * cup) * t / m / 1.2, 0.2, 1.5)",
+    "Th": "100 * (e * ((1 - land) * 0.31 * pow(2.4, (Tw - 84.2) / 7.2) + land * 0.9) - W * cup) * t / m"
+  },
+  "chart": { "x": "t", "y": "L", "xLabel": "hours of hard swimming", "yLabel": "body water left (% of normal)", "yMin": 96, "yMax": 101 },
+  "overlay": {
+    "base": "torso",
+    "caption": "hard swimming → hidden sweat out, almost nothing in → kidneys save water, brain signals thirst",
+    "parts": [
+      { "shape": "drops", "colour": "#E4572E", "anim": { "type": "count", "output": "S", "min": 0, "max": 1.2 } },
+      { "shape": "kidneys", "colour": "#2E86DE", "anim": { "type": "glow", "output": "Th", "min": 0, "max": 2 } },
+      { "shape": "thirst", "colour": "#1B998B", "anim": { "type": "light", "output": "Th", "threshold": 0.5 } }
+    ]
+  },
+  "explain": {
+    "summary": "Hard swimming makes Kenji's muscles hot, so he sweats — but the pool washes the sweat away, so he never notices. His skin doesn't drink the pool water back in, and his water bottle stayed full. So more water left than came in: about a pound and a half in two hours. His kidneys save water (less, darker pee) and his brain makes him thirsty.",
+    "rules": [
+      "Sweat rises with how hard he swims and how warm the pool is.",
+      "Water lost = sweat minus what he drinks, added up over the hours.",
+      "The more water lost compared with his body size, the less pee his kidneys make.",
+      "Losing about half a percent of body weight in water brings thirst; more brings strong thirst.",
+      "On land he'd see the sweat; in the pool it's hidden, but it still leaves."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Swimmers sweat: studies of in-water training averaged about 0.3–0.4 litres an hour; sweat rises with water temperature (about 0.45 L/h in a 29 °C pool vs 1.07 L/h at 33 °C) and with intensity.", "cite": "ph-swim" },
+      { "fact": "Oil from glands in the skin helps stop it absorbing too much water when you swim.", "cite": "cc-skin" },
+      { "fact": "Lots of sweating reduces the body's water level; thirst means you are already mildly dehydrated; dark-coloured pee and headache are signs.", "cite": "cc-dehydration" },
+      { "fact": "Dehydration can come from sweating while exercising in hot weather and not drinking enough; signs include thirst, darker yellow urine, not urinating much and headache.", "cite": "medline-dehydration" },
+      { "fact": "ADH, released from the pituitary at the base of the brain, acts on the kidneys to control how much water leaves in urine.", "cite": "medline-adh" }
+    ],
+    "choice": [
+      { "what": "Kenji sweats about 0.4 litres an hour in an 84 °F pool during sprints", "why": "That's within the swimming studies and matches clue 2: about 1.5 pounds lighter after two hours with almost nothing to drink." },
+      { "what": "Body water is 60% of body weight", "why": "A typical value for a teenager; the page we used says up to 78% in some people." },
+      { "what": "Pee falls from 60 mL an hour toward a fifth of that as water loss nears 1.2% of body weight", "why": "That's how ADH works — the kidneys hold water back — but the exact numbers vary from person to person." },
+      { "what": "Thirst starts at about 0.5% of body weight lost", "why": "Thirst is an early sign; we picked a threshold that makes Kenji clearly thirsty after practice." },
+      { "what": "Running on land would mean about 0.9 litres of visible sweat an hour", "why": "Land athletes usually sweat more than swimmers; the dial is mainly there to show that sweat can be hidden." }
+    ],
+    "illustrative": [
+      "Kenji is fictional; his weight, pee amounts and thirst bands are teaching values.",
+      "The model ignores water lost in breath and the small amount the skin might take in."
+    ],
+    "studying": "How much the skin itself takes in or lets out during long swims is still being measured."
+  },
+  "citations": [
+    { "id": "ph-swim", "title": "Do you sweat when you swim?", "publisher": "Precision Hydration", "year": "", "url": "https://www.precisionhydration.com/performance-advice/hydration/do-you-sweat-when-you-swim/", "verified": "2026-10-19",
+      "supports": "Reviews studies: swimmers training in water averaged 0.315 L/h and 0.365 L/h; McMurray and Horvath (1979) found 1.07 L/h in a 33 °C pool vs 0.445 L/h at 29 °C; sweat rates rise with intensity and with water temperature." },
+    { "id": "cc-skin", "title": "Skin", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/body/10978-skin", "verified": "2026-10-19",
+      "supports": "Oil from the skin's glands prevents your skin from absorbing too much water when you swim or get caught in a rainstorm; the epidermis protects against rain, sun and other elements." },
+    { "id": "cc-dehydration", "title": "Dehydration", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/treatments/9013-dehydration", "verified": "2026-10-19",
+      "supports": "Lots of sweating reduces your body's water level; if you're thirsty you're already mildly dehydrated; dark-coloured pee and headache are signs; active people outdoors should drink 6 to 12 ounces every 10 to 15 minutes." },
+    { "id": "medline-dehydration", "title": "Dehydration", "publisher": "MedlinePlus (U.S. National Library of Medicine)", "year": "", "url": "https://medlineplus.gov/ency/article/000982.htm", "verified": "2026-10-19",
+      "supports": "Fluid can be lost by sweating too much, for example from exercising in hot weather, or by not drinking enough; mild signs include thirst, darker yellow urine, not urinating much and headache." },
+    { "id": "medline-adh", "title": "Antidiuretic hormone blood test", "publisher": "MedlinePlus (U.S. National Library of Medicine)", "year": "", "url": "https://medlineplus.gov/ency/article/003702.htm", "verified": "2026-10-19",
+      "supports": "ADH is made in the hypothalamus and stored and released from the pituitary gland at the base of the brain; it acts on the kidneys to regulate the amount of water excreted in the urine." }
+  ],
+  "limits": {
+    "does": [
+      "Shows water leaving the body as sweat even while swimming",
+      "Shows that only drinking puts water back",
+      "Shows the kidneys saving water and thirst growing as water is lost"
+    ],
+    "doesnt": [
+      "Measure any real person — Kenji is fictional",
+      "Include salt lost in sweat or water lost in breath",
+      "Say how much any particular person should drink"
+    ],
+    "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
+    "wellbeing": "Bring a water bottle and sip it during practice. Feeling dizzy, confused or very unwell after exercise is a reason to tell an adult right away."
+  }
+}

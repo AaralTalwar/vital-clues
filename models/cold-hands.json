@@ -1,44 +1,300 @@
 {
   "id": "cold-hands",
-  "name": "Skin, blood flow & cold",
+  "version": 2,
+  "name": "Freya's fingers in the snow",
   "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "M", "label": "Minutes making snowballs bare-handed", "min": 5, "max": 20, "step": 1, "unit": "min", "ticks": ["5 min", "12 min", "20 min"] },
-    "secondary": { "key": "C", "label": "How cold the snow is", "min": 0, "max": 10, "step": 1, "default": 7, "ticks": ["slushy", "cold", "freezing"] }
-  },
+  "parameters": [
+    {
+      "key": "M",
+      "label": "Minutes holding snow bare-handed",
+      "role": "primary",
+      "min": 5,
+      "max": 20,
+      "step": 1,
+      "default": 12,
+      "unit": "min",
+      "ticks": [
+        "5 min",
+        "12 min",
+        "20 min"
+      ],
+      "explain": "In real tests the fingers' blood vessels usually start reopening after about 5–10 minutes of local cold.",
+      "basis": "source",
+      "cite": "civd-2018"
+    },
+    {
+      "key": "C",
+      "label": "Snow temperature",
+      "role": "bubble",
+      "min": 15,
+      "max": 32,
+      "step": 1,
+      "default": 25,
+      "unit": "°F",
+      "ticks": [
+        "15°F hard snow",
+        "",
+        "32°F slush"
+      ],
+      "explain": "Colder snow pulls heat out faster, so the vessels squeeze harder at first.",
+      "basis": "choice"
+    },
+    {
+      "key": "Wm",
+      "label": "How warm her body is",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0,
+          "label": "chilled all over"
+        },
+        {
+          "value": 1,
+          "label": "normal"
+        },
+        {
+          "value": 2,
+          "label": "warm from running about"
+        }
+      ],
+      "explain": "When the body's core is warm, the finger vessels reopen sooner and more strongly — the body can afford to send heat to the fingers.",
+      "basis": "source",
+      "cite": "civd-2018"
+    },
+    {
+      "key": "G",
+      "label": "Hand covering",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "bare hand"
+        },
+        {
+          "value": 1,
+          "label": "thin glove"
+        },
+        {
+          "value": 2,
+          "label": "ski glove"
+        }
+      ],
+      "explain": "A glove slows heat loss, so the fingers never need the squeeze-then-burst response — like Freya's gloved hand.",
+      "basis": "choice"
+    },
+    {
+      "key": "Tair",
+      "label": "Air temperature",
+      "role": "factor",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 28,
+      "unit": "°F",
+      "explain": "Colder air chills her whole body, which weakens the reopening.",
+      "basis": "choice"
+    },
+    {
+      "key": "K",
+      "label": "Coat",
+      "role": "factor",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0,
+          "label": "thin hoodie"
+        },
+        {
+          "value": 1,
+          "label": "winter coat"
+        }
+      ],
+      "explain": "A warm coat keeps her core warm, which helps the fingers reopen.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
-    { "key": "F", "label": "Blood flow to fingers", "unit": "% of normal", "colour": "coral", "decimals": 0 },
-    { "key": "T", "label": "Finger skin temperature", "unit": "°F", "colour": "amber", "decimals": 0 },
-    { "key": "R", "label": "Fingers look", "colour": "purple", "bands": [{ "upTo": 60, "text": "pale and aching" }, { "upTo": 85, "text": "pink" }, { "text": "red, feel hot" }] }
+    {
+      "key": "F",
+      "label": "Blood flow to fingers",
+      "unit": "% of normal",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "T",
+      "label": "Finger skin temperature",
+      "unit": "°F",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "R",
+      "label": "Fingers look",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 64.9,
+          "text": "white, aching"
+        },
+        {
+          "upTo": 79.9,
+          "text": "turning pink"
+        },
+        {
+          "text": "red, feel hot"
+        }
+      ]
+    },
+    {
+      "key": "O",
+      "label": "Reopening starts after",
+      "unit": "min",
+      "colour": "purple",
+      "decimals": 0
+    }
   ],
   "rules": {
-    "F": "clamp(100 - 70 * min(1, M / 4) * C / 10 + 60 * C / 10 * clamp((M - 5) / 5, 0, 1), 20, 110)",
-    "T": "45 + 0.35 * clamp(100 - 70 * min(1, M / 4) * C / 10 + 60 * C / 10 * clamp((M - 5) / 5, 0, 1), 20, 110)",
-    "R": "clamp(100 - 70 * min(1, M / 4) * C / 10 + 60 * C / 10 * clamp((M - 5) / 5, 0, 1), 20, 110)"
+    "F": "(100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G)) + (((100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G)) + 60 * ((40 - C) / 25) * (1 - 0.425 * G) * clamp(0.35 * Wm + 0.3 * K + (Tair - 10) / 60, 0, 1.4)) - (100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G))) * clamp((M - (12 - 4 * clamp(0.35 * Wm + 0.3 * K + (Tair - 10) / 60, 0, 1.4))) / 4, 0, 1)",
+    "R": "(100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G)) + (((100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G)) + 60 * ((40 - C) / 25) * (1 - 0.425 * G) * clamp(0.35 * Wm + 0.3 * K + (Tair - 10) / 60, 0, 1.4)) - (100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G))) * clamp((M - (12 - 4 * clamp(0.35 * Wm + 0.3 * K + (Tair - 10) / 60, 0, 1.4))) / 4, 0, 1)",
+    "T": "C + (88 - C) * 0.6 * ((100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G)) + (((100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G)) + 60 * ((40 - C) / 25) * (1 - 0.425 * G) * clamp(0.35 * Wm + 0.3 * K + (Tair - 10) / 60, 0, 1.4)) - (100 - 75 * ((40 - C) / 25) * (1 - 0.425 * G))) * clamp((M - (12 - 4 * clamp(0.35 * Wm + 0.3 * K + (Tair - 10) / 60, 0, 1.4))) / 4, 0, 1)) / 100",
+    "O": "(12 - 4 * clamp(0.35 * Wm + 0.3 * K + (Tair - 10) / 60, 0, 1.4))"
   },
-  "chart": { "x": "M", "y": "F", "xLabel": "minutes making snowballs (after the first five)", "yLabel": "blood flow to fingers (%)", "yMin": 0, "yMax": 110 },
+  "chart": {
+    "x": "M",
+    "y": "F",
+    "xLabel": "minutes holding snow bare-handed",
+    "yLabel": "blood flow to fingers (%)",
+    "yMin": 0,
+    "yMax": 110
+  },
   "overlay": {
     "base": "arm",
-    "caption": "cold shuts finger blood vessels → after a while they reopen in bursts → red, hot-feeling fingers",
+    "caption": "cold squeezes finger vessels shut → after a while they reopen in bursts → red, hot-feeling fingers",
     "parts": [
-      { "shape": "snow", "colour": "#8FA3C7" },
-      { "shape": "bloodstream", "colour": "#E4572E", "anim": { "type": "glow", "output": "F", "min": 20, "max": 110 } },
-      { "shape": "hand", "colour": "#E4572E", "anim": { "type": "shift", "output": "F", "min": 40, "max": 100, "from": "#EEF4FB", "to": "#E4572E" } }
+      {
+        "shape": "snow",
+        "colour": "#8FA3C7"
+      },
+      {
+        "shape": "bloodstream",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "glow",
+          "output": "F",
+          "min": 20,
+          "max": 110
+        }
+      },
+      {
+        "shape": "hand",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "shift",
+          "output": "F",
+          "min": 40,
+          "max": 100,
+          "from": "#EEF4FB",
+          "to": "#E4572E"
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "In the cold, Freya's body first squeezes the blood vessels in her bare fingers almost shut to save heat — so they go white and ache. After several minutes it opens them again in bursts, sending warm blood to protect the fingers. That is why her hand turns red and feels hot while it's still in the snow. A warm body reopens them sooner; a glove means it never has to.",
+    "rules": [
+      "At first, colder snow squeezes the finger blood vessels harder, so blood flow drops.",
+      "After several minutes (sooner when her body is warm) the vessels reopen and warm blood flows back.",
+      "A warmer core — from moving about, a coat or milder air — makes the reopening stronger.",
+      "A glove cuts heat loss, so blood flow stays near normal the whole time."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "In cold, finger blood vessels open up again after about 5–10 minutes; this is called cold-induced vasodilation.",
+        "cite": "civd-2018"
+      },
+      {
+        "fact": "Squeezing and opening alternate in waves — scientists call it the 'hunting response' — and the opening raises finger blood flow and skin temperature.",
+        "cite": "civd-2018"
+      },
+      {
+        "fact": "When the body's core is warm, the reopening starts sooner; core temperature has a large effect on blood flow to the fingers in the cold.",
+        "cite": "civd-2018"
+      },
+      {
+        "fact": "Fingers are among the body parts most at risk of frostbite; white or grayish-yellow, numb skin is a warning sign.",
+        "cite": "cdc-frostbite"
+      }
+    ],
+    "choice": [
+      {
+        "what": "The waves are averaged into one smooth rise",
+        "why": "The real response switches on and off every few minutes (clue 4); one smooth curve keeps the chart readable."
+      },
+      {
+        "what": "Reopening starts at 12 minutes minus up to 5 for a warm body",
+        "why": "This keeps the start inside the 5–10 minute range reported, and earlier when the core is warm."
+      },
+      {
+        "what": "Air, coat and movement are combined into one 'body warmth' number",
+        "why": "They all act through the same thing — how warm the body core is."
+      },
+      {
+        "what": "Finger temperatures are rough",
+        "why": "Real finger temperatures depend on wetness, wind and hand size."
+      }
+    ],
+    "illustrative": [
+      "Freya's 12 minutes, 25°F snow, 28°F air and the blood-flow percentages are made up for a fictional story.",
+      "How much a glove or coat changes things is an illustrative guess."
+    ],
+    "studying": "Why some people have a strong reopening response and others hardly any is still being studied."
+  },
+  "citations": [
+    {
+      "id": "civd-2018",
+      "title": "Relation between finger cold-induced vasodilation and rewarming speed after cold exposure (European Journal of Applied Physiology)",
+      "publisher": "PubMed Central",
+      "year": "2018",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6342884",
+      "verified": "2026-10-19",
+      "supports": "Cold-induced vasodilation occurs in fingers and toes after about 5–10 min of local cold; constriction and dilation alternate (the 'hunting response'); dilation raises finger blood flow and skin temperature; a warm body core shortens the onset time."
+    },
+    {
+      "id": "cdc-frostbite",
+      "title": "Preventing Frostbite",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://cdc.gov/winter-weather/prevention/preventing-frostbite.html",
+      "verified": "2026-10-19",
+      "supports": "Fingers are among the body parts most often affected by frostbite; warning signs are a white or grayish-yellow skin area and numbness; move to a warm room and use warm, not hot, water."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows cold first closing down blood flow to bare fingers (they go pale)",
-      "Shows the body reopening finger blood vessels after several minutes to send warm blood",
-      "Shows that the colder it is, the stronger both effects are"
+      "Shows finger blood flow dropping in the cold, then rising again as the body reopens the vessels",
+      "Shows a warm body reopening them sooner and more strongly",
+      "Shows a glove removing the need for the response"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Show the on-and-off waves of reopening; it shows the average",
-      "Model dangerous cold — the reopening only protects for a while"
+      "Measure any real person — Freya is fictional",
+      "Show the on-off waves one by one, or wind and wet gloves",
+      "Model frostbite or any injury"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Fingers that stay white, numb or hard in the cold are a reason to go inside and tell an adult right away."
-  },
-  "sources": ["CK-12 Life Science: integumentary system and thermoregulation", "Any high-school physiology text: cold-induced vasodilation ('hunting reaction')"]
+    "wellbeing": "White or grayish, numb fingers are a warning sign of frostbite — go somewhere warm and tell an adult."
+  }
 }

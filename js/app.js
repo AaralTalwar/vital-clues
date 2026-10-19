@@ -26,6 +26,12 @@ async function boot() {
   document.getElementById("splash-how").addEventListener("click", () => engine.go("S0a"));
   document.getElementById("how-go").addEventListener("click", () => { localStorage.setItem("vc.seenSplash", "1"); engine.go("S1"); });
   document.getElementById("lib-how").addEventListener("click", () => engine.go("S0a"));
+  // "What is a model?" opens from How it works and from every Body lab; Back returns to where you were.
+  let modelReturn = "S0a";
+  const openModelPage = (from) => { modelReturn = from; engine.go("S0m"); };
+  document.getElementById("how-model").addEventListener("click", () => openModelPage("S0a"));
+  document.getElementById("what-model-link").addEventListener("click", () => openModelPage("S6"));
+  document.getElementById("what-model-back").addEventListener("click", () => engine.go(modelReturn));
 
   const res = await fetch("cases/index.json");
   engine.library = (await res.json()).cases;

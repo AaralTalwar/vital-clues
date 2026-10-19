@@ -3,6 +3,7 @@
 
 import { engine, el, clear } from "./engine.js";
 import { mount, PRESETS, DEFAULT_SKETCH } from "./sketch.js";
+import { chartRange } from "./model.js";
 
 let pad = null;
 let moved = false;
@@ -20,7 +21,7 @@ function renderSketch() {
 
   const canvas = document.getElementById("sketch-canvas");
   if (!pad) {
-    const xLabels = m.chart.xTicks || (m.chart.x === m.inputs.primary.key ? m.inputs.primary.ticks : null) || [];
+    const xLabels = chartRange(m).ticks || [];
     pad = mount(canvas, { xLabels, onChange: (y) => { moved = true; st.sketch = y; st.sketchMode = "drawn"; } });
   }
   if (st.sketch && st.sketchMode === "drawn") pad.set(st.sketch); else if (!st.sketch) pad.reset();

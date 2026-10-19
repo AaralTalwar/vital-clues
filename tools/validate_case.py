@@ -135,8 +135,9 @@ def validate(case, model=None):
     elif level == "complex":
         need(isinstance(case.get("systems"), list) and len(case["systems"]) == 2, "complex: needs 'systems' naming exactly two body systems")
         need(len(supported_others) >= 2, "complex: at least two wrong hypotheses must each be partly supported (one per single-system answer)")
-        if model is not None:
+        if model is not None and "parameters" not in model:
             need(bool(model.get("inputs", {}).get("secondary")), "complex: the model must have a second slider to separate the two systems")
+        # v2 models: the 4–5 bubble rule in validate_model_v2 covers this
 
     # composed hints need their ingredients when no hand-written hints exist
     if not case["mismatchHints"]:
@@ -152,6 +153,10 @@ def validate(case, model=None):
     for word in banned:
         need(word not in blob, f"safety: the word '{word}' appears in the case text")
 
+    # model v2: one rich model per case, dials by level, every claim labelled and sourced
+    if model is not None and "parameters" in model:
+        problems.extend(validate_model_v2(case, model))
+
     # model cross-check
     if model is not None:
         need(case["model"] == model.get("id"), f"case.model '{case['model']}' does not match model id '{model.get('id')}'")
@@ -165,6 +170,81 @@ def validate(case, model=None):
         need(model.get("chart", {}).get("x"), "model.chart.x is missing")
         need(isinstance(model.get("overlay", {}).get("parts"), list), "model.overlay.parts must be a list")
 
+    return problems
+
+
+BUBBLES_BY_LEVEL = {"easy": (1, 1), "moderate": (2, 2), "difficult": (3, 3), "complex": (4, 5)}
+BASES = {"source", "choice", "illustrative"}
+FUNCS = {"max", "min", "pow", "round", "clamp", "abs"}
+
+
+def validate_model_v2(case, model):
+    import re
+    problems = []
+
+    def need(cond, msg):
+        if not cond:
+            problems.append("model: " + msg)
+
+    params = model.get("parameters", [])
+    keys = [p.get("key") for p in params]
+    need(len(keys) == len(set(keys)), "parameter keys must be unique")
+    roles = [p.get("role") for p in params]
+    need(roles.count("primary") == 1, f"exactly one primary dial (found {roles.count('primary')})")
+    lo, hi = BUBBLES_BY_LEVEL.get(case.get("level"), (0, 99))
+    nb = roles.count("bubble")
+    need(lo <= nb <= hi, f"level {case.get('level')} needs {lo}{'–' + str(hi) if hi != lo else ''} bubbles (found {nb})")
+    need(roles.count("factor") >= 2, f"needs at least 2 case factors about the character or setting (found {roles.count('factor')})")
+    cite_ids = {c.get("id") for c in model.get("citations", [])}
+    for p in params:
+        k = p.get("key")
+        need(p.get("role") in ("primary", "bubble", "factor"), f"dial {k}: role must be primary, bubble or factor")
+        need(isinstance(p.get("label"), str) and p["label"].strip(), f"dial {k}: needs a label")
+        try:
+            ok = p["min"] < p["max"] and p["min"] <= p.get("default", p["min"]) <= p["max"]
+        except (KeyError, TypeError):
+            ok = False
+        need(ok, f"dial {k}: needs min < max and a default inside the range")
+        need(isinstance(p.get("explain"), str) and len(p["explain"]) >= 20, f"dial {k}: needs an 'explain' line (why this dial matters)")
+        need(p.get("basis") in BASES, f"dial {k}: basis must be one of {sorted(BASES)}")
+        if p.get("basis") == "source":
+            need(p.get("cite") in cite_ids, f"dial {k}: basis 'source' needs a 'cite' that matches a citation id")
+        if p.get("options"):
+            need(all(p["min"] <= o.get("value", -1e9) <= p["max"] and o.get("label") for o in p["options"]), f"dial {k}: every option needs a value in range and a label")
+
+    used = set()
+    for expr in model.get("rules", {}).values():
+        for tok in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", str(expr)):
+            used.add(tok)
+            need(tok in keys or tok in (model.get("constants") or {}) or tok in FUNCS, f"formula uses unknown name '{tok}'")
+    for k in keys:
+        need(k in used or k == model.get("chart", {}).get("x"), f"dial {k} is not used by any formula, so turning it would do nothing")
+
+    ex = model.get("explain") or {}
+    need(isinstance(ex.get("summary"), str) and len(ex["summary"]) >= 60, "explain.summary must be a plain-language paragraph (60+ chars)")
+    need(isinstance(ex.get("rules"), list) and 2 <= len(ex["rules"]) <= 6, "explain.rules must list 2–6 plain-language rules")
+
+    pv = model.get("provenance") or {}
+    src = pv.get("source") or []
+    need(len(src) >= 2, "provenance.source needs at least 2 sourced facts")
+    for s in src:
+        need(s.get("fact") and s.get("cite") in cite_ids, f"sourced fact needs text and a matching cite: {str(s.get('fact'))[:50]}")
+    need(len(pv.get("choice") or []) >= 1, "provenance.choice needs at least 1 modelling choice with its reason")
+    for ch in pv.get("choice") or []:
+        need(ch.get("what") and ch.get("why"), "each modelling choice needs 'what' and 'why'")
+    need(len(pv.get("illustrative") or []) >= 1, "provenance.illustrative needs at least 1 line naming the illustrative numbers")
+
+    cited = {s.get("cite") for s in src} | {p.get("cite") for p in params if p.get("cite")}
+    for c in model.get("citations", []):
+        cid = c.get("id")
+        need(all(c.get(f) for f in ("id", "title", "publisher", "url", "verified", "supports")), f"citation {cid}: needs id, title, publisher, url, verified, supports")
+        need(str(c.get("url", "")).startswith("https://"), f"citation {cid}: url must start with https://")
+        need(len(str(c.get("supports", ""))) >= 20, f"citation {cid}: 'supports' must say what on the page backs the fact")
+        need(cid in cited, f"citation {cid} is listed but never used")
+
+    blob = json.dumps({k: v for k, v in model.items() if k != "citations"}).lower()  # journal titles are quoted as published
+    for word in ["diagnos", "prescri", "medication", "you should see a doctor"]:
+        need(word not in blob, f"safety: the word '{word}' appears in the model text")
     return problems
 
 

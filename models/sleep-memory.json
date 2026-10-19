@@ -1,48 +1,114 @@
 {
   "id": "sleep-memory",
-  "name": "Sleep & memory",
+  "version": 2,
+  "name": "Chloe's sleep, memory and focus",
   "colour": "purple",
-  "inputs": {
-    "primary": {
+  "parameters": [
+    {
       "key": "S",
       "label": "Hours of sleep after studying",
+      "role": "primary",
       "min": 2,
       "max": 10,
       "step": 0.5,
+      "default": 3,
       "unit": "h",
       "ticks": [
         "2 h",
         "6 h",
         "10 h"
-      ]
+      ],
+      "explain": "Sleep after learning is when the brain strengthens new memories.",
+      "basis": "source",
+      "cite": "nih-sleep-on-it"
     },
-    "secondary": {
+    {
       "key": "T",
-      "label": "Hours studied",
+      "label": "Hours crammed on Thursday",
+      "role": "bubble",
       "min": 0,
       "max": 6,
       "step": 0.5,
       "default": 5,
       "unit": "h",
-      "ticks": [
-        "0",
-        "3 h",
-        "6 h"
-      ]
+      "explain": "More studying means more facts to store — but only what sleep saves will stick.",
+      "basis": "choice"
+    },
+    {
+      "key": "W",
+      "label": "Hours studied on Wednesday",
+      "role": "bubble",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "default": 1,
+      "unit": "h",
+      "explain": "Wednesday's studying was followed by a full night's sleep, so it had time to be stored.",
+      "basis": "source",
+      "cite": "nih-sleep-on-it"
+    },
+    {
+      "key": "N",
+      "label": "Short nights in a row",
+      "role": "bubble",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "explain": "Missed sleep adds up night after night, slowing reactions and focus more each day.",
+      "basis": "source",
+      "cite": "nhlbi-sleep"
+    },
+    {
+      "key": "Aw",
+      "label": "Hours awake by test time",
+      "role": "bubble",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 3,
+      "unit": "h",
+      "explain": "The longer she's been up, the harder it is to stay sharp on so little sleep.",
+      "basis": "choice"
+    },
+    {
+      "key": "need",
+      "label": "Sleep she needs",
+      "role": "factor",
+      "min": 8,
+      "max": 10,
+      "step": 0.5,
+      "default": 9,
+      "unit": "h",
+      "explain": "Teens need about 8–10 hours a night.",
+      "basis": "source",
+      "cite": "cdc-sleep-teens"
+    },
+    {
+      "key": "age",
+      "label": "Age",
+      "role": "factor",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "default": 16,
+      "unit": "years",
+      "explain": "Younger teens tend to need the top of the 8–10 hour range.",
+      "basis": "choice"
     }
-  },
+  ],
   "outputs": [
     {
       "key": "M",
-      "label": "Studying stored",
-      "unit": "% kept",
+      "label": "Thursday's studying stored",
+      "unit": "%",
       "colour": "purple",
       "decimals": 0
     },
     {
       "key": "R",
-      "label": "Facts recalled",
-      "unit": "facts",
+      "label": "Facts she can recall",
+      "unit": "of 10 per hour studied",
       "colour": "teal",
       "decimals": 0
     },
@@ -55,9 +121,9 @@
     }
   ],
   "rules": {
-    "M": "clamp(15 + 9 * S, 20, 95)",
-    "R": "round(10 * T * clamp(15 + 9 * S, 20, 95) / 100)",
-    "A": "clamp(1.1 * S - 0.5, 1, 10)"
+    "M": "35 + 60 * min(1, S / (need + 0.2 * (16 - age)))",
+    "R": "round(10 * T * (35 + 60 * min(1, S / (need + 0.2 * (16 - age)))) / 100 + 9 * W)",
+    "A": "clamp(10 - 8 * max(0, 1 - S / (need + 0.2 * (16 - age))) * (1 + 0.25 * (N - 1)) - 0.25 * max(0, Aw - 3), 1, 10)"
   },
   "chart": {
     "x": "S",
@@ -77,7 +143,7 @@
         "anim": {
           "type": "glow",
           "output": "M",
-          "min": 20,
+          "min": 35,
           "max": 95
         }
       },
@@ -97,22 +163,107 @@
       }
     ]
   },
+  "explain": {
+    "summary": "Two things happened to Chloe. First, memory: the brain strengthens what you've learned while you sleep, so the facts she crammed on Thursday, followed by only three hours of sleep, were stored far less well than Wednesday's, which had a full night. Second, alertness: with so little sleep she reacts more slowly and loses focus. Teens need about 8–10 hours a night.",
+    "rules": [
+      "Studying is stored better the closer she gets to a full night's sleep (8–10 hours).",
+      "With a full night, about 95% is stored; with almost none, about a third — the 40% gap reported in sleep studies.",
+      "Facts recalled = what she studied × how much was stored; Wednesday's facts had a full night.",
+      "Alertness falls with each hour of sleep she's short, more after several short nights in a row."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Teens aged 13–18 should get 8 to 10 hours of sleep per 24 hours.",
+        "cite": "cdc-sleep-teens"
+      },
+      {
+        "fact": "People kept awake all night before learning remembered new images 19% worse on average, and up to 40% worse, than well-rested people.",
+        "cite": "harvard-walker-2007"
+      },
+      {
+        "fact": "During a night of sleep some memories are strengthened; you can't pull an all-nighter and still learn effectively.",
+        "cite": "nih-sleep-on-it"
+      },
+      {
+        "fact": "Sleep-deficient people react more slowly, make more mistakes and have trouble focusing.",
+        "cite": "nhlbi-sleep"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Storage rises in a straight line up to her full sleep need",
+        "why": "Real memory gains aren't even across the night; a straight line shows 'more sleep, more stored'."
+      },
+      {
+        "what": "About 10 facts per hour of studying",
+        "why": "A teaching number so the recall output is countable."
+      },
+      {
+        "what": "Short nights in a row add 25% each to the alertness drop",
+        "why": "Sleep loss builds up, but by how much differs a lot between people."
+      },
+      {
+        "what": "Age nudges sleep need up for younger teens",
+        "why": "Need varies within the 8–10 hour range; this is a simple way to show it."
+      }
+    ],
+    "illustrative": [
+      "Chloe's hours, the 10-facts-per-hour rate and the 0–10 alertness scale are made up for a fictional story."
+    ],
+    "studying": "Exactly how the sleeping brain chooses which memories to strengthen is still an active research question."
+  },
+  "citations": [
+    {
+      "id": "cdc-sleep-teens",
+      "title": "Sleep in Middle and High School Students",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://archive.cdc.gov/www_cdc_gov/healthyschools/features/students-sleep.htm",
+      "verified": "2026-10-19",
+      "supports": "Teens aged 13–18 should get 8 to 10 hours of sleep per 24 hours (American Academy of Sleep Medicine); about 7 in 10 high schoolers don't get enough on school nights; short sleep is linked to attention problems."
+    },
+    {
+      "id": "harvard-walker-2007",
+      "title": "Study shows importance of sleep for optimal memory functioning",
+      "publisher": "Harvard Gazette",
+      "year": "2007",
+      "url": "https://news.harvard.edu/gazette/story/2007/02/study-shows-importance-of-sleep-for-optimal-memory-functioning",
+      "verified": "2026-10-19",
+      "supports": "People kept awake all night before learning remembered new images on average 19% worse two days later, and as much as 40% worse, than well-rested people (Walker lab, Nature Neuroscience)."
+    },
+    {
+      "id": "nih-sleep-on-it",
+      "title": "Sleep On It",
+      "publisher": "NIH News in Health",
+      "year": "",
+      "url": "https://newsinhealth.nih.gov/node/1481",
+      "verified": "2026-10-19",
+      "supports": "Sleep researchers explain that during a night of sleep some memories are strengthened, and that you can't pull an all-nighter and still learn effectively."
+    },
+    {
+      "id": "nhlbi-sleep",
+      "title": "Sleep Deprivation and Deficiency: How Sleep Affects Your Health",
+      "publisher": "NHLBI (NIH)",
+      "year": "",
+      "url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/health-effects",
+      "verified": "2026-10-19",
+      "supports": "During sleep the brain forms pathways to learn and remember; sleep-deficient people react more slowly, make more mistakes and have trouble focusing; ongoing sleep deficiency can weaken the body's defence against common infections."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows how much of what was studied gets stored, rising with the hours of sleep afterwards",
-      "Shows alertness the next day rising with sleep",
-      "Shows extra study hours adding little when sleep is short"
+      "Shows sleep after studying deciding how much is stored",
+      "Shows short sleep lowering alertness separately",
+      "Shows the two problems adding up in one test"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include how well someone studied, interest in the subject, or naps",
-      "Say how much sleep any particular person needs"
+      "Measure any real person — Chloe is fictional",
+      "Separate the different stages of sleep",
+      "Say exactly how much any student will remember"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If stress about schoolwork keeps you from sleeping, talk to an adult you trust."
-  },
-  "sources": [
-    "CK-12 Life Science: nervous system and memory",
-    "NIH NIGMS: circadian rhythms fact sheet"
-  ]
+    "wellbeing": "If you often can't sleep or feel exhausted every day, talk with an adult you trust."
+  }
 }

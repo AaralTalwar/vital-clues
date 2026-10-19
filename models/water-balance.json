@@ -1,47 +1,315 @@
 {
   "id": "water-balance",
-  "name": "Kidneys & water",
+  "version": 2,
+  "name": "Priya's water budget on a hot climb",
   "colour": "blue",
-  "inputs": {
-    "primary":   { "key": "I", "label": "Heat & effort", "min": 0, "max": 10, "step": 1, "ticks": ["cool & resting", "warm walk", "hot climb"] },
-    "secondary": { "key": "W", "label": "Water drunk", "min": 0, "max": 4, "step": 0.5, "default": 1, "unit": "cups/hour", "ticks": ["none", "2 cups/h", "4 cups/h"] }
+  "parameters": [
+    {
+      "key": "t",
+      "label": "Hours on the trail",
+      "role": "primary",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "default": 2,
+      "unit": "h",
+      "ticks": [
+        "start",
+        "2 h",
+        "4 h"
+      ],
+      "explain": "Every hour she sweats more than she drinks adds to the water she has lost.",
+      "basis": "choice"
+    },
+    {
+      "key": "W",
+      "label": "Water she drinks",
+      "role": "bubble",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "default": 1,
+      "unit": "cups/h",
+      "explain": "Safety guidance for work in the heat is about a cup every 15–20 minutes — 3 to 4 cups an hour.",
+      "basis": "source",
+      "cite": "niosh-hydration"
+    },
+    {
+      "key": "Ta",
+      "label": "Air temperature",
+      "role": "factor",
+      "min": 60,
+      "max": 105,
+      "step": 1,
+      "default": 92,
+      "unit": "°F",
+      "explain": "Hotter air means more sweating to keep the body cool.",
+      "basis": "source",
+      "cite": "mp-water"
+    },
+    {
+      "key": "e",
+      "label": "How hard she's working",
+      "role": "factor",
+      "min": 0.7,
+      "max": 1.3,
+      "step": 0.3,
+      "default": 1.3,
+      "options": [
+        {
+          "value": 0.7,
+          "label": "easy stroll"
+        },
+        {
+          "value": 1,
+          "label": "steady hike"
+        },
+        {
+          "value": 1.3,
+          "label": "steep climb"
+        }
+      ],
+      "explain": "Harder work makes more body heat, so she sweats more.",
+      "basis": "choice"
+    },
+    {
+      "key": "m",
+      "label": "Body weight",
+      "role": "factor",
+      "min": 35,
+      "max": 80,
+      "step": 5,
+      "default": 50,
+      "unit": "kg",
+      "explain": "The same amount of lost water is a bigger share of a smaller body.",
+      "basis": "choice"
+    }
+  ],
+  "constants": {
+    "cup": 0.237,
+    "water": 0.65
   },
-  "constants": { "t": 3 },
   "outputs": [
-    { "key": "S", "label": "Sweat lost", "unit": "cups/hour", "colour": "coral", "decimals": 1 },
-    { "key": "L", "label": "Body water after 3 h", "unit": "% of normal", "colour": "blue", "decimals": 0 },
-    { "key": "P", "label": "Pee output", "colour": "blue", "bands": [{ "upTo": 89.9, "text": "very little" }, { "upTo": 96.9, "text": "less" }, { "text": "normal" }] },
-    { "key": "T", "label": "Thirst signal", "colour": "amber", "bands": [{ "upTo": 94.9, "text": "ON" }, { "text": "off" }] }
+    {
+      "key": "Sc",
+      "label": "Sweat",
+      "unit": "cups/hour",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
+      "key": "L",
+      "label": "Body water left",
+      "unit": "% of normal",
+      "colour": "blue",
+      "decimals": 1
+    },
+    {
+      "key": "Pp",
+      "label": "Water lost",
+      "unit": "% of body weight",
+      "colour": "purple",
+      "decimals": 1
+    },
+    {
+      "key": "U",
+      "label": "Pee",
+      "colour": "amber",
+      "bands": [
+        {
+          "upTo": 1,
+          "text": "normal, pale"
+        },
+        {
+          "upTo": 2,
+          "text": "less, darker"
+        },
+        {
+          "text": "very little, dark yellow"
+        }
+      ]
+    },
+    {
+      "key": "Th",
+      "label": "Thirst",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 0.5,
+          "text": "not yet"
+        },
+        {
+          "upTo": 1.5,
+          "text": "thirsty"
+        },
+        {
+          "text": "very thirsty, dry mouth"
+        }
+      ]
+    },
+    {
+      "key": "Dz",
+      "label": "How she feels",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 2,
+          "text": "OK"
+        },
+        {
+          "text": "hard to keep going, may feel dizzy"
+        }
+      ]
+    }
   ],
   "rules": {
-    "S": "0.2 + 0.3 * I",
-    "L": "clamp(100 - 8 * (0.2 + 0.3 * I - W) * t, 70, 100)",
-    "P": "clamp(100 - 8 * (0.2 + 0.3 * I - W) * t, 70, 100)",
-    "T": "clamp(100 - 8 * (0.2 + 0.3 * I - W) * t, 70, 100)"
+    "Sc": "(0.2 + 0.015 * max(0, Ta - 60)) * e / cup",
+    "L": "100 - 100 * max(0, (0.2 + 0.015 * max(0, Ta - 60)) * e - cup * W) * t / (water * m)",
+    "Pp": "100 * max(0, (0.2 + 0.015 * max(0, Ta - 60)) * e - cup * W) * t / m",
+    "U": "100 * max(0, (0.2 + 0.015 * max(0, Ta - 60)) * e - cup * W) * t / m",
+    "Th": "100 * max(0, (0.2 + 0.015 * max(0, Ta - 60)) * e - cup * W) * t / m",
+    "Dz": "100 * max(0, (0.2 + 0.015 * max(0, Ta - 60)) * e - cup * W) * t / m"
   },
-  "chart": { "x": "t", "xMin": 0, "xMax": 3, "xTicks": ["start", "1.5 h", "3 h"], "xNow": 3, "y": "L", "xLabel": "hours on the trail", "yLabel": "body water (% of normal)", "yMin": 60, "yMax": 105 },
+  "chart": {
+    "x": "t",
+    "y": "L",
+    "xLabel": "hours on the trail",
+    "yLabel": "body water left (% of normal)",
+    "yMin": 85,
+    "yMax": 101
+  },
   "overlay": {
     "base": "torso",
-    "caption": "sweat out ↑ · drink in ↓ · kidneys save water",
+    "caption": "sweat out ↑ · drink in ↓ · kidneys save water · brain switches on thirst",
     "parts": [
-      { "shape": "kidneys", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 3.2 } },
-      { "shape": "drops",   "colour": "#2E86DE", "anim": { "type": "count", "output": "S", "min": 0, "max": 3.2 } },
-      { "shape": "thirst",  "colour": "#E4572E", "anim": { "type": "light", "output": "L", "below": 94.9 } }
+      {
+        "shape": "kidneys",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "glow",
+          "output": "Pp",
+          "min": 0,
+          "max": 3
+        }
+      },
+      {
+        "shape": "drops",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "count",
+          "output": "Sc",
+          "min": 0,
+          "max": 5
+        }
+      },
+      {
+        "shape": "thirst",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "light",
+          "output": "Pp",
+          "threshold": 1
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Priya's body keeps a water budget. On a hot climb she sweats to stay cool, and if she drinks less than she sweats the difference comes out of her body's water. As the shortfall grows her kidneys hold water back (less, darker pee) and her brain switches on thirst. Past about 2% of her body weight, it gets hard to keep going and she may feel dizzy.",
+    "rules": [
+      "Sweat rises with air temperature and with how hard she's working.",
+      "Water lost = (sweat − water drunk) × hours.",
+      "About two-thirds of her body weight is water; the loss is a share of that.",
+      "As the loss grows, pee gets less and darker and thirst switches on.",
+      "Above about 2% of body weight lost, performance drops and dizziness is likely."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Sweating rates vary a lot between people; drinking during exercise aims to prevent losing more than 2% of body weight as water, which harms performance.",
+        "cite": "acsm-fluid"
+      },
+      {
+        "fact": "In the heat, safety guidance is to drink 1 cup every 15–20 minutes (about ¾–1 quart an hour), and no more than 1½ quarts an hour.",
+        "cite": "niosh-hydration"
+      },
+      {
+        "fact": "Signs of dehydration include a dry or sticky mouth, darker pee or peeing less, and dizziness.",
+        "cite": "kh-dehydration"
+      },
+      {
+        "fact": "Water makes up more than two-thirds of body weight and cools the body through sweating.",
+        "cite": "mp-water"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Sweat = 0.2 L/h + 0.015 L/h for every °F above 60, times effort",
+        "why": "Gives about 0.9 L (3.7 cups) an hour for a steep climb at 92 °F — inside the range of real hikers, though people vary a lot. We could not check a single source for these exact numbers."
+      },
+      {
+        "what": "Body water counted as 65% of body weight",
+        "why": "'More than two-thirds' is the figure for adults; teenagers are close to this."
+      },
+      {
+        "what": "The pee, thirst and dizziness bands switch at 1% and 2%",
+        "why": "The 2% line comes from the sports-medicine guidance; the 1% step for darker pee and thirst is our estimate."
+      }
+    ],
+    "illustrative": [
+      "Priya's 50 kg, her steep climb at 92 °F and her one cup an hour are made up for a fictional story."
+    ]
+  },
+  "citations": [
+    {
+      "id": "acsm-fluid",
+      "title": "American College of Sports Medicine position stand: Exercise and fluid replacement (Medicine & Science in Sports & Exercise) — abstract record",
+      "publisher": "Europe PMC",
+      "year": "2007",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=EXT_ID:17277604%20AND%20SRC:MED&resultType=core&format=json",
+      "verified": "2026-10-19",
+      "supports": "Abstract: sweating rates vary considerably between individuals and can be estimated by weighing before and after exercise; the aim of drinking is to prevent excessive dehydration (more than 2% of body weight lost as water) to avoid compromised performance."
+    },
+    {
+      "id": "niosh-hydration",
+      "title": "Heat Stress: Hydration (DHHS NIOSH Publication No. 2017-126)",
+      "publisher": "NIOSH (CDC)",
+      "year": "2017",
+      "url": "https://stacks.cdc.gov/view/cdc/45851",
+      "verified": "2026-10-19",
+      "supports": "When working in the heat, drink 1 cup (8 oz) of water every 15–20 minutes — about ¾–1 quart an hour — and no more than 1½ quarts an hour; most people need several hours to replace what they have lost through sweat."
+    },
+    {
+      "id": "kh-dehydration",
+      "title": "Dehydration",
+      "publisher": "Nemours KidsHealth",
+      "year": "",
+      "url": "https://kidshealth.org/en/teens/dehydration.html",
+      "verified": "2026-10-19",
+      "supports": "Signs of dehydration include a dry or sticky mouth, darker pee or peeing less, and drowsiness or dizziness; kids should drink often in hot weather and take regular drink breaks about every 20 minutes during sports."
+    },
+    {
+      "id": "mp-water",
+      "title": "Water in diet",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/002471.htm",
+      "verified": "2026-10-19",
+      "supports": "Water makes up more than two-thirds of the weight of the human body; it regulates body temperature through perspiration; drinking when thirsty and with meals keeps most people hydrated."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows a water budget: sweat out versus water drunk, over three hours",
-      "Shows the kidneys holding water back (less pee) when the body is low",
-      "Shows the thirst signal switching on when body water falls"
+      "Shows a water budget: sweat out versus water drunk, hour by hour",
+      "Shows the kidneys and thirst responding as water is lost",
+      "Shows heat, effort and body size changing the result"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include salt, food, breathing losses or body size",
-      "Model dangerous dehydration; the water level never falls below 70 %"
+      "Measure any real person — sweat rates vary a lot",
+      "Include salt loss, food, breathing or shade breaks",
+      "Model dangerous dehydration or heat illness"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If someone feels dizzy or sick outdoors, get them into the shade and tell an adult."
-  },
-  "sources": ["CK-12 Life Science: excretory system", "NIH MedlinePlus: Water in diet (overview for students)"]
+    "wellbeing": "If someone feels dizzy or sick outdoors, get them into the shade, give them water and tell an adult."
+  }
 }

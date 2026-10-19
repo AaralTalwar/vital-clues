@@ -7,62 +7,215 @@
   "colour": "teal",
   "minutes": 10,
   "level": "complex",
-  "systems": ["Brain & sleep", "Adrenaline & the alarm system"],
+  "systems": [
+    "Brain & sleep",
+    "Adrenaline & the alarm system"
+  ],
   "reviewed": null,
-  "character": { "name": "Noah", "age": 16 },
+  "character": {
+    "name": "Noah",
+    "age": 16
+  },
   "briefing": "Noah, 16, sleeps about five hours a night during finals week and feels stressed from Monday to Friday. On Friday he catches the cold that's been going around his class. When the same kind of cold went around in October, he didn't catch it at all.",
   "question": "Why did the cold get through this week, when it didn't in October?",
   "illustration": "book",
   "clues": [
-    { "id": 1, "title": "Five hours a night", "icon": "bed", "colour": "purple",
+    {
+      "id": 1,
+      "title": "Five hours a night",
+      "icon": "bed",
+      "colour": "purple",
       "text": "He studied until 1 a.m. every night and his alarm went off at 6. Normally he sleeps about eight hours.",
-      "shows": "far less sleep than usual, night after night", "visual": { "type": "bars", "from": 8, "to": 5, "unit": "hours of sleep, normal week → finals week" }, "pointsTo": "sleep" },
-    { "id": 2, "title": "Stressed all week", "icon": "brain", "colour": "coral",
+      "shows": "far less sleep than usual, night after night",
+      "visual": {
+        "type": "bars",
+        "from": 8,
+        "to": 5,
+        "unit": "hours of sleep, normal week → finals week"
+      },
+      "pointsTo": "sleep"
+    },
+    {
+      "id": 2,
+      "title": "Stressed all week",
+      "icon": "brain",
+      "colour": "coral",
       "text": "His heart raced before every exam and he couldn't switch off at night, worrying about grades. It lasted all five days.",
-      "shows": "stress hormones staying high for days", "visual": null, "pointsTo": "stress" },
-    { "id": 3, "title": "Caught it on Friday", "icon": "germ", "colour": "teal",
+      "shows": "stress hormones staying high for days",
+      "visual": null,
+      "pointsTo": "stress"
+    },
+    {
+      "id": 3,
+      "title": "Caught it on Friday",
+      "icon": "germ",
+      "colour": "teal",
       "text": "Half his class had the sniffles that week, and on Friday he caught it too. In October the same kind of cold went around and he stayed well.",
-      "shows": "his defences being weaker this week than usual", "visual": null, "pointsTo": "immune" },
-    { "id": 4, "title": "Two friends, two results", "icon": "body", "colour": "blue",
+      "shows": "his defences being weaker this week than usual",
+      "visual": null,
+      "pointsTo": "immune"
+    },
+    {
+      "id": 4,
+      "title": "Two friends, two results",
+      "icon": "body",
+      "colour": "blue",
       "text": "Maya was just as stressed but slept eight hours a night — she only got a slight sniffle. Kai stayed up late on a relaxed art project — he caught a mild cold, lighter than Noah's.",
-      "shows": "less sleep and more stress each weakening defence, and worst together", "visual": null, "pointsTo": "both" }
+      "shows": "less sleep and more stress each weakening defence, and worst together",
+      "visual": null,
+      "pointsTo": "both"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "Not enough sleep weakened his immune system.", "flaw": "Sleep matters, but Maya slept eight hours and still got a sniffle under stress — and Kai, short on sleep but relaxed, got off lighter than Noah." },
-    { "id": "B", "text": "Both: night after night of short sleep and a week of stress hormones each weakened his immune defences, so together they let the cold going around get through.", "best": true },
-    { "id": "C", "text": "Stress alone weakened his defences.", "flaw": "Stress matters, but Kai wasn't stressed and still caught a cold after his late nights." },
-    { "id": "D", "text": "Studying too hard gives you colds.", "flaw": "Colds come from viruses passed between people — the same kind was around in October. What changed this week was his defence, not the studying itself." }
+    {
+      "id": "A",
+      "text": "Not enough sleep weakened his immune system.",
+      "flaw": "Sleep matters, but Maya slept eight hours and still got a sniffle under stress — and Kai, short on sleep but relaxed, got off lighter than Noah."
+    },
+    {
+      "id": "B",
+      "text": "Both: night after night of short sleep and a week of stress hormones each weakened his immune defences, so together they let the cold going around get through.",
+      "best": true
+    },
+    {
+      "id": "C",
+      "text": "Stress alone weakened his defences.",
+      "flaw": "Stress matters, but Kai wasn't stressed and still caught a cold after his late nights."
+    },
+    {
+      "id": "D",
+      "text": "Studying too hard gives you colds.",
+      "flaw": "Colds come from viruses passed between people — the same kind was around in October. What changed this week was his defence, not the studying itself."
+    }
   ],
   "evidence": {
-    "A": { "supports": [1, 3], "doesntFit": [4] },
-    "B": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "C": { "supports": [2, 3], "doesntFit": [4] },
-    "D": { "supports": [], "doesntFit": [3] }
+    "A": {
+      "supports": [
+        1,
+        3
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "B": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "C": {
+      "supports": [
+        2,
+        3
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "D",
     "prompt": "During a stressful week, as Noah gets more hours of sleep each night — from 4 up to 9 — what happens to his immune defence?",
     "expectedShape": "rises",
-    "second": { "question": "If the stress of finals vanished but his sleep stayed the same, would his immune defence go up or down?", "options": ["up", "same", "down"], "answer": "up" }
+    "second": {
+      "question": "If the stress of finals vanished but his sleep stayed the same, would his immune defence go up or down?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
   },
-  "labDefaults": { "primary": 5, "secondary": 8 },
+  "labDefaults": {
+    "primary": 5
+  },
   "concepts": [
-    { "id": "sleep", "label": "too little sleep", "colour": "purple",
-      "synonyms": ["sleep", "slept", "sleeping", "rest", "tired", "late nights"],
-      "hint": "What did finals week do to his nights?" },
-    { "id": "stress", "label": "stress hormones", "colour": "coral",
-      "synonyms": ["stress", "stressed", "stressful", "worry", "worried", "hormones", "nerves"],
-      "hint": "What else was going on in his body all week?" },
-    { "id": "immune", "label": "weaker immune defence", "colour": "teal",
-      "synonyms": ["immune", "immune system", "defence", "defense", "defences", "defenses", "white blood cells", "fight off"],
-      "hint": "Which body system stops a cold getting in?" },
-    { "id": "germs", "label": "the cold going around", "colour": "blue",
-      "synonyms": ["germs", "germ", "virus", "viruses", "bug", "going around", "infection"],
-      "hint": "Where does a cold actually come from?" },
-    { "id": "both", "label": "both together", "colour": "amber",
-      "synonyms": ["both", "together", "combined", "two things", "as well as", "plus"],
-      "hint": "What did Maya and Kai each have only one of?" }
+    {
+      "id": "sleep",
+      "label": "too little sleep",
+      "colour": "purple",
+      "synonyms": [
+        "sleep",
+        "slept",
+        "sleeping",
+        "rest",
+        "tired",
+        "late nights"
+      ],
+      "hint": "What did finals week do to his nights?"
+    },
+    {
+      "id": "stress",
+      "label": "stress hormones",
+      "colour": "coral",
+      "synonyms": [
+        "stress",
+        "stressed",
+        "stressful",
+        "worry",
+        "worried",
+        "hormones",
+        "nerves"
+      ],
+      "hint": "What else was going on in his body all week?"
+    },
+    {
+      "id": "immune",
+      "label": "weaker immune defence",
+      "colour": "teal",
+      "synonyms": [
+        "immune",
+        "immune system",
+        "defence",
+        "defense",
+        "defences",
+        "defenses",
+        "white blood cells",
+        "fight off"
+      ],
+      "hint": "Which body system stops a cold getting in?"
+    },
+    {
+      "id": "germs",
+      "label": "the cold going around",
+      "colour": "blue",
+      "synonyms": [
+        "germs",
+        "germ",
+        "virus",
+        "viruses",
+        "bug",
+        "going around",
+        "infection"
+      ],
+      "hint": "Where does a cold actually come from?"
+    },
+    {
+      "id": "both",
+      "label": "both together",
+      "colour": "amber",
+      "synonyms": [
+        "both",
+        "together",
+        "combined",
+        "two things",
+        "as well as",
+        "plus"
+      ],
+      "hint": "What did Maya and Kai each have only one of?"
+    }
   ],
   "transfer": {
     "context": "During tech week for the school play, the cast rehearses until 11 p.m. every night and everyone is nervous about opening night. By Friday half the cast has the cold going around backstage.",

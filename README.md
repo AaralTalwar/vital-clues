@@ -31,7 +31,7 @@ Never speed. Never grades, stars or comparisons. The rules live in `js/score.js`
 
 ## The cases
 
-48 fictional cases, 12 per level, built on 47 simplified body models. Levels describe how hard the *reasoning* is, and `tools/validate_case.py` enforces each level's evidence pattern.
+48 fictional cases, 12 per level. **Every case has its own body model**, built from published relationships and typical values, with 199 citations each checked against the source page. Levels describe how hard the *reasoning* is, and `tools/validate_case.py` enforces each level's evidence pattern.
 
 **Easy — every clue points one way:** The Jumpy Goalkeeper (Brain & nerves); The Ringing Ears (Ears & hearing); The Scraped Knee (Blood & healing); The Shivering Swimmer (Skin & temperature); The Skipped Breakfast (Digestion & fuel); The Sneezing Gardener (Immune system & pollen); The Sore Weightlifter (Muscles & repair); The Squinting Reader (Eyes & light); The Stuffy-Nose Taster (Nose & taste); The Sunburned Lifeguard (Skin & sunlight); The Thirsty Hiker (Kidneys & water); A Case of the Tired Athlete (Lungs & heart).
 
@@ -42,6 +42,10 @@ Never speed. Never grades, stars or comparisons. The rules live in `js/score.js`
 **Complex — two body systems at once:** The All-Nighter (Sleep & memory); The Breakfastless Test (Adrenaline & fuel); The Concert Night (Loud sound & short sleep); The Exam-Week Cold (Sleep + stress + immune defence); The Heatwave Final (Heat + muscle fuel); The July Marching Band (Heat, water & blood flow); The Long-Haul Flight (Body clock & water); The Mountain Hike (Altitude + water); The Pollen-Season Runner (Pollen & breathing); The Skipped-Lunch Sprint (Fuel & effort); The Snow-Day Sledder (Cold & sunlight on snow); The Winter Swim Team (Cold water & working muscles).
 
 Every character is fictional and every number is an illustrative teaching value, labelled so in the app. Model formulas are visible to students in the **Model limits** panel.
+
+### How the models work
+
+Each Body lab shows **How this model works** in plain words, and **The rules, and where they come from**, split three ways: **From sources** (facts with links), **Our choices** (simplifications and why), and **Illustrative** (made-up numbers for the fictional character). Dials grow with the level: a main slider plus 1 bubble (Easy), 2 (Moderate), 3 (Difficult) or 4–5 (Complex), and a row of adjustable **case factors** about the character and setting, with a reset. A *What is a model?* page explains models for 13-year-olds. The model format is documented at the top of `js/model.js`; `tools/validate_case.py` enforces the dial counts and that every sourced fact has a citation; `tests/models.test.js` checks every dial changes something.
 
 ## Adding a case
 
@@ -57,7 +61,7 @@ A fifth case is a data file, not code.
 
 ```
 python3 -m http.server 8000      # then open http://localhost:8000
-npm test                         # node --test, 124 tests incl. every model's curve shape
+npm test                         # node --test, 172 tests: scoring, parsing, every model's curve and dials
 python3 tools/build_index.py     # after any case/model change
 python3 tools/review_pack.py     # regenerate the science review pack
 python3 tools/validate_case.py cases/tired-athlete.json --models models/
@@ -97,7 +101,7 @@ _Reviewer, role and date go here once signed off._
 
 ## Authorship
 
-Built by _[student name]_ for the 2026 Congressional App Challenge, with a parent advising on architecture. AI tools assisted with the engine scaffolding and drafted most of the 48 case stories; the student edited the cases used in the demo and wrote or rewrote the three core algorithms below. The case content is checked by an automated validator and a model-level science review, not by hand line by line. The three pieces she can walk through unaided: the formula evaluator (`js/rules.js`), the sketch classifier (`js/sketch.js` → `classify`), and the concept matcher (`js/explain.js`).
+Built by _[student name]_ for the 2026 Congressional App Challenge, with a parent advising on architecture. AI tools assisted with the engine scaffolding, drafted most of the 48 case stories, and researched the models' sources (every citation was opened and checked against its page before use); the student edited the cases used in the demo and wrote or rewrote the three core algorithms below. The case content is checked by an automated validator and a model-level science review, not by hand line by line. The three pieces she can walk through unaided: the formula evaluator (`js/rules.js`), the sketch classifier (`js/sketch.js` → `classify`), and the concept matcher (`js/explain.js`).
 
 ## Licence
 

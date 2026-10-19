@@ -9,60 +9,208 @@
   "level": "difficult",
   "twist": "Most people expect the climb to hurt because the plane is going up. It's actually the descent, when the cabin air pushes harder on the eardrum than the air trapped behind it — and a swallow fixes it.",
   "reviewed": null,
-  "character": { "name": "Lucía", "age": 14 },
+  "character": {
+    "name": "Lucía",
+    "age": 14
+  },
   "briefing": "Lucía, 14, flies to visit her grandmother. Take-off is fine. But twenty minutes before landing her ears feel blocked, voices sound muffled, and one ear starts to hurt. Her little brother, chewing gum the whole way down, doesn't notice a thing.",
   "question": "Why do ears hurt coming down — and why does chewing gum help?",
   "illustration": "plane",
   "clues": [
-    { "id": 1, "title": "Fine on the way up", "icon": "plane", "colour": "blue",
+    {
+      "id": 1,
+      "title": "Fine on the way up",
+      "icon": "plane",
+      "colour": "blue",
       "text": "During take-off and the climb her ears felt fine, maybe one small pop. Cruising high up was fine too.",
-      "shows": "that being high up, or climbing, wasn't the problem", "visual": null, "pointsTo": "pressure" },
-    { "id": 2, "title": "Blocked on the way down", "icon": "ear", "colour": "purple",
+      "shows": "that being high up, or climbing, wasn't the problem",
+      "visual": null,
+      "pointsTo": "pressure"
+    },
+    {
+      "id": 2,
+      "title": "Blocked on the way down",
+      "icon": "ear",
+      "colour": "purple",
       "text": "As the plane descends, her ears feel stuffed and voices sound far away. Then one ear starts to ache.",
-      "shows": "her eardrums being pushed in as the plane comes down", "visual": { "type": "bars", "from": 0, "to": 15, "unit": "pressure difference, start → 15 min into descent" }, "pointsTo": "eardrum" },
-    { "id": 3, "title": "Brother with gum", "icon": "tongue", "colour": "teal",
+      "shows": "her eardrums being pushed in as the plane comes down",
+      "visual": {
+        "type": "bars",
+        "from": 0,
+        "to": 32,
+        "unit": "mmHg pressure difference across her eardrum, start → 15 min into descent"
+      },
+      "pointsTo": "eardrum"
+    },
+    {
+      "id": 3,
+      "title": "Brother with gum",
+      "icon": "tongue",
+      "colour": "teal",
       "text": "Her brother chews gum and swallows constantly on the way down. He says his ears are totally fine.",
-      "shows": "frequent swallowing preventing the problem", "visual": null, "pointsTo": "swallow" },
-    { "id": 4, "title": "A big yawn", "icon": "soundwave", "colour": "amber",
+      "shows": "frequent swallowing preventing the problem",
+      "visual": null,
+      "pointsTo": "swallow"
+    },
+    {
+      "id": 4,
+      "title": "A big yawn",
+      "icon": "soundwave",
+      "colour": "amber",
       "text": "Lucía does a huge yawn. Her ear goes 'pop' and the ache and muffling vanish instantly.",
-      "shows": "a small tube opening to let air in and even out the pressure", "visual": null, "pointsTo": "tube" }
+      "shows": "a small tube opening to let air in and even out the pressure",
+      "visual": null,
+      "pointsTo": "tube"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "As the plane descends, the air pressure in the cabin rises but the air behind her eardrum stays at the lower pressure, so the eardrum is pushed in — until swallowing or yawning opens a small tube that lets air in to even it out.", "best": true },
-    { "id": "B", "text": "The engines are extra loud during landing.", "flaw": "Engines are loudest at take-off, when her ears were fine — and loudness wouldn't vanish with one yawn." },
-    { "id": "C", "text": "The dry cabin air dried out her ears.", "flaw": "The air was just as dry at cruising height, and dryness wouldn't be fixed instantly by a yawn." },
-    { "id": "D", "text": "Being high up in the sky makes ears hurt.", "flaw": "She was fine cruising high up — it started as the plane came down." }
+    {
+      "id": "A",
+      "text": "As the plane descends, the air pressure in the cabin rises but the air behind her eardrum stays at the lower pressure, so the eardrum is pushed in — until swallowing or yawning opens a small tube that lets air in to even it out.",
+      "best": true
+    },
+    {
+      "id": "B",
+      "text": "The engines are extra loud during landing.",
+      "flaw": "Engines are loudest at take-off, when her ears were fine — and loudness wouldn't vanish with one yawn."
+    },
+    {
+      "id": "C",
+      "text": "The dry cabin air dried out her ears.",
+      "flaw": "The air was just as dry at cruising height, and dryness wouldn't be fixed instantly by a yawn."
+    },
+    {
+      "id": "D",
+      "text": "Being high up in the sky makes ears hurt.",
+      "flaw": "She was fine cruising high up — it started as the plane came down."
+    }
   ],
   "evidence": {
-    "A": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "B": { "supports": [2], "doesntFit": [1, 4] },
-    "C": { "supports": [], "doesntFit": [4] },
-    "D": { "supports": [], "doesntFit": [1] }
+    "A": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "B": {
+      "supports": [
+        2
+      ],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        1
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "P",
     "prompt": "If Lucía never swallows or yawns, what happens to the pressure difference across her eardrum as the descent goes on?",
     "expectedShape": "rises",
-    "second": { "question": "If she swallows several times a minute, does the pressure difference go up or down?", "options": ["up", "same", "down"], "answer": "down" }
+    "second": {
+      "question": "If she swallows several times a minute, does the pressure difference go up or down?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
   },
-  "labDefaults": { "primary": 10, "secondary": 0 },
+  "labDefaults": {
+    "primary": 10
+  },
   "concepts": [
-    { "id": "pressure", "label": "air pressure changes", "colour": "blue",
-      "synonyms": ["pressure", "air pressure", "pushes", "pushing", "pushed", "squeezes"],
-      "hint": "What changes in the cabin air as the plane comes down?" },
-    { "id": "eardrum", "label": "the eardrum", "colour": "purple",
-      "synonyms": ["eardrum", "ear drum", "eardrums", "drum", "middle ear"],
-      "hint": "What thin part of the ear gets pushed?" },
-    { "id": "trapped", "label": "air trapped behind it", "colour": "coral",
-      "synonyms": ["trapped", "air behind", "air inside", "inside air", "stuck", "lower pressure"],
-      "hint": "What's on the other side of the eardrum?" },
-    { "id": "tube", "label": "a tube opens to even it out", "colour": "teal",
-      "synonyms": ["tube", "tubes", "eustachian", "opens", "opened", "pop", "pops", "popped", "evens out", "equal"],
-      "hint": "What made the 'pop'?" },
-    { "id": "swallow", "label": "swallowing or yawning", "colour": "amber",
-      "synonyms": ["swallow", "swallowing", "swallows", "yawn", "yawning", "yawns", "chewing", "gum"],
-      "hint": "What was her brother doing?" }
+    {
+      "id": "pressure",
+      "label": "air pressure changes",
+      "colour": "blue",
+      "synonyms": [
+        "pressure",
+        "air pressure",
+        "pushes",
+        "pushing",
+        "pushed",
+        "squeezes"
+      ],
+      "hint": "What changes in the cabin air as the plane comes down?"
+    },
+    {
+      "id": "eardrum",
+      "label": "the eardrum",
+      "colour": "purple",
+      "synonyms": [
+        "eardrum",
+        "ear drum",
+        "eardrums",
+        "drum",
+        "middle ear"
+      ],
+      "hint": "What thin part of the ear gets pushed?"
+    },
+    {
+      "id": "trapped",
+      "label": "air trapped behind it",
+      "colour": "coral",
+      "synonyms": [
+        "trapped",
+        "air behind",
+        "air inside",
+        "inside air",
+        "stuck",
+        "lower pressure"
+      ],
+      "hint": "What's on the other side of the eardrum?"
+    },
+    {
+      "id": "tube",
+      "label": "a tube opens to even it out",
+      "colour": "teal",
+      "synonyms": [
+        "tube",
+        "tubes",
+        "eustachian",
+        "opens",
+        "opened",
+        "pop",
+        "pops",
+        "popped",
+        "evens out",
+        "equal"
+      ],
+      "hint": "What made the 'pop'?"
+    },
+    {
+      "id": "swallow",
+      "label": "swallowing or yawning",
+      "colour": "amber",
+      "synonyms": [
+        "swallow",
+        "swallowing",
+        "swallows",
+        "yawn",
+        "yawning",
+        "yawns",
+        "chewing",
+        "gum"
+      ],
+      "hint": "What was her brother doing?"
+    }
   ],
   "transfer": {
     "context": "Yusuf, 14, swims down to the bottom of the deep end and his ears start to hurt. When he gently swallows, they pop and feel better.",

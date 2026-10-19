@@ -1,22 +1,56 @@
 {
   "id": "memory-spacing",
-  "name": "Brain & memory",
+  "version": 2,
+  "name": "Ines's memory: cramming vs spacing",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "D", "label": "Days the study is spread over", "min": 1, "max": 7, "step": 1, "unit": "days", "ticks": ["1 night", "4 days", "7 days"] },
-    "secondary": { "key": "H", "label": "Total study time", "min": 0.5, "max": 4, "step": 0.5, "default": 2, "unit": "h", "ticks": ["30 min", "2 h", "4 h"] }
-  },
+  "parameters": [
+    {
+      "key": "D", "label": "Days the study is spread over", "role": "primary", "min": 1, "max": 7, "step": 1, "default": 1, "unit": "days",
+      "ticks": ["1 night", "4 days", "7 days"],
+      "explain": "Spreading the same study time over several days is called spaced (distributed) practice — one of the two best-rated study techniques.",
+      "basis": "source", "cite": "aps-study"
+    },
+    {
+      "key": "Z", "label": "Hours of sleep each night", "role": "bubble", "min": 4, "max": 10, "step": 0.5, "default": 8, "unit": "h",
+      "explain": "Sleep after learning helps the brain save new memories. Teens need about 8–10 hours a night.",
+      "basis": "source", "cite": "nih-sleep-on-it"
+    },
+    {
+      "key": "L", "label": "How fast she learns new words", "role": "bubble", "min": 0.5, "max": 1.5, "step": 0.25, "default": 1,
+      "options": [{ "value": 0.5, "label": "slower" }, { "value": 1, "label": "average" }, { "value": 1.5, "label": "faster" }],
+      "explain": "Tests the 'worse at languages' idea: a slower learner would also score lower on the very next morning, not just a week later.",
+      "basis": "choice"
+    },
+    {
+      "key": "H", "label": "Total study time", "role": "factor", "min": 0.5, "max": 4, "step": 0.5, "default": 2, "unit": "h",
+      "explain": "Both twins studied for 2 hours in total. More time builds a stronger first memory.",
+      "basis": "choice"
+    },
+    {
+      "key": "W", "label": "Words to learn", "role": "factor", "min": 20, "max": 80, "step": 10, "default": 40, "unit": "words",
+      "explain": "More words in the same time means less practice for each word.",
+      "basis": "choice"
+    },
+    {
+      "key": "Q", "label": "Days until the surprise quiz", "role": "factor", "min": 1, "max": 14, "step": 1, "default": 7, "unit": "days",
+      "explain": "The longer you wait, the more you forget — and the longer the wait, the bigger the best gap between study sessions.",
+      "basis": "source", "cite": "cepeda-spacing"
+    }
+  ],
+  "constants": { "minPerWord": 2.5, "h0": 4, "grow": 1.49 },
   "outputs": [
-    { "key": "R", "label": "Words remembered a week later", "unit": "%", "colour": "purple", "decimals": 0 },
+    { "key": "R", "label": "Remembered at the surprise quiz", "unit": "% of the words", "colour": "purple", "decimals": 0 },
+    { "key": "Rw", "label": "Words remembered at the surprise quiz", "unit": "words", "colour": "purple", "decimals": 0 },
     { "key": "N", "label": "Next-morning quiz score", "unit": "%", "colour": "teal", "decimals": 0 },
-    { "key": "S", "label": "Nights of sleep between sessions", "unit": "nights", "colour": "amber", "decimals": 0 }
+    { "key": "S", "label": "Nights of sleep between sessions", "colour": "amber", "decimals": 0 }
   ],
   "rules": {
-    "R": "100 - (80 - 10 * H) * pow(0.6, D - 1)",
-    "N": "clamp(40 + 20 * H, 0, 95)",
+    "R": "100 * clamp(H * 60 * L / (W * minPerWord), 0, 1) * pow(0.5, Q / (h0 * pow(H / 2, 0.5) * pow(grow, D - 1) * pow(Z / 8, 1.2)))",
+    "Rw": "W * clamp(H * 60 * L / (W * minPerWord), 0, 1) * pow(0.5, Q / (h0 * pow(H / 2, 0.5) * pow(grow, D - 1) * pow(Z / 8, 1.2)))",
+    "N": "100 * clamp(H * 60 * L / (W * minPerWord), 0, 1) * pow(0.5, 0.5 / (h0 * pow(H / 2, 0.5) * pow(grow, D - 1) * pow(Z / 8, 1.2)))",
     "S": "D - 1"
   },
-  "chart": { "x": "D", "y": "R", "xLabel": "days the study is spread over", "yLabel": "remembered a week later (%)", "yMin": 0, "yMax": 105 },
+  "chart": { "x": "D", "y": "R", "xLabel": "days the study is spread over", "yLabel": "remembered at the surprise quiz (%)", "yMin": 0, "yMax": 105 },
   "overlay": {
     "base": "head",
     "caption": "pull it back up after a gap + sleep between sessions → a stronger, longer-lasting memory",
@@ -25,19 +59,61 @@
       { "shape": "moon", "colour": "#F4A300", "anim": { "type": "glow", "output": "S", "min": 0, "max": 6 } }
     ]
   },
+  "explain": {
+    "summary": "A new memory fades over time unless it is used again. Ines crammed 2 hours in one night, so her memory of the words was strong the next morning but faded fast. Her brother spread the same 2 hours over six days, with sleep in between, so he pulled each word back up again and again — and every time made the memory last longer.",
+    "rules": [
+      "How much she learns at first depends on study time, number of words and how fast she learns.",
+      "After that, what she remembers fades by half over a 'half-life' of a few days.",
+      "Each extra day the study is spread over makes that half-life about 1.5 times longer.",
+      "Less sleep than 8 hours makes the half-life shorter; more sleep makes it a little longer.",
+      "The surprise-quiz score is what's left after the wait."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "A 2013 review of ten study techniques rated two as most effective: spreading study out over time (distributed practice) and quizzing yourself (practice testing).", "cite": "aps-study" },
+      { "fact": "A review of 317 experiments found that the gap between study sessions and the time until the test work together: the best gap gets longer the longer you need to remember.", "cite": "cepeda-spacing" },
+      { "fact": "Sleep after learning helps save new information in the brain; learning ability may drop by up to 40% without sleep, and you can't pull an all-nighter and still learn effectively.", "cite": "nih-sleep-on-it" },
+      { "fact": "Teens aged 13–17 need 8–10 hours of sleep a day.", "cite": "cdc-sleep" },
+      { "fact": "A modern repeat of Ebbinghaus's famous 1880s memory experiment reproduced his forgetting curve, with a possible upward jump at the 24-hour point that may be linked to sleep.", "cite": "murre-forgetting" }
+    ],
+    "choice": [
+      { "what": "Forgetting halves memory over a fixed half-life", "why": "Real forgetting curves drop fast at first and then slow down; a halving curve has that shape and is easy to read." },
+      { "what": "Each extra day of spacing makes the half-life 1.5 times longer", "why": "Chosen so the model reproduces the twins' week-later scores (about 12 and 34 words). The real benefit of spacing depends on the material and the person." },
+      { "what": "Sleep changes the half-life smoothly around 8 hours", "why": "Sources agree sleep strengthens memories but don't give one formula, so we used a gentle curve." },
+      { "what": "Learning speed only changes how much she learns at first", "why": "This keeps the 'worse at languages' test clear: a slower learner would score lower the very next morning." },
+      { "what": "It takes about 2.5 minutes of study per word to learn it fully", "why": "A round number so 40 words in 2 hours are all learned by the next morning, as in the case." }
+    ],
+    "illustrative": [
+      "Ines and her brother are fictional; their scores (12 and 34 words a week later) are made up to fit the model.",
+      "The 4-day half-life after cramming is an illustrative value, not a measurement."
+    ],
+    "studying": "Scientists are still working out exactly why spaced practice works so well, and exactly how the sleeping brain chooses which memories to keep."
+  },
+  "citations": [
+    { "id": "aps-study", "title": "Which Study Strategies Make the Grade?", "publisher": "Association for Psychological Science", "year": "2013", "url": "https://www.psychologicalscience.org/news/releases/which-study-strategies-make-the-grade.html", "verified": "2026-10-19",
+      "supports": "Reports a 2013 review (Dunlosky and colleagues) in which practice testing and distributed practice were the only two techniques rated highly effective; spreading study over time boosts performance across many kinds of tests." },
+    { "id": "cepeda-spacing", "title": "Distributed practice in verbal recall tasks: A review and quantitative synthesis (Psychological Bulletin)", "publisher": "eScholarship, University of California", "year": "2006", "url": "https://escholarship.org/uc/item/3rr6q10c", "verified": "2026-10-19",
+      "supports": "Meta-analysis of 839 assessments from 317 experiments; the gap between study sessions and the retention interval jointly affect recall, and the best gap increases as the retention interval increases." },
+    { "id": "nih-sleep-on-it", "title": "Sleep On It: How Snoozing Strengthens Your Memory", "publisher": "NIH News in Health", "year": "2013", "url": "https://newsinhealth.nih.gov/node/1481", "verified": "2026-10-19",
+      "supports": "Sleep after learning is essential to save new information in the brain; learning ability may drop by up to 40% without sleep; 'You can't pull an all-nighter and still learn effectively.'" },
+    { "id": "cdc-sleep", "title": "About Sleep", "publisher": "CDC", "year": "", "url": "https://www.cdc.gov/sleep/about/index.html", "verified": "2026-10-19",
+      "supports": "Recommended sleep: teens 13–17 years need 8–10 hours per day; school-age children 6–12 need 9–12 hours." },
+    { "id": "murre-forgetting", "title": "Replication and Analysis of Ebbinghaus' Forgetting Curve", "publisher": "PLOS ONE", "year": "2015", "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120644", "verified": "2026-10-19",
+      "supports": "Murre and Dros successfully replicated Ebbinghaus's forgetting curve; the curve is not completely smooth and probably shows an upward jump starting at the 24-hour point." }
+  ],
   "limits": {
     "does": [
-      "Shows that spreading the same practice over more days leaves more remembered a week later",
-      "Shows cramming working about as well for a quiz the very next morning",
-      "Shows the benefit levelling off after several days"
+      "Shows a memory fading fast after cramming and lasting much longer when the same study time is spread out",
+      "Shows sleep between sessions making memories last longer",
+      "Lets you test whether 'just a slower learner' fits the evidence"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include what kind of studying you do (quizzing yourself beats re-reading)",
-      "Say anything about anyone's ability; it's about method, not talent"
+      "Measure any real person — Ines is fictional and the numbers are illustrative",
+      "Include quizzing yourself, how interesting the words are, or stress",
+      "Predict anyone's own grades"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If studying ever feels overwhelming or stressful, talk to a teacher or an adult you trust."
-  },
-  "sources": ["NIH News in Health: sleep and memory (student overview)", "Any educational psychology text: the spacing effect"]
+    "wellbeing": "If you often can't sleep, or school stress feels too big, talk with an adult you trust."
+  }
 }

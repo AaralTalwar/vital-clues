@@ -118,21 +118,20 @@
   "mismatchHints": [],
   "prediction": {
     "output": "S",
-    "prompt": "Starting on workout day and going through the week, how does Marcus's soreness change from day 0 to day 7?",
+    "prompt": "From the end of Monday's workout to Friday, four days later, how does Marcus's soreness change?",
     "expectedShape": "rises-then-levels",
     "second": {
-      "question": "By the end of the week, how does his strength compare with before the workout?",
+      "question": "If he does the same workout again next week, how sore will he get?",
       "options": [
-        "up",
+        "less",
         "same",
-        "down"
+        "more"
       ],
-      "answer": "up"
+      "answer": "less"
     }
   },
   "labDefaults": {
-    "primary": 2,
-    "secondary": 8
+    "primary": 48
   },
   "concepts": [
     {

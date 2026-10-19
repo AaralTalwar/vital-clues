@@ -1,35 +1,116 @@
 {
   "id": "adrenaline-fuel",
-  "name": "Adrenaline & fuel",
+  "version": 2,
+  "name": "Jamal's nerves and empty stomach",
   "colour": "coral",
-  "inputs": {
-    "primary": {
+  "parameters": [
+    {
       "key": "X",
       "label": "How big the moment feels",
+      "role": "primary",
       "min": 0,
       "max": 10,
       "step": 1,
+      "default": 9,
       "ticks": [
         "normal class",
         "quiz",
         "final exam"
-      ]
+      ],
+      "explain": "The bigger the moment, the more adrenaline the alarm system releases.",
+      "basis": "source",
+      "cite": "cleveland-adrenaline"
     },
-    "secondary": {
+    {
+      "key": "Mt",
+      "label": "Minutes into the test",
+      "role": "bubble",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "default": 0,
+      "unit": "min",
+      "explain": "Once he gets going, the body's calming system eases the alarm a little (clue 2).",
+      "basis": "source",
+      "cite": "harvard-stress"
+    },
+    {
+      "key": "Pt",
+      "label": "Practice tests done",
+      "role": "bubble",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 1,
+      "explain": "Facing the same kind of worry again and again gradually makes the alarm smaller.",
+      "basis": "source",
+      "cite": "nhs-fears"
+    },
+    {
       "key": "h",
       "label": "Hours since eating",
+      "role": "bubble",
       "min": 0,
-      "max": 14,
+      "max": 16,
       "step": 1,
-      "default": 12,
+      "default": 14,
       "unit": "h",
-      "ticks": [
-        "just ate",
-        "7 h",
-        "14 h"
-      ]
+      "explain": "Between meals the liver's sugar store keeps blood sugar steady; after 12–24 hours without food it is almost used up.",
+      "basis": "source",
+      "cite": "cleveland-glycogen"
+    },
+    {
+      "key": "z",
+      "label": "Size of his last meal",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0,
+          "label": "small snack"
+        },
+        {
+          "value": 1,
+          "label": "normal dinner"
+        },
+        {
+          "value": 2,
+          "label": "big dinner"
+        }
+      ],
+      "explain": "A bigger meal refills the liver's store more, so it lasts longer.",
+      "basis": "choice"
+    },
+    {
+      "key": "age",
+      "label": "Age",
+      "role": "factor",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "years",
+      "explain": "Maximum heart rate is about 220 minus age.",
+      "basis": "source",
+      "cite": "aha-target"
+    },
+    {
+      "key": "Hrest",
+      "label": "Resting heart rate",
+      "role": "factor",
+      "min": 50,
+      "max": 90,
+      "step": 5,
+      "default": 70,
+      "unit": "beats/min",
+      "explain": "Most people rest at 60–100 beats a minute.",
+      "basis": "source",
+      "cite": "aha-target"
     }
-  },
+  ],
   "outputs": [
     {
       "key": "A",
@@ -46,9 +127,16 @@
       "decimals": 0
     },
     {
+      "key": "L",
+      "label": "Liver sugar store",
+      "unit": "% full",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
       "key": "G",
-      "label": "Fuel in the blood",
-      "unit": "% of comfortable",
+      "label": "Blood sugar",
+      "unit": "mg/dL",
       "colour": "amber",
       "decimals": 0
     },
@@ -57,14 +145,15 @@
       "label": "Shaky hands",
       "unit": "0–10",
       "colour": "purple",
-      "decimals": 1
+      "decimals": 0
     }
   ],
   "rules": {
-    "A": "10 * X",
-    "H": "68 + 5 * X",
-    "G": "clamp(105 - 4 * h, 50, 105)",
-    "T": "clamp(0.35 * X + 0.09 * (105 - clamp(105 - 4 * h, 50, 105)), 0, 10)"
+    "A": "100 * ((X / 10) * (1 - 0.5 * Pt / (Pt + 4)) * (0.8 + 0.2 * pow(0.5, Mt / 8)) + (0.35 * (1 - clamp(100 - 100 * h / (16 + 4 * z), 5, 100) / 100)))",
+    "H": "Hrest + (220 - age - Hrest) * 0.4 * (X / 10) * (1 - 0.5 * Pt / (Pt + 4)) * (0.8 + 0.2 * pow(0.5, Mt / 8))",
+    "L": "clamp(100 - 100 * h / (16 + 4 * z), 5, 100)",
+    "G": "92 - 12 * (1 - clamp(100 - 100 * h / (16 + 4 * z), 5, 100) / 100)",
+    "T": "clamp(10 * ((X / 10) * (1 - 0.5 * Pt / (Pt + 4)) * (0.8 + 0.2 * pow(0.5, Mt / 8)) + (0.35 * (1 - clamp(100 - 100 * h / (16 + 4 * z), 5, 100) / 100)) - 0.7) / 0.45, 0, 10)"
   },
   "chart": {
     "x": "X",
@@ -76,7 +165,7 @@
   },
   "overlay": {
     "base": "torso",
-    "caption": "big moment → adrenaline · empty stomach → low fuel · both shake the hands",
+    "caption": "big moment → adrenaline · empty stomach → liver store runs low → more hormones · both shake the hands",
     "parts": [
       {
         "shape": "bloodstream",
@@ -85,7 +174,7 @@
           "type": "glow",
           "output": "A",
           "min": 0,
-          "max": 100
+          "max": 120
         }
       },
       {
@@ -101,9 +190,9 @@
         "colour": "#F4A300",
         "anim": {
           "type": "glow",
-          "output": "G",
-          "min": 50,
-          "max": 105
+          "output": "L",
+          "min": 5,
+          "max": 100
         }
       },
       {
@@ -116,22 +205,129 @@
       }
     ]
   },
+  "explain": {
+    "summary": "Two things were working on Jamal's hands. The big test switched on his alarm system: adrenaline raced his heart, dampened his palms and made his hands tremble. And after fourteen hours without food, his liver's sugar store was nearly empty, so his body was releasing extra hormones — adrenaline among them — just to hold his blood sugar steady. His blood sugar stayed in the normal range, but the two hormone pushes added up.",
+    "rules": [
+      "The bigger the moment, the more adrenaline; it eases a little once he gets going, and less with practice.",
+      "The liver's sugar store empties over about 16–24 hours without food, faster after a small meal.",
+      "As the store runs low, the body adds hormones (including adrenaline) to keep blood sugar steady — which stays in the normal range.",
+      "Shaking appears once the total hormone push passes a level, and grows from there."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Adrenaline is released when you're suddenly scared or stressed; your heart beats faster and you breathe faster.",
+        "cite": "cleveland-adrenaline"
+      },
+      {
+        "fact": "Adrenaline makes the heart beat faster and sweat appear, and releases stored sugar into the blood.",
+        "cite": "harvard-stress"
+      },
+      {
+        "fact": "The liver's glycogen store keeps blood sugar steady between meals; after 12–24 hours of fasting it is almost used up.",
+        "cite": "cleveland-glycogen"
+      },
+      {
+        "fact": "For most people without diabetes, going without food doesn't cause low blood sugar, because the body keeps it in a healthy range; shakiness comes from hormones released to raise blood sugar.",
+        "cite": "cleveland-hypoglycemia"
+      },
+      {
+        "fact": "Stress hormones can cause a faster heartbeat, sweating and shaking, and facing a worry repeatedly gradually makes it smaller.",
+        "cite": "nhs-fears"
+      }
+    ],
+    "choice": [
+      {
+        "what": "The 'fasting push' is a share of adrenaline that grows as the liver store empties",
+        "why": "Several hormones work together to hold blood sugar steady; we lump them into one push."
+      },
+      {
+        "what": "Shaking only shows above a threshold",
+        "why": "Small amounts of adrenaline don't make hands visibly shake; this matches clue 4, where nerves alone gave only a slight tremble."
+      },
+      {
+        "what": "Blood sugar falls only from about 92 to 80 mg/dL",
+        "why": "In a healthy teen it stays in the normal range; the body works harder to keep it there."
+      },
+      {
+        "what": "The alarm eases by up to a fifth once the test is under way",
+        "why": "This matches clue 2 (it eased a little once he got going); how fast it eases differs between people."
+      }
+    ],
+    "illustrative": [
+      "Jamal's pulse numbers, his 14 hours without food and the 0–10 shaking scale are made up for a fictional story."
+    ],
+    "studying": "How much the hormones that guard blood sugar add to exam-day shakiness, compared with nerves alone, hasn't been measured precisely in teens."
+  },
+  "citations": [
+    {
+      "id": "cleveland-adrenaline",
+      "title": "Adrenaline",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/body/23038-adrenaline",
+      "verified": "2026-10-19",
+      "supports": "Adrenaline is released when you are suddenly scared or stressed; your heart beats faster, you breathe faster and digestion slows so muscles get more blood."
+    },
+    {
+      "id": "harvard-stress",
+      "title": "Understanding the stress response",
+      "publisher": "Harvard Health Publishing",
+      "year": "",
+      "url": "https://www.health.harvard.edu/staying-healthy/understanding-the-stress-response",
+      "verified": "2026-10-19",
+      "supports": "Adrenaline (epinephrine) from the adrenal glands makes the heart beat faster, breathing quicken, muscles tense and sweat appear, and releases blood sugar from storage; it happens before we are aware; the parasympathetic system calms the body after."
+    },
+    {
+      "id": "cleveland-glycogen",
+      "title": "Glycogen",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/articles/23509-glycogen",
+      "verified": "2026-10-19",
+      "supports": "The liver's glycogen store is mainly used to keep blood sugar steady; after 12–24 hours of fasting liver glycogen is almost used up; muscle glycogen fuels the muscles and repeated sprinting can lower it quickly."
+    },
+    {
+      "id": "cleveland-hypoglycemia",
+      "title": "Low Blood Sugar (Hypoglycemia)",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/diseases/11647-hypoglycemia-low-blood-sugar",
+      "verified": "2026-10-19",
+      "supports": "For most people without diabetes, fasting doesn't lead to low blood sugar because the body keeps glucose in a healthy range; early warning signs such as shakiness come from hormones the body releases to raise blood sugar."
+    },
+    {
+      "id": "nhs-fears",
+      "title": "Overcoming fears",
+      "publisher": "NHS",
+      "year": "",
+      "url": "https://www.nhs.uk/conditions/stress-anxiety-depression/overcoming-fears/",
+      "verified": "2026-10-19",
+      "supports": "When anxious or scared the body releases stress hormones such as adrenaline and cortisol, causing a faster heartbeat, sweating and shaking; slowly building up time in worrying situations gradually reduces anxiety."
+    },
+    {
+      "id": "aha-target",
+      "title": "Target Heart Rates Chart",
+      "publisher": "American Heart Association",
+      "year": "",
+      "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates",
+      "verified": "2026-10-19",
+      "supports": "A resting heart rate of 60–100 beats a minute is normal for most adults and very active people can be as low as 40; maximum heart rate is about 220 minus your age; vigorous activity is about 70–85% of maximum."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows adrenaline and heart rate rising with how big the moment feels",
-      "Shows fuel in the blood falling with hours since eating",
-      "Shows shaky hands adding up from both causes"
+      "Shows nerves and a long time without food each adding to the hormone push",
+      "Shows blood sugar staying in the normal range while the liver store runs down",
+      "Shows a meal removing one of the two causes"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Say anything about anxiety or any condition; this is everyday test nerves",
-      "Say what anyone should eat"
+      "Measure any real person — Jamal is fictional",
+      "Say anything about diabetes or any condition",
+      "Tell anyone what or when to eat"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Nerves before tests are normal. If worry or feeling unwell gets in the way often, talk to an adult you trust."
-  },
-  "sources": [
-    "CK-12 Life Science: endocrine system",
-    "CK-12 Life Science: digestive system and energy"
-  ]
+    "wellbeing": "Feeling shaky, dizzy or unwell at school is a reason to tell a teacher or the school nurse."
+  }
 }

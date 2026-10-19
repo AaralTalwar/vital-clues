@@ -1,76 +1,158 @@
 {
   "id": "skin-uv",
-  "name": "Skin & sunlight",
+  "version": 2,
+  "name": "Kai's skin in six hours of strong sun",
   "colour": "coral",
-  "inputs": {
-    "primary": {
+  "parameters": [
+    {
       "key": "H",
       "label": "Hours in strong sun",
+      "role": "primary",
       "min": 0,
       "max": 6,
       "step": 0.5,
+      "default": 6,
       "unit": "h",
       "ticks": [
         "none",
         "3 h",
         "6 h"
-      ]
+      ],
+      "explain": "UV dose adds up with every hour in the sun — a dose is the UV strength multiplied by the time.",
+      "basis": "source",
+      "cite": "cie-sed"
     },
-    "secondary": {
-      "key": "P",
-      "label": "Protection",
-      "min": 0,
-      "max": 2,
+    {
+      "key": "S",
+      "label": "Sunscreen",
+      "role": "bubble",
+      "min": 1,
+      "max": 50,
       "step": 1,
-      "default": 0,
-      "ticks": [
-        "none",
-        "shirt or shade half the time",
-        "shade + sunscreen"
-      ]
+      "default": 1,
+      "options": [
+        {
+          "value": 1,
+          "label": "none"
+        },
+        {
+          "value": 15,
+          "label": "SPF 15"
+        },
+        {
+          "value": 30,
+          "label": "SPF 30"
+        },
+        {
+          "value": 50,
+          "label": "SPF 50"
+        }
+      ],
+      "explain": "SPF tells you how much a sunscreen cuts the sunburn dose (when you use enough and reapply every two hours).",
+      "basis": "source",
+      "cite": "fda-spf"
+    },
+    {
+      "key": "U",
+      "label": "UV index",
+      "role": "factor",
+      "min": 1,
+      "max": 11,
+      "step": 1,
+      "default": 8,
+      "explain": "The UV index measures how strong the sun's burning rays are. At 8 or more, skin is harmed quickly.",
+      "basis": "source",
+      "cite": "who-uvi"
+    },
+    {
+      "key": "K",
+      "label": "Skin type",
+      "role": "factor",
+      "min": 2,
+      "max": 8,
+      "step": 0.5,
+      "default": 2.5,
+      "options": [
+        {
+          "value": 2,
+          "label": "very fair — always burns"
+        },
+        {
+          "value": 2.5,
+          "label": "fair — burns, then tans a little"
+        },
+        {
+          "value": 3.5,
+          "label": "light-medium — burns sometimes"
+        },
+        {
+          "value": 5,
+          "label": "medium-brown — rarely burns"
+        },
+        {
+          "value": 8,
+          "label": "dark — very rarely burns"
+        }
+      ],
+      "explain": "Fair skin burns more easily, but even dark skin can burn.",
+      "basis": "source",
+      "cite": "mp-sunburn"
     }
-  },
-  "constants": {
-    "uv": 8
-  },
+  ],
   "outputs": [
     {
       "key": "E",
-      "label": "UV energy reaching skin",
-      "unit": "units",
+      "label": "Sunburn dose on his skin",
+      "unit": "SED",
       "colour": "amber",
       "decimals": 0
     },
     {
+      "key": "X",
+      "label": "Times over his burn threshold",
+      "unit": "×",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
       "key": "B",
-      "label": "Skin redness",
+      "label": "Skin redness by bedtime",
       "unit": "0–10",
       "colour": "coral",
       "decimals": 1
     },
     {
+      "key": "Tm",
+      "label": "Time until he'd start to turn pink",
+      "unit": "min",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
       "key": "M",
-      "label": "Melanin response",
+      "label": "Tan in 2–3 days",
       "colour": "purple",
       "bands": [
         {
-          "upTo": 7.9,
-          "text": "starting"
+          "upTo": 0.99,
+          "text": "none"
         },
         {
-          "upTo": 19.9,
-          "text": "building"
+          "upTo": 3,
+          "text": "slightly darker"
         },
         {
-          "text": "strong"
+          "text": "noticeably darker, after the red"
         }
       ]
     }
   ],
   "rules": {
-    "E": "uv * H * (1 - 0.45 * P)",
-    "B": "clamp((uv * H * (1 - 0.45 * P) - 18) / 2.4, 0, 10)",
-    "M": "uv * H * (1 - 0.45 * P)"
+    "E": "0.9 * U * H / S",
+    "X": "0.9 * U * H / S / K",
+    "B": "10 * (1 - pow(0.5, max(0, 0.9 * U * H / S / K - 0.5) / 1.5))",
+    "Tm": "60 * K * S / (0.9 * U)",
+    "M": "0.9 * U * H / S / K"
   },
   "chart": {
     "x": "H",
@@ -82,7 +164,7 @@
   },
   "overlay": {
     "base": "torso",
-    "caption": "UV light → skin cells stressed → redness now, melanin later",
+    "caption": "UV dose adds up → skin cells damaged → red hours later → darker days later",
     "parts": [
       {
         "shape": "sun",
@@ -105,29 +187,154 @@
         "colour": "#6C4AB6",
         "anim": {
           "type": "count",
-          "output": "M",
+          "output": "X",
           "min": 0,
-          "max": 30
+          "max": 6
         }
       }
     ]
   },
+  "explain": {
+    "summary": "Sunlight carries invisible UV rays that damage skin cells. What matters is the dose — how strong the UV is times how long Kai is in it. Once the dose passes his skin's burn threshold, the skin turns red a few hours later. A few days after that it makes extra melanin, the pigment that filters UV, so his shoulders end up darker.",
+    "rules": [
+      "UV dose = UV index × hours (1 UV-index hour ≈ 0.9 SED, a standard sunburn dose).",
+      "Sunscreen divides the dose by its SPF — if enough is used and it's reapplied.",
+      "Fair skin needs a smaller dose to burn than darker skin.",
+      "The more times over the threshold, the redder the skin — up to a maximum.",
+      "Extra melanin (a tan) appears 2–3 days after the damage."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "One UV-index unit is 25 mW/m² of sunburn-weighted UV (the index is that UV multiplied by 40 m²/W).",
+        "cite": "hko-uvi"
+      },
+      {
+        "fact": "1 SED (standard erythema dose) is a sunburn-weighted UV dose of 100 J/m²; the dose that turns skin red depends on skin pigment.",
+        "cite": "cie-sed"
+      },
+      {
+        "fact": "The higher the UV index, the less time it takes for harm; at 8 and above you should avoid midday sun.",
+        "cite": "who-uvi"
+      },
+      {
+        "fact": "Sunburn's first signs may take a few hours, the full effect up to 24 hours; peeling comes several days later; fair skin burns more easily, and a very light-skinned person can burn in under 15 minutes of midday sun.",
+        "cite": "mp-sunburn"
+      },
+      {
+        "fact": "SPF measures protection against sunburn and relates to the amount of sun, not the time; reapply at least every two hours.",
+        "cite": "fda-spf"
+      },
+      {
+        "fact": "UV rays damage skin cells.",
+        "cite": "cdc-sun"
+      },
+      {
+        "fact": "Delayed tanning appears 2–3 days after UV damage, and melanin filters UV.",
+        "cite": "rsc-tan"
+      }
+    ],
+    "choice": [
+      {
+        "what": "1 UV-index hour = 0.9 SED",
+        "why": "25 mW/m² for 3,600 seconds is 90 J/m², and 100 J/m² is 1 SED. Real UV rises and falls through the day; we hold it steady."
+      },
+      {
+        "what": "Burn thresholds of 2–8 SED by skin type",
+        "why": "Chosen so a very fair person burns in about 15 minutes of strong midday sun, as MedlinePlus describes, and darker skin needs more. Real thresholds vary from person to person."
+      },
+      {
+        "what": "Sunscreen divides the dose by its SPF",
+        "why": "That's what SPF means when the amount the label asks for is used. Most people use less, so real protection is usually lower."
+      },
+      {
+        "what": "Redness levels off at 10",
+        "why": "Beyond a few times the threshold the burn is already severe; the 0–10 scale stops there."
+      }
+    ],
+    "illustrative": [
+      "Kai's six hours, UV index 8 and 'fair, burns then tans' skin are made up for a fictional story.",
+      "The 0–10 redness scale is a teaching scale."
+    ]
+  },
+  "citations": [
+    {
+      "id": "hko-uvi",
+      "title": "Measurement of Ultraviolet (UV) Index",
+      "publisher": "Hong Kong Observatory",
+      "year": "",
+      "url": "https://www.hko.gov.hk/en/education/weather/sunshine-and-uv/00722-Measurement-of-Ultraviolet-Index.html",
+      "verified": "2026-10-19",
+      "supports": "The UV Index is the sunburn-weighted UV irradiance multiplied by a constant of 40 m²/W, so one UV-index unit is 25 mW/m² of sunburn-weighted UV."
+    },
+    {
+      "id": "cie-sed",
+      "title": "Standard Erythema Dose, a Review",
+      "publisher": "International Commission on Illumination (CIE)",
+      "year": "",
+      "url": "https://cie.co.at/publications/standard-erythema-dose-review",
+      "verified": "2026-10-19",
+      "supports": "1 SED (standard erythema dose) is a sunburn-weighted UV exposure of 100 J/m²; the dose that makes skin just turn red varies with pigmentation and previous exposure."
+    },
+    {
+      "id": "who-uvi",
+      "title": "Radiation: The ultraviolet (UV) index",
+      "publisher": "World Health Organization",
+      "year": "",
+      "url": "https://www.who.int/news-room/questions-and-answers/item/radiation-the-ultraviolet-(uv)-index",
+      "verified": "2026-10-19",
+      "supports": "The UV index measures the level of UV radiation; the higher it is, the greater the potential for skin damage and the less time it takes for harm; at 8 and above, avoid being outside at midday."
+    },
+    {
+      "id": "mp-sunburn",
+      "title": "Sunburn",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/003227.htm",
+      "verified": "2026-10-19",
+      "supports": "First signs may not appear for a few hours and the full effect can take 24 hours; pain is worst 6–48 hours after exposure; peeling comes several days later; fair skin burns more easily but dark skin can burn too; a very light-skinned person can burn in under 15 minutes of midday sun."
+    },
+    {
+      "id": "fda-spf",
+      "title": "Sun Protection: How to Help Protect Your Skin from the Sun",
+      "publisher": "U.S. Food and Drug Administration",
+      "year": "",
+      "url": "https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun",
+      "verified": "2026-10-19",
+      "supports": "SPF indicates sunburn (mainly UVB) protection and relates to the amount of sun exposure, not time; higher SPF (up to 50) gives more protection; use enough and reapply at least every two hours."
+    },
+    {
+      "id": "cdc-sun",
+      "title": "Sun Safety",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://www.cdc.gov/skin-cancer/sun-safety/index.html",
+      "verified": "2026-10-19",
+      "supports": "UV rays can damage skin cells; use broad-spectrum SPF 15+ and reapply after 2 hours or after swimming or sweating; UV is strongest 10 a.m.–4 p.m. daylight saving time."
+    },
+    {
+      "id": "rsc-tan",
+      "title": "Photoprotection conferred by low level summer sunlight exposures against pro-inflammatory UVR insult",
+      "publisher": "Royal Society of Chemistry (Photochemical & Photobiological Sciences)",
+      "year": "2020",
+      "url": "https://pubs.rsc.org/en/content/articlehtml/2020/pp/c9pp00452a",
+      "verified": "2026-10-19",
+      "supports": "States that the pigmentation in delayed tanning develops 2–3 days after UV-induced DNA damage, and that melanin acts as a broad filter reducing UV penetration."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows UV energy adding up with time in the sun",
-      "Shows redness appearing only once a threshold dose is passed, then growing quickly",
-      "Shows the skin's slower melanin response starting to build"
+      "Shows UV dose as strength × time",
+      "Shows sunscreen and skin type changing how much dose it takes to burn",
+      "Shows redness growing with the dose, and a tan days later"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Account for skin tone, time of day, altitude, water or clouds",
-      "Give medical advice about sunburn"
+      "Measure any real person's skin",
+      "Include clouds, reflection from water or sand, or UV changing through the day",
+      "Show long-term effects such as skin cancer risk"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Blistering, fever or feeling sick after sun is a reason to tell an adult."
-  },
-  "sources": [
-    "CK-12 Life Science: integumentary system",
-    "US EPA SunWise: UV Index for students"
-  ]
+  }
 }

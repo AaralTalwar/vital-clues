@@ -1,31 +1,268 @@
 {
   "id": "motion-conflict",
-  "name": "Balance & motion",
+  "version": 2,
+  "name": "Isabel's eyes and inner ear on a winding road",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "R", "label": "Minutes reading on a winding road", "min": 0, "max": 40, "step": 2, "unit": "min", "ticks": ["start", "20 min", "40 min"] },
-    "secondary": { "key": "L", "label": "How much she looks out the window", "min": 0, "max": 10, "step": 1, "default": 0, "ticks": ["never", "sometimes", "the whole time"] }
-  },
+  "parameters": [
+    {
+      "key": "R",
+      "label": "Minutes reading",
+      "role": "primary",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 20,
+      "unit": "min",
+      "ticks": [
+        "start",
+        "20 min",
+        "40 min"
+      ],
+      "explain": "The mismatch adds up over time: a short read may be fine, a long one is not.",
+      "basis": "choice"
+    },
+    {
+      "key": "L",
+      "label": "Time looking out the window",
+      "role": "bubble",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0,
+      "ticks": [
+        "never",
+        "half the time",
+        "the whole time"
+      ],
+      "explain": "When the eyes can see the motion, they agree with the inner ear and the mismatch shrinks.",
+      "basis": "source",
+      "cite": "mp-motion"
+    },
+    {
+      "key": "Wd",
+      "label": "Road",
+      "role": "bubble",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.1,
+          "label": "straight highway"
+        },
+        {
+          "value": 0.5,
+          "label": "gentle bends"
+        },
+        {
+          "value": 1,
+          "label": "winding mountain road"
+        }
+      ],
+      "explain": "Test the 'reading itself makes you sick' idea: on a straight highway the inner ear feels little motion, so reading causes almost no mismatch.",
+      "basis": "source",
+      "cite": "cdc-motion"
+    },
+    {
+      "key": "age",
+      "label": "Age",
+      "role": "factor",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "default": 13,
+      "unit": "years",
+      "explain": "Children are especially likely to get motion sickness.",
+      "basis": "source",
+      "cite": "cdc-motion"
+    },
+    {
+      "key": "seat",
+      "label": "Seat",
+      "role": "factor",
+      "min": 0.7,
+      "max": 1,
+      "step": 0.3,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.7,
+          "label": "front"
+        },
+        {
+          "value": 1,
+          "label": "back"
+        }
+      ],
+      "explain": "Sitting in the front lets the eyes see the road ahead.",
+      "basis": "source",
+      "cite": "nhs-motion"
+    }
+  ],
   "outputs": [
-    { "key": "M", "label": "Eyes vs inner ear mismatch", "unit": "0–10", "colour": "purple", "decimals": 0 },
-    { "key": "Q", "label": "Queasiness", "unit": "0–10", "colour": "coral", "decimals": 1 },
-    { "key": "F", "label": "She feels", "colour": "teal", "bands": [{ "upTo": 2, "text": "fine" }, { "upTo": 5, "text": "uneasy" }, { "text": "car-sick" }] }
+    {
+      "key": "Ie",
+      "label": "Motion the inner ear feels",
+      "unit": "0–10",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "M",
+      "label": "Eye–ear mismatch",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
+      "key": "Q",
+      "label": "Queasiness",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
+      "key": "Fe",
+      "label": "She feels",
+      "colour": "amber",
+      "bands": [
+        {
+          "upTo": 2,
+          "text": "fine"
+        },
+        {
+          "upTo": 5,
+          "text": "a bit off"
+        },
+        {
+          "text": "queasy"
+        }
+      ]
+    }
   ],
   "rules": {
-    "M": "10 - L",
-    "Q": "clamp((10 - L) * R / 40 * 0.9, 0, 10)",
-    "F": "clamp((10 - L) * R / 40 * 0.9, 0, 10)"
+    "Ie": "10 * Wd",
+    "M": "10 * Wd * (1 - L / 10)",
+    "Q": "clamp(10 * Wd * (1 - L / 10) * (1 - 0.04 * max(0, age - 12)) * seat * (1 - pow(0.5, R / 12)), 0, 10)",
+    "Fe": "clamp(10 * Wd * (1 - L / 10) * (1 - 0.04 * max(0, age - 12)) * seat * (1 - pow(0.5, R / 12)), 0, 10)"
   },
-  "chart": { "x": "R", "y": "Q", "xLabel": "minutes reading on a winding road", "yLabel": "queasiness (0–10)", "yMin": 0, "yMax": 10 },
+  "chart": {
+    "x": "R",
+    "y": "Q",
+    "xLabel": "minutes reading on a winding road",
+    "yLabel": "queasiness (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
   "overlay": {
     "base": "head",
     "caption": "eyes: 'we're still' · inner ear: 'we're turning' · brain: mixed signals → queasy",
     "parts": [
-      { "shape": "eye", "colour": "#16213E" },
-      { "shape": "innerEar", "colour": "#6C4AB6", "anim": { "type": "spin", "output": "M" } },
-      { "shape": "swirl", "colour": "#E4572E", "anim": { "type": "glow", "output": "Q", "min": 0, "max": 10 } }
+      {
+        "shape": "eye",
+        "colour": "#16213E"
+      },
+      {
+        "shape": "innerEar",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "spin",
+          "output": "Ie"
+        }
+      },
+      {
+        "shape": "swirl",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "glow",
+          "output": "Q",
+          "min": 0,
+          "max": 10
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Isabel's brain works out how she's moving from two reports. Her inner ear feels the car swaying through every bend, but her eyes, fixed on a still page, say she isn't moving. The brain gets mixed signals, and the longer the mismatch lasts, the queasier she feels. When she looks out at the road, her eyes see the motion too, the reports agree and the queasiness fades.",
+    "rules": [
+      "The inner ear feels more motion on a winding road than on a straight one.",
+      "Mismatch = motion the inner ear feels minus what the eyes can see.",
+      "Queasiness builds over the minutes the mismatch lasts.",
+      "Looking out the window or sitting in front shrinks the mismatch.",
+      "Younger children are a little more sensitive."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Motion sickness happens when the movement you see is different from what your inner ear senses.",
+        "cite": "cdc-motion"
+      },
+      {
+        "fact": "The brain senses movement from the inner ears, eyes, muscles and joints; mismatched signals cause motion sickness, and it's more common in children.",
+        "cite": "mp-motion"
+      },
+      {
+        "fact": "Looking out into the distance instead of reading can help.",
+        "cite": "mp-motion"
+      },
+      {
+        "fact": "Avoid reading; look at a fixed point such as the horizon and sit in the front of the car.",
+        "cite": "nhs-motion"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Queasiness builds with a half-time of 12 minutes",
+        "why": "Shows clue 2 (fine at first, queasy later) and fits clue 4 (fades within about ten minutes)."
+      },
+      {
+        "what": "Sensitivity drops 4% for each year over 12",
+        "why": "Sources say children are especially likely to get it but give no rate; this is our estimate."
+      },
+      {
+        "what": "The front seat cuts the mismatch by 30%",
+        "why": "Sitting in front helps; the size of the effect is our estimate."
+      },
+      {
+        "what": "Inner-ear motion on a straight highway is set to 1 out of 10",
+        "why": "Clue 2: an hour of reading on the highway caused no trouble."
+      }
+    ],
+    "illustrative": [
+      "Isabel's 13 years, 20 minutes of reading and the 0–10 scales are made up for a fictional story."
+    ]
+  },
+  "citations": [
+    {
+      "id": "cdc-motion",
+      "title": "Motion Sickness",
+      "publisher": "CDC Travelers' Health",
+      "year": "",
+      "url": "https://wwwnc.cdc.gov/travel/page/motion-sickness",
+      "verified": "2026-10-19",
+      "supports": "Motion sickness results when the movement you see is different from what your inner ear senses; anyone can get it, but children are especially vulnerable; focus on the horizon; in a car sit in the front."
+    },
+    {
+      "id": "mp-motion",
+      "title": "Motion Sickness",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://www.medlineplus.gov/motionsickness.html",
+      "verified": "2026-10-19",
+      "supports": "The brain senses movement from the inner ears, eyes, muscles and joints; when the signals don't match you can get motion sickness; it is more common in children; looking out into the distance instead of reading can help."
+    },
+    {
+      "id": "nhs-motion",
+      "title": "Motion sickness",
+      "publisher": "NHS",
+      "year": "",
+      "url": "https://www.nhs.uk/conditions/motion-sickness/",
+      "verified": "2026-10-19",
+      "supports": "The inner ear sends different signals to the brain from those the eyes are seeing, which makes you feel unwell; avoid reading; look straight ahead at a fixed point such as the horizon; sit in the front of a car; breathe fresh air."
+    }
+  ],
   "limits": {
     "does": [
       "Shows queasiness building when the eyes and the inner ear report different things",
@@ -39,6 +276,5 @@
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If you feel car-sick, tell the driver — stopping for fresh air and looking at the horizon helps."
-  },
-  "sources": ["NIH NIDCD: Balance and the inner ear (student overview)", "CK-12 Life Science: senses — balance"]
+  }
 }

@@ -45,13 +45,13 @@
       "title": "Worse on hard runs",
       "icon": "lungs",
       "colour": "teal",
-      "text": "On easy walks she sneezes a few times. On hard runs through the same park — breathing about 40 times a minute — she can't stop.",
+      "text": "On easy walks she sneezes a few times. On hard runs through the same park — breathing about 45 times a minute — she can't stop.",
       "shows": "the harder she breathes, the more air (and pollen) she pulls in",
       "visual": {
         "type": "bars",
-        "from": 14,
-        "to": 40,
-        "unit": "breaths/min, walking → hard run"
+        "from": 12,
+        "to": 78,
+        "unit": "litres of air breathed per minute, walking → hard run"
       },
       "pointsTo": "breathe"
     },
@@ -138,8 +138,7 @@
     }
   },
   "labDefaults": {
-    "primary": 8,
-    "secondary": 8
+    "primary": 8
   },
   "concepts": [
     {

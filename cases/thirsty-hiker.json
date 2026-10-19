@@ -35,9 +35,9 @@
       "shows": "a lot of water leaving her body as sweat",
       "visual": {
         "type": "bars",
-        "from": 0.5,
-        "to": 2.6,
-        "unit": "cups of sweat per hour"
+        "from": 1.9,
+        "to": 3.7,
+        "unit": "cups of sweat an hour, 70 °F → 92 °F"
       },
       "pointsTo": "sweat"
     },
@@ -133,8 +133,7 @@
     }
   },
   "labDefaults": {
-    "primary": 8,
-    "secondary": 1
+    "primary": 2
   },
   "concepts": [
     {

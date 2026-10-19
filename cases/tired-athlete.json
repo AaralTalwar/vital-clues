@@ -21,7 +21,7 @@
       "title": "Breathing fast",
       "icon": "lungs",
       "colour": "teal",
-      "text": "She is taking about 45 breaths a minute instead of her usual 14. She can only speak a few words at a time.",
+      "text": "She is taking about 45 breaths a minute instead of her usual 14. She can only say a few words at a time without pausing for breath.",
       "visual": {
         "type": "bars",
         "from": 14,
@@ -35,7 +35,7 @@
       "title": "Pounding heart",
       "icon": "heart",
       "colour": "coral",
-      "text": "Her pulse is about 170 beats a minute, compared with about 70 when she is resting. She can feel it in her chest.",
+      "text": "Her pulse is about 170 beats a minute, compared with about 70 when she is resting. She can feel it pounding in her chest.",
       "visual": {
         "type": "bars",
         "from": 70,
@@ -58,12 +58,12 @@
       "title": "Recovery",
       "icon": "clock",
       "colour": "purple",
-      "text": "Two minutes after stopping, her breathing and pulse are nearly back to normal. She can talk in full sentences again.",
+      "text": "One minute after stopping her pulse has already dropped by about 40 beats, and by two minutes she can talk in full sentences again. After about ten minutes she is close to her normal resting rate.",
       "visual": {
         "type": "bars",
-        "from": 45,
-        "to": 16,
-        "unit": "breaths/min, 2 min later"
+        "from": 173,
+        "to": 130,
+        "unit": "beats/min, at the finish → 1 min later"
       },
       "pointsTo": "stops"
     }
@@ -230,8 +230,7 @@
     }
   },
   "labDefaults": {
-    "primary": 7,
-    "secondary": 0
+    "primary": 8
   },
   "concepts": [
     {

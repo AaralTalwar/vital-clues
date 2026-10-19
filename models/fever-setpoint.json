@@ -1,47 +1,124 @@
 {
   "id": "fever-setpoint",
-  "name": "Immune system & fever",
+  "version": 2,
+  "name": "Tomás's brain thermostat during a fever",
   "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "G", "label": "How hard the immune system is fighting", "min": 0, "max": 10, "step": 1, "ticks": ["no germs", "fighting", "big fight"] },
-    "secondary": { "key": "H", "label": "Hours since the fight started", "min": 0, "max": 12, "step": 1, "default": 1, "unit": "h", "ticks": ["start", "6 h", "12 h"] }
-  },
+  "parameters": [
+    {
+      "key": "G", "label": "How hard his immune system is fighting", "role": "primary", "min": 0, "max": 10, "step": 1, "default": 7,
+      "ticks": ["no germs", "fighting", "big fight"],
+      "explain": "Fighting germs releases signals that raise the brain's temperature set point — the temperature the body tries to reach.",
+      "basis": "source", "cite": "statpearls-fever"
+    },
+    {
+      "key": "h", "label": "Hours since the fever started", "role": "bubble", "min": 0, "max": 8, "step": 0.5, "default": 1.5, "unit": "h",
+      "ticks": ["start", "4 h", "8 h"],
+      "explain": "The twist dial: early on, his body is below the new set point, so he feels cold and shivers. When the fever eases, his body is above it, so he feels hot and sweats.",
+      "basis": "choice"
+    },
+    {
+      "key": "layers", "label": "Blankets", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 2,
+      "options": [{ "value": 0, "label": "none" }, { "value": 1, "label": "one" }, { "value": 2, "label": "two" }],
+      "explain": "Test the 'blankets are overheating him' idea: blankets hold heat in, so he warms up to the set point faster — but they don't move the set point.",
+      "basis": "source", "cite": "medline-fever"
+    },
+    {
+      "key": "room", "label": "Room temperature", "role": "bubble", "min": 60, "max": 80, "step": 2, "default": 70, "unit": "°F",
+      "explain": "Test the 'the room is cold' idea: a cooler room adds a little shivering, but the fever comes from inside, not from the room.",
+      "basis": "choice"
+    },
+    {
+      "key": "Tn", "label": "His normal temperature", "role": "factor", "min": 97.8, "max": 99, "step": 0.2, "default": 98.6, "unit": "°F",
+      "explain": "Healthy people usually sit somewhere between about 97.8 °F and 99 °F.",
+      "basis": "source", "cite": "hopkins-vitals"
+    },
+    {
+      "key": "dur", "label": "Hours until the fever eases", "role": "factor", "min": 1, "max": 8, "step": 0.5, "default": 4, "unit": "h",
+      "explain": "When the immune signals fade, the set point drops back to normal and the body has to shed its extra heat.",
+      "basis": "illustrative"
+    }
+  ],
+  "constants": { "k": 0.45 },
   "outputs": [
-    { "key": "S", "label": "Brain's thermostat set to", "unit": "°F", "colour": "purple", "decimals": 1 },
+    { "key": "S", "label": "Brain's set point", "unit": "°F", "colour": "purple", "decimals": 1 },
     { "key": "T", "label": "Body temperature", "unit": "°F", "colour": "coral", "decimals": 1 },
     { "key": "V", "label": "Shivering", "unit": "0–10", "colour": "amber", "decimals": 0 },
-    { "key": "F", "label": "He feels", "colour": "blue", "bands": [{ "upTo": 0.3, "text": "warm" }, { "upTo": 1, "text": "chilly" }, { "text": "cold and shivery" }] }
+    { "key": "W", "label": "Sweating", "unit": "0–10", "colour": "blue", "decimals": 0 },
+    { "key": "F", "label": "He feels", "colour": "teal", "bands": [{ "upTo": -0.3, "text": "cold and shivery" }, { "upTo": -0.05, "text": "chilly" }, { "upTo": 0.15, "text": "about right" }, { "text": "hot and sweaty" }] }
   ],
   "rules": {
-    "S": "98.6 + 0.3 * G",
-    "T": "98.6 + 0.3 * G - 0.3 * G * pow(0.5, H / 1.5)",
-    "V": "round(clamp(0.3 * G * pow(0.5, H / 1.5) * 6, 0, 10))",
-    "F": "0.3 * G * pow(0.5, H / 1.5)"
+    "S": "Tn + k * G * (1 - pow(0.5, max(0, h) / 0.5)) * clamp((dur + 1 - h) / 1.5, 0, 1)",
+    "T": "Tn + k * G * (1 - pow(0.5, max(0, h - (1.2 - 0.25 * layers + 0.03 * (70 - room))) / 0.5)) * clamp((dur + 1 - (h - (1.2 - 0.25 * layers + 0.03 * (70 - room)))) / 1.5, 0, 1)",
+    "V": "round(clamp(12 * (1 - 0.1 * layers) * (k * G * (1 - pow(0.5, max(0, h) / 0.5)) * clamp((dur + 1 - h) / 1.5, 0, 1) - k * G * (1 - pow(0.5, max(0, h - (1.2 - 0.25 * layers + 0.03 * (70 - room))) / 0.5)) * clamp((dur + 1 - (h - (1.2 - 0.25 * layers + 0.03 * (70 - room)))) / 1.5, 0, 1)) + 0.15 * max(0, 70 - room), 0, 10))",
+    "W": "round(clamp(12 * (1 + 0.2 * layers) * (k * G * (1 - pow(0.5, max(0, h - (1.2 - 0.25 * layers + 0.03 * (70 - room))) / 0.5)) * clamp((dur + 1 - (h - (1.2 - 0.25 * layers + 0.03 * (70 - room)))) / 1.5, 0, 1) - k * G * (1 - pow(0.5, max(0, h) / 0.5)) * clamp((dur + 1 - h) / 1.5, 0, 1)), 0, 10))",
+    "F": "k * G * (1 - pow(0.5, max(0, h - (1.2 - 0.25 * layers + 0.03 * (70 - room))) / 0.5)) * clamp((dur + 1 - (h - (1.2 - 0.25 * layers + 0.03 * (70 - room)))) / 1.5, 0, 1) - k * G * (1 - pow(0.5, max(0, h) / 0.5)) * clamp((dur + 1 - h) / 1.5, 0, 1)"
   },
-  "chart": { "x": "G", "y": "T", "xLabel": "how hard the immune system is fighting", "yLabel": "body temperature (°F)", "yMin": 98, "yMax": 102 },
+  "chart": { "x": "G", "y": "T", "xLabel": "how hard his immune system is fighting", "yLabel": "body temperature (°F)", "yMin": 97, "yMax": 104 },
   "overlay": {
     "base": "torso",
-    "caption": "germs → immune system turns the brain's thermostat up → shiver to heat up",
+    "caption": "germs → immune signals turn the brain's thermostat up → shiver to heat up; thermostat down → sweat",
     "parts": [
-      { "shape": "germs", "colour": "#1B998B", "anim": { "type": "count", "output": "G", "min": 0, "max": 10 } },
-      { "shape": "core", "colour": "#E4572E", "anim": { "type": "glow", "output": "T", "min": 98.6, "max": 101.6 } },
+      { "shape": "germs", "colour": "#1B998B", "anim": { "type": "count", "output": "S", "min": 98.6, "max": 103 } },
+      { "shape": "core", "colour": "#E4572E", "anim": { "type": "glow", "output": "T", "min": 98.6, "max": 102 } },
       { "shape": "thermostat", "colour": "#6C4AB6" },
-      { "shape": "shiverMarks", "colour": "#F4A300", "anim": { "type": "shiver", "output": "V" } }
+      { "shape": "shiverMarks", "colour": "#F4A300", "anim": { "type": "shiver", "output": "V" } },
+      { "shape": "drops", "colour": "#2E86DE", "anim": { "type": "count", "output": "W", "min": 0, "max": 10 } }
     ]
   },
+  "explain": {
+    "summary": "When Tomás's immune system fights the germs from his cold, it sends signals that turn up his brain's thermostat. His body is now colder than the new setting, so he feels freezing and shivers to make heat — even though his forehead is hot. Hours later the fight eases, the thermostat drops back, and now his body is too warm, so he sweats.",
+    "rules": [
+      "The harder the immune system fights, the higher the brain's set point goes.",
+      "Body temperature follows the set point, but about an hour behind.",
+      "While body temperature is below the set point he feels cold and shivers.",
+      "When the set point drops back, body temperature is above it and he sweats.",
+      "Blankets and room temperature change how fast he warms or cools — not the set point."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "A fever happens when signalling chemicals (pyrogens) raise the body's temperature set point. A moderate fever is about 100.6–102.2 °F.", "cite": "statpearls-fever" },
+      { "fact": "In a fever, the body's thermostat resets at a higher temperature, mostly because of an infection.", "cite": "msd-fever" },
+      { "fact": "Chills are the body's way of raising its core temperature; shivering muscles contract and relax, which warms the body. Many people feel chilled when they have a fever.", "cite": "cleveland-chills" },
+      { "fact": "Fever is an important part of the body's defence against infection. Body temperature is usually highest in the evening, and someone with chills should not be bundled up.", "cite": "medline-fever" },
+      { "fact": "Normal body temperature in healthy adults is generally between 97.8 °F and 99 °F.", "cite": "hopkins-vitals" }
+    ],
+    "choice": [
+      { "what": "The set point rises 0.45 °F for each step of 'fight'", "why": "A fight of 7 gives a set point near 101.7 °F — a moderate fever — matching the 101 °F Tomás's thermometer reads as he is still warming up." },
+      { "what": "Body temperature lags the set point by about an hour", "why": "Warming takes time; the lag is what creates the cold, shivery phase. Blankets and a warm room shorten it." },
+      { "what": "Shivering and sweating depend on the gap between body temperature and set point", "why": "That's how a thermostat works: below the setting it heats, above the setting it cools." },
+      { "what": "A cooler room adds a little extra shivering", "why": "A cold room takes heat away faster, but it can't create a fever by itself." }
+    ],
+    "illustrative": [
+      "The 0–10 'fight' scale, the 0–10 shivering and sweating scales, and Tomás's four hours until the fever eases are teaching values.",
+      "Tomás is fictional; his normal temperature (98.6 °F) is a typical value."
+    ],
+    "studying": "Exactly how much a fever helps the body fight different germs is still being researched."
+  },
+  "citations": [
+    { "id": "statpearls-fever", "title": "Physiology, Fever (StatPearls)", "publisher": "NIH National Library of Medicine (NCBI Bookshelf)", "year": "", "url": "https://www.ncbi.nlm.nih.gov/books/NBK562334/", "verified": "2026-10-19",
+      "supports": "Fever occurs when endogenous or exogenous pyrogens raise the body's thermoregulatory set-point; moderate-grade fever is 38.1–39.0 °C (100.6–102.2 °F); rigors (involuntary muscle contractions) are a usual sign." },
+    { "id": "msd-fever", "title": "Fever in Adults (MSD Manual Consumer Version)", "publisher": "MSD Manuals", "year": "", "url": "https://www.msdmanuals.com/home/infections/biology-of-infectious-disease/fever-in-adults", "verified": "2026-10-19",
+      "supports": "Fever occurs when the body's thermostat, in the hypothalamus, resets at a higher temperature, primarily in response to an infection." },
+    { "id": "cleveland-chills", "title": "Chills", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/symptoms/21476-chills", "verified": "2026-10-19",
+      "supports": "Chills are your body's way of raising its core temperature; when you shiver your muscles relax and contract, which warms your body; chills and fever often go together and many people feel chilled with a fever." },
+    { "id": "medline-fever", "title": "Fever", "publisher": "MedlinePlus (U.S. National Library of Medicine)", "year": "", "url": "https://medlineplus.gov/ency/article/003090.htm", "verified": "2026-10-19",
+      "supports": "Fever is an important part of the body's defense against infection; normal temperature changes during the day and is usually highest in the evening; do not bundle up someone who has chills." },
+    { "id": "hopkins-vitals", "title": "Vital Signs (Body Temperature, Pulse Rate, Respiration Rate, Blood Pressure)", "publisher": "Johns Hopkins Medicine", "year": "", "url": "https://www.hopkinsmedicine.org/health/conditions-and-diseases/vital-signs-body-temperature-pulse-rate-respiration-rate-blood-pressure", "verified": "2026-10-19",
+      "supports": "Normal body temperature for healthy adults is generally between 97.8 °F (36.5 °C) and 99 °F (37.2 °C), varying with activity, food and time of day." }
+  ],
   "limits": {
     "does": [
-      "Shows the immune system raising the brain's temperature set point while it fights germs",
-      "Shows the body shivering to heat up until it reaches the new, higher set point",
-      "Shows the gap (and the shivering) shrinking over the first hours"
+      "Shows a fever as the brain's thermostat being turned up, not the body losing control",
+      "Shows why someone with a hot forehead can feel cold and shiver",
+      "Shows sweating when the fever eases and the thermostat goes back down"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Model high or dangerous fevers; it stops at about 101.6 °F",
-      "Say anything about what to do for a fever"
+      "Measure anyone's temperature or say what to do about a fever",
+      "Include high or dangerous fevers; the model stays in the moderate range",
+      "Model the germs themselves or how long a real cold lasts"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "A fever that is very high or lasts more than a couple of days is a reason to tell an adult."
-  },
-  "sources": ["CK-12 Life Science: immune system and homeostasis", "NIH MedlinePlus: Fever (overview for students and families)"]
+    "wellbeing": "A high fever, a fever that lasts more than a couple of days, or feeling very unwell is a reason to tell an adult."
+  }
 }

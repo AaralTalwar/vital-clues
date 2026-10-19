@@ -321,6 +321,7 @@
     <li><div><b>Run the body lab.</b> Slide the effort up and watch the body respond. Your sketch sits on top of the model.</div></li>
     <li><div><b>Explain it, then transfer it.</b> Write the mechanism in your own words, apply it to a new situation, and see exactly how your reasoning scored.</div></li>
   </ol>
+  <p class="small"><button class="btn-link" type="button" id="how-model">What is a model?</button></p>
   <button class="btn btn-primary btn-block" type="button" id="how-go">Let's go</button>
 </section>
 
@@ -405,14 +406,30 @@
 <!-- S6 body lab -->
 <section id="S6" hidden>
   <h2>Body lab</h2>
+  <div class="card model-card">
+    <h3>How this model works</h3>
+    <p id="model-summary"></p>
+    <details class="provenance">
+      <summary>The rules, and where they come from</summary>
+      <ul id="model-rules" class="model-rules"></ul>
+      <div id="model-provenance"></div>
+      <p class="small muted">Every model leaves things out on purpose — that's what makes it a model. <button class="btn-link" type="button" id="what-model-link">What is a model?</button></p>
+    </details>
+  </div>
   <div class="slider-block card">
     <label for="lab-primary"><span id="lab-primary-label">Input</span><span id="lab-primary-value"></span></label>
     <input type="range" id="lab-primary" min="0" max="10" step="1" value="7">
     <div class="ticks" id="lab-primary-ticks"></div>
-    <div id="lab-secondary-block" hidden style="margin-top:.8rem">
-      <label for="lab-secondary"><span id="lab-secondary-label">Second input</span><span id="lab-secondary-value"></span></label>
-      <input type="range" id="lab-secondary" min="0" max="10" step="1" value="0">
-      <div class="ticks" id="lab-secondary-ticks"></div>
+    <p class="dial-why small" id="lab-primary-why"></p>
+    <div id="lab-bubbles-block" class="bubbles-block">
+      <h3 class="bubbles-title">Try these dials</h3>
+      <div class="bubbles" id="lab-bubbles" role="group" aria-label="Extra dials"></div>
+      <div class="bubble-panel" id="lab-bubble-panel" hidden></div>
+    </div>
+    <div id="lab-factors-block" class="bubbles-block factors-block">
+      <div class="factors-head"><h3 class="bubbles-title" id="lab-factors-title">About the case</h3><button class="btn-link small" type="button" id="lab-factors-reset" hidden>Reset</button></div>
+      <div class="bubbles" id="lab-factors" role="group" aria-label="Case factors"></div>
+      <div class="bubble-panel" id="lab-factor-panel" hidden></div>
     </div>
   </div>
   <div class="lab-grid">
@@ -430,10 +447,41 @@
   </div>
   <div class="card">
     <h3>What the model shows</h3>
-    <p><span id="lab-sketch-note"></span> The solid line is the model.</p>
+    <p><span id="lab-sketch-note"></span> The solid line is the model at the current dial settings.</p>
     <p><b>Prediction score: <span id="lab-pred-score"></span></b><br><span class="small muted" id="lab-pred-rule"></span></p>
     <p class="illustrative">In this simplified model, numbers are illustrative, not measurements of a real person. <button class="btn-link" type="button" id="limits-link">Model limits</button></p>
   </div>
+</section>
+
+<!-- What is a model? -->
+<section id="S0m" hidden>
+  <h2>What is a model?</h2>
+  <p>A <b>model</b> is a simplified rule for how one thing changes when another thing changes. Scientists use models to explain what they see and to make predictions they can test.</p>
+  <div class="card">
+    <h3>A model is like a map</h3>
+    <p>A map of your town leaves out the trees, the cars and the colour of every door. That's what makes it useful: it keeps only what you need to find your way. A body model does the same. It keeps the few things that matter most for one question and leaves the rest out on purpose.</p>
+  </div>
+  <div class="card">
+    <h3>How to read one</h3>
+    <p>Our models are written as short formulas. For example:</p>
+    <p class="formula-example"><code>breathing = resting rate + extra breaths × effort</code></p>
+    <p>Read it out loud: “Breathing starts at the resting rate, and goes up by a set amount for each step of effort.” Every letter in a formula is a dial you can turn in the Body lab.</p>
+  </div>
+  <div class="card">
+    <h3>How our models were built</h3>
+    <ol class="model-steps">
+      <li><b>From sources.</b> Real measured facts fix where a curve starts and ends — like a typical resting heart rate, or the highest heart rate for someone's age. These come from health and science organisations, and each one links to where we found it.</li>
+      <li><b>Our choices.</b> Between those facts, we chose simple shapes — a straight line, a curve that levels off, a value that halves every so often. We say what we chose and why.</li>
+      <li><b>Illustrative.</b> Some numbers are made up to fit a fictional person. They show the idea, not a measurement.</li>
+    </ol>
+    <p>Look for these three labels under <b>Where this comes from</b> in every Body lab.</p>
+  </div>
+  <div class="card">
+    <h3>How a scientist would test a model</h3>
+    <p>Change one dial at a time and ask: does the model behave the way the real body does? If a real measurement disagrees with the model, the model is wrong — and gets improved. That's the scientific method, and it's how every model in medicine started.</p>
+  </div>
+  <p class="small muted">Every model is wrong in some way, because it leaves things out. A good model is one that is still useful.</p>
+  <button class="btn btn-primary btn-block" type="button" id="what-model-back">Back</button>
 </section>
 
 <!-- S7 explain it back -->

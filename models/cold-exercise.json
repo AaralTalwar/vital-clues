@@ -1,157 +1,132 @@
 {
   "id": "cold-exercise",
-  "name": "Cold water & working muscles",
+  "version": 2,
+  "name": "Mateo's heat balance in a winter pool",
   "colour": "blue",
-  "inputs": {
-    "primary": {
-      "key": "C",
-      "label": "How cold the water is",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "ticks": [
-        "warm pool",
-        "cool",
-        "cold pool"
-      ]
-    },
-    "secondary": {
-      "key": "E",
-      "label": "Swimming effort",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "default": 2,
-      "ticks": [
-        "floating",
-        "laps",
-        "sprints"
-      ]
-    }
-  },
-  "outputs": [
+  "parameters": [
     {
-      "key": "L",
-      "label": "Heat lost to the water",
-      "unit": "units/min",
-      "colour": "blue",
-      "decimals": 1
+      "key": "C", "label": "How cold the water is", "role": "primary", "min": 0, "max": 30, "step": 1, "default": 28,
+      "valueFormula": "86 - C", "unit": "°F",
+      "ticks": ["86 °F", "72 °F", "56 °F"],
+      "explain": "Water takes heat from the body up to 26 times faster than air at the same temperature — the colder the pool, the faster heat leaves.",
+      "basis": "source", "cite": "nws-coldwater"
     },
     {
-      "key": "M",
-      "label": "Heat made by muscles",
-      "unit": "units/min",
-      "colour": "amber",
-      "decimals": 1
+      "key": "where", "label": "Where he is", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "in the water" }, { "value": 1, "label": "wet on the bench" }, { "value": 2, "label": "dried off in a towel" }],
+      "explain": "Being wet in cold air chills the body too; drying off and covering up cuts the heat loss a lot.",
+      "basis": "source", "cite": "cc-hypothermia"
     },
     {
-      "key": "V",
-      "label": "Shivering",
-      "unit": "0–10",
-      "colour": "coral",
-      "decimals": 0
+      "key": "tm", "label": "Minutes there so far", "role": "bubble", "min": 0, "max": 30, "step": 2, "default": 10, "unit": "min",
+      "explain": "The body cools gradually, so shivering builds up over the first several minutes.",
+      "basis": "choice"
     },
     {
-      "key": "B",
-      "label": "Breathing rate",
-      "unit": "breaths/min",
-      "colour": "teal",
-      "decimals": 0
+      "key": "E", "label": "Swimming effort", "role": "bubble", "min": 0, "max": 10, "step": 1, "default": 2,
+      "ticks": ["floating", "steady laps", "sprints"],
+      "explain": "Effort on the 0–10 scale health scientists use: 5–6 moderate, 7–8 vigorous, 10 all-out.",
+      "basis": "source", "cite": "cdc-intensity"
     },
     {
-      "key": "K",
-      "label": "Heat balance",
-      "colour": "purple",
-      "bands": [
-        {
-          "upTo": -2,
-          "text": "losing heat"
-        },
-        {
-          "upTo": 1,
-          "text": "about even"
-        },
-        {
-          "text": "making extra heat"
-        }
-      ]
+      "key": "stroke", "label": "Stroke", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "kicking only" }, { "value": 1, "label": "full stroke, arms and legs" }],
+      "explain": "The more muscles move, the more heat they make — arms and legs together make more than legs alone.",
+      "basis": "source", "cite": "conv-shiver"
+    },
+    {
+      "key": "ins", "label": "Build", "role": "factor", "min": 0.8, "max": 1.2, "step": 0.2, "default": 1,
+      "options": [{ "value": 1.2, "label": "slim" }, { "value": 1, "label": "average" }, { "value": 0.8, "label": "sturdier" }],
+      "explain": "A thicker layer under the skin slows heat escaping; slim swimmers lose heat a little faster.",
+      "basis": "choice"
+    },
+    {
+      "key": "Ta", "label": "Air temperature on deck", "role": "factor", "min": 30, "max": 80, "step": 5, "default": 45, "unit": "°F",
+      "explain": "Cold air chills wet skin on the bench, and the head and arms each time they leave the water.",
+      "basis": "source", "cite": "cc-hypothermia"
     }
   ],
+  "outputs": [
+    { "key": "L", "label": "Heat lost", "unit": "units/min", "colour": "blue", "decimals": 1 },
+    { "key": "M", "label": "Heat made by muscles", "unit": "units/min", "colour": "amber", "decimals": 1 },
+    { "key": "V", "label": "Shivering", "unit": "0–10", "colour": "coral", "decimals": 0 },
+    { "key": "B", "label": "Breathing rate", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
+    { "key": "S", "label": "Fingers and lips", "colour": "blue", "bands": [{ "upTo": 3, "text": "pink" }, { "upTo": 7, "text": "pale" }, { "text": "white fingers, blue lips" }] },
+    { "key": "K", "label": "Heat balance", "colour": "purple", "bands": [{ "upTo": -2, "text": "losing heat" }, { "upTo": 1, "text": "about even" }, { "text": "making extra heat — face flushed" }] }
+  ],
   "rules": {
-    "L": "2 + 1.0 * C",
-    "M": "1 + 0.9 * E",
-    "V": "round(clamp((2 + C) - (1 + 0.9 * E) - 1, 0, 10))",
-    "B": "12 + 3.5 * E",
-    "K": "(1 + 0.9 * E) - (2 + C)"
+    "L": "ins * (clamp(1 - where, 0, 1) * ((91 - (86 - C)) / 3 + (91 - Ta) / 40) + clamp(1 - abs(where - 1), 0, 1) * (91 - Ta) / 4 + clamp(where - 1, 0, 1) * (91 - Ta) / 14)",
+    "M": "1.2 + clamp(1 - where, 0, 1) * 16 * (E / 10) * (0.5 + 0.5 * stroke)",
+    "V": "round(clamp((ins * (clamp(1 - where, 0, 1) * ((91 - (86 - C)) / 3 + (91 - Ta) / 40) + clamp(1 - abs(where - 1), 0, 1) * (91 - Ta) / 4 + clamp(where - 1, 0, 1) * (91 - Ta) / 14) - (1.2 + clamp(1 - where, 0, 1) * 16 * (E / 10) * (0.5 + 0.5 * stroke)) - 2) * 1.1 * min(1, (tm + 2) / 12), 0, 10))",
+    "B": "14 + clamp(1 - where, 0, 1) * 32 * pow(E / 10, 1.3)",
+    "S": "ins * (clamp(1 - where, 0, 1) * ((91 - (86 - C)) / 3 + (91 - Ta) / 40) + clamp(1 - abs(where - 1), 0, 1) * (91 - Ta) / 4 + clamp(where - 1, 0, 1) * (91 - Ta) / 14) - (1.2 + clamp(1 - where, 0, 1) * 16 * (E / 10) * (0.5 + 0.5 * stroke))",
+    "K": "(1.2 + clamp(1 - where, 0, 1) * 16 * (E / 10) * (0.5 + 0.5 * stroke)) - ins * (clamp(1 - where, 0, 1) * ((91 - (86 - C)) / 3 + (91 - Ta) / 40) + clamp(1 - abs(where - 1), 0, 1) * (91 - Ta) / 4 + clamp(where - 1, 0, 1) * (91 - Ta) / 14)"
   },
-  "chart": {
-    "x": "C",
-    "y": "V",
-    "xLabel": "colder water →",
-    "yLabel": "shivering (0–10)",
-    "yMin": 0,
-    "yMax": 10
-  },
+  "chart": { "x": "C", "y": "V", "xLabel": "colder water →", "yLabel": "shivering (0–10)", "yMin": 0, "yMax": 10 },
   "overlay": {
     "base": "torso",
     "caption": "cold water takes heat · working muscles make heat · shivering fills the gap",
     "parts": [
-      {
-        "shape": "skin",
-        "colour": "#C9D3E6",
-        "anim": {
-          "type": "shift",
-          "output": "V",
-          "min": 0,
-          "max": 10,
-          "from": "#F7F9FD",
-          "to": "#C9D3E6"
-        }
-      },
-      {
-        "shape": "legs",
-        "colour": "#F4A300",
-        "anim": {
-          "type": "glow",
-          "output": "M",
-          "min": 1,
-          "max": 10
-        }
-      },
-      {
-        "shape": "lungs",
-        "colour": "#1B998B",
-        "anim": {
-          "type": "breathe",
-          "output": "B"
-        }
-      },
-      {
-        "shape": "shiverMarks",
-        "colour": "#2E86DE",
-        "anim": {
-          "type": "shiver",
-          "output": "V"
-        }
-      }
+      { "shape": "skin", "colour": "#C9D3E6", "anim": { "type": "shift", "output": "V", "min": 0, "max": 10, "from": "#F7F9FD", "to": "#C9D3E6" } },
+      { "shape": "legs", "colour": "#F4A300", "anim": { "type": "glow", "output": "M", "min": 1, "max": 17 } },
+      { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "B" } },
+      { "shape": "shiverMarks", "colour": "#2E86DE", "anim": { "type": "shiver", "output": "V" } }
     ]
   },
+  "explain": {
+    "summary": "Mateo's temperature is a balance. The 58 °F water pulls heat out of him the whole time — far faster than air would. Working muscles make heat. In slow kicking drills they make little, so heat loss wins and he shivers to make up the gap. Sitting wet on the bench they make almost none. In the sprint set his muscles make more heat than the water takes, so the shivering stops and his face flushes.",
+    "rules": [
+      "Heat lost grows with how far the water is below body temperature; wet skin in cold air loses heat too.",
+      "Heat made by muscles grows with effort, and more with a full stroke than kicking alone.",
+      "Shivering switches on when heat lost is clearly bigger than heat made, and builds over the first minutes.",
+      "Drying off in a towel cuts heat loss to a fraction.",
+      "Breathing rises from about 14 to about 46 a minute as effort goes up."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Water conducts body heat away up to 26 times faster than air of the same temperature.", "cite": "nws-coldwater" },
+      { "fact": "Cold, wet or windy conditions can make the body lose more heat than it generates; the chill can come from being wet or in cold water. Shivering and chattering teeth are early signs.", "cite": "cc-hypothermia" },
+      { "fact": "Our bodies constantly lose heat; moving muscles generate heat, and the more they move the more heat they make. Shivering is rapid, repeated muscle contractions that release heat.", "cite": "conv-shiver" },
+      { "fact": "Effort is rated 0–10: 5–6 is moderate and 7–8 is vigorous.", "cite": "cdc-intensity" },
+      { "fact": "We breathe about 15 times a minute at rest and up to about 40–60 times a minute during exercise.", "cite": "elf-exercise" }
+    ],
+    "choice": [
+      { "what": "Heat lost in water grows in a straight line with the gap below 91 °F (skin temperature)", "why": "Heat flows faster across a bigger temperature gap; a straight line is the simplest version." },
+      { "what": "Sitting wet on the bench loses about as much heat as the slow drills", "why": "Water evaporating from wet skin takes heat, and there's no muscle heat at all. The size is a teaching value." },
+      { "what": "Muscle heat rises from 1.2 at rest to about 17 units at an all-out full stroke", "why": "Hard exercise makes many times more heat than resting; the exact ratio varies between people." },
+      { "what": "Shivering builds up over the first 10 minutes", "why": "Bodies cool gradually rather than all at once." },
+      { "what": "Build changes heat loss by 20% either way", "why": "The insulating layer under the skin differs between people; the size is illustrative." }
+    ],
+    "illustrative": [
+      "Mateo's 58 °F pool, 45 °F deck and the effort of the drills and sprints are made up for a fictional story.",
+      "Heat units and the 0–10 shivering scale are teaching scales."
+    ]
+  },
+  "citations": [
+    { "id": "nws-coldwater", "title": "The Hazards of Cold Water Boating", "publisher": "National Weather Service (NOAA)", "year": "", "url": "https://www.weather.gov/car/TheHazardsofcoldwaterboating", "verified": "2026-10-19",
+      "supports": "Water conducts body heat up to 26 times faster than air of the same temperature; cold water causes numbness and weakening muscles." },
+    { "id": "cc-hypothermia", "title": "Hypothermia (Low Body Temperature)", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/diseases/21164-hypothermia-low-body-temperature", "verified": "2026-10-19",
+      "supports": "Hypothermia follows exposure to cold, wet or windy conditions that make the body lose more heat than it generates; the chill can come from sweat, rain or being in cold water; shivering and chattering teeth are early signs." },
+    { "id": "conv-shiver", "title": "Curious Kids: why do we shiver when we feel cold?", "publisher": "The Conversation", "year": "", "url": "https://theconversation.com/curious-kids-why-do-we-shiver-when-we-feel-cold-222863", "verified": "2026-10-19",
+      "supports": "Our bodies are constantly losing heat; moving our muscles generates heat, and the more they move the more heat they generate; shivering is rapid, repeated muscle contractions that release heat." },
+    { "id": "cdc-intensity", "title": "Measuring Physical Activity Intensity", "publisher": "CDC", "year": "", "url": "https://www.cdc.gov/physical-activity-basics/measuring/index.html", "verified": "2026-10-19",
+      "supports": "Relative intensity on a 0–10 scale: 5–6 is moderate and 7–8 is vigorous." },
+    { "id": "elf-exercise", "title": "Your lungs and exercise", "publisher": "European Lung Foundation", "year": "", "url": "https://europeanlung.org/en/information-hub/keeping-lungs-healthy/your-lungs-and-exercise", "verified": "2026-10-19",
+      "supports": "We breathe about 15 times a minute at rest and up to about 40–60 times a minute during exercise." }
+  ],
   "limits": {
     "does": [
       "Shows heat lost to cold water and heat made by working muscles as two separate flows",
       "Shows shivering switching on when heat lost is bigger than heat made",
-      "Shows hard swimming making enough heat to switch shivering off"
+      "Shows hard swimming making enough heat to switch shivering off, and the bench being the coldest place"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include body size, body fat, wetsuits or wind",
+      "Measure any real person — Mateo is fictional and the numbers are teaching values",
+      "Include wind, wetsuits or how long the whole practice lasts",
       "Model dangerous cold; it stays inside a normal practice"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If someone can't stop shivering or seems confused after a cold swim, get them warm and tell an adult right away."
-  },
-  "sources": [
-    "CK-12 Life Science: homeostasis and temperature regulation",
-    "Any middle-school life-science text: heat from muscle activity"
-  ]
+  }
 }

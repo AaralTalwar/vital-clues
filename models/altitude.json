@@ -1,47 +1,362 @@
 {
   "id": "altitude",
-  "name": "Oxygen & altitude",
+  "version": 2,
+  "name": "Noor's breathing and heart up a mountain",
   "colour": "blue",
-  "inputs": {
-    "primary":   { "key": "K", "label": "Altitude", "min": 0, "max": 12, "step": 1, "unit": "× 1,000 ft", "ticks": ["sea level", "6,000 ft", "12,000 ft"] },
-    "secondary": { "key": "D", "label": "Days at altitude", "min": 0, "max": 7, "step": 1, "default": 0, "unit": "days", "ticks": ["just arrived", "3 days", "a week"] }
+  "parameters": [
+    {
+      "key": "alt",
+      "label": "Altitude",
+      "role": "primary",
+      "min": 0,
+      "max": 12000,
+      "step": 500,
+      "default": 9000,
+      "unit": "ft",
+      "ticks": [
+        "sea level",
+        "6,000 ft",
+        "12,000 ft"
+      ],
+      "explain": "Higher up, air pressure is lower, so each breath brings in less oxygen — at 10,000 ft only about 69% as much as at sea level.",
+      "basis": "source",
+      "cite": "cdc-altitude"
+    },
+    {
+      "key": "days",
+      "label": "Days at altitude",
+      "role": "bubble",
+      "min": 0,
+      "max": 7,
+      "step": 1,
+      "default": 0,
+      "unit": "days",
+      "ticks": [
+        "just arrived",
+        "3 days",
+        "a week"
+      ],
+      "explain": "The body adjusts over the first 3–5 days: breathing steadily deepens and the blood gets more concentrated, so oxygen levels improve.",
+      "basis": "source",
+      "cite": "cdc-altitude"
+    },
+    {
+      "key": "e",
+      "label": "What she's doing",
+      "role": "bubble",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "sitting"
+        },
+        {
+          "value": 1,
+          "label": "walking"
+        },
+        {
+          "value": 2,
+          "label": "climbing stairs"
+        }
+      ],
+      "explain": "Moving makes muscles ask for more oxygen — and up high each breath has less to give.",
+      "basis": "choice"
+    },
+    {
+      "key": "airT",
+      "label": "Air temperature",
+      "role": "bubble",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "default": 25,
+      "unit": "°F",
+      "explain": "Test the 'it's the cold' idea: cold air makes her feel chilly, but it doesn't change how much oxygen each breath holds.",
+      "basis": "choice"
+    },
+    {
+      "key": "home",
+      "label": "Altitude of her home",
+      "role": "factor",
+      "min": 0,
+      "max": 6000,
+      "step": 500,
+      "default": 0,
+      "unit": "ft",
+      "explain": "Noor lives by the beach. Someone from a mountain town is already partly used to thinner air, so the same trip is a smaller change.",
+      "basis": "choice"
+    },
+    {
+      "key": "Hrest",
+      "label": "Resting heart rate at home",
+      "role": "factor",
+      "min": 50,
+      "max": 90,
+      "step": 5,
+      "default": 65,
+      "unit": "beats/min",
+      "explain": "Most people rest at 60–100 beats a minute; very active people can be lower.",
+      "basis": "source",
+      "cite": "aha-target"
+    },
+    {
+      "key": "Brest",
+      "label": "Resting breathing at home",
+      "role": "factor",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "default": 14,
+      "unit": "breaths/min",
+      "explain": "At rest most people take 12–16 breaths a minute.",
+      "basis": "source",
+      "cite": "hopkins-vitals"
+    }
+  ],
+  "constants": {
+    "half": 18600,
+    "acc": 1.5
   },
   "outputs": [
-    { "key": "O", "label": "Oxygen in each breath", "unit": "% of sea level", "colour": "blue", "decimals": 0 },
-    { "key": "B", "label": "Breathing rate at rest", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
-    { "key": "H", "label": "Heart rate at rest", "unit": "beats/min", "colour": "coral", "decimals": 0 },
-    { "key": "C", "label": "Red blood cells", "colour": "purple", "bands": [{ "upTo": 101, "text": "normal" }, { "upTo": 106, "text": "rising" }, { "text": "raised" }] }
+    {
+      "key": "Ox",
+      "label": "Oxygen in each breath",
+      "unit": "% of sea level",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "Sat",
+      "label": "Oxygen in her blood",
+      "unit": "%",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "B",
+      "label": "Breathing rate",
+      "unit": "breaths/min",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "H",
+      "label": "Heart rate",
+      "unit": "beats/min",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "Bl",
+      "label": "How her breathing feels",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 10,
+          "text": "comfortable"
+        },
+        {
+          "upTo": 15,
+          "text": "puffing a bit"
+        },
+        {
+          "text": "out of breath"
+        }
+      ]
+    },
+    {
+      "key": "Fe",
+      "label": "How the air feels",
+      "colour": "blue",
+      "bands": [
+        {
+          "upTo": 32,
+          "text": "cold"
+        },
+        {
+          "upTo": 55,
+          "text": "chilly"
+        },
+        {
+          "text": "comfortable"
+        }
+      ]
+    }
   ],
   "rules": {
-    "O": "100 - 3.3 * K",
-    "B": "12 + 1.0 * K * pow(0.5, D / 4)",
-    "H": "65 + 2.5 * K * pow(0.5, D / 4)",
-    "C": "100 + 1.2 * K * (1 - pow(0.5, D / 3))"
+    "Ox": "100 * pow(0.5, alt / half)",
+    "Sat": "98 - 30 * max(0, 1 - pow(0.5, (alt - home) / half)) * (1 - 0.55 * (1 - pow(0.5, days / acc)))",
+    "B": "Brest * (1 + max(0, 1 - pow(0.5, (alt - home) / half)) * (0.6 + 0.6 * (1 - pow(0.5, days / acc)))) + e * (3 + 1.0 * 30 * max(0, 1 - pow(0.5, (alt - home) / half)) * (1 - 0.55 * (1 - pow(0.5, days / acc))))",
+    "H": "Hrest * (1 + 0.8 * max(0, 1 - pow(0.5, (alt - home) / half)) * pow(0.5, days / acc)) + e * (20 + 1.5 * 30 * max(0, 1 - pow(0.5, (alt - home) / half)) * (1 - 0.55 * (1 - pow(0.5, days / acc))))",
+    "Bl": "e * 30 * max(0, 1 - pow(0.5, (alt - home) / half)) * (1 - 0.55 * (1 - pow(0.5, days / acc)))",
+    "Fe": "airT"
   },
-  "chart": { "x": "K", "y": "B", "xLabel": "altitude (thousands of feet)", "yLabel": "breaths per minute at rest", "yMin": 0, "yMax": 30 },
+  "chart": {
+    "x": "alt",
+    "y": "B",
+    "xLabel": "altitude (ft)",
+    "yLabel": "breaths per minute",
+    "yMin": 10,
+    "yMax": 30
+  },
   "overlay": {
     "base": "torso",
-    "caption": "less oxygen per breath → breathe and pump faster → make more red cells over days",
+    "caption": "less oxygen per breath → breathe and pump faster → over days, breathing deepens and blood carries more",
     "parts": [
-      { "shape": "mountain", "colour": "#2E86DE" },
-      { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "B" } },
-      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } },
-      { "shape": "bloodstream", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "C", "min": 100, "max": 112 } }
+      {
+        "shape": "mountain",
+        "colour": "#2E86DE"
+      },
+      {
+        "shape": "lungs",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "breathe",
+          "output": "B"
+        }
+      },
+      {
+        "shape": "heart",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "beat",
+          "output": "H"
+        }
+      },
+      {
+        "shape": "bloodstream",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "glow",
+          "output": "Sat",
+          "min": 85,
+          "max": 98
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "At 9,000 ft the air pressure is lower, so every breath Noor takes holds less oxygen than at the beach. On day one her body makes up for it quickly by breathing more and pumping her heart faster. Over the next few days slower changes take over: her breathing settles deeper and her blood becomes more concentrated, so the oxygen in her blood rises and her heart can slow back down.",
+    "rules": [
+      "Oxygen in each breath halves about every 18,600 ft of height — about 69% of sea level at 10,000 ft.",
+      "The bigger the change from her home altitude, the lower the oxygen in her blood on arrival.",
+      "On arrival her resting heart rate rises; over 3–5 days it falls back as her blood oxygen improves.",
+      "Her breathing rises with altitude and keeps deepening a little over the first days.",
+      "Moving (walking, stairs) adds breaths and beats — much more when blood oxygen is low."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "At about 10,000 ft (3,050 m), the oxygen pressure in each breath is only 69% of what it is at sea level.",
+        "cite": "cdc-altitude"
+      },
+      {
+        "fact": "At around 10,000 ft, arriving without time to adjust can lower blood oxygen saturation to 88–91%.",
+        "cite": "cdc-altitude"
+      },
+      {
+        "fact": "Adjusting to altitude happens over the first 3–5 days: breathing steadily increases, oxygen levels improve, and plasma volume falls so the blood's hemoglobin is more concentrated. Making new red blood cells plays no role in this early adjustment.",
+        "cite": "cdc-altitude"
+      },
+      {
+        "fact": "Travellers sleeping at 8,000 ft or higher without adjusting are at risk of altitude illness; headache is its main symptom.",
+        "cite": "cdc-altitude"
+      },
+      {
+        "fact": "Resting heart rate rose on arriving at a moderate altitude (2,200 m) and then gradually fell back over the next two weeks.",
+        "cite": "iat-hr-altitude"
+      },
+      {
+        "fact": "For most people, a resting heart rate of 60–100 beats a minute is normal.",
+        "cite": "aha-target"
+      },
+      {
+        "fact": "Normal breathing for a person at rest is 12–16 breaths a minute.",
+        "cite": "hopkins-vitals"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Oxygen per breath halves every 18,600 ft",
+        "why": "This simple curve gives 69% at 10,000 ft, matching the CDC figure. Real air pressure also changes a little with weather."
+      },
+      {
+        "what": "Blood oxygen on arrival falls by 30 points for every 100% of oxygen 'missing'",
+        "why": "This puts Noor at about 89% on arrival at 9,000 ft, close to the 88–91% CDC gives for 10,000 ft. Real people vary a lot."
+      },
+      {
+        "what": "The early fix halves its gap about every 1.5 days",
+        "why": "Most of the adjustment is done by day 3–5, matching the CDC timeline."
+      },
+      {
+        "what": "Heart rate rises 0.8% for every 1% of missing oxygen, then fades as she adjusts",
+        "why": "Gives Noor about 80 beats a minute at rest on arrival, back near 67 by day four. The rise and fall match the altitude study; the size is our estimate."
+      },
+      {
+        "what": "Air temperature only changes how the air feels",
+        "why": "Cold doesn't change how much oxygen each breath holds. Very cold air can tighten some people's airways, but that's outside this model."
+      }
+    ],
+    "illustrative": [
+      "Noor's home pulse (65) and breathing (14) are made up for a fictional character, chosen inside the normal ranges above.",
+      "The extra breaths and beats for walking and stairs are rough teaching values."
+    ],
+    "studying": "Why some people adjust to altitude quickly and others feel unwell for days is still being researched."
+  },
+  "citations": [
+    {
+      "id": "cdc-altitude",
+      "title": "High-Altitude Travel and Altitude Illness (CDC Yellow Book)",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://www.cdc.gov/yellow-book/hcp/environmental-hazards-risks/high-altitude-travel-and-altitude-illness.html",
+      "verified": "2026-10-19",
+      "supports": "At ~3,050 m inspired oxygen is 69% of sea level; acute exposure there can lower oxygen saturation to 88–91%; acclimatization over 3–5 days brings rising ventilation and lower plasma volume; red cell production plays no role early; risk above 8,000 ft; headache is the cardinal symptom."
+    },
+    {
+      "id": "iat-hr-altitude",
+      "title": "The use of heart rate for monitoring the acclimatization status to high altitude training in cross-country skiers (ECSS 2014 abstract)",
+      "publisher": "Institute for Applied Training Science, Leipzig (database record)",
+      "year": "2014",
+      "url": "https://www.iat.uni-leipzig.de/datenbanken/iks/dsv-biathlon/Record/4038375",
+      "verified": "2026-10-19",
+      "supports": "At 2,200 m, supine and standing heart rate rose significantly by day 2 compared with sea level, then gradually declined over two weeks; supine heart rate was lower on day 12 than day 2."
+    },
+    {
+      "id": "aha-target",
+      "title": "Target Heart Rates Chart",
+      "publisher": "American Heart Association",
+      "year": "",
+      "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates",
+      "verified": "2026-10-19",
+      "supports": "For most adults a resting heart rate between 60 and 100 beats per minute is normal; an athlete or more active person may be as low as 40."
+    },
+    {
+      "id": "hopkins-vitals",
+      "title": "Vital Signs (Body Temperature, Pulse Rate, Respiration Rate, Blood Pressure)",
+      "publisher": "Johns Hopkins Medicine",
+      "year": "",
+      "url": "https://www.hopkinsmedicine.org/health/conditions-and-diseases/vital-signs-body-temperature-pulse-rate-respiration-rate-blood-pressure",
+      "verified": "2026-10-19",
+      "supports": "Normal respiration rates for an adult at rest are 12 to 16 breaths per minute; normal pulse is 60 to 100 beats per minute."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows there is less oxygen in each breath higher up",
-      "Shows breathing and heart rate rising at first to make up for it",
-      "Shows the slower fix: more red blood cells over several days, which lets breathing settle"
+      "Shows how much less oxygen each breath holds as you go higher",
+      "Shows the quick fix on arrival (faster breathing and heart) and the slower fix over days",
+      "Shows that cold air and thin air are different things"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Model altitude sickness or anything dangerous; it stays at ski-resort heights",
-      "Account for fitness, age or exercise"
+      "Measure any real person — Noor is fictional and her numbers are estimates",
+      "Model altitude illness or anything dangerous; it stops at ski-resort heights",
+      "Include the new red blood cells that take weeks to build up"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "A headache or feeling sick on a mountain trip is a reason to rest, drink water and tell an adult."
-  },
-  "sources": ["CK-12 Life Science: respiratory and circulatory systems", "NASA / NOAA: how air pressure changes with altitude (student pages)"]
+    "wellbeing": "A headache, feeling sick or being very short of breath on a mountain trip is a reason to rest and tell an adult straight away."
+  }
 }

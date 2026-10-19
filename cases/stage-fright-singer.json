@@ -135,8 +135,7 @@
     }
   },
   "labDefaults": {
-    "primary": 9,
-    "secondary": 0
+    "primary": 9
   },
   "concepts": [
     {

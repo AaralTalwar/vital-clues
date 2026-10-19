@@ -1,45 +1,279 @@
 {
   "id": "temperature",
-  "name": "Skin & temperature",
+  "version": 2,
+  "name": "Jonah's body guarding its heat",
   "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "C", "label": "How cold the water is", "min": 0, "max": 10, "step": 1, "ticks": ["warm bath", "cool pool", "cold lake"] },
-    "secondary": { "key": "M", "label": "Minutes wrapped in a towel", "min": 0, "max": 10, "step": 1, "default": 0, "unit": "min", "ticks": ["still in water", "5 min", "10 min"] }
-  },
+  "parameters": [
+    {
+      "key": "k",
+      "label": "How cold the water is",
+      "role": "primary",
+      "min": 0,
+      "max": 35,
+      "step": 1,
+      "default": 27,
+      "unit": "°F",
+      "ticks": [
+        "warm bath",
+        "cool pool",
+        "cold lake"
+      ],
+      "valueFormula": "85 - k",
+      "explain": "Colder water pulls heat out of the body faster.",
+      "basis": "source",
+      "cite": "nws-coldwater"
+    },
+    {
+      "key": "M",
+      "label": "Minutes wrapped in a towel",
+      "role": "bubble",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 0,
+      "unit": "min",
+      "ticks": [
+        "still wet",
+        "5 min",
+        "10 min"
+      ],
+      "explain": "Out of the water and wrapped up, he stops losing heat so fast and the shivering fades.",
+      "basis": "choice"
+    },
+    {
+      "key": "mins",
+      "label": "Minutes in the water",
+      "role": "factor",
+      "min": 1,
+      "max": 30,
+      "step": 1,
+      "default": 10,
+      "unit": "min",
+      "explain": "The longer he stays in, the more heat the water takes.",
+      "basis": "choice"
+    },
+    {
+      "key": "air",
+      "label": "Air temperature",
+      "role": "factor",
+      "min": 55,
+      "max": 90,
+      "step": 5,
+      "default": 75,
+      "unit": "°F",
+      "explain": "Warm air helps him warm up afterwards — but water takes heat far faster than air.",
+      "basis": "source",
+      "cite": "nws-coldwater"
+    },
+    {
+      "key": "build",
+      "label": "Body build",
+      "role": "factor",
+      "min": 0.8,
+      "max": 1.2,
+      "step": 0.2,
+      "default": 1,
+      "options": [
+        {
+          "value": 1.2,
+          "label": "very lean"
+        },
+        {
+          "value": 1,
+          "label": "average"
+        },
+        {
+          "value": 0.8,
+          "label": "more padding"
+        }
+      ],
+      "explain": "Thinner people usually get cold faster than people with more insulation.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
-    { "key": "T", "label": "Water temperature", "unit": "°F", "colour": "blue", "decimals": 0 },
-    { "key": "V", "label": "Shivering", "unit": "0–10", "colour": "amber", "decimals": 0 },
-    { "key": "F", "label": "Blood flow to skin", "colour": "coral", "bands": [{ "upTo": 55, "text": "low" }, { "upTo": 80, "text": "reduced" }, { "text": "normal" }] },
-    { "key": "K", "label": "Core temperature", "colour": "teal", "text": "steady" }
+    {
+      "key": "T",
+      "label": "Water temperature",
+      "unit": "°F",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "V",
+      "label": "Shivering",
+      "unit": "0–10",
+      "colour": "amber",
+      "decimals": 0
+    },
+    {
+      "key": "F",
+      "label": "Blood flow to skin",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 55,
+          "text": "low"
+        },
+        {
+          "upTo": 80,
+          "text": "reduced"
+        },
+        {
+          "text": "normal"
+        }
+      ]
+    },
+    {
+      "key": "X",
+      "label": "Heat loss in water vs. this air",
+      "unit": "× faster",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "K",
+      "label": "Core temperature",
+      "colour": "teal",
+      "text": "about 98.6°F — steady"
+    }
   ],
   "rules": {
-    "T": "85 - 3.5 * C",
-    "V": "round(clamp(10 * (70 - (85 - 3.5 * C)) / 20, 0, 10) * pow(0.5, M / 2))",
-    "F": "100 - 60 * max(0, (75 - (85 - 3.5 * C)) / 25)"
+    "T": "85 - k",
+    "V": "round(clamp(10 * max(0, 70 - (85 - k)) / 20 * (1 - pow(0.5, mins / 4)) * build, 0, 10) * pow(0.5, M / (1.5 + (85 - air) / 10)))",
+    "F": "100 - 60 * min(1, max(0, 70 - (85 - k)) / 20 * (1 - pow(0.5, mins / 4)) * build) * pow(0.5, M / (1.5 + (85 - air) / 10))",
+    "X": "26 * max(1, 98.6 - (85 - k)) / max(1, 98.6 - air)"
   },
-  "chart": { "x": "C", "y": "V", "xLabel": "colder water →", "yLabel": "shivering (0–10)", "yMin": 0, "yMax": 10 },
+  "chart": {
+    "x": "k",
+    "y": "V",
+    "xLabel": "colder water →",
+    "yLabel": "shivering (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
   "overlay": {
     "base": "torso",
-    "caption": "cold takes heat → shiver to make heat → keep blood near the core",
+    "caption": "cold water takes heat → shiver to make heat → keep warm blood near the core",
     "parts": [
-      { "shape": "skin", "colour": "#E4572E", "anim": { "type": "fade", "output": "F", "min": 40, "max": 100, "from": "#C9D3E6", "to": "#E4572E" } },
-      { "shape": "core", "colour": "#E4572E" },
-      { "shape": "shiverMarks", "colour": "#F4A300", "anim": { "type": "shiver", "output": "V" } }
+      {
+        "shape": "skin",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "fade",
+          "output": "F",
+          "min": 40,
+          "max": 100,
+          "from": "#C9D3E6",
+          "to": "#E4572E"
+        }
+      },
+      {
+        "shape": "core",
+        "colour": "#E4572E"
+      },
+      {
+        "shape": "shiverMarks",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "shiver",
+          "output": "V"
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Water pulls heat out of Jonah's body many times faster than air at the same temperature, so a sunny day doesn't help him while he's in the lake. His body guards its core temperature two ways: muscles shiver to make heat, and blood is kept away from the skin so warm blood stays near his organs — that's why his lips and fingers look pale.",
+    "rules": [
+      "Shivering starts once the water is colder than about 70°F, and grows as it gets colder.",
+      "The longer he stays in, the more he cools; leaner bodies cool faster.",
+      "Blood flow to the skin drops as he cools, keeping his core steady.",
+      "Wrapped in a towel, shivering halves every couple of minutes — faster in warmer air."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Water conducts body heat away up to 26 times faster than air of the same temperature.",
+        "cite": "nws-coldwater"
+      },
+      {
+        "fact": "Shivering is muscles contracting and relaxing; this movement warms the body.",
+        "cite": "cc-chills"
+      },
+      {
+        "fact": "Normal body temperature is about 98.6°F, within a normal range of about 97–99°F.",
+        "cite": "mp-bodytemp"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Shivering starts below about 70°F water",
+        "why": "The real starting point differs with body size, how long you're in and how active you are; 70°F is a teaching value."
+      },
+      {
+        "what": "Cooling builds up over minutes, halving the gap every 4 minutes",
+        "why": "Bodies cool gradually, not instantly; this shows 'the longer you stay, the colder you get'."
+      },
+      {
+        "what": "Less blood to the skin is shown as a percentage",
+        "why": "Narrowing skin blood vessels in the cold is the body's heat-saving move; the exact amount isn't measured here."
+      },
+      {
+        "what": "Core temperature is shown as steady",
+        "why": "In a short swim the body protects its core; dangerous cooling is outside this model."
+      },
+      {
+        "what": "'Heat loss in water vs. this air' scales the 26× figure by the temperature gaps",
+        "why": "The 26× comparison is for water and air at the same temperature; we stretch it in proportion to how much colder than the body each one is."
+      }
+    ],
+    "illustrative": [
+      "Jonah's ten minutes, the 58°F lake, the 75°F air and his build are made up for a fictional story.",
+      "The 0–10 shivering scale is a teaching scale."
+    ]
+  },
+  "citations": [
+    {
+      "id": "nws-coldwater",
+      "title": "The Hazards of Cold Water Boating",
+      "publisher": "National Weather Service (NOAA)",
+      "year": "",
+      "url": "https://www.weather.gov/car/TheHazardsofcoldwaterboating",
+      "verified": "2026-10-19",
+      "supports": "Water conducts body heat away up to 26 times faster than air of the same temperature; cold water quickly makes hands and feet numb."
+    },
+    {
+      "id": "cc-chills",
+      "title": "Chills",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/symptoms/21476-chills",
+      "verified": "2026-10-19",
+      "supports": "Shivering makes your muscles contract and relax; this involuntary movement warms your body, and can happen when you are exposed to low temperatures."
+    },
+    {
+      "id": "mp-bodytemp",
+      "title": "Body temperature norms",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/001982.htm",
+      "verified": "2026-10-19",
+      "supports": "Average normal body temperature is generally accepted as 98.6°F (37°C), with a normal range of about 97°F to 99°F."
+    }
+  ],
   "limits": {
     "does": [
       "Shows shivering starting once the water is cold enough and growing as it gets colder",
       "Shows blood flow to the skin dropping so warm blood stays near the organs",
-      "Shows shivering fading once wrapped up (halving every 2 minutes)"
+      "Shows why warm air doesn't help much while you're in cold water"
     ],
     "doesnt": [
       "Measure any real person — the numbers are illustrative teaching values",
-      "Show core temperature changing: it is displayed as steady because the body guards it",
-      "Model dangerous cold; the model stops well short of it"
+      "Show core temperature dropping; dangerous cold is outside the model",
+      "Include wind, swimming effort or wet clothes"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If someone can't stop shivering or seems confused in the cold, get an adult right away."
-  },
-  "sources": ["CK-12 Life Science: integumentary system and homeostasis", "Any middle-school life-science text: thermoregulation"]
+  }
 }

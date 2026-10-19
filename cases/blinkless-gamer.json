@@ -8,60 +8,209 @@
   "minutes": 8,
   "level": "moderate",
   "reviewed": null,
-  "character": { "name": "Ravi", "age": 14 },
+  "character": {
+    "name": "Ravi",
+    "age": 14
+  },
   "briefing": "Ravi, 14, plays a strategy game for two hours straight. Afterwards his eyes sting, feel gritty, and then — strangely — start to water. On days he plays soccer outside for two hours instead, his eyes feel fine.",
   "question": "Why would staring at a game make his eyes sting — and then water?",
   "illustration": "gamer",
   "clues": [
-    { "id": 1, "title": "His sister counts blinks", "icon": "eye", "colour": "blue",
-      "text": "His sister counts his blinks as a joke: about 5 a minute while he's gaming, 16 a minute at dinner. He had no idea.",
-      "shows": "blinking dropping sharply while he concentrates", "visual": { "type": "bars", "from": 16, "to": 5, "unit": "blinks/min, dinner → gaming" }, "pointsTo": "blink" },
-    { "id": 2, "title": "Gritty and stinging", "icon": "screen", "colour": "coral",
+    {
+      "id": 1,
+      "title": "His sister counts blinks",
+      "icon": "eye",
+      "colour": "blue",
+      "text": "His sister counts his blinks as a joke: about 7 a minute while he's gaming, 15 a minute at dinner. He had no idea.",
+      "shows": "blinking dropping sharply while he concentrates",
+      "visual": {
+        "type": "bars",
+        "from": 15,
+        "to": 7,
+        "unit": "blinks/min, dinner → gaming"
+      },
+      "pointsTo": "blink"
+    },
+    {
+      "id": 2,
+      "title": "Gritty and stinging",
+      "icon": "screen",
+      "colour": "coral",
       "text": "After an hour his eyes feel sandy and sting. They look a little red.",
-      "shows": "the surface of the eye drying out", "visual": null, "pointsTo": "dry" },
-    { "id": 3, "title": "Then they water", "icon": "drop", "colour": "teal",
+      "shows": "the surface of the eye drying out",
+      "visual": null,
+      "pointsTo": "dry"
+    },
+    {
+      "id": 3,
+      "title": "Then they water",
+      "icon": "drop",
+      "colour": "teal",
       "text": "When he finally looks away and rubs his eyes, they suddenly fill with tears.",
-      "shows": "the eye flooding itself with tears to fix the dryness", "visual": null, "pointsTo": "tears" },
-    { "id": 4, "title": "Breaks help", "icon": "clock", "colour": "amber",
+      "shows": "the eye flooding itself with tears to fix the dryness",
+      "visual": null,
+      "pointsTo": "tears"
+    },
+    {
+      "id": 4,
+      "title": "Breaks help",
+      "icon": "clock",
+      "colour": "amber",
       "text": "His mom makes him look across the room for 20 seconds every 20 minutes. Same game, same screen — but his eyes barely sting.",
-      "shows": "short breaks letting blinking and tears catch up", "visual": null, "pointsTo": "break" }
+      "shows": "short breaks letting blinking and tears catch up",
+      "visual": null,
+      "pointsTo": "break"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "When he concentrates on the screen he blinks far less, so the thin film of tears on his eyes dries out and they sting; the watering afterwards is the eye catching up.", "best": true },
-    { "id": "B", "text": "The light from the screen is burning his eyes.", "flaw": "Screen light is far too weak to burn — and with breaks he looked at the very same screen just as long and his eyes barely stung." },
-    { "id": "C", "text": "His eyes water because he's upset about losing the game.", "flaw": "The stinging came first and happened win or lose; breaks fixed it without changing how the game went." },
-    { "id": "D", "text": "He needs glasses.", "flaw": "Needing glasses would make things blurry — and it wouldn't get better from looking across the room every 20 minutes." }
+    {
+      "id": "A",
+      "text": "When he concentrates on the screen he blinks far less, so the thin film of tears on his eyes dries out and they sting; the watering afterwards is the eye catching up.",
+      "best": true
+    },
+    {
+      "id": "B",
+      "text": "The light from the screen is burning his eyes.",
+      "flaw": "Screen light is far too weak to burn — and with breaks he looked at the very same screen just as long and his eyes barely stung."
+    },
+    {
+      "id": "C",
+      "text": "His eyes water because he's upset about losing the game.",
+      "flaw": "The stinging came first and happened win or lose; breaks fixed it without changing how the game went."
+    },
+    {
+      "id": "D",
+      "text": "He needs glasses.",
+      "flaw": "Needing glasses would make things blurry — and it wouldn't get better from looking across the room every 20 minutes."
+    }
   ],
   "evidence": {
-    "A": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "B": { "supports": [2], "doesntFit": [4] },
-    "C": { "supports": [], "doesntFit": [1, 4] },
-    "D": { "supports": [], "doesntFit": [4] }
+    "A": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "B": {
+      "supports": [
+        2
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        4
+      ]
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "K",
-    "prompt": "Ravi starts a long game. From the first minute to an hour in, what happens to how many times he blinks each minute?",
+    "prompt": "As Ravi concentrates harder on the game — from chatting with friends to an all-out boss fight — what happens to how many times he blinks each minute?",
     "expectedShape": "falls",
-    "second": { "question": "And how dry do his eyes get?", "options": ["up", "same", "down"], "answer": "up" }
+    "second": {
+      "question": "And how dry do his eyes get?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "up"
+    }
   },
-  "labDefaults": { "primary": 40, "secondary": 0 },
+  "labDefaults": {
+    "primary": 9
+  },
   "concepts": [
-    { "id": "blink", "label": "fewer blinks", "colour": "blue",
-      "synonyms": ["blink", "blinks", "blinking", "blinked", "blinkless"],
-      "hint": "What did his sister count?" },
-    { "id": "focus", "label": "concentrating on the screen", "colour": "purple",
-      "synonyms": ["focus", "focused", "focusing", "concentrating", "concentrate", "staring", "stare", "stares"],
-      "hint": "What was he doing that changed his blinking?" },
-    { "id": "tears", "label": "the tear film", "colour": "teal",
-      "synonyms": ["tears", "tear", "tear film", "moisture", "wet", "watery", "water"],
-      "hint": "What normally keeps the eye's surface wet?" },
-    { "id": "dry", "label": "the eye dries out", "colour": "coral",
-      "synonyms": ["dry", "dries", "dried", "drying", "dryness", "gritty", "sting", "stings", "stinging"],
-      "hint": "What happens to that film without blinks?" },
-    { "id": "break", "label": "breaks let it recover", "colour": "amber",
-      "synonyms": ["break", "breaks", "look away", "looking away", "rest", "pause", "pauses"],
-      "hint": "What fixed it without changing the game?" }
+    {
+      "id": "blink",
+      "label": "fewer blinks",
+      "colour": "blue",
+      "synonyms": [
+        "blink",
+        "blinks",
+        "blinking",
+        "blinked",
+        "blinkless"
+      ],
+      "hint": "What did his sister count?"
+    },
+    {
+      "id": "focus",
+      "label": "concentrating on the screen",
+      "colour": "purple",
+      "synonyms": [
+        "focus",
+        "focused",
+        "focusing",
+        "concentrating",
+        "concentrate",
+        "staring",
+        "stare",
+        "stares"
+      ],
+      "hint": "What was he doing that changed his blinking?"
+    },
+    {
+      "id": "tears",
+      "label": "the tear film",
+      "colour": "teal",
+      "synonyms": [
+        "tears",
+        "tear",
+        "tear film",
+        "moisture",
+        "wet",
+        "watery",
+        "water"
+      ],
+      "hint": "What normally keeps the eye's surface wet?"
+    },
+    {
+      "id": "dry",
+      "label": "the eye dries out",
+      "colour": "coral",
+      "synonyms": [
+        "dry",
+        "dries",
+        "dried",
+        "drying",
+        "dryness",
+        "gritty",
+        "sting",
+        "stings",
+        "stinging"
+      ],
+      "hint": "What happens to that film without blinks?"
+    },
+    {
+      "id": "break",
+      "label": "breaks let it recover",
+      "colour": "amber",
+      "synonyms": [
+        "break",
+        "breaks",
+        "look away",
+        "looking away",
+        "rest",
+        "pause",
+        "pauses"
+      ],
+      "hint": "What fixed it without changing the game?"
+    }
   ],
   "transfer": {
     "context": "Sofia, 15, spends an hour peering into a microscope in biology lab. Afterwards her eyes sting and feel dry.",

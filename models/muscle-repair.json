@@ -1,43 +1,258 @@
 {
   "id": "muscle-repair",
-  "name": "Muscles & repair",
+  "version": 2,
+  "name": "Marcus's muscles repairing",
   "colour": "amber",
-  "inputs": {
-    "primary":   { "key": "D", "label": "Days since the hard workout", "min": 0, "max": 7, "step": 1, "unit": "days", "ticks": ["workout day", "day 3", "day 7"] },
-    "secondary": { "key": "L", "label": "How hard the workout was", "min": 1, "max": 10, "step": 1, "default": 8, "ticks": ["light", "medium", "all-out"] }
-  },
+  "parameters": [
+    {
+      "key": "t",
+      "label": "Hours since the workout",
+      "role": "primary",
+      "min": 0,
+      "max": 96,
+      "step": 6,
+      "default": 48,
+      "unit": "h",
+      "ticks": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri"
+      ],
+      "explain": "Soreness isn't there at once: it builds over hours and is worst a day or two later.",
+      "basis": "source",
+      "cite": "cc-doms"
+    },
+    {
+      "key": "rep",
+      "label": "First time or repeat",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "first time"
+        },
+        {
+          "value": 1,
+          "label": "same workout, next week"
+        }
+      ],
+      "explain": "The first hard workout teaches the muscle to protect itself, so the same workout later causes much less soreness.",
+      "basis": "source",
+      "cite": "nosaka-rbe"
+    },
+    {
+      "key": "hard",
+      "label": "How hard the workout was",
+      "role": "factor",
+      "min": 0.4,
+      "max": 1,
+      "step": 0.3,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.4,
+          "label": "easy"
+        },
+        {
+          "value": 0.7,
+          "label": "medium"
+        },
+        {
+          "value": 1,
+          "label": "very hard"
+        }
+      ],
+      "explain": "Working muscles harder than they're used to causes more tiny tears.",
+      "basis": "source",
+      "cite": "cc-doms"
+    },
+    {
+      "key": "ecc",
+      "label": "Lowering movements",
+      "role": "factor",
+      "min": 0.6,
+      "max": 1,
+      "step": 0.4,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.6,
+          "label": "few (cycling)"
+        },
+        {
+          "value": 1,
+          "label": "lots (squats, lunges)"
+        }
+      ],
+      "explain": "Muscles lengthening under load — lowering into a squat, running downhill — cause the most soreness.",
+      "basis": "source",
+      "cite": "cc-doms"
+    }
+  ],
   "outputs": [
-    { "key": "S", "label": "Soreness", "unit": "0–10", "colour": "coral", "decimals": 1 },
-    { "key": "R", "label": "Repair under way", "unit": "% done", "colour": "teal", "decimals": 0 },
-    { "key": "P", "label": "Strength vs before", "unit": "%", "colour": "amber", "decimals": 0 }
+    {
+      "key": "S",
+      "label": "Soreness",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 1
+    },
+    {
+      "key": "R",
+      "label": "Repair under way",
+      "unit": "% done",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "W",
+      "label": "Feels like",
+      "colour": "purple",
+      "bands": [
+        {
+          "upTo": 1.5,
+          "text": "normal"
+        },
+        {
+          "upTo": 4.5,
+          "text": "a bit stiff"
+        },
+        {
+          "upTo": 7,
+          "text": "sore"
+        },
+        {
+          "text": "stairs are hard"
+        }
+      ]
+    }
   ],
   "rules": {
-    "S": "clamp(L * 0.9 * (D * pow(0.5, D / 1.4)) * 1.6, 0, 10)",
-    "R": "clamp(100 * (1 - pow(0.5, D / 1.5)), 0, 100)",
-    "P": "clamp(100 - 0.6 * L * pow(0.5, D / 1.2) + 0.4 * L * (1 - pow(0.5, D / 1.5)), 85, 110)"
+    "S": "clamp(8 * hard * ecc * (1 - 0.6 * rep) * (t * t * pow(0.5, t / 13.86)) / 217, 0, 10)",
+    "R": "100 * (1 - pow(0.5, t / 30))",
+    "W": "clamp(8 * hard * ecc * (1 - 0.6 * rep) * (t * t * pow(0.5, t / 13.86)) / 217, 0, 10)"
   },
-  "chart": { "x": "D", "y": "S", "xLabel": "days after the workout", "yLabel": "soreness (0–10)", "yMin": 0, "yMax": 10 },
+  "chart": {
+    "x": "t",
+    "y": "S",
+    "xLabel": "hours after the workout",
+    "yLabel": "soreness (0–10)",
+    "yMin": 0,
+    "yMax": 10
+  },
   "overlay": {
     "base": "arm",
-    "caption": "tiny tears → repair crews → slightly stronger fibres",
+    "caption": "tiny tears → repair over days → soreness peaks, then fades",
     "parts": [
-      { "shape": "musclesArm", "colour": "#F4A300", "anim": { "type": "shift", "output": "S", "min": 0, "max": 10, "from": "#F4A300", "to": "#E4572E" } },
-      { "shape": "fibres", "colour": "#1B998B", "anim": { "type": "count", "output": "R", "min": 0, "max": 100 } }
+      {
+        "shape": "musclesArm",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "shift",
+          "output": "S",
+          "min": 0,
+          "max": 10,
+          "from": "#F4A300",
+          "to": "#E4572E"
+        }
+      },
+      {
+        "shape": "fibres",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "count",
+          "output": "R",
+          "min": 0,
+          "max": 100
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Marcus worked his leg muscles harder than they were used to, which made tiny tears in the muscle fibres. Repairing them takes days, and the soreness builds slowly — fine on Monday night, worst around Wednesday, gone by the weekend. The first workout also teaches the muscle to protect itself, so the same workout next week hurts much less.",
+    "rules": [
+      "Soreness builds over the first day and peaks about 1–2 days after the workout.",
+      "It fades over the next few days and is nearly gone by day 5.",
+      "Harder workouts and lots of lowering movements make it stronger.",
+      "Doing the same workout again causes much less soreness."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Delayed soreness starts one to three days after a workout and builds over several hours; it rarely lasts more than five days.",
+        "cite": "cc-doms"
+      },
+      {
+        "fact": "It comes from tiny tears in muscle fibres when muscles are worked too hard, especially with a new workout.",
+        "cite": "cc-doms"
+      },
+      {
+        "fact": "Lengthening movements under load (eccentric movements) are the most likely to cause it.",
+        "cite": "cc-doms"
+      },
+      {
+        "fact": "One bout of lengthening exercise produces an adaptation that reduces damage and soreness in later bouts, lasting at least six months.",
+        "cite": "nosaka-rbe"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Soreness follows a rise-and-fall curve that peaks around 40 hours",
+        "why": "This matches 'starts 1–3 days later, rarely lasts more than five days'. The exact peak differs between people."
+      },
+      {
+        "what": "A repeat workout gives 60% less soreness",
+        "why": "Studies show much less soreness the second time; 60% is a round teaching value."
+      },
+      {
+        "what": "Repair is shown as a smooth percentage",
+        "why": "Real repair has several overlapping stages; one curve keeps it simple."
+      }
+    ],
+    "illustrative": [
+      "Marcus's very hard first workout and his 8-out-of-10 soreness on Wednesday are made up for a fictional story.",
+      "The 0–10 soreness scale is a teaching scale."
+    ]
+  },
+  "citations": [
+    {
+      "id": "cc-doms",
+      "title": "Delayed Onset Muscle Soreness (DOMS)",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/diseases/delayed-onset-muscle-soreness",
+      "verified": "2026-10-19",
+      "supports": "DOMS starts one to three days after a workout and builds over several hours; it rarely lasts more than five days; it comes from tiny tears in muscle fibers after working muscles too hard, especially with new workouts and lengthening (eccentric) movements."
+    },
+    {
+      "id": "nosaka-rbe",
+      "title": "How long does the protective effect on eccentric exercise-induced muscle damage last? (Med Sci Sports Exerc)",
+      "publisher": "MRC Protein Phosphorylation and Ubiquitylation Unit, University of Dundee (publication record)",
+      "year": "2001",
+      "url": "https://www.ppu.mrc.ac.uk/node/8430",
+      "verified": "2026-10-19",
+      "supports": "Abstract: one bout of eccentric exercise produces an adaptation that reduces muscle damage, including soreness, in later bouts; the protection lasts at least 6 months."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows soreness peaking a day or two after a hard effort, then fading",
-      "Shows repair work running in the background for about a week",
-      "Shows strength dipping first and then ending slightly higher than before"
+      "Shows soreness arriving late, peaking about two days after a hard workout, then fading",
+      "Shows harder and lowering-heavy workouts causing more soreness",
+      "Shows the same workout causing less soreness the second time"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
       "Tell the difference between normal soreness and an injury",
-      "Say how anyone should train or what to eat"
+      "Say how anyone should train or what to eat",
+      "Measure any real person"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Normal soreness is dull and fades in a few days. Sharp pain, swelling or pain that gets worse is a reason to stop and tell a coach or adult."
-  },
-  "sources": ["CK-12 Life Science: muscular system", "NIH News in Health: exercise and muscle (student overview)"]
+  }
 }

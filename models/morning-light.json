@@ -1,34 +1,107 @@
 {
   "id": "morning-light",
-  "name": "Brain & morning light",
+  "version": 2,
+  "name": "Sofia's body clock and morning light",
   "colour": "amber",
-  "inputs": {
-    "primary":   { "key": "L", "label": "Bright morning light each day", "min": 0, "max": 60, "step": 5, "unit": "min", "ticks": ["none", "30 min", "1 hour"] },
-    "secondary": { "key": "d", "label": "Days of the routine", "min": 1, "max": 14, "step": 1, "default": 14, "unit": "days", "ticks": ["day 1", "1 week", "2 weeks"] }
-  },
+  "parameters": [
+    {
+      "key": "L", "label": "Bright light each day", "role": "primary", "min": 0, "max": 60, "step": 5, "default": 60, "unit": "min",
+      "ticks": ["none", "30 min", "1 hour"],
+      "explain": "Bright light reaching the eyes in the morning moves the body clock earlier, so sleepiness arrives earlier in the evening.",
+      "basis": "source", "cite": "cdc-light"
+    },
+    {
+      "key": "when", "label": "When the bright light comes", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "morning" }, { "value": 1, "label": "late evening" }],
+      "explain": "The twist dial: the same bright light late in the evening pushes the clock the other way — later, and by even more.",
+      "basis": "source", "cite": "cdc-light"
+    },
+    {
+      "key": "d", "label": "Days of the routine", "role": "bubble", "min": 1, "max": 14, "step": 1, "default": 14, "unit": "days",
+      "ticks": ["day 1", "1 week", "2 weeks"],
+      "explain": "Each morning nudges the clock a little, so the change builds up over days rather than happening on the first night.",
+      "basis": "choice"
+    },
+    {
+      "key": "tired", "label": "How tired practice makes her", "role": "bubble", "min": 0, "max": 10, "step": 1, "default": 5,
+      "ticks": ["not at all", "medium", "worn out"],
+      "explain": "Test the 'practice tires her out' idea: being tired helps her drop off a few minutes sooner, but it doesn't move her body clock.",
+      "basis": "choice"
+    },
+    {
+      "key": "sky", "label": "How bright her mornings are", "role": "factor", "min": 0.1, "max": 1, "step": 0.1, "default": 1,
+      "options": [{ "value": 0.1, "label": "indoors with lamps" }, { "value": 0.6, "label": "cloudy outdoors" }, { "value": 1, "label": "clear sunrise outdoors" }],
+      "explain": "The brain's master clock responds to the amount of light the eyes receive; outdoor daylight is far brighter than indoor lamps.",
+      "basis": "source", "cite": "nigms-circadian"
+    },
+    {
+      "key": "drift", "label": "Her night-owl drift", "role": "factor", "min": 0, "max": 8, "step": 1, "default": 4, "unit": "min/day",
+      "explain": "During the teen years the body starts making its sleep hormone later, so the clock tends to slide later unless something pulls it back.",
+      "basis": "source", "cite": "sf-teens"
+    }
+  ],
   "outputs": [
     { "key": "C", "label": "Body clock shifted earlier", "unit": "min", "colour": "amber", "decimals": 0 },
-    { "key": "T", "label": "Feels sleepy at", "colour": "purple", "bands": [{ "upTo": 20, "text": "about 1:00 a.m." }, { "upTo": 45, "text": "about 12:15 a.m." }, { "upTo": 70, "text": "about 11:30 p.m." }, { "text": "about 10:30 p.m." }] },
-    { "key": "F", "label": "Lying awake after 10:30 p.m.", "unit": "min", "colour": "blue", "decimals": 0 },
-    { "key": "B", "label": "Morning light reaching the eyes", "unit": "min", "colour": "amber", "decimals": 0, "hidden": true }
+    { "key": "T", "label": "Feels sleepy at", "colour": "purple", "bands": [{ "upTo": -45, "text": "after 1:45 a.m." }, { "upTo": 20, "text": "about 1:00 a.m." }, { "upTo": 60, "text": "about 12:30 a.m." }, { "upTo": 105, "text": "about 11:45 p.m." }, { "upTo": 135, "text": "about 11:00 p.m." }, { "text": "about 10:30 p.m." }] },
+    { "key": "F", "label": "Lying awake after a 10:30 p.m. bedtime", "unit": "min", "colour": "blue", "decimals": 0 },
+    { "key": "B", "label": "Bright light reaching the eyes", "unit": "min", "colour": "amber", "decimals": 0, "hidden": true }
   ],
   "rules": {
-    "C": "clamp(L * 1.5 * (1 - pow(0.5, d / 4)), 0, 90)",
-    "T": "clamp(L * 1.5 * (1 - pow(0.5, d / 4)), 0, 90)",
-    "F": "clamp(150 - 1.5 * clamp(L * 1.5 * (1 - pow(0.5, d / 4)), 0, 90), 10, 150)",
-    "B": "L"
+    "C": "clamp(d * (15 * (L / 60) * sky * (1 - 3 * when) - drift * min(1, L / 15)), -150, 180)",
+    "T": "clamp(d * (15 * (L / 60) * sky * (1 - 3 * when) - drift * min(1, L / 15)), -150, 180)",
+    "F": "max(0, 150 - clamp(d * (15 * (L / 60) * sky * (1 - 3 * when) - drift * min(1, L / 15)), -150, 180)) + 20 - 1.5 * tired",
+    "B": "L * sky"
   },
-  "chart": { "x": "L", "y": "C", "xLabel": "minutes of bright morning light", "yLabel": "body clock shifted earlier (min)", "yMin": 0, "yMax": 100 },
+  "chart": { "x": "L", "y": "C", "xLabel": "minutes of bright light each day", "yLabel": "body clock shifted earlier (min)", "yMin": -60, "yMax": 180 },
   "overlay": {
     "base": "head",
     "caption": "bright morning light → eyes → brain's clock moves earlier → sleepy sooner at night",
     "parts": [
-      { "shape": "brain", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "C", "min": 0, "max": 90 } },
+      { "shape": "brain", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "C", "min": 0, "max": 150 } },
       { "shape": "eye", "colour": "#16213E" },
       { "shape": "sun", "colour": "#F4A300", "anim": { "type": "glow", "output": "B", "min": 0, "max": 60 } },
-      { "shape": "moon", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "C", "min": 0, "max": 90 } }
+      { "shape": "moon", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "C", "min": 0, "max": 150 } }
     ]
   },
+  "explain": {
+    "summary": "Sofia's brain has a master clock that decides when her sleep hormone, melatonin, arrives. Light reaching her eyes sets that clock. Bright light in the morning nudges it earlier — about a quarter of an hour each day — while her teenage clock keeps trying to slide later. Two weeks of sunrise practice add up to a clock that's about two and a half hours earlier, so she's sleepy by 10:30.",
+    "rules": [
+      "An hour of bright morning light moves the clock about 15 minutes earlier each day.",
+      "Dimmer light moves it less; bright light late in the evening moves it later instead.",
+      "Her teenage clock slides back a few minutes each day, so only the difference adds up.",
+      "Feeling sleepy comes earlier by the same amount the clock moves.",
+      "Being tired from practice only shortens the time it takes to drop off."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Bright morning light causes a phase advance, so people get sleepy earlier in the evening; bright evening light causes a delay. Morning light can shift the clock about 1 hour earlier per day and evening light about 2 hours later.", "cite": "cdc-light" },
+      { "fact": "A single 1-hour bright-light pulse on waking moved the clock about 15 minutes earlier on average; individual responses varied widely.", "cite": "csdn-prc" },
+      { "fact": "The brain's master clock controls melatonin based on the amount of light the eyes receive; in the evening it makes more melatonin, causing sleepiness. Light and dark have the biggest influence on circadian rhythms.", "cite": "nigms-circadian" },
+      { "fact": "Teenagers develop a strong tendency to be night owls because their bodies start producing melatonin later; teens need 8 to 10 hours of sleep.", "cite": "sf-teens" }
+    ],
+    "choice": [
+      { "what": "An hour of bright morning light moves the clock 15 minutes a day", "why": "This matches the average 1-hour light pulse; it is well under the 1-hour-a-day maximum." },
+      { "what": "Her clock slides back 4 minutes a day", "why": "Teen clocks tend to run late; with this drift, two weeks of practice moves her sleepy time from 1 a.m. to about 10:30 p.m., matching clue 4." },
+      { "what": "Evening light pushes the clock later by twice as much", "why": "Evening light can shift the clock about 2 hours later a day, versus about 1 hour earlier for morning light." },
+      { "what": "Practice tiredness only shortens the 20 minutes it takes to drop off", "why": "Tiredness builds sleep pressure, but clue 1 shows it didn't move her bedtime — the dial lets you check that." },
+      { "what": "Days add up in a straight line", "why": "Over two weeks a steady routine adds a similar nudge each day; real clocks settle once they line up with the light." }
+    ],
+    "illustrative": [
+      "Sofia is fictional; her 1 a.m. sleepy time, her drift and the lying-awake minutes are teaching values."
+    ],
+    "studying": "Scientists are still working out how much the teenage shift toward later sleep comes from biology and how much from evening light and schedules."
+  },
+  "citations": [
+    { "id": "cdc-light", "title": "Module 2. Effects of Light on Circadian Rhythms (NIOSH training for nurses on shift work and long hours)", "publisher": "CDC / NIOSH", "year": "", "url": "https://www.cdc.gov/niosh/work-hour-training-for-nurses/longhours/mod2/19.html", "verified": "2026-10-19",
+      "supports": "Bright morning light causes a phase advance (sleepy earlier in the evening); bright evening light causes a phase delay. Evening light can shift the circadian system about 2 hours later per day; morning light about 1 hour earlier per day." },
+    { "id": "csdn-prc", "title": "The Phase Response Curve (PRC)", "publisher": "Circadian Sleep Disorders Network", "year": "", "url": "https://www.circadiansleepdisorders.org/info/PRC.php", "verified": "2026-10-19",
+      "supports": "Light on awakening advances the clock and light around bedtime delays it; a single 1-hour 8,000-lux white-light pulse on waking gave an average advance of about 15 minutes; individual responses varied widely." },
+    { "id": "nigms-circadian", "title": "Circadian Rhythms", "publisher": "NIH National Institute of General Medical Sciences", "year": "", "url": "https://www.nigms.nih.gov/education/fact-sheets/Pages/circadian-rhythms.aspx", "verified": "2026-10-19",
+      "supports": "The master clock controls production of melatonin based on the amount of light the eyes receive; in the evening it tells the brain to make more melatonin, causing sleepiness; light and dark have the biggest influence on circadian rhythms." },
+    { "id": "sf-teens", "title": "Teens and Sleep", "publisher": "Sleep Foundation", "year": "", "url": "https://www.sleepfoundation.org/teens-and-sleep", "verified": "2026-10-19",
+      "supports": "Adolescents develop a strong tendency toward being a night owl as the body starts producing melatonin later in the day; teens aged 13 to 18 are recommended 8 to 10 hours of sleep per night." }
+  ],
   "limits": {
     "does": [
       "Shows bright morning light moving the body clock earlier",
@@ -36,12 +109,11 @@
       "Shows an earlier clock meaning less time lying awake at night"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include evening screens, caffeine, stress or weekends",
-      "Diagnose anything; everyone's clock drifts sometimes"
+      "Measure any real person — Sofia is fictional",
+      "Include caffeine, stress or weekend lie-ins",
+      "Say anything about sleep problems; everyone's clock drifts sometimes"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If you're exhausted every day no matter what you try, talk with an adult you trust."
-  },
-  "sources": ["NIH News in Health: 'Tired? Blame your body clock'", "NIH NIGMS: circadian rhythms fact sheet (student overview)"]
+  }
 }

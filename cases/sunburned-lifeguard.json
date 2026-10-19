@@ -25,9 +25,9 @@
       "shows": "a large dose of UV energy landing on bare skin",
       "visual": {
         "type": "bars",
-        "from": 8,
-        "to": 48,
-        "unit": "UV units reached the skin, 1 h → 6 h"
+        "from": 7,
+        "to": 43,
+        "unit": "sunburn doses (SED) on his skin, 1 h → 6 h"
       },
       "pointsTo": "uv"
     },
@@ -120,9 +120,9 @@
   "prediction": {
     "output": "B",
     "prompt": "Kai sits in strong sun with no protection. As the hours go by — from none up to six — what happens to how red his skin will become?",
-    "expectedShape": "flat-then-rises",
+    "expectedShape": "rises",
     "second": {
-      "question": "If he wears a shirt half the time and sunscreen, what happens to the UV energy reaching his skin?",
+      "question": "If he puts on SPF 30 sunscreen, what happens to the UV dose reaching his skin?",
       "options": [
         "up",
         "same",
@@ -132,8 +132,7 @@
     }
   },
   "labDefaults": {
-    "primary": 4,
-    "secondary": 0
+    "primary": 6
   },
   "concepts": [
     {

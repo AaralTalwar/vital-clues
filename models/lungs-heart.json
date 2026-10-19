@@ -1,44 +1,119 @@
 {
   "id": "lungs-heart",
-  "name": "Lungs & heart",
+  "version": 2,
+  "name": "Maya's heart & lungs during a sprint",
   "colour": "teal",
-  "inputs": {
-    "primary":   { "key": "I", "label": "Exercise intensity", "min": 0, "max": 10, "step": 1, "ticks": ["rest", "jog", "sprint"] },
-    "secondary": { "key": "R", "label": "Seconds after stopping", "min": 0, "max": 120, "step": 10, "default": 0, "unit": "s", "ticks": ["still going", "1 min", "2 min"] }
-  },
+  "parameters": [
+    {
+      "key": "I", "label": "Effort", "role": "primary", "min": 0, "max": 10, "step": 1, "default": 8,
+      "ticks": ["rest", "moderate", "vigorous", "all-out"],
+      "explain": "Effort on the 0–10 scale health scientists use: 5–6 is moderate, 7–8 is vigorous, 10 is all-out.",
+      "basis": "source", "cite": "cdc-intensity"
+    },
+    {
+      "key": "R", "label": "Seconds after stopping", "role": "bubble", "min": 0, "max": 180, "step": 15, "default": 0, "unit": "s",
+      "explain": "Heart rate recovery: how fast the extra beats and breaths fade once the work stops. Fitter hearts usually recover faster.",
+      "basis": "source", "cite": "cleveland-hrr"
+    },
+    {
+      "key": "age", "label": "Age", "role": "factor", "min": 11, "max": 18, "step": 1, "default": 13, "unit": "years",
+      "explain": "Maximum heart rate drops slowly with age, so the same effort uses a different share of the heart's top speed.",
+      "basis": "source", "cite": "tanaka-hrmax"
+    },
+    {
+      "key": "Hrest", "label": "Resting heart rate", "role": "factor", "min": 45, "max": 95, "step": 5, "default": 70, "unit": "beats/min",
+      "explain": "Most people rest at 60–100 beats a minute. Very active people can be much lower — as low as 40.",
+      "basis": "source", "cite": "aha-target"
+    },
+    {
+      "key": "Brest", "label": "Resting breathing", "role": "factor", "min": 10, "max": 20, "step": 1, "default": 14, "unit": "breaths/min",
+      "explain": "At rest most people take about 12–16 breaths a minute.",
+      "basis": "source", "cite": "hopkins-vitals"
+    }
+  ],
+  "constants": { "Bmax": 55, "METmax": 14, "half": 75 },
   "outputs": [
-    { "key": "B", "label": "Breathing rate", "unit": "breaths/min", "colour": "teal",  "decimals": 0 },
-    { "key": "H", "label": "Heart rate",     "unit": "beats/min",   "colour": "coral", "decimals": 0 },
-    { "key": "D", "label": "Oxygen demand",  "unit": "× rest",      "colour": "amber", "decimals": 1 }
+    { "key": "H", "label": "Heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 },
+    { "key": "B", "label": "Breathing rate", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
+    { "key": "D", "label": "Energy use", "unit": "× sitting still", "colour": "amber", "decimals": 1 },
+    { "key": "T", "label": "Talk test", "colour": "purple", "bands": [{ "upTo": 4.4, "text": "can sing" }, { "upTo": 6.4, "text": "can talk, not sing" }, { "text": "only a few words" }] },
+    { "key": "Hmax", "label": "Her maximum heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 }
   ],
   "rules": {
-    "B": "12 + 3.8 * I * pow(0.5, R / 30)",
-    "H": "65 + 12.5 * I * pow(0.5, R / 30)",
-    "D": "1 + 0.9 * I * pow(0.5, R / 30)"
+    "Hmax": "208 - 0.7 * age",
+    "H": "Hrest + (208 - 0.7 * age - Hrest) * (I / 10) * pow(0.5, R / half)",
+    "B": "Brest + (Bmax - Brest) * pow(I / 10, 1.3) * pow(0.5, R / half)",
+    "D": "1 + (METmax - 1) * (I / 10) * pow(0.5, R / half)",
+    "T": "I * pow(0.5, R / half)"
   },
-  "chart": { "x": "I", "y": "B", "xLabel": "exercise intensity", "yLabel": "breaths / min", "yMin": 0, "yMax": 60 },
+  "chart": { "x": "I", "y": "B", "xLabel": "effort (0–10)", "yLabel": "breaths / min", "yMin": 0, "yMax": 60, "xTicks": ["rest", "moderate", "all-out"] },
   "overlay": {
     "base": "torso",
-    "caption": "lungs → heart → legs",
+    "caption": "muscles ask for oxygen → lungs breathe faster → heart pumps faster",
     "parts": [
-      { "shape": "legs",  "colour": "#F4A300", "anim": { "type": "glow", "output": "D", "min": 1, "max": 10 } },
+      { "shape": "legs",  "colour": "#F4A300", "anim": { "type": "glow", "output": "D", "min": 1, "max": 14 } },
       { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "B" } },
       { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } }
     ]
   },
+  "explain": {
+    "summary": "Working muscles burn energy and need oxygen. Your lungs bring oxygen in and your heart pumps it to the muscles in your blood, so both speed up together as effort rises. This model starts from Maya's resting heart rate and breathing and climbs toward her maximums as she works harder, then lets everything settle once she stops.",
+    "rules": [
+      "Heart rate climbs in a straight line from Maya's resting rate toward her maximum as effort goes from 0 to 10.",
+      "Her maximum heart rate depends on age: about 208 − 0.7 × age.",
+      "Breathing rises slowly at easy effort and faster near the top — from about 14 a minute toward about 55.",
+      "Energy use is counted in METs: 1 means sitting still; 6 or more is vigorous.",
+      "After she stops, the extra beats and breaths above resting halve about every 75 seconds."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Health scientists rate effort on a 0–10 scale: 5–6 is moderate and 7–8 starts vigorous. At vigorous effort you can't say more than a few words without pausing for breath.", "cite": "cdc-intensity" },
+      { "fact": "One MET is the energy (oxygen) used sitting quietly; activity of 6 METs or more counts as vigorous.", "cite": "cdc-intensity" },
+      { "fact": "A regression equation predicts maximum heart rate as 208 − 0.7 × age in healthy adults.", "cite": "tanaka-hrmax" },
+      { "fact": "For most people a resting heart rate of 60–100 beats a minute is normal; very active people can be as low as 40. Vigorous activity is about 70–85% of maximum heart rate.", "cite": "aha-target" },
+      { "fact": "Normal breathing for a person at rest is 12–16 breaths a minute.", "cite": "hopkins-vitals" },
+      { "fact": "We breathe about 15 times a minute at rest and up to about 40–60 times a minute during exercise.", "cite": "elf-exercise" },
+      { "fact": "Heart rate recovery is how much your heart rate drops in the first minute after you stop; a drop of 18 beats or more is a good result.", "cite": "cleveland-hrr" }
+    ],
+    "choice": [
+      { "what": "Heart rate rises in a straight line with effort", "why": "Exercise heart-rate zones are given as percentages of maximum, which is the same as a straight line from resting to maximum. Real hearts are close to this in the middle of the range." },
+      { "what": "Breathing curves upward (effort to the power 1.3)", "why": "In real exercise breathing speeds up more sharply at hard effort than at easy effort. The exact curve differs from person to person, so we picked a gentle one." },
+      { "what": "Recovery halves every 75 seconds", "why": "This gives a first-minute heart-rate drop of about 40 beats after a hard sprint — well above the 18-beat 'good' mark. Real recovery has a fast phase then a slow one; we merged them into one." },
+      { "what": "An adult maximum-heart-rate formula is used for a 13-year-old", "why": "There is no single agreed formula for teenagers. Treat Maya's maximum as an estimate." }
+    ],
+    "illustrative": [
+      "Maya's resting heart rate (70) and breathing (14) are made up for a fictional character, chosen inside the normal ranges above.",
+      "Her top breathing rate (55 a minute) and top energy use (14 METs) are picked inside real ranges, not measured."
+    ],
+    "studying": "Exactly how the brain matches breathing to effort so closely is still an active research question."
+  },
+  "citations": [
+    { "id": "cdc-intensity", "title": "Measuring Physical Activity Intensity", "publisher": "CDC", "year": "", "url": "https://www.cdc.gov/physical-activity-basics/measuring/index.html", "verified": "2026-10-19",
+      "supports": "Defines METs (1 MET = sitting quietly; 6+ METs vigorous), the 0–10 effort scale (5–6 moderate, 7–8 vigorous) and the talk test (vigorous: no more than a few words without pausing)." },
+    { "id": "tanaka-hrmax", "title": "Age-predicted maximal heart rate revisited (J Am Coll Cardiol)", "publisher": "PubMed", "year": "2001", "url": "https://pubmed.ncbi.nlm.nih.gov/11153730/", "verified": "2026-10-19",
+      "supports": "Abstract conclusion: a regression equation to predict maximal heart rate is 208 − 0.7 × age in healthy adults." },
+    { "id": "aha-target", "title": "Target Heart Rates Chart", "publisher": "American Heart Association", "year": "", "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates", "verified": "2026-10-19",
+      "supports": "Resting heart rate 60–100 is normal for most adults; athletes or very active people can be as low as 40; vigorous activity is about 70–85% of maximum." },
+    { "id": "hopkins-vitals", "title": "Vital Signs (Body Temperature, Pulse Rate, Respiration Rate, Blood Pressure)", "publisher": "Johns Hopkins Medicine", "year": "", "url": "https://www.hopkinsmedicine.org/health/conditions-and-diseases/vital-signs-body-temperature-pulse-rate-respiration-rate-blood-pressure", "verified": "2026-10-19",
+      "supports": "Normal respiration rates for an adult at rest are 12 to 16 breaths per minute; normal pulse 60 to 100 and it rises with exercise." },
+    { "id": "elf-exercise", "title": "Your lungs and exercise", "publisher": "European Lung Foundation", "year": "", "url": "https://europeanlung.org/en/information-hub/keeping-lungs-healthy/your-lungs-and-exercise", "verified": "2026-10-19",
+      "supports": "We breathe about 15 times a minute (12 litres of air) at rest and up to about 40–60 times a minute (100 litres) during exercise." },
+    { "id": "cleveland-hrr", "title": "Heart Rate Recovery", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/articles/23490-heart-rate-recovery", "verified": "2026-10-19",
+      "supports": "Heart rate recovery is peak heart rate minus the rate about one minute after stopping; 18 beats or higher is a good one-minute result; the quicker it drops, the better." }
+  ],
   "limits": {
     "does": [
-      "Shows that breathing and heart rate rise together as effort rises",
-      "Shows that oxygen demand from the muscles drives both",
-      "Shows both settling back toward rest after the work stops (halving every 30 seconds)"
+      "Shows heart rate and breathing rising together as effort rises, toward limits set by age and fitness",
+      "Shows energy use in METs, the unit health scientists use",
+      "Shows the extra beats and breaths fading after the work stops"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Account for age, fitness, illness, altitude or temperature",
-      "Model anything dangerous; it stays inside a healthy teenager's everyday range"
+      "Measure any real person — Maya is fictional and her numbers are estimates",
+      "Include heat, altitude, illness, or the slow second phase of recovery",
+      "Work out anyone's own heart-rate zones"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If you ever feel faint or can't catch your breath after exercise, tell an adult."
-  },
-  "sources": ["NHLBI, How the Lungs Work (nhlbi.nih.gov/health/lungs)", "CK-12 Life Science: respiratory and circulatory systems"]
+    "wellbeing": "If you ever feel faint, have chest pain or can't catch your breath after exercise, stop and tell an adult."
+  }
 }

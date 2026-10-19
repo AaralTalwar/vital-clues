@@ -1,30 +1,270 @@
 {
   "id": "bone-remodel",
-  "name": "Bones & teeth",
+  "version": 2,
+  "name": "Zara's braces and the bone around her teeth",
   "colour": "teal",
-  "inputs": {
-    "primary":   { "key": "W", "label": "Weeks wearing braces", "min": 0, "max": 24, "step": 1, "unit": "weeks", "ticks": ["day 1", "12 weeks", "24 weeks"] },
-    "secondary": { "key": "H", "label": "Hours a day the force acts", "min": 0, "max": 22, "step": 2, "default": 22, "unit": "h a day", "ticks": ["0 h", "11 h", "22 h"] }
+  "parameters": [
+    {
+      "key": "W",
+      "label": "Weeks wearing braces",
+      "role": "primary",
+      "min": 0,
+      "max": 26,
+      "step": 1,
+      "default": 20,
+      "unit": "weeks",
+      "ticks": [
+        "September",
+        "3 months",
+        "6 months"
+      ],
+      "explain": "Teeth move slowly through bone; whole treatments usually take one to two years.",
+      "basis": "source",
+      "cite": "nhs-ortho"
+    },
+    {
+      "key": "H",
+      "label": "Hours a day wearing her bands",
+      "role": "bubble",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "default": 22,
+      "unit": "h/day",
+      "explain": "The bone only keeps remodelling while the push keeps going; short spells of force let it settle back.",
+      "basis": "choice"
+    },
+    {
+      "key": "F",
+      "label": "How hard the braces push",
+      "role": "bubble",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "options": [
+        {
+          "value": 1,
+          "label": "light"
+        },
+        {
+          "value": 2,
+          "label": "medium"
+        },
+        {
+          "value": 3,
+          "label": "heavy"
+        }
+      ],
+      "explain": "Test the 'pull harder, go faster' idea: heavy force moves teeth only a little faster and makes them much sorer.",
+      "basis": "source",
+      "cite": "yee-force"
+    },
+    {
+      "key": "G",
+      "label": "Gap to close",
+      "role": "factor",
+      "min": 1,
+      "max": 6,
+      "step": 0.5,
+      "default": 4,
+      "unit": "mm",
+      "explain": "A bigger gap takes longer to close; once it's closed, the tooth stops.",
+      "basis": "illustrative"
+    },
+    {
+      "key": "d",
+      "label": "Days since tightening",
+      "role": "factor",
+      "min": 0,
+      "max": 42,
+      "step": 1,
+      "default": 1,
+      "unit": "days",
+      "explain": "Teeth are sore for a few days after the braces are fitted or adjusted, then settle; adjustments come every 6–8 weeks.",
+      "basis": "source",
+      "cite": "nhs-ortho"
+    }
+  ],
+  "constants": {
+    "rate": 0.155
   },
   "outputs": [
-    { "key": "M", "label": "Tooth movement", "unit": "mm", "colour": "teal", "decimals": 1 },
-    { "key": "R", "label": "Bone-rebuilding cells at work", "unit": "% of full speed", "colour": "amber", "decimals": 0 },
-    { "key": "L", "label": "Tooth feels", "colour": "purple", "bands": [{ "upTo": 40, "text": "firm" }, { "text": "slightly loose" }] }
+    {
+      "key": "M",
+      "label": "Tooth moved",
+      "unit": "mm",
+      "colour": "teal",
+      "decimals": 1
+    },
+    {
+      "key": "Gp",
+      "label": "Gap left",
+      "unit": "mm",
+      "colour": "amber",
+      "decimals": 1
+    },
+    {
+      "key": "R",
+      "label": "Bone remodelling",
+      "unit": "% of full speed",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "So",
+      "label": "Soreness when biting",
+      "unit": "0–10",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "Lo",
+      "label": "Tooth feels",
+      "colour": "purple",
+      "bands": [
+        {
+          "upTo": 3,
+          "text": "firm"
+        },
+        {
+          "upTo": 6,
+          "text": "slightly loose"
+        },
+        {
+          "text": "a little wobbly"
+        }
+      ]
+    }
   ],
   "rules": {
-    "M": "0.1 * W * H / 22",
-    "R": "100 * H / 22 * (1 - pow(0.5, W + 0.5))",
-    "L": "100 * H / 22 * (1 - pow(0.5, W + 0.5))"
+    "M": "min(G, rate * W * clamp((H - 6) / 16, 0, 1) * (0.85 + 0.15 * (F - 1)))",
+    "Gp": "G - min(G, rate * W * clamp((H - 6) / 16, 0, 1) * (0.85 + 0.15 * (F - 1)))",
+    "R": "100 * clamp((H - 6) / 16, 0, 1) * (0.85 + 0.15 * (F - 1)) / 1.15",
+    "So": "round(clamp(2.7 * F * pow(0.5, d / 2), 0, 10))",
+    "Lo": "10 * clamp((H - 6) / 16, 0, 1) * pow(0.5, d / 3)"
   },
-  "chart": { "x": "W", "y": "M", "xLabel": "weeks wearing braces", "yLabel": "tooth movement (mm)", "yMin": 0, "yMax": 3 },
+  "chart": {
+    "x": "W",
+    "y": "M",
+    "xLabel": "weeks wearing braces",
+    "yLabel": "tooth movement (mm)",
+    "yMin": 0,
+    "yMax": 4.5
+  },
   "overlay": {
     "base": "head",
     "caption": "steady push → bone taken down on one side, built up on the other → tooth moves",
     "parts": [
-      { "shape": "tooth", "colour": "#FFFFFF" },
-      { "shape": "fibres", "colour": "#1B998B", "anim": { "type": "count", "output": "R", "min": 0, "max": 100 } }
+      {
+        "shape": "tooth",
+        "colour": "#FFFFFF"
+      },
+      {
+        "shape": "fibres",
+        "colour": "#1B998B",
+        "anim": {
+          "type": "count",
+          "output": "R",
+          "min": 0,
+          "max": 100
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Zara's braces push her tooth gently and steadily. On the side being pushed, bone-clearing cells take bone away; on the other side, bone-building cells lay new bone down. So the tooth moves through her jaw a fraction of a millimetre a week. A fresh push after tightening makes teeth sore and a bit loose for a few days. Without the steady push, the bone stops remodelling.",
+    "rules": [
+      "Tooth movement grows steadily with the weeks she wears her braces.",
+      "Bone is taken down on the pushed side and built on the other side.",
+      "Fewer hours of force a day means slower movement; very short spells do almost nothing.",
+      "Heavier force moves the tooth only a little faster but makes it much sorer.",
+      "Soreness and looseness peak right after tightening and fade within days."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Teeth move because bone is resorbed by osteoclasts on the pushed (compression) side and built by osteoblasts on the tension side.",
+        "cite": "danz-2025"
+      },
+      {
+        "fact": "The first reaction to a new push is inflammation, including pain, that usually lasts a few days.",
+        "cite": "danz-2025"
+      },
+      {
+        "fact": "Teeth may be sore for a few days after braces are fitted; braces are adjusted every 6 to 8 weeks and usually stay on for 1 to 2 years.",
+        "cite": "nhs-ortho"
+      },
+      {
+        "fact": "Heavier forces tended to increase the rate of tooth movement but brought unwanted side effects; initial movement benefits from light forces.",
+        "cite": "yee-force"
+      },
+      {
+        "fact": "Orthodontic treatment typically takes over 18 months.",
+        "cite": "cochrane-accel"
+      }
+    ],
+    "choice": [
+      {
+        "what": "The tooth moves about 0.155 mm a week (about two-thirds of a millimetre a month) at full wear",
+        "why": "Closes Zara's 4 mm gap in about six months, as clue 3 says, and fits treatments lasting over a year. We could not open a source giving a typical rate in millimetres."
+      },
+      {
+        "what": "Less than about 6 hours of force a day moves the tooth almost not at all; full speed needs about 22 hours",
+        "why": "Shows clue 4 (no bands, no progress). The real cut-off varies; the 6 and 22 hours are our estimate."
+      },
+      {
+        "what": "Heavy force is 15% faster than medium and light is 15% slower",
+        "why": "The study found heavier forces somewhat faster; the exact size here is our estimate."
+      },
+      {
+        "what": "Soreness halves every 2 days after tightening",
+        "why": "Matches 'sore for a few days' and clue 1 (fades in two or three days)."
+      }
+    ],
+    "illustrative": [
+      "Zara's 4 mm gap, her 22 hours a day and the 0–10 soreness scale are made up for a fictional story."
+    ]
+  },
+  "citations": [
+    {
+      "id": "danz-2025",
+      "title": "Selective modulation of the bone remodeling regulatory system through orthodontic tooth movement: a review (Danz & Degen)",
+      "publisher": "Frontiers in Oral Health",
+      "year": "2025",
+      "url": "https://frontiersin.org/journals/oral-health/articles/10.3389/froh.2025.1472711/full",
+      "verified": "2026-10-19",
+      "supports": "Orthodontic tooth movement works by bone resorption by osteoclasts on the compression side and bone formation by osteoblasts on the tension side; patients first feel an inflammatory reaction, including pain, that usually lasts a few days."
+    },
+    {
+      "id": "nhs-ortho",
+      "title": "Orthodontics",
+      "publisher": "NHS",
+      "year": "",
+      "url": "https://www.nhs.uk/tests-and-treatments/orthodontics/",
+      "verified": "2026-10-19",
+      "supports": "Fixed braces usually stay in place for 1 to 2 years; teeth may be sore for a few days after braces are fitted; the orthodontist adjusts them every 6 to 8 weeks; contact them if teeth are painful for more than a few days."
+    },
+    {
+      "id": "yee-force",
+      "title": "Rate of tooth movement under heavy and light continuous orthodontic forces (Yee et al., American Journal of Orthodontics and Dentofacial Orthopedics) — abstract record",
+      "publisher": "Ondokuz Mayıs University repository",
+      "year": "2009",
+      "url": "https://acikerisim.omu.edu.tr/entities/publication/e4edce6b-9805-4d30-9786-93605397f01c/full",
+      "verified": "2026-10-19",
+      "supports": "Over 12 weeks, heavier forces (300 g) tended to increase the rate and amount of canine retraction compared with light forces (50 g), but with unwanted side effects; initial tooth movement would benefit from light forces."
+    },
+    {
+      "id": "cochrane-accel",
+      "title": "Surgical procedures for accelerating orthodontic treatment",
+      "publisher": "Cochrane",
+      "year": "2015",
+      "url": "https://www.cochrane.org/evidence/CD010572_surgical-procedures-accelerating-orthodontic-treatment",
+      "verified": "2026-10-19",
+      "supports": "Orthodontic treatment typically takes over 18 months to complete."
+    }
+  ],
   "limits": {
     "does": [
       "Shows a tooth moving steadily through the jaw while a gentle force is applied",
@@ -38,6 +278,5 @@
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Sharp pain, a broken wire or a sore in your mouth that won't heal is a reason to tell an adult."
-  },
-  "sources": ["CK-12 Life Science: skeletal system — bone is living tissue", "NIH News in Health: bones are alive and always rebuilding (student overview)"]
+  }
 }

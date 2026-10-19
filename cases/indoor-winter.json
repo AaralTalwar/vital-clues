@@ -8,60 +8,201 @@
   "minutes": 8,
   "level": "moderate",
   "reviewed": null,
-  "character": { "name": "Mira", "age": 15 },
+  "character": {
+    "name": "Mira",
+    "age": 15
+  },
   "briefing": "Mira, 15, is a gymnast who trains in an indoor gym all winter. She drinks three glasses of milk a day because her coach says bones need calcium. But her coach also tells the whole team to get outside in the daylight on weekends — “milk alone isn't enough.”",
   "question": "If the calcium is in the milk, why would sunlight matter for her bones?",
   "illustration": "sun",
   "clues": [
-    { "id": 1, "title": "Plenty of milk", "icon": "glass", "colour": "blue",
+    {
+      "id": 1,
+      "title": "Plenty of milk",
+      "icon": "glass",
+      "colour": "blue",
       "text": "Mira drinks three glasses of milk every day. Milk has lots of calcium, the main building material in bone.",
-      "shows": "plenty of calcium going into her body", "visual": { "type": "bars", "from": 1, "to": 3, "unit": "glasses of milk a day, last year → now" }, "pointsTo": "calcium" },
-    { "id": 2, "title": "Dark mornings, dark evenings", "icon": "moon", "colour": "purple",
+      "shows": "plenty of calcium going into her body",
+      "visual": {
+        "type": "bars",
+        "from": 1,
+        "to": 3,
+        "unit": "glasses of milk a day, last year → now"
+      },
+      "pointsTo": "calcium"
+    },
+    {
+      "id": 2,
+      "title": "Dark mornings, dark evenings",
+      "icon": "moon",
+      "colour": "purple",
       "text": "In winter she leaves for school before sunrise and leaves the gym after dark. For six weeks her skin has seen almost no daylight.",
-      "shows": "her skin getting almost no sunlight", "visual": null, "pointsTo": "sunlight" },
-    { "id": 3, "title": "A page in her textbook", "icon": "book", "colour": "amber",
+      "shows": "her skin getting almost no sunlight",
+      "visual": null,
+      "pointsTo": "sunlight"
+    },
+    {
+      "id": 3,
+      "title": "A page in her textbook",
+      "icon": "book",
+      "colour": "amber",
       "text": "Her biology book says skin cells make vitamin D when sunlight falls on them. Very little is made in winter.",
-      "shows": "the skin acting as a vitamin D factory that needs daylight", "visual": null, "pointsTo": "skin" },
-    { "id": 4, "title": "The gut needs a key", "icon": "stomach", "colour": "teal",
+      "shows": "the skin acting as a vitamin D factory that needs daylight",
+      "visual": null,
+      "pointsTo": "skin"
+    },
+    {
+      "id": 4,
+      "title": "The gut needs a key",
+      "icon": "stomach",
+      "colour": "teal",
       "text": "The same page says vitamin D helps the gut take calcium in from food. Without enough of it, much of the calcium passes straight through.",
-      "shows": "calcium needing vitamin D before the body can absorb it", "visual": null, "pointsTo": "absorb" }
+      "shows": "calcium needing vitamin D before the body can absorb it",
+      "visual": null,
+      "pointsTo": "absorb"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "Bones only need calcium, so drinking even more milk will fix everything.", "flaw": "Clue 4 says the gut can't take in much calcium without vitamin D — more milk just means more calcium passing straight through." },
-    { "id": "B", "text": "Sunlight warms the bones and that makes them stronger.", "flaw": "Bones are deep inside the body; what sunlight does is let the skin make vitamin D — a chemical, not warmth." },
-    { "id": "C", "text": "Indoor air is bad for bones.", "flaw": "Nothing about air reaches the bones. What is missing indoors is daylight on her skin." },
-    { "id": "D", "text": "Her skin makes vitamin D only in sunlight, and vitamin D lets her gut absorb calcium — so with almost no sun, much of the milk's calcium isn't taken in.", "best": true }
+    {
+      "id": "A",
+      "text": "Bones only need calcium, so drinking even more milk will fix everything.",
+      "flaw": "Clue 4 says the gut can't take in much calcium without enough vitamin D, so calcium alone can't fix it — and the small amount of vitamin D added to milk isn't enough without daylight."
+    },
+    {
+      "id": "B",
+      "text": "Sunlight warms the bones and that makes them stronger.",
+      "flaw": "Bones are deep inside the body; what sunlight does is let the skin make vitamin D — a chemical, not warmth."
+    },
+    {
+      "id": "C",
+      "text": "Indoor air is bad for bones.",
+      "flaw": "Nothing about air reaches the bones. What is missing indoors is daylight on her skin."
+    },
+    {
+      "id": "D",
+      "text": "Her skin makes vitamin D only in sunlight, and vitamin D lets her gut absorb calcium — so with almost no sun, much of the milk's calcium isn't taken in.",
+      "best": true
+    }
   ],
   "evidence": {
-    "A": { "supports": [1], "doesntFit": [4] },
-    "B": { "supports": [], "doesntFit": [3] },
-    "C": { "supports": [], "doesntFit": [3] },
-    "D": { "supports": [1, 2, 3, 4], "doesntFit": [] }
+    "A": {
+      "supports": [
+        1
+      ],
+      "doesntFit": [
+        4
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    },
+    "C": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    },
+    "D": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    }
   },
   "mismatchHints": [],
   "prediction": {
-    "output": "V",
+    "output": "Vs",
     "prompt": "It's winter. As Mira spends more hours outdoors in daylight each week, how much vitamin D does her skin make?",
     "expectedShape": "rises",
-    "second": { "question": "With the same hours outside in summer instead, would her skin make more or less?", "options": ["more", "same", "less"], "answer": "more" }
+    "second": {
+      "question": "With the same hours outside in summer instead, would her skin make more or less?",
+      "options": [
+        "more",
+        "same",
+        "less"
+      ],
+      "answer": "more"
+    }
   },
-  "labDefaults": { "primary": 3, "secondary": 0 },
+  "labDefaults": {
+    "primary": 3
+  },
   "concepts": [
-    { "id": "sunlight", "label": "sunlight / daylight", "colour": "amber",
-      "synonyms": ["sunlight", "sun", "sunshine", "daylight", "uv", "outdoors", "outside"],
-      "hint": "What was missing from Mira's winter?" },
-    { "id": "skin", "label": "skin makes it", "colour": "coral",
-      "synonyms": ["skin", "skin cells", "makes it", "produces", "made in the skin"],
-      "hint": "Where is vitamin D made?" },
-    { "id": "vitamin", "label": "vitamin D", "colour": "amber",
-      "synonyms": ["vitamin", "vitamins", "vitamin d"],
-      "hint": "What does the skin make in sunlight?" },
-    { "id": "absorb", "label": "the gut absorbs calcium", "colour": "teal",
-      "synonyms": ["absorb", "absorbs", "absorbed", "absorbing", "take in", "takes in", "taken in", "gut", "intestine", "intestines"],
-      "hint": "Why isn't drinking the milk enough on its own?" },
-    { "id": "calcium", "label": "calcium builds bones", "colour": "purple",
-      "synonyms": ["calcium", "bones", "bone", "milk"],
-      "hint": "What do the bones actually need to be built from?" }
+    {
+      "id": "sunlight",
+      "label": "sunlight / daylight",
+      "colour": "amber",
+      "synonyms": [
+        "sunlight",
+        "sun",
+        "sunshine",
+        "daylight",
+        "uv",
+        "outdoors",
+        "outside"
+      ],
+      "hint": "What was missing from Mira's winter?"
+    },
+    {
+      "id": "skin",
+      "label": "skin makes it",
+      "colour": "coral",
+      "synonyms": [
+        "skin",
+        "skin cells",
+        "makes it",
+        "produces",
+        "made in the skin"
+      ],
+      "hint": "Where is vitamin D made?"
+    },
+    {
+      "id": "vitamin",
+      "label": "vitamin D",
+      "colour": "amber",
+      "synonyms": [
+        "vitamin",
+        "vitamins",
+        "vitamin d"
+      ],
+      "hint": "What does the skin make in sunlight?"
+    },
+    {
+      "id": "absorb",
+      "label": "the gut absorbs calcium",
+      "colour": "teal",
+      "synonyms": [
+        "absorb",
+        "absorbs",
+        "absorbed",
+        "absorbing",
+        "take in",
+        "takes in",
+        "taken in",
+        "gut",
+        "intestine",
+        "intestines"
+      ],
+      "hint": "Why isn't drinking the milk enough on its own?"
+    },
+    {
+      "id": "calcium",
+      "label": "calcium builds bones",
+      "colour": "purple",
+      "synonyms": [
+        "calcium",
+        "bones",
+        "bone",
+        "milk"
+      ],
+      "hint": "What do the bones actually need to be built from?"
+    }
   ],
   "transfer": {
     "context": "Two classes drink the same amount of milk at lunch. One class has PE outdoors all year; the other has PE in a basement gym with no windows.",

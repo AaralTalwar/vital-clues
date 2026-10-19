@@ -1,148 +1,138 @@
 {
   "id": "fuel-exercise",
-  "name": "Fuel & effort",
+  "version": 2,
+  "name": "Ravi's fuel and his heart and lungs at sprint practice",
   "colour": "amber",
-  "inputs": {
-    "primary": {
-      "key": "I",
-      "label": "Running intensity",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "ticks": [
-        "rest",
-        "jog",
-        "sprint"
-      ]
-    },
-    "secondary": {
-      "key": "h",
-      "label": "Hours since eating",
-      "min": 0,
-      "max": 10,
-      "step": 1,
-      "default": 9,
-      "unit": "h",
-      "ticks": [
-        "just ate",
-        "5 h",
-        "10 h"
-      ]
-    }
-  },
-  "outputs": [
+  "parameters": [
     {
-      "key": "B",
-      "label": "Breathing rate",
-      "unit": "breaths/min",
-      "colour": "teal",
-      "decimals": 0
+      "key": "I", "label": "Running effort", "role": "primary", "min": 0, "max": 10, "step": 1, "default": 9,
+      "ticks": ["rest", "jog", "sprint"],
+      "explain": "Effort on the 0–10 scale health scientists use: 5–6 moderate, 7–8 vigorous, 10 all-out.",
+      "basis": "source", "cite": "cdc-intensity"
     },
     {
-      "key": "H",
-      "label": "Heart rate",
-      "unit": "beats/min",
-      "colour": "coral",
-      "decimals": 0
+      "key": "h", "label": "Hours since eating", "role": "bubble", "min": 0, "max": 14, "step": 1, "default": 9, "unit": "h",
+      "explain": "Between meals the liver releases stored fuel to keep blood sugar up; after a long gap the store runs low.",
+      "basis": "source", "cite": "cc-glycogen"
     },
     {
-      "key": "G",
-      "label": "Fuel available to muscles",
-      "unit": "% of full",
-      "colour": "amber",
-      "decimals": 0
+      "key": "snack", "label": "Snack before practice", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "none" }, { "value": 1, "label": "a banana" }, { "value": 2, "label": "a sports drink" }],
+      "explain": "Food tops up the sugar in the blood that the brain and muscles can use.",
+      "basis": "choice"
     },
     {
-      "key": "K",
-      "label": "Legs",
-      "colour": "purple",
-      "bands": [
-        {
-          "upTo": 44.9,
-          "text": "jelly"
-        },
-        {
-          "upTo": 69.9,
-          "text": "heavy"
-        },
-        {
-          "text": "strong"
-        }
-      ]
+      "key": "n", "label": "Sprints done so far", "role": "bubble", "min": 0, "max": 6, "step": 1, "default": 2,
+      "explain": "Repeated sprinting quickly drains the fuel stored inside the working muscles.",
+      "basis": "source", "cite": "cc-glycogen"
+    },
+    {
+      "key": "r", "label": "Rest between sprints", "role": "bubble", "min": 30, "max": 180, "step": 15, "default": 60, "unit": "s",
+      "explain": "Longer rests let breathing and heart rate come down and the muscles recover a little before the next sprint.",
+      "basis": "choice"
+    },
+    {
+      "key": "age", "label": "Age", "role": "factor", "min": 11, "max": 18, "step": 1, "default": 14, "unit": "years",
+      "explain": "Maximum heart rate drops slowly with age.",
+      "basis": "source", "cite": "tanaka-hrmax"
+    },
+    {
+      "key": "Hrest", "label": "Resting heart rate", "role": "factor", "min": 45, "max": 95, "step": 5, "default": 65, "unit": "beats/min",
+      "explain": "Most people rest at 60–100 beats a minute; very active people can be lower.",
+      "basis": "source", "cite": "aha-target"
+    },
+    {
+      "key": "bk", "label": "Breakfast size", "role": "factor", "min": 0, "max": 2, "step": 1, "default": 1,
+      "options": [{ "value": 0, "label": "small" }, { "value": 1, "label": "normal" }, { "value": 2, "label": "big" }],
+      "explain": "A bigger meal fills the fuel store more, so it lasts longer.",
+      "basis": "choice"
     }
   ],
+  "constants": { "Bmax": 52, "Brest": 14 },
+  "outputs": [
+    { "key": "H", "label": "Heart rate", "unit": "beats/min", "colour": "coral", "decimals": 0 },
+    { "key": "B", "label": "Breathing rate", "unit": "breaths/min", "colour": "teal", "decimals": 0 },
+    { "key": "G", "label": "Fuel available to his muscles", "unit": "% of full", "colour": "amber", "decimals": 0 },
+    { "key": "Fl", "label": "Fuel store between meals (liver)", "unit": "% of full", "colour": "amber", "decimals": 0 },
+    { "key": "K", "label": "Legs", "colour": "amber", "bands": [{ "upTo": 55, "text": "jelly" }, { "upTo": 75, "text": "heavy" }, { "text": "strong" }] },
+    { "key": "Sh", "label": "Hands and head", "colour": "purple", "bands": [{ "upTo": 45, "text": "shaky, fuzzy" }, { "upTo": 70, "text": "hungry" }, { "text": "steady" }] }
+  ],
   "rules": {
-    "B": "12 + 3.8 * I",
-    "H": "65 + 12.5 * I",
-    "G": "clamp(105 - 4 * h - 0.5 * I * h, 20, 110)",
-    "K": "clamp(105 - 4 * h - 0.5 * I * h, 20, 110)"
+    "H": "Hrest + (208 - 0.7 * age - Hrest) * (I / 10)",
+    "B": "Brest + (Bmax - Brest) * pow(I / 10, 1.3)",
+    "Fl": "clamp(100 * pow(0.5, max(0, h - 3) / (5 * (0.8 + 0.2 * bk))) + 30 * snack, 0, 100)",
+    "Sh": "clamp(100 * pow(0.5, max(0, h - 3) / (5 * (0.8 + 0.2 * bk))) + 30 * snack, 0, 100)",
+    "G": "0.7 * clamp(100 - n * 18 * pow(I / 10, 2) * (1 + 30 / r), 0, 100) + 0.3 * clamp(100 * pow(0.5, max(0, h - 3) / (5 * (0.8 + 0.2 * bk))) + 30 * snack, 0, 100)",
+    "K": "0.7 * clamp(100 - n * 18 * pow(I / 10, 2) * (1 + 30 / r), 0, 100) + 0.3 * clamp(100 * pow(0.5, max(0, h - 3) / (5 * (0.8 + 0.2 * bk))) + 30 * snack, 0, 100)"
   },
-  "chart": {
-    "x": "I",
-    "y": "G",
-    "xLabel": "running intensity",
-    "yLabel": "fuel available to muscles (%)",
-    "yMin": 0,
-    "yMax": 110
-  },
+  "chart": { "x": "I", "y": "G", "xLabel": "running effort", "yLabel": "fuel available to muscles (%)", "yMin": 0, "yMax": 105 },
   "overlay": {
     "base": "torso",
-    "caption": "food → fuel in the blood · lungs and heart → oxygen · both feed working legs",
+    "caption": "liver store → sugar in the blood → muscles · sprints burn the muscles' own store fast",
     "parts": [
-      {
-        "shape": "stomach",
-        "colour": "#F4A300",
-        "anim": {
-          "type": "glow",
-          "output": "G",
-          "min": 20,
-          "max": 105
-        }
-      },
-      {
-        "shape": "legs",
-        "colour": "#F4A300",
-        "anim": {
-          "type": "glow",
-          "output": "G",
-          "min": 20,
-          "max": 105
-        }
-      },
-      {
-        "shape": "lungs",
-        "colour": "#1B998B",
-        "anim": {
-          "type": "breathe",
-          "output": "B"
-        }
-      },
-      {
-        "shape": "heart",
-        "colour": "#E4572E",
-        "anim": {
-          "type": "beat",
-          "output": "H"
-        }
-      }
+      { "shape": "stomach", "colour": "#E4572E", "anim": { "type": "glow", "output": "Fl", "min": 0, "max": 100 } },
+      { "shape": "legs", "colour": "#F4A300", "anim": { "type": "glow", "output": "G", "min": 30, "max": 100 } },
+      { "shape": "lungs", "colour": "#1B998B", "anim": { "type": "breathe", "output": "B" } },
+      { "shape": "heart", "colour": "#E4572E", "anim": { "type": "beat", "output": "H" } }
     ]
   },
+  "explain": {
+    "summary": "Two things are going on. Sprinting makes everyone's heart and lungs work flat out — Ravi and Ji-woo breathe just as hard. But Ravi hasn't eaten for nine hours, so the fuel his liver stores between meals is running low, and his sprints burn through the fuel inside his leg muscles fast. Low fuel is why his hands shake and his legs give out after two sprints, while Ji-woo keeps going.",
+    "rules": [
+      "Heart rate climbs in a straight line from resting toward his maximum (about 208 − 0.7 × age) as effort rises.",
+      "Breathing rises from about 14 a minute toward about 52 at a full sprint.",
+      "The liver's fuel store halves about every 5 hours after a meal; a bigger breakfast or a snack keeps it fuller.",
+      "Each hard sprint takes a chunk out of the fuel stored in the leg muscles; short rests make it worse.",
+      "Fuel available to the muscles combines their own store with sugar supplied by the blood."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Glycogen is the stored form of glucose, kept mainly in the liver and muscles. The liver's store helps keep blood sugar steady and depends on the time between meals; after 12–24 hours of fasting it is almost used up.", "cite": "cc-glycogen" },
+      { "fact": "High-intensity activity, such as repeated sprinting, can quickly lower glycogen stores in the working muscles.", "cite": "cc-glycogen" },
+      { "fact": "When blood sugar drops too low, people can shake or tremble, feel hungry, and have unclear thinking.", "cite": "medline-lowsugar" },
+      { "fact": "A regression equation predicts maximum heart rate as 208 − 0.7 × age in healthy adults.", "cite": "tanaka-hrmax" },
+      { "fact": "Most people's resting heart rate is 60–100 beats a minute; vigorous activity is about 70–85% of maximum.", "cite": "aha-target" },
+      { "fact": "Health scientists rate effort on a 0–10 scale: 5–6 is moderate, 7–8 starts vigorous.", "cite": "cdc-intensity" },
+      { "fact": "We breathe about 15 times a minute at rest and up to about 40–60 times a minute during exercise.", "cite": "elf-exercise" }
+    ],
+    "choice": [
+      { "what": "The liver store halves every 5 hours after a meal (longer after a bigger breakfast)", "why": "Gives a store that is low but not empty by 4 p.m., consistent with 'almost used up after 12–24 hours'." },
+      { "what": "Each sprint at full effort uses about 18% of the muscle store, more with short rests", "why": "Repeated sprints drain muscle glycogen quickly; the exact amount differs between people, so this is a teaching value." },
+      { "what": "Fuel available to the muscles is 70% their own store and 30% sugar from the blood", "why": "Working muscles rely mostly on their own store during sprints; blood sugar tops it up. The split is a simplification." },
+      { "what": "Heart rate and breathing don't depend on fuel", "why": "That's why Ravi and Ji-woo breathe just as hard. In real life a very low fuel level can also change heart rate a little; we left that out." }
+    ],
+    "illustrative": [
+      "Ravi's nine-hour gap, his normal breakfast and his resting heart rate are made up for a fictional story.",
+      "The fuel percentages and the 'jelly / heavy / strong' bands are a teaching scale."
+    ]
+  },
+  "citations": [
+    { "id": "cc-glycogen", "title": "Glycogen", "publisher": "Cleveland Clinic", "year": "", "url": "https://my.clevelandclinic.org/health/articles/23509-glycogen", "verified": "2026-10-19",
+      "supports": "Glycogen is stored glucose, mainly in the liver and skeletal muscles; liver glycogen helps regulate blood sugar and changes with the time between meals; after 12–24 hours of fasting liver glycogen is almost used up; repeated sprinting can quickly lower muscle glycogen." },
+    { "id": "medline-lowsugar", "title": "Low blood sugar", "publisher": "MedlinePlus (U.S. National Library of Medicine)", "year": "", "url": "https://medlineplus.gov/ency/article/000386.htm", "verified": "2026-10-19",
+      "supports": "Low blood sugar happens when blood glucose falls too low; symptoms include shaking or trembling, hunger, sweating, a fast or pounding heartbeat, and unclear thinking." },
+    { "id": "tanaka-hrmax", "title": "Age-predicted maximal heart rate revisited (J Am Coll Cardiol)", "publisher": "PubMed", "year": "2001", "url": "https://pubmed.ncbi.nlm.nih.gov/11153730/", "verified": "2026-10-19",
+      "supports": "Abstract conclusion: a regression equation to predict maximal heart rate is 208 − 0.7 × age in healthy adults." },
+    { "id": "aha-target", "title": "Target Heart Rates Chart", "publisher": "American Heart Association", "year": "", "url": "https://www.heart.org/en/healthy-living/fitness/fitness-basics/target-heart-rates", "verified": "2026-10-19",
+      "supports": "Resting heart rate 60–100 is normal for most adults; very active people can be as low as 40; vigorous activity is about 70–85% of maximum heart rate." },
+    { "id": "cdc-intensity", "title": "Measuring Physical Activity Intensity", "publisher": "CDC", "year": "", "url": "https://www.cdc.gov/physical-activity-basics/measuring/index.html", "verified": "2026-10-19",
+      "supports": "Relative intensity on a 0–10 scale: 5–6 is moderate and 7–8 is vigorous; at vigorous effort you can't say more than a few words without pausing for breath." },
+    { "id": "elf-exercise", "title": "Your lungs and exercise", "publisher": "European Lung Foundation", "year": "", "url": "https://europeanlung.org/en/information-hub/keeping-lungs-healthy/your-lungs-and-exercise", "verified": "2026-10-19",
+      "supports": "We breathe about 15 times a minute (12 litres of air) at rest and up to about 40–60 times a minute (100 litres) during exercise." }
+  ],
   "limits": {
     "does": [
-      "Shows breathing and heart rate rising with running intensity, the same for everyone",
-      "Shows fuel in the blood falling with hours since eating, and faster at high effort",
-      "Shows legs running short only when low fuel and high effort combine"
+      "Shows effort driving heart rate and breathing the same way for everyone",
+      "Shows a long gap since eating lowering the fuel store, and sprints draining the muscles' own fuel",
+      "Shows why two runners can breathe equally hard but tire at different times"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Say what anyone should eat",
-      "Include training, sleep or heat"
+      "Measure any real person — Ravi is fictional and the fuel numbers are a teaching scale",
+      "Say what or when anyone should eat",
+      "Include water, heat, sleep or any medical condition"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Feeling shaky or dizzy during sport is a reason to stop, have a snack and water, and tell a coach."
-  },
-  "sources": [
-    "CK-12 Life Science: digestive and respiratory systems",
-    "CK-12 Life Science: cellular respiration (food + oxygen → energy)"
-  ]
+    "wellbeing": "Feeling shaky, dizzy or confused during exercise is a reason to stop and tell a coach or adult."
+  }
 }

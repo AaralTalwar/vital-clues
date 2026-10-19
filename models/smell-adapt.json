@@ -1,44 +1,108 @@
 {
   "id": "smell-adapt",
-  "name": "Nose & smell",
+  "version": 2,
+  "name": "Jordan's nose in the locker room",
   "colour": "coral",
-  "inputs": {
-    "primary":   { "key": "m", "label": "Minutes in the room", "min": 0, "max": 20, "step": 1, "unit": "min", "ticks": ["walk in", "10 min", "20 min"] },
-    "secondary": { "key": "S", "label": "How strong the smell is", "min": 1, "max": 10, "step": 1, "default": 7, "ticks": ["faint", "strong", "very strong"] }
-  },
+  "parameters": [
+    {
+      "key": "m", "label": "Minutes in the room", "role": "primary", "min": 0, "max": 20, "step": 1, "default": 10, "unit": "min",
+      "ticks": ["walk in", "10 min", "20 min"],
+      "explain": "With a steady smell, the sense of smell becomes much less sensitive within about 10 minutes.",
+      "basis": "source", "cite": "laryngoscope-habituation"
+    },
+    {
+      "key": "W", "label": "Window or fan", "role": "bubble", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "closed" }, { "value": 1, "label": "window open" }, { "value": 2, "label": "window + fan" }],
+      "explain": "Tests the 'the smell went away' idea: airing the room really does lower the smell in the air. Was the room aired?",
+      "basis": "choice"
+    },
+    {
+      "key": "b", "label": "Break outside first", "role": "bubble", "min": 0, "max": 10, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "first time in" }, { "value": 1, "label": "stepped out 1 min" }, { "value": 5, "label": "stepped out 5 min" }, { "value": 10, "label": "stepped out 10 min" }],
+      "explain": "After 10 minutes in the room he steps out. Away from the smell, his nose and brain reset — so coming back, it hits him again.",
+      "basis": "choice"
+    },
+    {
+      "key": "Sst", "label": "How strong the smell is", "role": "factor", "min": 2, "max": 10, "step": 1, "default": 7,
+      "ticks": ["faint", "strong", "very strong"],
+      "explain": "How many sweaty kits and shoes are in the room after a hot practice.",
+      "basis": "illustrative"
+    },
+    {
+      "key": "st", "label": "Stuffy nose", "role": "factor", "min": 0, "max": 2, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "clear" }, { "value": 1, "label": "a bit blocked" }, { "value": 2, "label": "very blocked (a cold)" }],
+      "explain": "A nose stuffed up by a cold keeps smell molecules from reaching the smell-sensing cells.",
+      "basis": "source", "cite": "nidcd-smell"
+    }
+  ],
+  "constants": { "adapt": 3, "reset": 2, "floor": 0.15 },
   "outputs": [
-    { "key": "A", "label": "Smell actually in the air", "unit": "% of max", "colour": "amber", "decimals": 0 },
-    { "key": "N", "label": "How strongly it's noticed", "unit": "% of max", "colour": "coral", "decimals": 0 },
-    { "key": "R", "label": "Smell receptors are", "colour": "purple", "bands": [{ "upTo": 0.35, "text": "quiet (adapted)" }, { "upTo": 0.7, "text": "settling down" }, { "text": "firing hard" }] }
+    { "key": "A", "label": "Smell actually in the air", "unit": "%", "colour": "amber", "decimals": 0 },
+    { "key": "N", "label": "How strongly he notices it", "unit": "%", "colour": "coral", "decimals": 0 },
+    { "key": "R", "label": "His nose and brain are", "colour": "purple", "bands": [{ "upTo": 0.3, "text": "barely reporting it" }, { "upTo": 0.6, "text": "quieting down" }, { "text": "sounding the alarm" }] }
   ],
   "rules": {
-    "A": "S * 10",
-    "N": "S * 10 * (0.15 + 0.85 * pow(0.5, m / 3))",
-    "R": "0.15 + 0.85 * pow(0.5, m / 3)"
+    "A": "Sst * 10 * pow(0.5, m * W / 5)",
+    "N": "Sst * 10 * pow(0.5, m * W / 5) * (1 - 0.35 * st) * (floor + (1 - floor) * (1 - min(b, 1) * (1 - pow(0.5, 10 / adapt)) * pow(0.5, b / reset)) * pow(0.5, m / adapt))",
+    "R": "floor + (1 - floor) * (1 - min(b, 1) * (1 - pow(0.5, 10 / adapt)) * pow(0.5, b / reset)) * pow(0.5, m / adapt)"
   },
   "chart": { "x": "m", "y": "N", "xLabel": "minutes in the room", "yLabel": "how strongly the smell is noticed (%)", "yMin": 0, "yMax": 100 },
   "overlay": {
     "base": "head",
-    "caption": "smell stays in the air · receptors quiet down · the brain stops getting the alarm",
+    "caption": "smell stays in the air · smell sensors and brain quiet down · the alarm stops",
     "parts": [
       { "shape": "pollen", "colour": "#F4A300", "anim": { "type": "count", "output": "A", "min": 0, "max": 100 } },
       { "shape": "brainGlow", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "N", "min": 0, "max": 100 } },
       { "shape": "nose", "colour": "#E4572E", "anim": { "type": "glow", "output": "N", "min": 0, "max": 100 } }
     ]
   },
+  "explain": {
+    "summary": "Smell-sensing cells in Jordan's nose send messages to his brain when smell molecules reach them. A new smell sets off a strong alarm. But when the smell stays the same, the system quiets down — within minutes he barely notices it, even though the smell is still in the air. Step outside for a few minutes and it resets, so walking back in, the smell hits him again.",
+    "rules": [
+      "The smell in the air stays the same unless the room is aired.",
+      "How strongly he notices it drops by half about every 3 minutes, down to a small leftover.",
+      "Away from the smell, his sense of smell resets, halving the 'used to it' effect about every 2 minutes.",
+      "A stuffy nose cuts how much smell reaches the sensors."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Smell-sensing cells in the nose connect directly to the brain and send it messages when they detect odour molecules; a nose stuffed up by a cold keeps odours from reaching them.", "cite": "nidcd-smell" },
+      { "fact": "In a study of 80 people breathing a steady rose-like smell, their smell thresholds were already clearly raised (they had become less sensitive) after 10 minutes, and more so after 2 hours.", "cite": "laryngoscope-habituation" },
+      { "fact": "The brain gets used to a constant smell and ignores it until there is a big enough change to get its attention.", "cite": "utk-smell" }
+    ],
+    "choice": [
+      { "what": "Noticing halves every 3 minutes, down to 15% of the start", "why": "Chosen to match Jordan's clue (strong at the door, almost gone after 10 minutes) and the study's 'clearly less sensitive after 10 minutes'." },
+      { "what": "After stepping out, the 'used to it' effect halves every 2 minutes", "why": "Recovery away from a smell is quick; we don't have a measured number for teens, so this is a teaching value." },
+      { "what": "Receptors and brain are counted together", "why": "Both the smell-sensing cells and the brain adapt; separating them would add detail without changing the lesson." },
+      { "what": "An open window halves the smell every 5 minutes; a fan doubles that", "why": "A simple way to show airing really removes smell from the air." }
+    ],
+    "illustrative": [
+      "Jordan is fictional; the smell strength and the percentages are made-up scales.",
+      "The 70% at the door and 16% after 10 minutes match the story, not a measurement."
+    ],
+    "studying": "Scientists are still working out how much of 'nose blindness' happens in the nose itself and how much in the brain."
+  },
+  "citations": [
+    { "id": "nidcd-smell", "title": "Smell Disorders", "publisher": "NIH National Institute on Deafness and Other Communication Disorders (NIDCD)", "year": "", "url": "https://www.nidcd.nih.gov/health/smell-disorders", "verified": "2026-10-19",
+      "supports": "Olfactory sensory neurons connect directly to the brain and send messages when they detect odour molecules; a nose stuffed up by a cold or flu keeps odours from reaching the smell-sensing cells." },
+    { "id": "laryngoscope-habituation", "title": "Pronounced Olfactory Habituation with Age (Laryngoscope)", "publisher": "University of Regensburg publication server", "year": "2024", "url": "https://pred.uni-regensburg.de/id/eprint/63814/", "verified": "2026-10-19",
+      "supports": "80 participants were exposed to a rose-like odour through a nasal clip; olfactory thresholds were significantly elevated after 10 minutes of exposure and more so after 2 hours." },
+    { "id": "utk-smell", "title": "Ask a Scientist: Smelling your own breath", "publisher": "The Daily Beacon, University of Tennessee", "year": "2017", "url": "https://www.utdailybeacon.com/opinion/columns/ask-a-scientist-smelling-your-own-breath/article_014af98c-0da1-11e7-b3e5-733a95f4e961.html", "verified": "2026-10-19",
+      "supports": "Our brains get tired of registering the same things and ignore a constant smell until there's a big enough change to get their attention; the brain constantly adapts to everything we sense." }
+  ],
   "limits": {
     "does": [
-      "Shows the smell staying in the air while the sense of it fades",
-      "Shows smell receptors quieting down when a smell doesn't change (halving every 3 minutes)",
-      "Shows that a stronger smell takes longer to fade from notice"
+      "Shows the smell staying in the air while noticing it fades",
+      "Shows a short break resetting the nose",
+      "Lets you test whether airing the room could explain it"
     ],
     "doesnt": [
-      "Measure any real person or any real smell — the numbers are illustrative teaching values",
-      "Include the brain's own habit of ignoring familiar things, which adds to the effect",
-      "Say anything about whether a smell is harmful"
+      "Measure any real person — Jordan is fictional and the numbers are illustrative",
+      "Tell different smells apart, or model smells that are harmful to breathe",
+      "Separate adaptation in the nose from adaptation in the brain"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "If you smell gas or smoke, don't wait to get used to it — leave and tell an adult right away."
-  },
-  "sources": ["CK-12 Life Science: the senses — smell", "NIH NIDCD: Smell disorders and how smell works (student overview)"]
+    "wellbeing": "If you smell gas or smoke, don't wait to 'get used to it' — get out and tell an adult right away."
+  }
 }

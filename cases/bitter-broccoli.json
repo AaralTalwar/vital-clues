@@ -9,60 +9,209 @@
   "level": "difficult",
   "twist": "The obvious answer — 'she's just a picky eater' — is wrong. Her tongue really is detecting a bitter chemical more strongly than her brother's, and she inherited that.",
   "reviewed": null,
-  "character": { "name": "Imani", "age": 13 },
+  "character": {
+    "name": "Imani",
+    "age": 13
+  },
   "briefing": "Imani, 13, pushes her broccoli around the plate every time it's served. She says it tastes harshly bitter, almost like medicine. Her brother eats the same broccoli and says it's mild and fine.",
   "question": "Is Imani just being picky — or is something different about how she tastes?",
   "illustration": "tongue",
   "clues": [
-    { "id": 1, "title": "Refuses the broccoli", "icon": "plate", "colour": "coral",
+    {
+      "id": 1,
+      "title": "Refuses the broccoli",
+      "icon": "plate",
+      "colour": "coral",
       "text": "She won't eat broccoli or Brussels sprouts. But she happily eats carrots, corn and peppers, and says the green ones taste 'sharp and bitter'.",
-      "shows": "a strong bitter taste from only certain vegetables", "visual": null, "pointsTo": "bitter" },
-    { "id": 2, "title": "Brother shrugs", "icon": "body", "colour": "blue",
+      "shows": "a strong bitter taste from only certain vegetables",
+      "visual": null,
+      "pointsTo": "bitter"
+    },
+    {
+      "id": 2,
+      "title": "Brother shrugs",
+      "icon": "body",
+      "colour": "blue",
       "text": "Same pan, same dinner: her brother says the broccoli is barely bitter at all. He can't see what the fuss is about.",
-      "shows": "the same food tasting different to two people", "visual": null, "pointsTo": "different" },
-    { "id": 3, "title": "The paper-strip test", "icon": "tongue", "colour": "purple",
+      "shows": "the same food tasting different to two people",
+      "visual": null,
+      "pointsTo": "different"
+    },
+    {
+      "id": 3,
+      "title": "The paper-strip test",
+      "icon": "tongue",
+      "colour": "purple",
       "text": "In science class everyone tastes a paper strip with a harmless bitter chemical on it. Imani pulls a face; her brother, at home, says his tastes of nothing but paper.",
-      "shows": "her tongue detecting a bitter chemical that others barely notice", "visual": { "type": "bars", "from": 2, "to": 9, "unit": "bitterness rating, brother → Imani" }, "pointsTo": "receptors" },
-    { "id": 4, "title": "Runs in the family", "icon": "heart", "colour": "teal",
+      "shows": "her tongue detecting a bitter chemical that others barely notice",
+      "visual": {
+        "type": "bars",
+        "from": 2,
+        "to": 9,
+        "unit": "bitterness rating, brother → Imani"
+      },
+      "pointsTo": "receptors"
+    },
+    {
+      "id": 4,
+      "title": "Runs in the family",
+      "icon": "heart",
+      "colour": "teal",
       "text": "Her mom also can't stand Brussels sprouts, and so could her grandma. Her dad loves them, just like her brother.",
-      "shows": "the trait running in families", "visual": null, "pointsTo": "inherited" }
+      "shows": "the trait running in families",
+      "visual": null,
+      "pointsTo": "inherited"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "She's just a picky eater.", "flaw": "A picky eater turns down lots of foods; Imani likes most vegetables and only rejects the bitter ones — and a paper strip doesn't care about attitude." },
-    { "id": "B", "text": "The broccoli was cooked badly.", "flaw": "Her brother ate the same broccoli and found it mild, and the paper strip had nothing to do with cooking." },
-    { "id": "C", "text": "Imani inherited extra-sensitive bitter-taste receptors on her tongue, so the same chemical in broccoli tastes much more bitter to her than to her brother.", "best": true },
-    { "id": "D", "text": "She has a cold and can't taste properly.", "flaw": "A cold makes food taste of less, not more — Imani is tasting more bitterness than everyone else." }
+    {
+      "id": "A",
+      "text": "She's just a picky eater.",
+      "flaw": "A picky eater turns down lots of foods; Imani likes most vegetables and only rejects the bitter ones — and a paper strip doesn't care about attitude."
+    },
+    {
+      "id": "B",
+      "text": "The broccoli was cooked badly.",
+      "flaw": "Her brother ate the same broccoli and found it mild, and the paper strip had nothing to do with cooking."
+    },
+    {
+      "id": "C",
+      "text": "Imani inherited extra-sensitive bitter-taste receptors on her tongue, so the same chemical in broccoli tastes much more bitter to her than to her brother.",
+      "best": true
+    },
+    {
+      "id": "D",
+      "text": "She has a cold and can't taste properly.",
+      "flaw": "A cold makes food taste of less, not more — Imani is tasting more bitterness than everyone else."
+    }
   ],
   "evidence": {
-    "A": { "supports": [1], "doesntFit": [3, 4] },
-    "B": { "supports": [], "doesntFit": [2, 3] },
-    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "D": { "supports": [], "doesntFit": [1, 3] }
+    "A": {
+      "supports": [
+        1
+      ],
+      "doesntFit": [
+        3,
+        4
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        2,
+        3
+      ]
+    },
+    "C": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        1,
+        3
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "B",
     "prompt": "As food gets more bitter — from cucumber to broccoli to raw Brussels sprouts — how bitter does it taste to Imani?",
     "expectedShape": "rises",
-    "second": { "question": "Compared with her brother, does the same broccoli taste more or less bitter to Imani?", "options": ["more", "same", "less"], "answer": "more" }
+    "second": {
+      "question": "Compared with her brother, does the same broccoli taste more or less bitter to Imani?",
+      "options": [
+        "more",
+        "same",
+        "less"
+      ],
+      "answer": "more"
+    }
   },
-  "labDefaults": { "primary": 7, "secondary": 2 },
+  "labDefaults": {
+    "primary": 7
+  },
   "concepts": [
-    { "id": "bitter", "label": "a bitter taste", "colour": "purple",
-      "synonyms": ["bitter", "bitterness", "bitterly", "sharp taste", "harsh"],
-      "hint": "Which of the tongue's tastes is she noticing?" },
-    { "id": "receptors", "label": "taste receptors on the tongue", "colour": "coral",
-      "synonyms": ["receptors", "receptor", "taste buds", "taste bud", "tongue", "sensors"],
-      "hint": "What on the tongue actually detects the chemical?" },
-    { "id": "inherited", "label": "inherited from family", "colour": "teal",
-      "synonyms": ["inherited", "inherit", "inherits", "genes", "gene", "genetic", "family", "runs in the family", "parents"],
-      "hint": "Why do her mom and grandma feel the same way?" },
-    { "id": "different", "label": "differs between people", "colour": "blue",
-      "synonyms": ["different", "differently", "difference", "more than her brother", "others", "other people", "varies"],
-      "hint": "Why does her brother taste something milder?" },
-    { "id": "chemical", "label": "a chemical in the food", "colour": "amber",
-      "synonyms": ["chemical", "chemicals", "compound", "compounds", "molecule", "molecules", "substance"],
-      "hint": "What in the broccoli is being tasted?" }
+    {
+      "id": "bitter",
+      "label": "a bitter taste",
+      "colour": "purple",
+      "synonyms": [
+        "bitter",
+        "bitterness",
+        "bitterly",
+        "sharp taste",
+        "harsh"
+      ],
+      "hint": "Which of the tongue's tastes is she noticing?"
+    },
+    {
+      "id": "receptors",
+      "label": "taste receptors on the tongue",
+      "colour": "coral",
+      "synonyms": [
+        "receptors",
+        "receptor",
+        "taste buds",
+        "taste bud",
+        "tongue",
+        "sensors"
+      ],
+      "hint": "What on the tongue actually detects the chemical?"
+    },
+    {
+      "id": "inherited",
+      "label": "inherited from family",
+      "colour": "teal",
+      "synonyms": [
+        "inherited",
+        "inherit",
+        "inherits",
+        "genes",
+        "gene",
+        "genetic",
+        "family",
+        "runs in the family",
+        "parents"
+      ],
+      "hint": "Why do her mom and grandma feel the same way?"
+    },
+    {
+      "id": "different",
+      "label": "differs between people",
+      "colour": "blue",
+      "synonyms": [
+        "different",
+        "differently",
+        "difference",
+        "more than her brother",
+        "others",
+        "other people",
+        "varies"
+      ],
+      "hint": "Why does her brother taste something milder?"
+    },
+    {
+      "id": "chemical",
+      "label": "a chemical in the food",
+      "colour": "amber",
+      "synonyms": [
+        "chemical",
+        "chemicals",
+        "compound",
+        "compounds",
+        "molecule",
+        "molecules",
+        "substance"
+      ],
+      "hint": "What in the broccoli is being tasted?"
+    }
   ],
   "transfer": {
     "context": "Raj and his best friend share the same cup of black hot chocolate made with dark cocoa. Raj says it's harshly bitter; his friend says it just tastes rich.",

@@ -44,11 +44,11 @@ def build_md(cases, models):
     L.append(f"{len(cases)} fictional cases built on {len(by_model)} simplified body models, for students aged 12–16. "
              f"Levels: {', '.join(f'{counts[lv]} {LEVEL_LABEL[lv]}' for lv in LEVELS)}.")
     L.append("")
-    L.append("## How to review (about 60–90 minutes)")
+    L.append("## How to review (about 90–120 minutes)")
     L.append("")
-    L.append("This is a **model-level** review. All the science sits in the body models below; each case is a short story that applies one model. You are not asked to read every case.")
+    L.append("This is a **model-level** review. Each case has its own model; all its science sits in the model section below, split into sourced facts, modelling choices and illustrative numbers. You are not asked to play every case.")
     L.append("")
-    L.append("1. For each model, check the formulas give the right *direction and shape* for middle/high-school biology (the numbers are labelled illustrative in the app).")
+    L.append("1. For each model, check the **From sources** facts match their linked pages, the **Our choices** simplifications are fair for grades 7–10, and the formulas give the right direction and shape.")
     L.append("2. Check each model's \"does / doesn't\" limits and wellbeing line are honest and age-appropriate.")
     L.append("3. Under each model, read the one-line claims of the cases that use it: the best answer, the takeaway and the transfer answer. Flag any sentence that is wrong or misleading.")
     L.append("4. Read the four spot-check cases end to end in the app (one per level): " +
@@ -58,15 +58,30 @@ def build_md(cases, models):
     L.append("Nothing in the app diagnoses or advises on any real person; every case carries a fictional-character notice and a \"tell an adult\" line.")
     L.append("")
     L.append("## Models")
-    for mid in sorted(by_model, key=lambda m: models[m]["name"]):
+    for mid in sorted(by_model, key=lambda m: (LEVELS.index(by_model[m][0].get("level", "easy")), by_model[m][0]["title"])):
         m = models[mid]
+        c0 = by_model[mid][0]
         L.append("")
-        L.append(f"### {m['name']}  ·  `{mid}`")
-        p, s = m["inputs"]["primary"], m["inputs"].get("secondary")
-        sliders = f"**Sliders:** {p['label']} ({p['min']}–{p['max']}{' ' + p['unit'] if p.get('unit') else ''})"
-        if s:
-            sliders += f"; {s['label']} ({s['min']}–{s['max']}{' ' + s['unit'] if s.get('unit') else ''})"
-        L.append(sliders)
+        L.append(f"### {c0['title']} — {m['name']}  ·  `{mid}`")
+        L.append("")
+        L.append(f"*Level: {LEVEL_LABEL.get(c0.get('level'), '?')}*" + (f" · *systems: {' + '.join(c0['systems'])}*" if c0.get("systems") else ""))
+        L.append("")
+        if m.get("explain"):
+            L.append(m["explain"]["summary"])
+            L.append("")
+            for r in m["explain"].get("rules", []):
+                L.append(f"- {r}")
+            L.append("")
+        params = m.get("parameters")
+        if params:
+            L.append("**Dials** (primary = the main slider; bubbles = extra dials for this level; factors = the character and setting)")
+            L.append("")
+            for q in params:
+                unit = f" {q['unit']}" if q.get("unit") else ""
+                L.append(f"- *{q['role']}* · **{q['label']}** `{q['key']}` · {q['min']}–{q['max']}{unit}, case value {q.get('default', q['min'])} · {q.get('basis', '?')}: {q.get('explain', '')}")
+        else:
+            p0, s0 = m["inputs"]["primary"], m["inputs"].get("secondary")
+            L.append(f"**Sliders:** {p0['label']} ({p0['min']}–{p0['max']}){'; ' + s0['label'] if s0 else ''}")
         L.append("")
         L.append("**Formulas**")
         L.append("")
@@ -74,32 +89,46 @@ def build_md(cases, models):
             if "text" in o:
                 L.append(f"- {o['label']}: always shown as \"{o['text']}\"")
                 continue
-            band = ""
-            if o.get("bands"):
-                band = " → shown as " + " / ".join(b["text"] for b in o["bands"])
+            band = (" → shown as " + " / ".join(b["text"] for b in o["bands"])) if o.get("bands") else ""
             L.append(f"- {o['label']}{' (' + o['unit'] + ')' if o.get('unit') else ''}: `{o['key']} = {m['rules'][o['key']]}`{band}")
         if m.get("constants"):
             L.append(f"- Constants: {', '.join(f'`{k} = {v}`' for k, v in m['constants'].items())}")
         L.append("")
-        L.append("**The model shows:** " + "; ".join(m["limits"]["does"]) + ".")
+        pv = m.get("provenance")
+        cites = {c["id"]: c for c in m.get("citations", [])}
+        if pv:
+            L.append("**From sources** (each checked against the linked page)")
+            L.append("")
+            for f in pv.get("source", []):
+                c = cites.get(f.get("cite"), {})
+                L.append(f"- {f['fact']} — {c.get('publisher', '?')}: {c.get('title', '')} <{c.get('url', '')}>")
+            L.append("")
+            L.append("**Our choices** (simplifications — please check these are fair)")
+            L.append("")
+            for ch in pv.get("choice", []):
+                L.append(f"- **{ch['what']}.** {ch['why']}")
+            L.append("")
+            L.append("**Illustrative** (made-up numbers): " + " ".join(pv.get("illustrative", [])))
+            if pv.get("studying"):
+                L.append("")
+                L.append(f"**Still being studied:** {pv['studying']}")
+        else:
+            L.append(f"**Sources:** {'; '.join(m.get('sources', []))}")
         L.append("")
-        L.append("**It does not:** " + "; ".join(m["limits"]["doesnt"]) + ".")
+        L.append("**Limits:** shows — " + "; ".join(m["limits"]["does"]) + ". Does not — " + "; ".join(m["limits"]["doesnt"]) + ".")
         L.append("")
         L.append(f"**Wellbeing line:** {m['limits']['wellbeing']}")
         L.append("")
-        L.append(f"**Sources:** {'; '.join(m['sources'])}")
-        L.append("")
-        L.append("**Cases using this model**")
-        L.append("")
-        for c in sorted(by_model[mid], key=lambda c: (LEVELS.index(c.get("level", "easy")), c["title"])):
+        for c in by_model[mid]:
             best = next(h for h in c["hypotheses"] if h.get("best"))
             ans = c["transfer"]["options"][c["transfer"]["answer"]]
-            L.append(f"- **{c['title']}** — {LEVEL_LABEL.get(c.get('level'), '?')}" + (f" · {' + '.join(c['systems'])}" if c.get("systems") else ""))
-            L.append(f"  - Best answer: {best['text']}")
+            L.append("**Case claims to check**")
+            L.append("")
+            L.append(f"- Best answer: {best['text']}")
             if c.get("twist"):
-                L.append(f"  - Twist: {c['twist']}")
-            L.append(f"  - Takeaway: {c['takeaway']}")
-            L.append(f"  - Transfer: {c['transfer']['context']} → *{ans}*")
+                L.append(f"- Twist: {c['twist']}")
+            L.append(f"- Takeaway: {c['takeaway']}")
+            L.append(f"- Transfer: {c['transfer']['context']} → *{ans}*")
     L.append("")
     L.append("## Sign-off")
     L.append("")

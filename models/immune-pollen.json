@@ -1,36 +1,301 @@
 {
   "id": "immune-pollen",
-  "name": "Immune system & pollen",
+  "version": 2,
+  "name": "Diego's immune system and pollen",
   "colour": "teal",
-  "inputs": {
-    "primary":   { "key": "G", "label": "Pollen in the air", "min": 0, "max": 10, "step": 1, "ticks": ["none", "medium", "very high"] },
-    "secondary": { "key": "M", "label": "Minutes after going indoors", "min": 0, "max": 60, "step": 5, "default": 0, "unit": "min", "ticks": ["still outside", "30 min", "1 hour"] }
-  },
+  "parameters": [
+    {
+      "key": "G",
+      "label": "Tree pollen in the air",
+      "role": "primary",
+      "min": 0,
+      "max": 3000,
+      "step": 100,
+      "default": 2000,
+      "unit": "grains/m³",
+      "ticks": [
+        "none",
+        "1,500 very high",
+        "3,000"
+      ],
+      "explain": "Pollen is counted in grains per cubic metre of air; 1,500 or more is 'very high' for trees.",
+      "basis": "source",
+      "cite": "stl-pollen"
+    },
+    {
+      "key": "M",
+      "label": "Minutes after going indoors",
+      "role": "bubble",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "default": 0,
+      "unit": "min",
+      "ticks": [
+        "still outside",
+        "30 min",
+        "1 hour"
+      ],
+      "explain": "Away from the pollen, the alarm chemical stops being topped up and the symptoms fade.",
+      "basis": "choice"
+    },
+    {
+      "key": "sens",
+      "label": "How allergic he is",
+      "role": "factor",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 2,
+      "options": [
+        {
+          "value": 0,
+          "label": "not allergic (like his friend)"
+        },
+        {
+          "value": 1,
+          "label": "mildly"
+        },
+        {
+          "value": 2,
+          "label": "strongly (Diego)"
+        }
+      ],
+      "explain": "Allergies are the immune system overreacting to something harmless. Someone who isn't allergic doesn't react at all.",
+      "basis": "source",
+      "cite": "cc-histamine"
+    },
+    {
+      "key": "out",
+      "label": "Minutes outdoors so far",
+      "role": "factor",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 30,
+      "unit": "min",
+      "explain": "Symptoms start shortly after contact and build while pollen keeps landing.",
+      "basis": "source",
+      "cite": "mp-rhinitis"
+    },
+    {
+      "key": "wx",
+      "label": "Weather",
+      "role": "factor",
+      "min": 0.3,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1,
+      "options": [
+        {
+          "value": 0.3,
+          "label": "rainy"
+        },
+        {
+          "value": 1,
+          "label": "normal"
+        },
+        {
+          "value": 1.5,
+          "label": "dry and windy"
+        }
+      ],
+      "explain": "Dry, windy days put more pollen in the air; rain washes it down.",
+      "basis": "source",
+      "cite": "mp-rhinitis"
+    }
+  ],
   "outputs": [
-    { "key": "A", "label": "Alarm chemical (histamine)", "unit": "% above calm", "colour": "coral", "decimals": 0 },
-    { "key": "S", "label": "Sneezes", "unit": "per hour", "colour": "teal", "decimals": 0 },
-    { "key": "E", "label": "Eyes", "colour": "blue", "bands": [{ "upTo": 24, "text": "fine" }, { "upTo": 59, "text": "itchy" }, { "text": "itchy & watery" }] }
+    {
+      "key": "A",
+      "label": "Alarm chemical (histamine)",
+      "unit": "% above calm",
+      "colour": "coral",
+      "decimals": 0
+    },
+    {
+      "key": "S",
+      "label": "Sneezes",
+      "unit": "per hour",
+      "colour": "teal",
+      "decimals": 0
+    },
+    {
+      "key": "E",
+      "label": "Eyes",
+      "colour": "blue",
+      "bands": [
+        {
+          "upTo": 24,
+          "text": "fine"
+        },
+        {
+          "upTo": 79,
+          "text": "itchy"
+        },
+        {
+          "text": "itchy & watery"
+        }
+      ]
+    },
+    {
+      "key": "Lv",
+      "label": "Pollen level",
+      "colour": "amber",
+      "bands": [
+        {
+          "upTo": 14,
+          "text": "low"
+        },
+        {
+          "upTo": 89,
+          "text": "moderate"
+        },
+        {
+          "upTo": 1499,
+          "text": "high"
+        },
+        {
+          "text": "very high"
+        }
+      ]
+    }
   ],
   "rules": {
-    "A": "10 * G * pow(0.5, M / 20)",
-    "S": "round(1.2 * G * pow(0.5, M / 20))",
-    "E": "10 * G * pow(0.5, M / 20)"
+    "A": "100 * sens * (G * wx) / ((G * wx) + 300) * (1 - pow(0.5, out / 10)) * pow(0.5, M / 20)",
+    "S": "round((100 * sens * (G * wx) / ((G * wx) + 300) * (1 - pow(0.5, out / 10)) * pow(0.5, M / 20)) / 12)",
+    "E": "100 * sens * (G * wx) / ((G * wx) + 300) * (1 - pow(0.5, out / 10)) * pow(0.5, M / 20)",
+    "Lv": "G"
   },
-  "chart": { "x": "G", "y": "S", "xLabel": "pollen in the air", "yLabel": "sneezes per hour", "yMin": 0, "yMax": 14 },
+  "chart": {
+    "x": "G",
+    "y": "S",
+    "xLabel": "tree pollen (grains/m³)",
+    "yLabel": "sneezes per hour",
+    "yMin": 0,
+    "yMax": 20
+  },
   "overlay": {
     "base": "head",
-    "caption": "pollen lands → immune cells sound the alarm → sneeze, itch, water",
+    "caption": "pollen lands → immune cells release histamine → sneeze, itch, water",
     "parts": [
-      { "shape": "pollen", "colour": "#F4A300", "anim": { "type": "count", "output": "G", "min": 0, "max": 10 } },
-      { "shape": "eye", "colour": "#2E86DE", "anim": { "type": "glow", "output": "E", "min": 0, "max": 100 } },
-      { "shape": "nose", "colour": "#E4572E", "anim": { "type": "glow", "output": "A", "min": 0, "max": 100 } }
+      {
+        "shape": "pollen",
+        "colour": "#F4A300",
+        "anim": {
+          "type": "count",
+          "output": "Lv",
+          "min": 0,
+          "max": 2500
+        }
+      },
+      {
+        "shape": "eye",
+        "colour": "#2E86DE",
+        "anim": {
+          "type": "glow",
+          "output": "E",
+          "min": 0,
+          "max": 150
+        }
+      },
+      {
+        "shape": "nose",
+        "colour": "#E4572E",
+        "anim": {
+          "type": "glow",
+          "output": "A",
+          "min": 0,
+          "max": 150
+        }
+      }
     ]
   },
+  "explain": {
+    "summary": "Diego's immune system treats harmless tree pollen as an intruder. When pollen lands in his nose and eyes, immune cells release an alarm chemical, histamine, which makes him sneeze, itch and water — the body trying to flush the pollen out. His friend's immune system doesn't react to pollen, so the same air does nothing to him.",
+    "rules": [
+      "The more pollen in the air, the bigger the reaction — but it levels off at very high counts.",
+      "Someone who isn't allergic doesn't react at all; a strongly allergic person reacts most.",
+      "Windy, dry days put more pollen in the air; rain washes it down.",
+      "Indoors, the reaction halves about every 20 minutes."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Allergies are the immune system overreacting to usually harmless proteins; this releases histamine, which causes sneezing and a runny nose.",
+        "cite": "cc-histamine"
+      },
+      {
+        "fact": "Tree, grass and ragweed pollen cause hay fever; itching, sneezing, a runny nose and watery eyes start shortly after contact.",
+        "cite": "mp-rhinitis"
+      },
+      {
+        "fact": "Dry, windy days have more pollen in the air; rain washes most of it to the ground.",
+        "cite": "mp-rhinitis"
+      },
+      {
+        "fact": "For tree pollen, 1,500 grains per cubic metre or more counts as 'very high'.",
+        "cite": "stl-pollen"
+      }
+    ],
+    "choice": [
+      {
+        "what": "The reaction levels off above a few hundred grains",
+        "why": "Once the nose is full of pollen, more pollen adds less; the exact curve varies from person to person."
+      },
+      {
+        "what": "The reaction builds over the first 10–20 minutes outdoors",
+        "why": "Symptoms start shortly after contact, not instantly."
+      },
+      {
+        "what": "Indoors, symptoms halve every 20 minutes",
+        "why": "This fits the clue that it all stops within about an hour; real timing varies."
+      },
+      {
+        "what": "Allergy strength is shown in three steps",
+        "why": "Real sensitivity is a range; three steps make the 'friend isn't allergic' comparison clear."
+      }
+    ],
+    "illustrative": [
+      "Diego's 2,000 grains/m³ day, his 30 minutes outside and his allergy strength are made up for a fictional story.",
+      "Sneezes per hour and the eye bands are a teaching scale."
+    ]
+  },
+  "citations": [
+    {
+      "id": "cc-histamine",
+      "title": "Histamine",
+      "publisher": "Cleveland Clinic",
+      "year": "",
+      "url": "https://my.clevelandclinic.org/health/articles/24854-histamine",
+      "verified": "2026-10-19",
+      "supports": "Allergies are the immune system overreacting to usually harmless proteins; this releases histamine, stored mainly in mast cells, which causes sneezing, a stuffy nose and a runny nose."
+    },
+    {
+      "id": "mp-rhinitis",
+      "title": "Allergic rhinitis",
+      "publisher": "MedlinePlus (U.S. National Library of Medicine)",
+      "year": "",
+      "url": "https://medlineplus.gov/ency/article/000813.htm",
+      "verified": "2026-10-19",
+      "supports": "Breathing in an allergen makes the body release chemicals that cause symptoms; tree, grass and ragweed pollen cause hay fever; dry windy days have more pollen in the air and rain washes it down; itching, sneezing, runny nose and watery eyes start shortly after contact."
+    },
+    {
+      "id": "stl-pollen",
+      "title": "Pollen Levels",
+      "publisher": "St. Louis County Pollen and Mold Center",
+      "year": "",
+      "url": "https://pollenandmold.stlouisco.com/html/PollenLevels.html",
+      "verified": "2026-10-19",
+      "supports": "Pollen level bands in grains per cubic meter: trees low 0–14, moderate 15–89, high 90–1,499, very high 1,500 or more (Aeroallergen Network calculations)."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows the immune system treating harmless pollen as an intruder and releasing an alarm chemical",
-      "Shows sneezing and itchy eyes scaling with how much pollen is around",
-      "Shows the reaction fading once away from the pollen (halving every 20 minutes)"
+      "Shows the immune system reacting to harmless pollen with an alarm chemical",
+      "Shows the reaction growing with pollen and depending on how allergic someone is",
+      "Shows the reaction fading once away from the pollen"
     ],
     "doesnt": [
       "Measure any real person — the numbers are illustrative teaching values",
@@ -39,6 +304,5 @@
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Sneezing is harmless. Trouble breathing or swelling of the face is serious — get an adult right away."
-  },
-  "sources": ["CK-12 Life Science: immune system", "NIH News in Health: seasonal allergies explained (student overview)"]
+  }
 }

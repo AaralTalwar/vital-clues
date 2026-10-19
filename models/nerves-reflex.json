@@ -1,25 +1,31 @@
 {
   "id": "nerves-reflex",
-  "name": "Brain & nerves",
+  "version": 2,
+  "name": "Sam's fast lane and thinking lane",
   "colour": "purple",
-  "inputs": {
-    "primary": {
+  "parameters": [
+    {
       "key": "k",
       "label": "How close the shot is",
+      "role": "primary",
       "min": 0,
       "max": 27,
       "step": 1,
+      "default": 20,
       "unit": "m away",
       "ticks": [
         "far (30 m)",
         "mid",
         "close (3 m)"
       ],
-      "valueFormula": "far - k"
+      "valueFormula": "far - k",
+      "explain": "Closer shots arrive sooner, leaving less time for any pathway to finish.",
+      "basis": "choice"
     },
-    "secondary": {
+    {
       "key": "P",
       "label": "Hours of practice",
+      "role": "bubble",
       "min": 0,
       "max": 20,
       "step": 1,
@@ -29,12 +35,76 @@
         "none",
         "10 h",
         "20 h"
-      ]
+      ],
+      "explain": "Practice speeds up the deciding pathway — but not the reflex, which is already as short as it can be.",
+      "basis": "source",
+      "cite": "dove-rt"
+    },
+    {
+      "key": "v",
+      "label": "Shot speed",
+      "role": "factor",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 20,
+      "unit": "m/s",
+      "explain": "A harder shot covers the same distance in less time.",
+      "basis": "illustrative"
+    },
+    {
+      "key": "tired",
+      "label": "Tiredness",
+      "role": "factor",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "fresh"
+        },
+        {
+          "value": 1,
+          "label": "end of a double practice"
+        }
+      ],
+      "explain": "Being tired slows deciding; the reflex is hardly affected.",
+      "basis": "source",
+      "cite": "dove-rt"
+    },
+    {
+      "key": "sleep",
+      "label": "Sleep last night",
+      "role": "factor",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "9 hours"
+        },
+        {
+          "value": 1,
+          "label": "6 hours"
+        },
+        {
+          "value": 2,
+          "label": "4 hours"
+        }
+      ],
+      "explain": "Short sleep slows reaction time and leads to more mistakes.",
+      "basis": "source",
+      "cite": "nhlbi-sleep"
     }
-  },
+  ],
   "constants": {
-    "speed": 20,
-    "far": 30
+    "far": 30,
+    "reflex": 0.1,
+    "decide": 0.25
   },
   "outputs": [
     {
@@ -74,10 +144,10 @@
     }
   ],
   "rules": {
-    "t": "(far - k) / speed",
-    "r": "0.10",
-    "c": "max(0.19, 0.25 - 0.003 * P)",
-    "which": "(far - k) / speed - max(0.19, 0.25 - 0.003 * P)"
+    "t": "(far - k) / v",
+    "r": "reflex",
+    "c": "max(0.19, decide - 0.003 * P) + 0.06 * tired + 0.03 * sleep",
+    "which": "(far - k) / v - (max(0.19, decide - 0.003 * P) + 0.06 * tired + 0.03 * sleep)"
   },
   "chart": {
     "x": "k",
@@ -89,7 +159,7 @@
   },
   "overlay": {
     "base": "head",
-    "caption": "fast lane: eye → brainstem → hands · thinking lane: eye → cortex → hands",
+    "caption": "fast lane: eye → brainstem → hands · thinking lane: eye → brain → hands",
     "parts": [
       {
         "shape": "brain",
@@ -123,22 +193,99 @@
       }
     ]
   },
+  "explain": {
+    "summary": "Sam's body has two routes from eye to hands. A protective reflex is a short route that doesn't wait for the thinking part of the brain, so it is very fast. Deciding where to dive goes through the brain, so it takes longer — but practice speeds it up, and tiredness or short sleep slow it down. Whether a save is possible depends on how much time the ball gives her.",
+    "rules": [
+      "Time to react = distance ÷ shot speed.",
+      "The reflex route takes about 0.10 seconds and doesn't change with practice.",
+      "Deciding takes about 0.25 seconds at first and gets about 0.003 s faster for each hour of practice, but never faster than 0.19 s.",
+      "Tiredness adds about 0.06 s and each step of short sleep adds about 0.03 s to deciding.",
+      "If the ball arrives before the deciding route finishes, only the reflex makes it in time."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "In a reflex, the signal goes along a nerve to the spinal cord and straight back out to a muscle, without involving the brain.",
+        "cite": "msd-reflex"
+      },
+      {
+        "fact": "Simple reaction time to something you see averages about 190 milliseconds or more for college students.",
+        "cite": "dove-rt"
+      },
+      {
+        "fact": "Reaction time depends on things like practice and fatigue.",
+        "cite": "dove-rt"
+      },
+      {
+        "fact": "Not getting enough sleep can slow reaction time and cause more mistakes.",
+        "cite": "nhlbi-sleep"
+      }
+    ],
+    "choice": [
+      {
+        "what": "A dive decision takes about 0.25 s, slower than a simple 0.19 s reaction",
+        "why": "Choosing which way to dive is harder than pressing one button when a light comes on, and harder choices take longer."
+      },
+      {
+        "what": "The reflex route takes about 0.10 s",
+        "why": "A protective blink-and-flinch is quicker than any decision. The exact time differs between reflexes, so we used one round number."
+      },
+      {
+        "what": "Practice, tiredness and sleep change the decision time by fixed amounts",
+        "why": "Real effects vary a lot between people; fixed steps show the direction clearly."
+      },
+      {
+        "what": "Hands reach the ball as soon as a route finishes",
+        "why": "We left out the time it takes to actually move the arms, to keep the focus on the nerve pathways."
+      }
+    ],
+    "illustrative": [
+      "Sam's shot speed (20 m/s) is a made-up value for a hard shot by a teen player.",
+      "The sizes of the practice, tiredness and sleep effects are illustrative."
+    ]
+  },
+  "citations": [
+    {
+      "id": "msd-reflex",
+      "title": "Reflex Arc: A No-Brainer",
+      "publisher": "MSD Manual (Consumer Version)",
+      "year": "",
+      "url": "https://msdmanuals.com/home/multimedia/image/reflex-arc-a-no-brainer",
+      "verified": "2026-10-19",
+      "supports": "Shows a reflex: the signal travels along a nerve to the spinal cord, is passed to a motor nerve and sent straight back to a muscle; the whole reflex happens without involving the brain."
+    },
+    {
+      "id": "dove-rt",
+      "title": "Evaluation of Simple Visual Reaction Time of Different Colored Light Stimuli in Visually Normal Students (Clinical Optometry)",
+      "publisher": "Dove Medical Press",
+      "year": "2019",
+      "url": "https://www.dovepress.com/evaluation-of-simple-visual-reaction-time-of-different-colored-light-s-peer-reviewed-fulltext-article-OPTO",
+      "verified": "2026-10-19",
+      "supports": "States that average simple visual reaction time for college students is about 190 ms or more, and lists practice and fatigue among the things that affect reaction time."
+    },
+    {
+      "id": "nhlbi-sleep",
+      "title": "Sleep Deprivation and Deficiency: How Sleep Affects Your Health",
+      "publisher": "NIH National Heart, Lung, and Blood Institute",
+      "year": "",
+      "url": "https://www.nhlbi.nih.gov/health/sleep-deprivation/health-effects",
+      "verified": "2026-10-19",
+      "supports": "Says sleep deficiency can slow reaction time, cause more mistakes and make decisions harder."
+    }
+  ],
   "limits": {
     "does": [
-      "Shows how little time a fast ball gives you and how that time shrinks with distance",
-      "Shows that a reflex pathway is fixed and fast, while a decision takes longer",
-      "Shows that practice speeds decisions a little but never the reflex"
+      "Shows how little time a fast shot leaves and how it shrinks as the shot gets closer",
+      "Shows a fixed fast reflex route and a slower deciding route",
+      "Shows practice, tiredness and sleep changing only the deciding route"
     ],
     "doesnt": [
       "Measure any real person — times are rounded teaching values",
-      "Include the goalkeeper's movement time or the ball slowing down",
-      "Tell anyone how good a goalkeeper they are"
+      "Include the time to move the arms or the ball slowing down",
+      "Say how good a goalkeeper anyone is"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Protect your eyes and head in sport — a reflex is fast, but a helmet or goggles is faster."
-  },
-  "sources": [
-    "CK-12 Life Science: nervous system, reflex arcs",
-    "Any middle-school text: reaction time versus reflex"
-  ]
+    "wellbeing": "Protect your eyes and head in sport — a reflex is fast, but goggles or a helmet is faster."
+  }
 }

@@ -1,20 +1,51 @@
 {
   "id": "nerve-pressure",
-  "name": "Nerves & pressure",
+  "version": 2,
+  "name": "Kofi's squashed foot nerve",
   "colour": "amber",
-  "inputs": {
-    "primary":   { "key": "M", "label": "Minutes sitting on his foot", "min": 0, "max": 60, "step": 5, "unit": "min", "ticks": ["none", "30 min", "1 hour"] },
-    "secondary": { "key": "S", "label": "Seconds since standing up", "min": 0, "max": 120, "step": 10, "default": 0, "unit": "s", "ticks": ["just stood", "1 min", "2 min"] }
-  },
+  "parameters": [
+    {
+      "key": "M", "label": "Minutes sitting on his foot", "role": "primary", "min": 0, "max": 60, "step": 5, "default": 40, "unit": "min",
+      "ticks": ["none", "30 min", "1 hour"],
+      "explain": "Sitting on a foot squashes its nerves; the longer the pressure lasts, the more of their signals stop getting through.",
+      "basis": "source", "cite": "kidshealth-foot"
+    },
+    {
+      "key": "S", "label": "Seconds since standing up", "role": "bubble", "min": 0, "max": 120, "step": 10, "default": 0, "unit": "s",
+      "ticks": ["just stood", "1 min", "2 min"],
+      "explain": "Once the pressure is off, blood flows back and the nerves restart — with jumbled signals at first, which feel like pins and needles.",
+      "basis": "source", "cite": "daroff-nbc"
+    },
+    {
+      "key": "Tf", "label": "Floor temperature", "role": "bubble", "min": 60, "max": 80, "step": 10, "default": 70, "unit": "°F",
+      "options": [{ "value": 60, "label": "cold tile" }, { "value": 70, "label": "room temperature" }, { "value": 80, "label": "warm rug" }],
+      "explain": "Tests the 'cold foot' idea: change the floor and watch whether the numbness changes.",
+      "basis": "choice"
+    },
+    {
+      "key": "P", "label": "How he's sitting", "role": "factor", "min": 0.6, "max": 1.3, "step": 0.1, "default": 1,
+      "options": [{ "value": 0.6, "label": "foot beside him" }, { "value": 1, "label": "foot under his leg" }, { "value": 1.3, "label": "sitting right on it" }],
+      "explain": "More weight on the foot squashes the nerve harder, so it 'falls asleep' sooner.",
+      "basis": "choice"
+    },
+    {
+      "key": "Fd", "label": "How much he shifts around", "role": "factor", "min": 0.5, "max": 1, "step": 0.5, "default": 1,
+      "options": [{ "value": 1, "label": "keeps still (gaming)" }, { "value": 0.5, "label": "shifts every few minutes" }],
+      "explain": "Moving now and then takes the pressure off for a moment, so the nerve doesn't get as squashed.",
+      "basis": "choice"
+    }
+  ],
   "outputs": [
+    { "key": "N", "label": "Numbness", "unit": "0–10", "colour": "amber", "decimals": 1 },
+    { "key": "T", "label": "Pins and needles", "unit": "0–10", "colour": "coral", "decimals": 1 },
     { "key": "G", "label": "Nerve signals getting through", "unit": "%", "colour": "purple", "decimals": 0 },
-    { "key": "N", "label": "Numbness", "unit": "0–10", "colour": "blue", "decimals": 1 },
-    { "key": "T", "label": "Pins and needles", "unit": "0–10", "colour": "coral", "decimals": 1 }
+    { "key": "Ft", "label": "Foot skin temperature", "unit": "°F", "colour": "blue", "decimals": 0 }
   ],
   "rules": {
-    "G": "100 - clamp(1.5 * M, 0, 90) * pow(0.5, S / 30)",
-    "N": "clamp(M / 6, 0, 10) * pow(0.5, S / 30)",
-    "T": "clamp(M / 6, 0, 10) * (1 - pow(0.5, S / 10)) * pow(0.5, S / 40)"
+    "N": "clamp(10 * (1 - pow(0.5, M * P * Fd / 15)), 0, 10) * pow(0.5, S / 8)",
+    "T": "clamp(10 * (1 - pow(0.5, M * P * Fd / 15)), 0, 10) * (1 - pow(0.5, S / 5)) * pow(0.5, S / (2 + 2.5 * clamp(10 * (1 - pow(0.5, M * P * Fd / 15)), 0, 10)))",
+    "G": "100 - 9 * clamp(10 * (1 - pow(0.5, M * P * Fd / 15)), 0, 10) * pow(0.5, S / 8)",
+    "Ft": "88 + 0.15 * (Tf - 70)"
   },
   "chart": { "x": "M", "y": "N", "xLabel": "minutes sitting on his foot", "yLabel": "numbness when he stands (0–10)", "yMin": 0, "yMax": 10 },
   "overlay": {
@@ -26,19 +57,53 @@
       { "shape": "pathShort", "colour": "#6C4AB6", "anim": { "type": "light", "output": "G", "threshold": 60 } }
     ]
   },
+  "explain": {
+    "summary": "Nerves carry messages between Kofi's foot and his brain. Sitting on his foot for 40 minutes squashed those nerves, so their signals stopped getting through and the foot felt numb. When he stands, the pressure comes off and blood flows back. The nerves start firing again, but jumbled at first — some too much, some not at all — and his brain reads that as pins and needles until everything is back to normal.",
+    "rules": [
+      "The longer and harder he presses on the foot, the more numb it gets — up to a limit.",
+      "After he stands, the numbness halves about every 8 seconds.",
+      "Pins and needles rise in the first few seconds, then fade — longer after a longer squash.",
+      "A cold floor changes the skin temperature, not the numbness."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "Many people think a foot falls asleep because blood supply is cut off, but squashed nerves are more to blame: pressure stops them relaying messages to the brain.", "cite": "kidshealth-foot" },
+      { "fact": "As feeling comes back it can feel tingly, like pins and needles, and it lasts only a short time as the connection returns to normal.", "cite": "kidshealth-foot" },
+      { "fact": "Sustained pressure can squeeze arteries and block nerve signals; some nerves stop firing while others fire too much, and the brain reads these mixed signals as tingling — which gets stronger as blood flows back and the nerves restart.", "cite": "daroff-nbc" },
+      { "fact": "Paresthesia is a burning, tingling or prickling feeling, usually in the hands, arms, legs or feet; nerve injury can come from compression.", "cite": "ninds-paresthesia" }
+    ],
+    "choice": [
+      { "what": "Numbness builds up with a 15-minute half-time", "why": "Chosen so 10 minutes gives mild numbness and 40 minutes strong numbness, matching the story." },
+      { "what": "Numbness halves every 8 seconds after standing; tingling fades over about a minute", "why": "Sources say the tingling is short; we made it longer after a longer squash, as clue 4 describes." },
+      { "what": "Weight and fidgeting scale the squash", "why": "More pressure squashes nerves harder and shifting gives relief; the exact amounts vary." },
+      { "what": "Floor temperature only changes skin temperature", "why": "This is how the model tests the cold-foot idea." }
+    ],
+    "illustrative": [
+      "Kofi is fictional; the 0–10 numbness and tingling scales are made-up scales.",
+      "His skin temperature of about 88°F is a typical value, not a measurement."
+    ]
+  },
+  "citations": [
+    { "id": "kidshealth-foot", "title": "Why Does My Foot Fall Asleep?", "publisher": "Nemours KidsHealth", "year": "", "url": "https://kidshealth.org/en/kids/foot-asleep.html", "verified": "2026-10-19",
+      "supports": "Squashed nerves, more than cut-off blood supply, are to blame; pressure stops nerves relaying messages to the brain; as feeling returns it can be tingly like pins and needles, lasting only a short time." },
+    { "id": "daroff-nbc", "title": "What makes our feet fall asleep?", "publisher": "NBC News (Dr. Robert Daroff, Case Western Reserve University)", "year": "", "url": "https://www.nbcnews.com/id/wbna3076701", "verified": "2026-10-19",
+      "supports": "Pressure can compress arteries and block nerve pathways; some nerves stop firing while others fire too much and the brain reads this as tingling; it intensifies as blood flows back and nerves restart." },
+    { "id": "ninds-paresthesia", "title": "Paresthesia", "publisher": "NIH National Institute of Neurological Disorders and Stroke (NINDS)", "year": "", "url": "https://www.ninds.nih.gov/health-information/disorders/paresthesia", "verified": "2026-10-19",
+      "supports": "Paresthesia is a burning, itching, tingling or prickling sensation usually felt in the hands, arms, legs or feet; a pinched nerve can result from compression, constriction or stretching." }
+  ],
   "limits": {
     "does": [
-      "Shows numbness growing the longer a nerve is pressed",
-      "Shows pins and needles starting after the pressure is off and fading within a couple of minutes",
-      "Shows signals returning to normal on their own"
+      "Shows numbness building the longer a nerve is squashed",
+      "Shows the pins-and-needles phase as the nerve restarts",
+      "Lets you test whether a cold floor could be the cause"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Separate the nerve itself from its blood supply — both get squeezed",
-      "Cover numbness that happens without anything pressing"
+      "Measure any real person — Kofi is fictional and the numbers are illustrative",
+      "Separate nerve squashing from blood-flow squashing",
+      "Cover numbness or tingling that happens without pressure"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
-    "wellbeing": "Numbness or tingling that comes without sitting on something, or doesn't go away, is a reason to tell an adult."
-  },
-  "sources": ["NIH NINDS: Brain basics — nerves and signals (student overview)", "CK-12 Life Science: nervous system"]
+    "wellbeing": "Numbness or tingling that happens without sitting on something, or doesn't go away, is a reason to tell an adult."
+  }
 }

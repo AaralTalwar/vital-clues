@@ -1,44 +1,331 @@
 {
   "id": "ear-pressure",
-  "name": "Ears & air pressure",
+  "version": 2,
+  "name": "Lucía's eardrums on the way down",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "D", "label": "Minutes into the descent", "min": 0, "max": 20, "step": 1, "unit": "min", "ticks": ["start", "10 min", "landing"] },
-    "secondary": { "key": "S", "label": "Swallows or yawns per minute", "min": 0, "max": 6, "step": 1, "default": 0, "unit": "per min", "ticks": ["none", "3 a min", "6 a min"] }
+  "parameters": [
+    {
+      "key": "D",
+      "label": "Minutes into the change",
+      "role": "primary",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "unit": "min",
+      "ticks": [
+        "start",
+        "10 min",
+        "landing"
+      ],
+      "explain": "As the plane comes down, the cabin air pressure rises back toward ground level, while the air trapped behind her eardrum stays at the lower cruising pressure.",
+      "basis": "source",
+      "cite": "conv-cabin"
+    },
+    {
+      "key": "S",
+      "label": "Swallows or yawns per minute",
+      "role": "bubble",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 1,
+      "unit": "per min",
+      "ticks": [
+        "none",
+        "3 a min",
+        "6 a min"
+      ],
+      "explain": "Swallowing or yawning opens the Eustachian tube and lets air into the middle ear to even out the pressure. Lucía swallows now and then; her brother, chewing gum, swallows many times a minute — gum makes swallowing easier.",
+      "basis": "source",
+      "cite": "mayo-airplane-ear"
+    },
+    {
+      "key": "dir",
+      "label": "Part of the flight",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "coming down"
+        },
+        {
+          "value": 1,
+          "label": "climbing"
+        }
+      ],
+      "explain": "The twist dial: on the climb, the trapped air is at higher pressure and pushes its own way out down the tube. On the way down, the tube stays shut until she swallows — which is why most ear trouble happens on descent.",
+      "basis": "source",
+      "cite": "gp-baro"
+    },
+    {
+      "key": "nose",
+      "label": "Her nose",
+      "role": "bubble",
+      "min": 0,
+      "max": 1,
+      "step": 1,
+      "default": 0,
+      "options": [
+        {
+          "value": 0,
+          "label": "clear"
+        },
+        {
+          "value": 1,
+          "label": "stuffy from a cold"
+        }
+      ],
+      "explain": "A cold can block the Eustachian tube, so swallows let much less air through.",
+      "basis": "source",
+      "cite": "msd-baro"
+    },
+    {
+      "key": "cab",
+      "label": "Cabin 'altitude' while cruising",
+      "role": "factor",
+      "min": 5000,
+      "max": 8000,
+      "step": 500,
+      "default": 7000,
+      "unit": "ft",
+      "explain": "Airliner cabins are pressurised to match somewhere between 5,000 and 8,000 feet — lower pressure than on the ground.",
+      "basis": "source",
+      "cite": "conv-cabin"
+    },
+    {
+      "key": "age",
+      "label": "Age",
+      "role": "factor",
+      "min": 3,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "years",
+      "explain": "Young children have small Eustachian tubes that let air through less easily.",
+      "basis": "source",
+      "cite": "mayo-airplane-ear"
+    }
+  ],
+  "constants": {
+    "sea": 760,
+    "half": 18600,
+    "vent": 8
   },
   "outputs": [
-    { "key": "P", "label": "Pressure difference across the eardrum", "unit": "units", "colour": "purple", "decimals": 0 },
-    { "key": "E", "label": "Eardrum", "colour": "coral", "bands": [{ "upTo": 4, "text": "barely pushed" }, { "upTo": 10, "text": "pushed in" }, { "text": "pushed in hard" }] },
-    { "key": "K", "label": "Ear feels", "colour": "teal", "bands": [{ "upTo": 4, "text": "normal" }, { "upTo": 10, "text": "blocked" }, { "text": "painful" }] }
+    {
+      "key": "P",
+      "label": "Pressure difference across the eardrum",
+      "unit": "mmHg",
+      "colour": "purple",
+      "decimals": 0
+    },
+    {
+      "key": "Pc",
+      "label": "Cabin air pressure",
+      "unit": "mmHg",
+      "colour": "blue",
+      "decimals": 0
+    },
+    {
+      "key": "E",
+      "label": "Eardrum",
+      "colour": "coral",
+      "bands": [
+        {
+          "upTo": 10,
+          "text": "barely pushed"
+        },
+        {
+          "upTo": 30,
+          "text": "pushed"
+        },
+        {
+          "text": "pushed hard"
+        }
+      ]
+    },
+    {
+      "key": "K",
+      "label": "Ear feels",
+      "colour": "teal",
+      "bands": [
+        {
+          "upTo": 10,
+          "text": "normal"
+        },
+        {
+          "upTo": 30,
+          "text": "blocked, voices muffled"
+        },
+        {
+          "text": "painful"
+        }
+      ]
+    }
   ],
   "rules": {
-    "P": "D * pow(0.5, S)",
-    "E": "D * pow(0.5, S)",
-    "K": "D * pow(0.5, S)"
+    "Pc": "(1 - dir) * sea * pow(0.5, cab * (1 - D / 20) / half) + dir * sea * pow(0.5, cab * (D / 20) / half)",
+    "P": "(1 - dir) * (sea * pow(0.5, cab * (1 - D / 20) / half) - sea * pow(0.5, cab / half)) / (1 + 0.2 * S * D * (1 - 0.7 * nose) * min(1, 0.4 + age / 15)) + dir * min(vent, (sea - sea * pow(0.5, cab * (D / 20) / half)) / (1 + 0.2 * S * D * (1 - 0.7 * nose) * min(1, 0.4 + age / 15)))",
+    "E": "(1 - dir) * (sea * pow(0.5, cab * (1 - D / 20) / half) - sea * pow(0.5, cab / half)) / (1 + 0.2 * S * D * (1 - 0.7 * nose) * min(1, 0.4 + age / 15)) + dir * min(vent, (sea - sea * pow(0.5, cab * (D / 20) / half)) / (1 + 0.2 * S * D * (1 - 0.7 * nose) * min(1, 0.4 + age / 15)))",
+    "K": "(1 - dir) * (sea * pow(0.5, cab * (1 - D / 20) / half) - sea * pow(0.5, cab / half)) / (1 + 0.2 * S * D * (1 - 0.7 * nose) * min(1, 0.4 + age / 15)) + dir * min(vent, (sea - sea * pow(0.5, cab * (D / 20) / half)) / (1 + 0.2 * S * D * (1 - 0.7 * nose) * min(1, 0.4 + age / 15)))"
   },
-  "chart": { "x": "D", "y": "P", "xLabel": "minutes into the descent", "yLabel": "pressure difference across the eardrum", "yMin": 0, "yMax": 22 },
+  "chart": {
+    "x": "D",
+    "y": "P",
+    "xLabel": "minutes into the descent",
+    "yLabel": "pressure difference across the eardrum (mmHg)",
+    "yMin": 0,
+    "yMax": 200
+  },
   "overlay": {
     "base": "head",
     "caption": "cabin air pushes in · air behind the eardrum is trapped · a swallow opens the tube and evens it out",
     "parts": [
-      { "shape": "plane", "colour": "#2E86DE" },
-      { "shape": "ear", "colour": "#6C4AB6", "anim": { "type": "shift", "output": "P", "min": 0, "max": 20, "from": "#6C4AB6", "to": "#E4572E" } },
-      { "shape": "throat", "colour": "#1B998B" }
+      {
+        "shape": "plane",
+        "colour": "#2E86DE"
+      },
+      {
+        "shape": "ear",
+        "colour": "#6C4AB6",
+        "anim": {
+          "type": "shift",
+          "output": "P",
+          "min": 0,
+          "max": 100,
+          "from": "#6C4AB6",
+          "to": "#E4572E"
+        }
+      },
+      {
+        "shape": "throat",
+        "colour": "#1B998B"
+      }
     ]
   },
+  "explain": {
+    "summary": "Lucía's eardrum has air on both sides. During the flight the air behind it settles at the cabin's lower cruising pressure. As the plane comes down, the cabin pressure rises, pushes on the outside of the eardrum and bends it inward — muffled, then painful. A swallow or yawn opens the small Eustachian tube to her throat, air rushes in, and the pressure evens out with a pop.",
+    "rules": [
+      "Cabin pressure rises steadily as the plane descends from its cruising cabin altitude.",
+      "Without swallowing, the air behind the eardrum stays at the old, lower pressure, so the difference grows.",
+      "Each swallow or yawn lets air in and shrinks the difference; a stuffy nose or a very small tube makes that harder.",
+      "On the climb, the extra pressure behind the eardrum escapes down the tube by itself, so the difference stays small."
+    ]
+  },
+  "provenance": {
+    "source": [
+      {
+        "fact": "Airliner cabins are pressurised to an altitude between about 5,000 and 8,000 feet. On descent the cabin pressure rises while the air in the ear stays at the lower pressure, so the eardrum is forced inward and hearing is muffled; on the climb it bulges outward.",
+        "cite": "conv-cabin"
+      },
+      {
+        "fact": "Swallowing or yawning opens the Eustachian tube; sucking on candy or chewing gum makes swallowing easier. Symptoms include ear discomfort and muffled hearing; small Eustachian tubes in young children are a risk.",
+        "cite": "mayo-airplane-ear"
+      },
+      {
+        "fact": "Ear pressure injury is most often due to an aircraft's descent; during descent the Eustachian tubes need to be open to let the pressure equalise, usually by yawning or sucking sweets.",
+        "cite": "gp-baro"
+      },
+      {
+        "fact": "When the Eustachian tube is blocked, for example by a cold or an allergy, air can't get into the middle ear, its pressure stays low and the eardrum bulges inward, causing pain.",
+        "cite": "msd-baro"
+      },
+      {
+        "fact": "At about 10,000 feet each breath holds about 69% of the oxygen it does at sea level, because the air pressure is lower.",
+        "cite": "cdc-altitude"
+      }
+    ],
+    "choice": [
+      {
+        "what": "Air pressure halves about every 18,600 feet",
+        "why": "This simple curve matches the 69% figure at 10,000 feet; it gives a cabin pressure of about 586 mmHg at a 7,000-foot cabin altitude and 760 mmHg on the ground."
+      },
+      {
+        "what": "The descent takes 20 minutes at a steady rate",
+        "why": "It matches the story: her ears start feeling blocked about twenty minutes before landing."
+      },
+      {
+        "what": "Swallowing shrinks the difference rather than wiping it out",
+        "why": "Each swallow opens the tube for only a moment, so frequent swallows keep the difference small while the cabin pressure keeps rising."
+      },
+      {
+        "what": "On the climb the difference can't grow past about 8 mmHg",
+        "why": "Higher pressure behind the eardrum pushes the tube open by itself; the exact opening pressure varies."
+      },
+      {
+        "what": "Muffled above 10 mmHg, painful above 30 mmHg",
+        "why": "Teaching thresholds; real people notice pressure at different points."
+      }
+    ],
+    "illustrative": [
+      "Lucía is fictional; her one swallow a minute, the swallow effect and the comfort bands are teaching values."
+    ],
+    "studying": "Why some people's Eustachian tubes open much more easily than others' is still being researched."
+  },
+  "citations": [
+    {
+      "id": "conv-cabin",
+      "title": "Why Ryanair passengers were bleeding from the ears",
+      "publisher": "The Conversation",
+      "year": "2018",
+      "url": "https://theconversation.com/why-ryanair-passengers-were-bleeding-from-the-ears-100043",
+      "verified": "2026-10-19",
+      "supports": "Cabins are pressurised to between 5,000 and 8,000 ft; on the climb, air in the ear is at higher pressure than the cabin and the eardrum bulges out; on descent the cabin pressure rises, the eardrum is forced inward and hearing is muffled; swallowing or yawning opens the Eustachian tube."
+    },
+    {
+      "id": "mayo-airplane-ear",
+      "title": "Airplane ear: Symptoms and causes",
+      "publisher": "Mayo Clinic",
+      "year": "",
+      "url": "https://www.mayoclinic.org/diseases-conditions/airplane-ear/symptoms-causes/syc-20351701",
+      "verified": "2026-10-19",
+      "supports": "The Eustachian tube keeps air pressure even; swallowing or yawning opens it; sucking candy or chewing gum makes swallowing easier; symptoms include ear discomfort and muffled hearing; a small Eustachian tube, especially in young children, is a risk factor."
+    },
+    {
+      "id": "gp-baro",
+      "title": "Otic barotrauma",
+      "publisher": "GPnotebook",
+      "year": "",
+      "url": "https://gpnotebook.com/pages/ear-nose-and-throat/otic-barotrauma",
+      "verified": "2026-10-19",
+      "supports": "Otic barotrauma is most often due to descent in aircraft and is also seen in divers; during descent the Eustachian tubes ought to be open to allow equalisation of pressure, usually by yawning or sucking boiled sweets."
+    },
+    {
+      "id": "msd-baro",
+      "title": "Barotrauma of the Ear (MSD Manual Consumer Version)",
+      "publisher": "MSD Manuals",
+      "year": "",
+      "url": "https://www.msdmanuals.com/home/ear-nose-and-throat-disorders/middle-ear-disorders/barotrauma-of-the-ear",
+      "verified": "2026-10-19",
+      "supports": "The Eustachian tube normally lets outside air into the middle ear; when it is blocked, for example by a cold or an allergy, middle-ear pressure drops and the eardrum bulges inward, causing pain."
+    },
+    {
+      "id": "cdc-altitude",
+      "title": "High-Altitude Travel and Altitude Illness (CDC Yellow Book)",
+      "publisher": "CDC",
+      "year": "",
+      "url": "https://www.cdc.gov/yellow-book/hcp/environmental-hazards-risks/high-altitude-travel-and-altitude-illness.html",
+      "verified": "2026-10-19",
+      "supports": "At about 3,050 m (10,000 ft) the inspired oxygen is 69% of the sea-level value because of the lower barometric pressure."
+    }
+  ],
   "limits": {
     "does": [
       "Shows the pressure difference building as the cabin pressure rises during the descent",
-      "Shows each swallow or yawn letting air through a small tube to even it out (halving it)",
+      "Shows each swallow or yawn letting air through a small tube to even it out",
       "Shows why the descent, not the climb, is usually the uncomfortable part"
     ],
     "doesnt": [
-      "Measure any real person or plane — the numbers are illustrative teaching values",
-      "Include a blocked nose, which makes the tube harder to open",
+      "Measure any real person or plane — Lucía is fictional",
+      "Show how a real eardrum moves or how much it can stretch",
       "Model diving, where the pressure changes much faster"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "Ear pain that doesn't go away after landing is a reason to tell an adult."
-  },
-  "sources": ["NIH NIDCD: How do we hear? — the middle ear (student overview)", "CK-12 Physical Science: air pressure"]
+  }
 }

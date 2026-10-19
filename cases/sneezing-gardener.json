@@ -25,9 +25,9 @@
       "shows": "that the trigger is something in the spring garden air",
       "visual": {
         "type": "bars",
-        "from": 1,
-        "to": 9,
-        "unit": "pollen level, winter → spring Saturday"
+        "from": 10,
+        "to": 2000,
+        "unit": "tree pollen, grains per cubic metre: winter → spring Saturday"
       },
       "pointsTo": "pollen"
     },
@@ -132,8 +132,7 @@
     }
   },
   "labDefaults": {
-    "primary": 8,
-    "secondary": 0
+    "primary": 2000
   },
   "concepts": [
     {

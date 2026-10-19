@@ -8,60 +8,206 @@
   "minutes": 8,
   "level": "moderate",
   "reviewed": null,
-  "character": { "name": "Sofia", "age": 15 },
+  "character": {
+    "name": "Sofia",
+    "age": 15
+  },
   "briefing": "Sofia, 15, walks from a sunny lobby into a dark movie theatre. At first she can't see the seats at all and trips on a step. Fifteen minutes later she can see faces and steps easily — in exactly the same dim light.",
   "question": "What changed in fifteen minutes — the theatre, or Sofia's eyes?",
   "illustration": "film",
   "clues": [
-    { "id": 1, "title": "Blind for a minute", "icon": "film", "colour": "purple",
+    {
+      "id": 1,
+      "title": "Blind for a minute",
+      "icon": "film",
+      "colour": "purple",
       "text": "In the first minute she can't see the seats at all and trips on a step. Her eyes feel fine — there's just nothing to see.",
-      "shows": "eyes that are not yet ready for dim light", "visual": null, "pointsTo": "sensitive" },
-    { "id": 2, "title": "Big pupils", "icon": "eye", "colour": "blue",
+      "shows": "eyes that are not yet ready for dim light",
+      "visual": null,
+      "pointsTo": "sensitive"
+    },
+    {
+      "id": 2,
+      "title": "Big pupils",
+      "icon": "eye",
+      "colour": "blue",
       "text": "By the glow of her phone, her friend sees that Sofia's pupils have gone wide within a few seconds of walking in.",
-      "shows": "the pupils opening fully within seconds", "visual": null, "pointsTo": "pupils" },
-    { "id": 3, "title": "Better and better", "icon": "clock", "colour": "teal",
+      "shows": "the pupils opening fully within seconds",
+      "visual": null,
+      "pointsTo": "pupils"
+    },
+    {
+      "id": 3,
+      "title": "Better and better",
+      "icon": "clock",
+      "colour": "teal",
       "text": "After five minutes she can see the steps; after fifteen she can read faces in the dim glow. The lights haven't changed.",
-      "shows": "her vision improving for many minutes after her pupils were already wide", "visual": { "type": "bars", "from": 5, "to": 90, "unit": "% able to see, 1 min → 15 min" }, "pointsTo": "minutes" },
-    { "id": 4, "title": "Her friend could see", "icon": "eye", "colour": "amber",
+      "shows": "her vision improving for many minutes after her pupils were already wide",
+      "visual": {
+        "type": "bars",
+        "from": 5,
+        "to": 90,
+        "unit": "% able to see, 1 min → 15 min"
+      },
+      "pointsTo": "minutes"
+    },
+    {
+      "id": 4,
+      "title": "Her friend could see",
+      "icon": "eye",
+      "colour": "amber",
       "text": "Her friend, who came in half an hour earlier, could see everything from the start. The room's lights stayed the same the whole time.",
-      "shows": "the light staying the same while only Sofia's eyes changed", "visual": null, "pointsTo": "cells" }
+      "shows": "the light staying the same while only Sofia's eyes changed",
+      "visual": null,
+      "pointsTo": "cells"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "Her eyes were tired from the bright lobby.", "flaw": "Tired eyes would get worse in the dark, not better — and she ended up seeing faces clearly." },
-    { "id": "B", "text": "Her pupils opened wider, and that is all that happened.", "flaw": "Her pupils were fully open within seconds, but her vision kept improving for fifteen minutes after that — something slower was also going on." },
-    { "id": "C", "text": "Two things happened: her pupils opened wide in seconds, and over many minutes the light-sensing cells at the back of her eyes rebuilt the pigment that bright light had used up, making them far more sensitive.", "best": true },
-    { "id": "D", "text": "The theatre turned the lights up after the film started.", "flaw": "The lights never changed — her friend, who had been there for half an hour, could see fine from the start." }
+    {
+      "id": "A",
+      "text": "Her eyes were tired from the bright lobby.",
+      "flaw": "Tired eyes would get worse in the dark, not better — and she ended up seeing faces clearly."
+    },
+    {
+      "id": "B",
+      "text": "Her pupils opened wider, and that is all that happened.",
+      "flaw": "Her pupils were fully open within seconds, but her vision kept improving for fifteen minutes after that — something slower was also going on."
+    },
+    {
+      "id": "C",
+      "text": "Two things happened: her pupils opened wide in seconds, and over many minutes the light-sensing cells at the back of her eyes rebuilt the pigment that bright light had used up, making them far more sensitive.",
+      "best": true
+    },
+    {
+      "id": "D",
+      "text": "The theatre turned the lights up after the film started.",
+      "flaw": "The lights never changed — her friend, who had been there for half an hour, could see fine from the start."
+    }
   ],
   "evidence": {
-    "A": { "supports": [], "doesntFit": [3] },
-    "B": { "supports": [2], "doesntFit": [3] },
-    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "D": { "supports": [], "doesntFit": [4] }
+    "A": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [
+        2
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "C": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        4
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "S",
     "prompt": "Sofia stays in the dark theatre for twenty minutes. How does her eyes' sensitivity to dim light change over that time?",
     "expectedShape": "rises-then-levels",
-    "second": { "question": "And how long do her pupils take to finish opening?", "options": ["seconds", "minutes"], "answer": "seconds" }
+    "second": {
+      "question": "And how long do her pupils take to finish opening?",
+      "options": [
+        "seconds",
+        "minutes"
+      ],
+      "answer": "seconds"
+    }
   },
-  "labDefaults": { "primary": 5, "secondary": 10 },
+  "labDefaults": {
+    "primary": 5
+  },
   "concepts": [
-    { "id": "pupils", "label": "pupils open quickly", "colour": "blue",
-      "synonyms": ["pupils", "pupil", "wider", "widen", "widened", "opened up"],
-      "hint": "What happened to the black centres of her eyes, and how fast?" },
-    { "id": "cells", "label": "light-sensing cells", "colour": "purple",
-      "synonyms": ["cells", "rods", "retina", "back of the eye", "back of her eye", "light sensing", "light-sensing"],
-      "hint": "Which part of the eye actually detects light?" },
-    { "id": "pigment", "label": "pigment is rebuilt", "colour": "amber",
-      "synonyms": ["pigment", "chemical", "rebuild", "rebuilt", "rebuilds", "used up", "recharge", "recharges"],
-      "hint": "What does bright light use up, and what happens to it in the dark?" },
-    { "id": "minutes", "label": "it takes many minutes", "colour": "teal",
-      "synonyms": ["minutes", "slowly", "over time", "takes time", "gradually", "a while"],
-      "hint": "How long did her vision keep improving?" },
-    { "id": "sensitive", "label": "eyes become more sensitive", "colour": "coral",
-      "synonyms": ["sensitive", "sensitivity", "adapt", "adapts", "adapted", "adjust", "adjusts", "adjusted"],
-      "hint": "What is the word for eyes getting better at seeing in dim light?" }
+    {
+      "id": "pupils",
+      "label": "pupils open quickly",
+      "colour": "blue",
+      "synonyms": [
+        "pupils",
+        "pupil",
+        "wider",
+        "widen",
+        "widened",
+        "opened up"
+      ],
+      "hint": "What happened to the black centres of her eyes, and how fast?"
+    },
+    {
+      "id": "cells",
+      "label": "light-sensing cells",
+      "colour": "purple",
+      "synonyms": [
+        "cells",
+        "rods",
+        "retina",
+        "back of the eye",
+        "back of her eye",
+        "light sensing",
+        "light-sensing"
+      ],
+      "hint": "Which part of the eye actually detects light?"
+    },
+    {
+      "id": "pigment",
+      "label": "pigment is rebuilt",
+      "colour": "amber",
+      "synonyms": [
+        "pigment",
+        "chemical",
+        "rebuild",
+        "rebuilt",
+        "rebuilds",
+        "used up",
+        "recharge",
+        "recharges"
+      ],
+      "hint": "What does bright light use up, and what happens to it in the dark?"
+    },
+    {
+      "id": "minutes",
+      "label": "it takes many minutes",
+      "colour": "teal",
+      "synonyms": [
+        "minutes",
+        "slowly",
+        "over time",
+        "takes time",
+        "gradually",
+        "a while"
+      ],
+      "hint": "How long did her vision keep improving?"
+    },
+    {
+      "id": "sensitive",
+      "label": "eyes become more sensitive",
+      "colour": "coral",
+      "synonyms": [
+        "sensitive",
+        "sensitivity",
+        "adapt",
+        "adapts",
+        "adapted",
+        "adjust",
+        "adjusts",
+        "adjusted"
+      ],
+      "hint": "What is the word for eyes getting better at seeing in dim light?"
+    }
   ],
   "transfer": {
     "context": "Wei goes outside at night to look at the stars. At first he sees only a few; after twenty minutes away from his phone screen he sees hundreds.",

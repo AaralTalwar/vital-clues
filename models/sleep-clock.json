@@ -1,45 +1,131 @@
 {
   "id": "sleep-clock",
-  "name": "Brain & sleep clock",
+  "version": 2,
+  "name": "Theo's body clock and his bright screen",
   "colour": "purple",
-  "inputs": {
-    "primary":   { "key": "S", "label": "Bright screen time before bed", "min": 0, "max": 4, "step": 0.5, "unit": "h", "ticks": ["none", "2 h", "4 h"] },
-    "secondary": { "key": "N", "label": "Nights in a row", "min": 1, "max": 7, "step": 1, "default": 1, "unit": "nights", "ticks": ["1 night", "4 nights", "a week"] }
-  },
+  "parameters": [
+    {
+      "key": "S", "label": "Hours of bright screen before lights-out", "role": "primary", "min": 0, "max": 4, "step": 0.5, "default": 3, "unit": "h",
+      "ticks": ["none", "2 h", "4 h"],
+      "explain": "Light reaching the eyes in the evening pushes back the start of the brain's sleep signal, melatonin.",
+      "basis": "source", "cite": "gooley-jcem"
+    },
+    {
+      "key": "E", "label": "What's on the screen", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 1,
+      "options": [{ "value": 1, "label": "exciting game" }, { "value": 0, "label": "calm show" }],
+      "explain": "Tests the 'the game is too exciting' idea. Excitement adds a few minutes, but swap to a calm show on the same bright screen and he still lies awake.",
+      "basis": "choice"
+    },
+    {
+      "key": "Dl", "label": "Daylight during the day", "role": "bubble", "min": 0, "max": 1, "step": 1, "default": 0,
+      "options": [{ "value": 0, "label": "indoors (school days)" }, { "value": 1, "label": "outdoors all day (camping)" }],
+      "explain": "A weekend outdoors in natural light, with no screens at night, moved campers' melatonin rise about 1.4 hours earlier.",
+      "basis": "source", "cite": "cu-camping"
+    },
+    {
+      "key": "Br", "label": "Screen brightness", "role": "factor", "min": 0.2, "max": 1, "step": 0.1, "default": 1,
+      "options": [{ "value": 1, "label": "full brightness" }, { "value": 0.5, "label": "half" }, { "value": 0.2, "label": "dim night mode" }],
+      "explain": "A brighter screen sends more light into his eyes, so it holds the clock back more.",
+      "basis": "choice"
+    },
+    {
+      "key": "Rl", "label": "Room lights", "role": "factor", "min": 0, "max": 1, "step": 1, "default": 1,
+      "options": [{ "value": 1, "label": "on" }, { "value": 0, "label": "off" }],
+      "explain": "Ordinary room lighting before bed was enough to delay melatonin in almost everyone tested.",
+      "basis": "source", "cite": "gooley-jcem"
+    },
+    {
+      "key": "Bt", "label": "Lights-out time", "role": "factor", "min": -2, "max": 0, "step": 1, "default": 0,
+      "options": [{ "value": -2, "label": "10 pm" }, { "value": -1, "label": "11 pm" }, { "value": 0, "label": "midnight" }],
+      "explain": "Going to bed before the clock is ready means more time lying awake; school still starts at the same time.",
+      "basis": "illustrative"
+    }
+  ],
+  "constants": { "Mo0": -2.5, "gate": 2, "perHour": 0.4, "campShift": 1.4, "wake": 6.5 },
   "outputs": [
-    { "key": "M", "label": "Sleep signal (melatonin)", "unit": "% of normal", "colour": "purple", "decimals": 0 },
     { "key": "F", "label": "Time to fall asleep", "unit": "min", "colour": "blue", "decimals": 0 },
-    { "key": "A", "label": "Morning alertness", "unit": "0–10", "colour": "amber", "decimals": 1 }
+    { "key": "M", "label": "Sleep signal (melatonin) at lights-out", "unit": "% of a dark evening", "colour": "purple", "decimals": 0 },
+    { "key": "Dh", "label": "Body clock shift", "unit": "h later", "colour": "purple", "decimals": 1 },
+    { "key": "Sl", "label": "Sleep before the school alarm", "unit": "h", "colour": "teal", "decimals": 1 },
+    { "key": "A", "label": "Morning alertness", "unit": "0–10", "colour": "amber", "decimals": 1 },
+    { "key": "Lv", "label": "Evening light dose", "hidden": true }
   ],
   "rules": {
-    "M": "clamp(100 - 15 * S, 30, 100)",
-    "F": "15 + 12 * S",
-    "A": "clamp(9 - 0.9 * S - 0.3 * (N - 1) * S, 1, 10)"
+    "F": "10 + 60 * max(0, Mo0 + gate + perHour * S * (0.5 * Br + 0.5 * Rl) - campShift * Dl - Bt) + 5 * E",
+    "M": "100 * clamp((Bt - (Mo0 + perHour * S * (0.5 * Br + 0.5 * Rl) - campShift * Dl)) / 2, 0, 1) * (1 - 0.5 * (0.5 * Br + 0.5 * Rl) * min(S, 1))",
+    "Dh": "perHour * S * (0.5 * Br + 0.5 * Rl) - campShift * Dl",
+    "Sl": "clamp(wake - Bt - (10 + 60 * max(0, Mo0 + gate + perHour * S * (0.5 * Br + 0.5 * Rl) - campShift * Dl - Bt) + 5 * E) / 60, 0, 12)",
+    "A": "clamp(2 * (clamp(wake - Bt - (10 + 60 * max(0, Mo0 + gate + perHour * S * (0.5 * Br + 0.5 * Rl) - campShift * Dl - Bt) + 5 * E) / 60, 0, 12) - 4), 0, 10)",
+    "Lv": "S * (0.5 * Br + 0.5 * Rl)"
   },
-  "chart": { "x": "S", "y": "F", "xLabel": "bright screen time before bed (h)", "yLabel": "minutes to fall asleep", "yMin": 0, "yMax": 70 },
+  "chart": { "x": "S", "y": "F", "xLabel": "bright screen time before lights-out (h)", "yLabel": "minutes to fall asleep", "yMin": 0, "yMax": 90 },
   "overlay": {
     "base": "head",
-    "caption": "light into the eyes tells the brain it is still daytime",
+    "caption": "light into the eyes → brain clock thinks it's still day → sleep signal held back → lies awake",
     "parts": [
-      { "shape": "brain", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "M", "min": 30, "max": 100 } },
+      { "shape": "brain", "colour": "#6C4AB6", "anim": { "type": "glow", "output": "M", "min": 0, "max": 100 } },
       { "shape": "eye", "colour": "#16213E" },
-      { "shape": "screen", "colour": "#2E86DE", "anim": { "type": "glow", "output": "S", "min": 0, "max": 4 } },
-      { "shape": "moon", "colour": "#F4A300", "anim": { "type": "glow", "output": "M", "min": 30, "max": 100 } }
+      { "shape": "screen", "colour": "#2E86DE", "anim": { "type": "glow", "output": "Lv", "min": 0, "max": 4 } },
+      { "shape": "moon", "colour": "#F4A300", "anim": { "type": "glow", "output": "M", "min": 0, "max": 100 } }
     ]
   },
+  "explain": {
+    "summary": "Theo's brain has a master clock that uses light from his eyes to tell the time. In the evening it releases melatonin, the sleep signal. Bright screen and room light late at night tell the clock it is still daytime, so melatonin starts later and he lies awake even though he is tired. Camping, with daylight all day and dark evenings, moves his clock earlier, so sleep comes fast.",
+    "rules": [
+      "Each hour of bright light before bed pushes his clock about 0.4 hours later (less with a dim screen or room lights off).",
+      "He can fall asleep about 2 hours after melatonin starts rising; before that he lies awake.",
+      "A day of outdoor daylight moves the clock about 1.4 hours earlier.",
+      "An exciting game adds only about 5 minutes.",
+      "Sleep = time until the 6:30 alarm minus time awake in bed; teens need about 8–10 hours."
+    ]
+  },
+  "provenance": {
+    "source": [
+      { "fact": "The brain's master clock (the SCN) controls melatonin production based on how much light the eyes receive; in the evening it makes more melatonin, causing sleepiness; light from electronic devices at night can confuse the clock.", "cite": "nigms-circadian" },
+      { "fact": "Compared with dim light, ordinary room light before bedtime delayed melatonin onset in 99% of people and shortened the melatonin night by about 90 minutes.", "cite": "gooley-jcem" },
+      { "fact": "People reading on a light-emitting tablet for 4 hours before bed for 5 nights took nearly 10 minutes longer to fall asleep than with a printed book and were more tired the next morning.", "cite": "psu-ereader" },
+      { "fact": "A weekend camping in natural light shifted campers' melatonin rise 1.4 hours earlier; a winter week of camping shifted it 2.6 hours earlier.", "cite": "cu-camping" },
+      { "fact": "In adolescence melatonin tends to be produced later at night, so bedtime and wake time typically become about 2 hours later.", "cite": "oxford-teen" },
+      { "fact": "Teens aged 13–17 need 8–10 hours of sleep a night.", "cite": "cdc-sleep" }
+    ],
+    "choice": [
+      { "what": "Each hour of bright light delays the clock by 0.4 hours", "why": "Sized so a few hours of screen plus room light gives a delay of about an hour, in line with the 90-minute effect of room light." },
+      { "what": "He can fall asleep about 2 hours after melatonin starts rising", "why": "A common teaching rule of thumb; real gaps vary from person to person." },
+      { "what": "Screen and room light count equally", "why": "Both put light into his eyes; real amounts depend on the screen, the bulbs and the distance." },
+      { "what": "Excitement adds 5 minutes", "why": "Lets you test idea C: excitement fades fast after he stops playing, so its effect is small." }
+    ],
+    "illustrative": [
+      "Theo is fictional; his natural melatonin start of 9:30 pm, the 6:30 alarm and the 0–10 alertness scale are made up for the story.",
+      "Lights-out times are choices for exploring, not advice."
+    ],
+    "studying": "How much of a late clock comes from screens themselves, rather than room lights, staying up late or the normal teen shift, is still being studied."
+  },
+  "citations": [
+    { "id": "nigms-circadian", "title": "Circadian Rhythms", "publisher": "NIH National Institute of General Medical Sciences", "year": "", "url": "https://nigms.nih.gov/education/fact-sheets/Pages/circadian-rhythms.aspx", "verified": "2026-10-19",
+      "supports": "The master clock (SCN) controls melatonin production based on the amount of light the eyes receive; in the evening it tells the brain to make more melatonin, causing sleepiness; light from electronic devices at night can confuse biological clocks." },
+    { "id": "gooley-jcem", "title": "Exposure to room light before bedtime suppresses melatonin onset and shortens melatonin duration in humans", "publisher": "Journal of Clinical Endocrinology & Metabolism (Gooley et al.)", "year": "2011", "url": "https://academic.oup.com/jcem/article/96/3/E463/2833657", "verified": "2026-10-19",
+      "supports": "Room light (<200 lux) vs dim light (<3 lux) before bedtime gave a later melatonin onset in 99% of individuals and shortened melatonin duration by about 90 min; room light during sleep hours suppressed melatonin by >50% in most trials." },
+    { "id": "psu-ereader", "title": "Light-emitting e-readers detrimentally shift circadian clock", "publisher": "Penn State News (study by Chang et al., PNAS)", "year": "2014", "url": "https://www.psu.edu/news/research/story/light-emitting-e-readers-detrimentally-shift-circadian-clock", "verified": "2026-10-19",
+      "supports": "Twelve adults read an iPad or a printed book for 4 hours before bed for 5 nights each; after the e-reader they took nearly 10 minutes longer to fall asleep, had less REM sleep and were more tired the next morning." },
+    { "id": "cu-camping", "title": "Can't get to sleep? A wilderness weekend can help", "publisher": "CU Boulder Today (study by Wright et al., Current Biology)", "year": "2017", "url": "https://www.colorado.edu/today/2017/02/01/cant-get-sleep-wilderness-weekend-can-help", "verified": "2026-10-19",
+      "supports": "Weekend camping shifted campers' melatonin rise 1.4 hours earlier; winter camping gave about 13 times more daytime light and a 2.6-hour shift; a summer week of camping moved melatonin onset nearly 2 hours earlier." },
+    { "id": "oxford-teen", "title": "Why has it got harder to get to sleep?", "publisher": "Oxford Health NHS Foundation Trust (CAMHS)", "year": "", "url": "https://oxfordhealth.nhs.uk/camhs/self-care/sleep/what-happens/teenagers", "verified": "2026-10-19",
+      "supports": "In adolescence you are more likely to produce melatonin later at night, shifting bedtime and wake time about 2 hours later; adolescents need about 8 to 10 hours of sleep a night." },
+    { "id": "cdc-sleep", "title": "About Sleep", "publisher": "US Centers for Disease Control and Prevention", "year": "", "url": "https://www.cdc.gov/sleep/about/index.html", "verified": "2026-10-19",
+      "supports": "Teens aged 13–17 need 8–10 hours of sleep per 24 hours." }
+  ],
   "limits": {
     "does": [
-      "Shows the brain's night-time sleep signal dropping when bright light reaches the eyes late",
-      "Shows falling asleep taking longer as a result",
-      "Shows the effect piling up over several nights"
+      "Shows evening light delaying the brain's sleep signal",
+      "Shows a late clock turning into lying awake and short sleep before school",
+      "Lets you test whether excitement or daylight explains the camping cure"
     ],
     "doesnt": [
-      "Measure any real person — the numbers are illustrative teaching values",
-      "Include caffeine, noise, stress, naps or what time school starts",
-      "Diagnose anything; everyone has nights like this"
+      "Measure any real person — Theo is fictional and the numbers are illustrative",
+      "Include caffeine, noise, stress, naps or effects that build up over many nights",
+      "Tell anyone what bedtime or screen rules to follow"
     ],
     "text": "This is a simplified learning model. Real people vary with age, fitness and health. The numbers are illustrative, not measurements of any real person.",
     "wellbeing": "If you often can't sleep or feel exhausted every day, that's worth talking about with an adult you trust."
-  },
-  "sources": ["NIH News in Health: 'Tired? Blame your body clock'", "CK-12 Life Science: nervous system and endocrine system"]
+  }
 }

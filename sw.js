@@ -1,6 +1,6 @@
 // sw.js — service worker: precache the app shell, models and cases; cache-first after that.
 // Bump CACHE whenever a file changes so returning players get the new version.
-const CACHE = "vital-clues-7d7ce03959";
+const CACHE = "vital-clues-1fd2a6976d";
 const PRECACHE = [
   "./",
   "index.html",
@@ -12,6 +12,7 @@ const PRECACHE = [
   "js/engine.js",
   "js/explain.js",
   "js/lab.js",
+  "js/model.js",
   "js/overlay.js",
   "js/predict.js",
   "js/progress.js",
@@ -51,6 +52,7 @@ const PRECACHE = [
   "models/nerves-reflex.json",
   "models/noise-sleep.json",
   "models/pollen-breathing.json",
+  "models/pool-water.json",
   "models/pupil-light.json",
   "models/skin-uv.json",
   "models/sleep-clock.json",

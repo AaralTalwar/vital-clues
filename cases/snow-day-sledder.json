@@ -61,7 +61,7 @@
         "type": "bars",
         "from": 1,
         "to": 1.8,
-        "unit": "× UV on grass → on snow (illustrative)"
+        "unit": "× UV on her face, grass → fresh snow (up to 80% reflected)"
       },
       "pointsTo": "snow"
     }
@@ -140,8 +140,7 @@
     }
   },
   "labDefaults": {
-    "primary": 5,
-    "secondary": 7
+    "primary": 5
   },
   "concepts": [
     {

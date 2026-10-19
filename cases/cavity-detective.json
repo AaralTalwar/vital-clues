@@ -8,60 +8,204 @@
   "minutes": 8,
   "level": "moderate",
   "reviewed": null,
-  "character": { "name": "Ethan", "age": 14 },
+  "character": {
+    "name": "Ethan",
+    "age": 14
+  },
   "briefing": "Ethan, 14, keeps a bottle of sweet iced tea on his desk and sips it all afternoon. At his checkup, the dentist finds two soft, chalky spots starting on his back teeth. His sister drinks the same tea every day too — and her teeth are fine.",
   "question": "Same drink, same sugar — why are Ethan's teeth losing and his sister's aren't?",
   "illustration": "tooth",
   "clues": [
-    { "id": 1, "title": "All-afternoon sipper", "icon": "glass", "colour": "amber",
+    {
+      "id": 1,
+      "title": "All-afternoon sipper",
+      "icon": "glass",
+      "colour": "amber",
       "text": "Ethan takes a sip of sweet iced tea every few minutes from 2 p.m. to 6 p.m. The bottle lasts all afternoon.",
-      "shows": "sugar arriving in his mouth again and again all afternoon", "visual": null, "pointsTo": "often" },
-    { "id": 2, "title": "Soft spots", "icon": "tooth", "colour": "coral",
+      "shows": "sugar arriving in his mouth again and again all afternoon",
+      "visual": null,
+      "pointsTo": "often"
+    },
+    {
+      "id": 2,
+      "title": "Soft spots",
+      "icon": "tooth",
+      "colour": "coral",
       "text": "At his checkup, two spots on his back teeth are chalky and soft — the start of cavities.",
-      "shows": "the hard enamel surface being dissolved over time", "visual": null, "pointsTo": "enamel" },
-    { "id": 3, "title": "Same drink, one go", "icon": "plate", "colour": "teal",
+      "shows": "the hard enamel surface being dissolved over time",
+      "visual": null,
+      "pointsTo": "enamel"
+    },
+    {
+      "id": 3,
+      "title": "Same drink, one go",
+      "icon": "plate",
+      "colour": "teal",
       "text": "His sister drinks the same bottle of the same tea, but all of it with lunch. They both brush twice a day with the same toothpaste.",
-      "shows": "the same sugar doing far less harm when it all comes at once", "visual": null, "pointsTo": "saliva" },
-    { "id": 4, "title": "Twenty minutes each time", "icon": "clock", "colour": "purple",
+      "shows": "the same sugar doing far less harm when it all comes at once",
+      "visual": null,
+      "pointsTo": "saliva"
+    },
+    {
+      "id": 4,
+      "title": "Twenty minutes each time",
+      "icon": "clock",
+      "colour": "purple",
       "text": "A test strip shows Ethan's mouth turns acidic within a minute of each sip. It takes about twenty minutes to get back to normal.",
-      "shows": "each sip starting about twenty minutes of acid", "visual": { "type": "bars", "from": 20, "to": 240, "unit": "minutes of acid per afternoon, sister → Ethan" }, "pointsTo": "acid" }
+      "shows": "each sip starting about twenty minutes of acid",
+      "visual": {
+        "type": "bars",
+        "from": 20,
+        "to": 240,
+        "unit": "minutes of acid per afternoon, sister → Ethan"
+      },
+      "pointsTo": "acid"
+    }
   ],
   "hypotheses": [
-    { "id": "A", "text": "He drinks more sugar than his sister.", "flaw": "They drink the same amount of the same tea — the only difference is how it's spread through the day." },
-    { "id": "B", "text": "He doesn't brush his teeth.", "flaw": "He brushes twice a day with the same toothpaste as his sister." },
-    { "id": "C", "text": "Bacteria in his mouth turn sugar into acid, and every sip starts about twenty minutes of acid softening his enamel. Sipping every few minutes means the acid never stops, so his saliva never gets the chance to repair the enamel.", "best": true },
-    { "id": "D", "text": "Iced tea is too cold for teeth.", "flaw": "His sister drinks the same cold tea with no damage — and coldness doesn't dissolve enamel." }
+    {
+      "id": "A",
+      "text": "He drinks more sugar than his sister.",
+      "flaw": "They drink the same amount of the same tea — the only difference is how it's spread through the day."
+    },
+    {
+      "id": "B",
+      "text": "He doesn't brush his teeth.",
+      "flaw": "He brushes twice a day with the same toothpaste as his sister."
+    },
+    {
+      "id": "C",
+      "text": "Bacteria in his mouth turn sugar into acid, and every sip starts about twenty minutes of acid softening his enamel. Sipping every few minutes means the acid never stops, so his saliva never gets the chance to repair the enamel.",
+      "best": true
+    },
+    {
+      "id": "D",
+      "text": "Iced tea is too cold for teeth.",
+      "flaw": "His sister drinks the same cold tea with no damage — and coldness doesn't dissolve enamel."
+    }
   ],
   "evidence": {
-    "A": { "supports": [1], "doesntFit": [3] },
-    "B": { "supports": [], "doesntFit": [3] },
-    "C": { "supports": [1, 2, 3, 4], "doesntFit": [] },
-    "D": { "supports": [], "doesntFit": [3] }
+    "A": {
+      "supports": [
+        1
+      ],
+      "doesntFit": [
+        3
+      ]
+    },
+    "B": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    },
+    "C": {
+      "supports": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "doesntFit": []
+    },
+    "D": {
+      "supports": [],
+      "doesntFit": [
+        3
+      ]
+    }
   },
   "mismatchHints": [],
   "prediction": {
     "output": "A",
     "prompt": "Ethan drinks the same amount of sweet tea each day but splits it into more and more separate sips — from none up to twenty. What happens to the minutes of acid attack on his teeth each day?",
     "expectedShape": "rises",
-    "second": { "question": "If he brushed more often, what would happen to the acid minutes?", "options": ["up", "same", "down"], "answer": "down" }
+    "second": {
+      "question": "If Ethan drank the whole bottle in one go, like his sister, what would happen to his acid minutes?",
+      "options": [
+        "up",
+        "same",
+        "down"
+      ],
+      "answer": "down"
+    }
   },
-  "labDefaults": { "primary": 12, "secondary": 2 },
+  "labDefaults": {
+    "primary": 12
+  },
   "concepts": [
-    { "id": "bacteria", "label": "mouth bacteria", "colour": "teal",
-      "synonyms": ["bacteria", "germs", "microbes", "plaque", "bugs"],
-      "hint": "What living things in his mouth feed on the sugar?" },
-    { "id": "acid", "label": "sugar becomes acid", "colour": "coral",
-      "synonyms": ["acid", "acids", "acidic", "sugar into acid", "makes acid"],
-      "hint": "What do those bacteria make from sugar?" },
-    { "id": "enamel", "label": "acid softens enamel", "colour": "purple",
-      "synonyms": ["enamel", "soften", "softens", "softened", "dissolve", "dissolves", "tooth surface"],
-      "hint": "What does the acid do to the outside of the tooth?" },
-    { "id": "often", "label": "how often, not how much", "colour": "amber",
-      "synonyms": ["often", "sipping", "sips", "every few minutes", "all afternoon", "frequent", "frequently", "again and again"],
-      "hint": "What was different about the way Ethan drank?" },
-    { "id": "saliva", "label": "saliva repairs between sips", "colour": "blue",
-      "synonyms": ["saliva", "spit", "repair", "repairs", "recover", "recovers", "time to recover"],
-      "hint": "What fixes the enamel when the acid stops — and why did it never get its turn?" }
+    {
+      "id": "bacteria",
+      "label": "mouth bacteria",
+      "colour": "teal",
+      "synonyms": [
+        "bacteria",
+        "germs",
+        "microbes",
+        "plaque",
+        "bugs"
+      ],
+      "hint": "What living things in his mouth feed on the sugar?"
+    },
+    {
+      "id": "acid",
+      "label": "sugar becomes acid",
+      "colour": "coral",
+      "synonyms": [
+        "acid",
+        "acids",
+        "acidic",
+        "sugar into acid",
+        "makes acid"
+      ],
+      "hint": "What do those bacteria make from sugar?"
+    },
+    {
+      "id": "enamel",
+      "label": "acid softens enamel",
+      "colour": "purple",
+      "synonyms": [
+        "enamel",
+        "soften",
+        "softens",
+        "softened",
+        "dissolve",
+        "dissolves",
+        "tooth surface"
+      ],
+      "hint": "What does the acid do to the outside of the tooth?"
+    },
+    {
+      "id": "often",
+      "label": "how often, not how much",
+      "colour": "amber",
+      "synonyms": [
+        "often",
+        "sipping",
+        "sips",
+        "every few minutes",
+        "all afternoon",
+        "frequent",
+        "frequently",
+        "again and again"
+      ],
+      "hint": "What was different about the way Ethan drank?"
+    },
+    {
+      "id": "saliva",
+      "label": "saliva repairs between sips",
+      "colour": "blue",
+      "synonyms": [
+        "saliva",
+        "spit",
+        "repair",
+        "repairs",
+        "recover",
+        "recovers",
+        "time to recover"
+      ],
+      "hint": "What fixes the enamel when the acid stops — and why did it never get its turn?"
+    }
   ],
   "transfer": {
     "context": "Nia chews sugary gum, one piece after another, from the start of school until lunch. Her brother eats the same amount of sugar as one dessert after dinner. Who is more likely to get soft spots on their teeth?",
